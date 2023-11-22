@@ -1,0 +1,486 @@
+syntax = "proto3";
+
+package admin;
+
+import "validate/validate.proto";
+import "google/api/annotations.proto";
+import "google/protobuf/wrappers.proto";
+
+import "model/pms_product_category.proto";
+import "model/pms_brand.proto";
+import "model/pms_product_attribute_category.proto";
+import "model/pms_product_attribute.proto";
+
+option go_package = ".;mall";
+
+// 通用返回
+message CommonRsp {
+  uint32 code = 1;      // 状态码
+  string message = 2;   // 提示信息
+}
+
+// START ======================================= 分类管理 ======================================= START
+
+
+// 添加更新产品分类的参数
+message AddOrUpdateProductCategoryParam {
+  uint64 id = 20;               // ID
+
+  uint64 parent_id = 1 [(validate.rules).uint64.gt = 0];             // 父分类的编号
+  string name = 2 [(validate.rules).string.min_len = 1];             // 商品分类名称
+  string product_unit = 3;                                           // 分类单位
+  uint32 nav_status = 4 [(validate.rules).uint32 = {in: [0, 1]}];    // 是否在导航栏显示
+  uint32 show_status = 5 [(validate.rules).uint32 = {in: [0, 1]}];   // 是否进行显示
+  uint32 sort = 6 [(validate.rules).uint32.gte = 0];                 // 排序
+  string icon = 7;                                                   // 图标
+  string keywords = 8;                                               // 关键字
+  string description = 9;                                            // 分类描述
+  repeated uint64 attribute_ids = 10;                                // 产品相关筛选属性集合
+}
+
+
+// 根据id获取商品分类
+message GetProductCategoryReq {
+  uint64 id = 1;
+}
+
+// 根据id获取商品分类
+message GetProductCategoryRsp {
+  uint32 code = 1; // 状态码
+  string message = 2; // 提示信息
+  model.ProductCategory data = 3;
+}
+
+
+// 分页查询商品分类
+message GetProductCategoriesParam {
+  google.protobuf.UInt64Value id = 1;
+  google.protobuf.UInt64Value parent_id = 2;
+  string name = 3;
+
+  uint32 page_size = 10;
+  uint32 page_num = 11;
+}
+
+message ProductCategoriesData {
+  repeated model.ProductCategory data = 1;  // 商品分类
+  uint32 page_total = 2;                    // 数据总数
+
+  uint32 page_size = 3;                     // 页码
+  uint32 page_num = 4;                      // 页面大小
+}
+
+message GetProductCategoriesRsp {
+  uint32 code = 1; // 状态码
+  string message = 2; // 提示信息
+  ProductCategoriesData data = 3;
+}
+
+// 删除商品分类
+message DeleteProductCategoryReq {
+  uint64 id = 1;
+}
+
+// 修改导航栏显示状态
+message UpdateProductCategoryNavStatusReq {
+  repeated uint64 ids = 1;
+  uint32  nav_status = 2;
+}
+
+// 修改显示状态
+message UpdateProductCategoryShowStatusReq {
+  repeated uint64 ids = 1;
+  uint32  show_status = 2;
+}
+
+// 查询所有一级分类及子分类
+message GetProductCategoriesWithChildrenReq {
+
+}
+
+// 查询所有一级分类及子分类
+message ProductCategoryTreeItem {
+   model.ProductCategory category = 1;
+   repeated model.ProductCategory child = 2;
+}
+
+// 查询所有一级分类及子分类
+message GetProductCategoriesWithChildrenRsp {
+  uint32 code = 1; // 状态码
+  string message = 2; // 提示信息
+
+  repeated ProductCategoryTreeItem data = 3;
+}
+
+// END ======================================= 分类管理 ======================================= END
+
+
+// START ======================================= 商品品牌 ======================================= START
+
+// 添加或更新商品品牌参数
+message AddOrUpdateBrandParam {
+  uint64 id = 20;               // ID
+
+  string name = 1 [(validate.rules).string.min_len = 1];                  // 品牌名称
+  string first_letter = 2;                                                // 品牌首字母
+  uint32 sort = 3 [(validate.rules).uint32.gte = 0];                      // 排序字段
+  uint32 factory_status = 4 [(validate.rules).uint32 = {in: [0, 1]}];     // 是否为厂家制造商
+  uint32 show_status = 5 [(validate.rules).uint32 = {in: [0, 1]}];        // 是否进行显示
+  string logo = 6 [(validate.rules).string.min_len = 1];                  // 品牌logo
+  string big_pic = 7;                                                     // 品牌大图
+  string brand_story = 8;                                                 // 品牌故事
+}
+
+// 分页查询商品品牌
+message GetBrandsParam {
+  uint32 page_size = 1 [(validate.rules).uint32.gte = 0];  // 页码
+  uint32 page_num = 2 [(validate.rules).uint32.gte = 0];   // 页面大小
+
+  string name = 3;         // 品牌名称
+  google.protobuf.UInt32Value show_status = 4;  // 是否进行显示
+}
+
+
+
+// 分页查询商品品牌
+message GetBrandsRsp {
+  uint32 code = 1;          // 状态码
+  string message = 2;       // 提示信息
+
+  GetBrandsData data = 3;
+}
+
+message GetBrandsData {
+  repeated model.Brand data = 1;  // 商品品牌
+  uint32 page_total = 2;          // 数据总数
+  uint32 page_size = 3;           // 页码
+  uint32 page_num = 4;            // 页面大小
+}
+
+// 根据id获取商品品牌
+message GetBrandReq {
+  uint64 id = 1;
+}
+
+// 根据id获取商品品牌
+message GetBrandRsp {
+  uint32 code = 1;          // 状态码
+  string message = 2;       // 提示信息
+
+  model.Brand data = 3;    // 数据
+}
+
+// 删除商品品牌
+message DeleteBrandReq {
+  uint64 id = 1;
+}
+// END ======================================= 商品品牌 ======================================= END
+
+
+// START ======================================= 产品属性分类 ======================================= START
+
+// 添加或更新产品属性分类表参数
+message AddOrUpdateProductAttributeCategoryParam {
+  uint64 id = 20;               // ID
+
+  string name = 1 [(validate.rules).string.min_len = 1];              // 名称
+}
+
+// 分页查询产品属性分类
+message ProductAttributeCategoriesData {
+  repeated model.ProductAttributeCategory data = 1; //
+  uint32 page_total = 2;                            // 数据总数
+  uint32 page_size = 3;                             // 页码
+  uint32 page_num = 4;                              // 页面大小
+}
+message GetProductAttributeCategoriesParam {
+  string name = 1;              // 名称
+
+  uint32 page_size = 2;
+  uint32 page_num = 3;
+}
+
+// 分页查询产品属性分类
+message GetProductAttributeCategoriesRsp {
+  uint32 code = 1;          // 状态码
+  string message = 2;       // 提示信息
+
+  ProductAttributeCategoriesData data = 3;
+}
+
+// 根据id获取产品属性分类
+message GetProductAttributeCategoryReq {
+  uint64 id = 1;
+}
+
+// 根据id获取产品属性分类
+message GetProductAttributeCategoryRsp {
+  uint32 code = 1;          // 状态码
+  string message = 2;       // 提示信息
+
+  model.ProductAttributeCategory data = 3;    // 数据
+}
+
+// 删除产品属性分类
+message DeleteProductAttributeCategoryReq {
+  uint64 id = 1;
+}
+
+// END ======================================= 产品属性分类 ======================================= END
+
+
+// START ======================================= 商品属性参数 ======================================= START
+
+// 添加或更新商品属性参数
+message AddOrUpdateProductAttributeParam {
+  uint64 id = 20 ;                                                                  // 编号
+
+  uint64 product_attribute_category_id = 2 [(validate.rules).uint64.gt = 0];        // 产品属性分类表ID
+  string name = 3 [(validate.rules).string.min_len = 1];                            // 属性名称
+  uint32 select_type = 4 [(validate.rules).uint32 = {in: [0, 1, 2]}];               // 属性选择类型：0->唯一；1->单选；2->多选
+  uint32 input_type = 5 [(validate.rules).uint32 = {in: [0, 1]}];                   // 属性录入方式：0->手工录入；1->从列表中选取
+  string input_list = 6;                                                            // 可选值列表，以逗号隔开
+  int32 sort = 7;                                                                   // 排序字段
+  uint32 filter_type = 8 [(validate.rules).uint32 = {in: [0, 1]}];                  // 分类筛选样式：0->普通；1->颜色
+  uint32 search_type = 9 [(validate.rules).uint32 = {in: [0, 1, 2]}];               // 检索类型；0->不需要进行检索；1->关键字检索；2->范围检索
+  uint32 related_status = 10 [(validate.rules).uint32 = {in: [0, 1]}];              // 相同属性产品是否关联；0->不关联；1->关联
+  uint32 hand_add_status = 11 [(validate.rules).uint32 = {in: [0, 1]}];             // 是否支持手动新增；0->不支持；1->支持
+  uint32 type = 12 [(validate.rules).uint32 = {in: [0, 1]}];                        // 属性的类型；0->规格；1->参数
+}
+
+// 分页查询商品属性参数
+message GetProductAttributesParam {
+  string name = 1;                                                 // 属性名称
+  google.protobuf.UInt32Value product_attribute_category_id = 2;   // 产品属性分类表ID
+  google.protobuf.UInt32Value type = 3;                            // 属性的类型；0->规格；1->参数
+
+  uint32 page_num = 10 [(validate.rules).uint32.gte = 0];   // 页面大小
+  uint32 page_size = 11 [(validate.rules).uint32.gte = 0];  // 页码
+}
+
+// 分页查询商品属性参数
+message ProductAttributesData {
+  repeated model.ProductAttribute data = 1;    // 商品属性参数
+  uint32 page_total = 2;                         // 数据总数
+  uint32 page_size = 3;                          // 页码
+  uint32 page_num = 4;                           // 页面大小
+}
+message GetProductAttributesRsp {
+  uint32 code = 1;          // 状态码
+  string message = 2;       // 提示信息
+
+  ProductAttributesData data = 3; //
+}
+
+// 根据id获取商品属性参数
+message GetProductAttributeReq {
+  uint64 id = 1;
+}
+
+// 根据id获取商品属性参数
+message GetProductAttributeRsp {
+  uint32 code = 1;          // 状态码
+  string message = 2;       // 提示信息
+
+  model.ProductAttribute data = 3;    // 数据
+}
+
+// 删除商品属性参数
+message DeleteProductAttributeReq {
+  uint64 id = 1;
+}
+
+// END ======================================= 商品属性参数 ======================================= END
+
+// 商品分类管理
+service AdminApi {
+
+  // START ======================================= 分类管理 ======================================= START
+
+  // 添加商品分类
+  rpc CreateProductCategory (AddOrUpdateProductCategoryParam) returns (CommonRsp) {
+    option (google.api.http) = {
+      post: "/categories"
+      body: "*"
+    };
+  }
+  // 修改商品分类
+  rpc UpdateProductCategory (AddOrUpdateProductCategoryParam) returns (CommonRsp) {
+    option (google.api.http) = {
+      put: "/categories/{id}"
+      body: "*"
+    };
+  }
+  // 分页查询商品分类
+  rpc GetProductCategories (GetProductCategoriesParam) returns (GetProductCategoriesRsp) {
+    option (google.api.http) = {
+      get: "/categories"
+    };
+  }
+  // 根据id获取商品分类
+  rpc GetProductCategory (GetProductCategoryReq) returns (GetProductCategoryRsp) {
+    option (google.api.http) = {
+      get: "/categories/{id}"
+    };
+  }
+  // 删除商品分类
+  rpc DeleteProductCategory (DeleteProductCategoryReq) returns (CommonRsp) {
+    option (google.api.http) = {
+      delete: "/categories/{id}"
+    };
+  }
+
+//  // 修改导航栏显示状态
+//  rpc UpdateProductCategoryNavStatus (UpdateProductCategoryNavStatusReq) returns (CommonRsp) {
+//    option (google.api.http) = {
+//      put: "/productCategories/{id}/navStatus"
+//      body: "*"
+//    };
+//  }
+//  // 修改显示状态
+//  rpc UpdateProductCategoryShowStatus (UpdateProductCategoryShowStatusReq) returns (CommonRsp) {
+//    option (google.api.http) = {
+//      put: "/productCategories/{id}/showStatus"
+//      body: "*"
+//    };
+//  }
+
+  // 查询所有一级分类及子分类
+  rpc GetProductCategoriesWithChildren (GetProductCategoriesWithChildrenReq) returns (GetProductCategoriesWithChildrenRsp) {
+    option (google.api.http) = {
+      get: "/categories/search/withChildren"
+    };
+  }
+
+  // END ======================================= 分类管理 ======================================= END
+
+
+  // START ======================================= 商品品牌 ======================================= START
+
+
+  // 添加商品品牌
+  rpc CreateBrand (AddOrUpdateBrandParam) returns (CommonRsp) {
+    option (google.api.http) = {
+      post: "/brands"
+      body: "*"
+    };
+  }
+
+  // 修改商品品牌
+  rpc UpdateBrand (AddOrUpdateBrandParam) returns (CommonRsp) {
+    option (google.api.http) = {
+      put: "/brands/{id}"
+      body: "*"
+    };
+  }
+
+  // 分页查询商品品牌
+  rpc GetBrands (GetBrandsParam) returns (GetBrandsRsp) {
+    option (google.api.http) = {
+      get: "/brands"
+    };
+  }
+
+  // 根据id获取商品品牌
+  rpc GetBrand (GetBrandReq) returns (GetBrandRsp) {
+    option (google.api.http) = {
+      get: "/brands/{id}"
+    };
+  }
+
+  // 删除商品品牌
+  rpc DeleteBrand (DeleteBrandReq) returns (CommonRsp) {
+    option (google.api.http) = {
+      delete: "/brands/{id}"
+    };
+  }
+
+  // END ======================================= 商品品牌 ======================================= END
+
+
+
+  // START ======================================= 产品属性分类 ======================================= START
+
+  // 添加产品属性分类
+  rpc CreateProductAttributeCategory (AddOrUpdateProductAttributeCategoryParam) returns (CommonRsp) {
+    option (google.api.http) = {
+      post: "/productAttributeCategories"
+      body: "*"
+    };
+  }
+
+  // 修改产品属性分类
+  rpc UpdateProductAttributeCategory (AddOrUpdateProductAttributeCategoryParam) returns (CommonRsp) {
+    option (google.api.http) = {
+      put: "/productAttributeCategories/{id}"
+      body: "*"
+    };
+  }
+
+  // 分页查询产品属性分类
+  rpc GetProductAttributeCategories (GetProductAttributeCategoriesParam) returns (GetProductAttributeCategoriesRsp) {
+    option (google.api.http) = {
+      get: "/productAttributeCategories"
+    };
+  }
+
+  // 根据id获取产品属性分类
+  rpc GetProductAttributeCategory (GetProductAttributeCategoryReq) returns (GetProductAttributeCategoryRsp) {
+    option (google.api.http) = {
+      get: "/productAttributeCategories/{id}"
+    };
+  }
+
+  // 删除产品属性分类
+  rpc DeleteProductAttributeCategory (DeleteProductAttributeCategoryReq) returns (CommonRsp) {
+    option (google.api.http) = {
+      delete: "/productAttributeCategories/{id}"
+    };
+  }
+
+  // END ======================================= 产品属性分类 ======================================= END
+
+
+  // START ======================================= 商品属性参数 ======================================= START
+
+  // 添加商品属性参数
+  rpc CreateProductAttribute (AddOrUpdateProductAttributeParam) returns (CommonRsp) {
+    option (google.api.http) = {
+      post: "/productAttributes"
+      body: "*"
+    };
+  }
+
+  // 修改商品属性参数
+  rpc UpdateProductAttribute (AddOrUpdateProductAttributeParam) returns (CommonRsp) {
+    option (google.api.http) = {
+      put: "/productAttributes/{id}"
+      body: "*"
+    };
+  }
+
+  // 分页查询商品属性参数
+  rpc GetProductAttributes (GetProductAttributesParam) returns (GetProductAttributesRsp) {
+    option (google.api.http) = {
+      get: "/productAttributes"
+    };
+  }
+
+  // 根据id获取商品属性参数
+  rpc GetProductAttribute (GetProductAttributeReq) returns (GetProductAttributeRsp) {
+    option (google.api.http) = {
+      get: "/productAttributes/{id}"
+    };
+  }
+
+  // 删除商品属性参数
+  rpc DeleteProductAttribute (DeleteProductAttributeReq) returns (CommonRsp) {
+    option (google.api.http) = {
+      delete: "/productAttributes/{id}"
+    };
+  }
+  // END ======================================= 商品属性参数 ======================================= END
+
+}
+
+
