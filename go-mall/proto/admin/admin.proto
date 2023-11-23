@@ -81,17 +81,6 @@ message DeleteProductCategoryReq {
   uint64 id = 1;
 }
 
-// 修改导航栏显示状态
-message UpdateProductCategoryNavStatusReq {
-  repeated uint64 ids = 1;
-  uint32  nav_status = 2;
-}
-
-// 修改显示状态
-message UpdateProductCategoryShowStatusReq {
-  repeated uint64 ids = 1;
-  uint32  show_status = 2;
-}
 
 // 查询所有一级分类及子分类
 message GetProductCategoriesWithChildrenReq {
@@ -329,21 +318,6 @@ service AdminApi {
       delete: "/categories/{id}"
     };
   }
-
-//  // 修改导航栏显示状态
-//  rpc UpdateProductCategoryNavStatus (UpdateProductCategoryNavStatusReq) returns (CommonRsp) {
-//    option (google.api.http) = {
-//      put: "/productCategories/{id}/navStatus"
-//      body: "*"
-//    };
-//  }
-//  // 修改显示状态
-//  rpc UpdateProductCategoryShowStatus (UpdateProductCategoryShowStatusReq) returns (CommonRsp) {
-//    option (google.api.http) = {
-//      put: "/productCategories/{id}/showStatus"
-//      body: "*"
-//    };
-//  }
 
   // 查询所有一级分类及子分类
   rpc GetProductCategoriesWithChildren (GetProductCategoriesWithChildrenReq) returns (GetProductCategoriesWithChildrenRsp) {

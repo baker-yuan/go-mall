@@ -9,23 +9,21 @@ import (
 
 // CreateProductCategory 添加商品分类
 func (s *AdminApiImpl) CreateProductCategory(ctx context.Context, param *pb.AddOrUpdateProductCategoryParam) (*pb.CommonRsp, error) {
-	err := s.category.CreateProductCategory(ctx, param)
-	if err != nil {
+	if err := s.category.CreateProductCategory(ctx, param); err != nil {
 		return nil, err
 	}
 
 	res := &pb.CommonRsp{}
-
 	res.Code, res.Message = retcode.GetRetCodeMsg(retcode.RetSuccess)
 	return res, nil
 }
 
 // UpdateProductCategory 修改商品分类
 func (s *AdminApiImpl) UpdateProductCategory(ctx context.Context, param *pb.AddOrUpdateProductCategoryParam) (*pb.CommonRsp, error) {
-	err := s.category.UpdateProductCategory(ctx, param)
-	if err != nil {
+	if err := s.category.UpdateProductCategory(ctx, param); err != nil {
 		return nil, err
 	}
+
 	res := &pb.CommonRsp{}
 	res.Code, res.Message = retcode.GetRetCodeMsg(retcode.RetSuccess)
 	return res, nil
@@ -66,8 +64,7 @@ func (s *AdminApiImpl) GetProductCategory(ctx context.Context, param *pb.GetProd
 
 // DeleteProductCategory 删除商品分类
 func (s *AdminApiImpl) DeleteProductCategory(ctx context.Context, param *pb.DeleteProductCategoryReq) (*pb.CommonRsp, error) {
-	err := s.category.DeleteProductCategory(ctx, param.GetId())
-	if err != nil {
+	if err := s.category.DeleteProductCategory(ctx, param.GetId()); err != nil {
 		return nil, err
 	}
 
@@ -75,34 +72,6 @@ func (s *AdminApiImpl) DeleteProductCategory(ctx context.Context, param *pb.Dele
 	res.Code, res.Message = retcode.GetRetCodeMsg(retcode.RetSuccess)
 	return res, nil
 }
-
-//// UpdateProductCategoryNavStatus 修改导航栏显示状态
-//func (s *AdminApiImpl) UpdateProductCategoryNavStatus(ctx context.Context, param *pb.UpdateProductCategoryNavStatusReq) (*pb.CommonRsp, error) {
-//	err := s.productCategory.UpdateProductCategoryNavStatus(ctx, param.GetIds(), param.GetNavStatus())
-//	if err != nil {
-//		return nil, err
-//	}
-//
-//	res := &pb.CommonRsp{
-//		Code:    0,
-//		Message: "ok",
-//	}
-//	return res, nil
-//}
-//
-//// UpdateProductCategoryShowStatus 修改显示状态
-//func (s *AdminApiImpl) UpdateProductCategoryShowStatus(ctx context.Context, param *pb.UpdateProductCategoryShowStatusReq) (*pb.CommonRsp, error) {
-//	err := s.productCategory.UpdateProductCategoryShowStatus(ctx, param.GetIds(), param.GetShowStatus())
-//	if err != nil {
-//		return nil, err
-//	}
-//
-//	res := &pb.CommonRsp{
-//		Code:    0,
-//		Message: "ok",
-//	}
-//	return res, nil
-//}
 
 // GetProductCategoriesWithChildren 查询所有一级分类及子分类
 func (s *AdminApiImpl) GetProductCategoriesWithChildren(ctx context.Context, param *pb.GetProductCategoriesWithChildrenReq) (*pb.GetProductCategoriesWithChildrenRsp, error) {
