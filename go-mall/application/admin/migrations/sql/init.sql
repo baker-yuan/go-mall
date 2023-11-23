@@ -1,3 +1,7 @@
+create database if not exists go_mall_admin default char set utf8mb4;
+use go_mall_admin;
+
+
 truncate table pms_product_category;
 insert into go_mall_admin.pms_product_category (id, parent_id, name, level, product_count, product_unit, nav_status, show_status, sort, icon, keywords, description, created_at, updated_at)
 values  (1, 0, '服装', 0, 100, '件', 1, 1, 1, '', '服装', '服装分类', 0, 0),

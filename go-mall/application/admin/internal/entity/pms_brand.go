@@ -2,7 +2,7 @@ package entity
 
 // Brand 商品品牌表
 type Brand struct {
-	ID            uint64 `gorm:"primary_key;auto_increment;comment:主键"`
+	ID            uint64 `gorm:"type:bigint;primary_key;auto_increment;comment:主键"`
 	Name          string `gorm:"type:varchar(64);not null;default:'';comment:名称"`
 	FirstLetter   string `gorm:"type:varchar(8);not null;default:'';comment:首字母"`
 	Sort          uint32 `gorm:"type:int(10);unsigned;not null;default:0;comment:排序"`
@@ -14,6 +14,7 @@ type Brand struct {
 	// 冗余字段
 	ProductCount        uint32 `gorm:"type:int(10);unsigned;not null;default:0;comment:产品数量"`
 	ProductCommentCount uint32 `gorm:"type:int(10);unsigned;not null;default:0;comment:产品评论数量"`
+	// 公共字段
 	BaseTime
 }
 

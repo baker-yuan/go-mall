@@ -3,9 +3,9 @@ package entity
 // Product 商品信息表
 // 商品信息主要包括四部分：商品的基本信息、商品的促销信息、商品的属性信息、商品的关联，商品表是整个商品的基本信息部分。
 type Product struct {
-	ID                         uint64  `gorm:"primary_key;auto_increment;comment:主键"`
-	BrandID                    uint64  `gorm:"type:bigint;unsigned;not null;default:0;comment:品牌id"`
-	ProductCategoryID          uint64  `gorm:"type:bigint;unsigned;not null;default:0;comment:品牌分类id"`
+	ID                         uint64  `gorm:"type:bigint;primary_key;auto_increment;comment:主键"`
+	BrandID                    uint64  `gorm:"type:bigint;unsigned;not null;default:0;comment:品牌id"`   // pms_brand#id
+	ProductCategoryID          uint64  `gorm:"type:bigint;unsigned;not null;default:0;comment:品牌分类id"` // pms_product_category#id
 	FeightTemplateID           uint64  `gorm:"type:bigint;unsigned;not null;default:0;comment:运费模版id"`
 	ProductAttributeCategoryID uint64  `gorm:"type:bigint;unsigned;not null;default:0;comment:品牌属性分类id"`
 	Name                       string  `gorm:"type:varchar(64);not null;default:'';comment:商品名称"`
@@ -47,6 +47,8 @@ type Product struct {
 	// 冗余字段
 	BrandName           string `gorm:"type:varchar(255);comment:品牌名称" json:"brand_name"`
 	ProductCategoryName string `gorm:"type:varchar(255);comment:商品分类名称" json:"product_category_name"`
+	// 公共字段
+	BaseTime
 }
 
 func (c Product) TableName() string {

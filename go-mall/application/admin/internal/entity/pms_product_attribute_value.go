@@ -1,11 +1,14 @@
 package entity
 
-// ProductAttributeValue 商品属性值表，如果对应的参数是规格且规格支持手动添加，那么该表用于存储手动新增的值；如果对应的商品属性是参数，那么该表用于存储参数的值。
+// ProductAttributeValue 商品属性值表
+// 如果对应的参数是规格且规格支持手动添加，那么该表用于存储手动新增的值；
+// 如果对应的商品属性是参数，那么该表用于存储参数的值。
 type ProductAttributeValue struct {
-	ID                 uint64 `gorm:"primary_key;auto_increment;comment:主键ID"`
-	ProductID          uint64 `gorm:"type:bigint;unsigned;not null;default:0;comment:商品ID"`
-	ProductAttributeID uint64 `gorm:"type:bigint;unsigned;not null;default:0;comment:商品属性ID"`
+	ID                 uint64 `gorm:"type:bigint;primary_key;auto_increment;comment:主键ID"`
+	ProductID          uint64 `gorm:"type:bigint;unsigned;not null;default:0;comment:商品ID"`   // pms_product#id
+	ProductAttributeID uint64 `gorm:"type:bigint;unsigned;not null;default:0;comment:商品属性ID"` // pms_product_attribute#id
 	Value              string `gorm:"type:varchar(64);not null;default:'';comment:手动添加规格或参数的值，参数单值，规格有多个时以逗号隔开"`
+	// 公共字段
 	BaseTime
 }
 

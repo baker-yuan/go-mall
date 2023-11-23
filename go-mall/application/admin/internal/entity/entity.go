@@ -33,15 +33,26 @@ func (bt *BaseTime) BeforeUpdate(tx *gorm.DB) (err error) {
 func Init(db *gorm.DB) error {
 	if err := db.AutoMigrate(
 		&ProductCategory{},
+
 		&ProductCategoryAttributeRelation{},
+
 		&Brand{},
+
 		&ProductAttributeCategory{},
 		&ProductAttribute{},
-		//&Product{},
-		//&SkuStock{},
-		//&ProductLadder{},
-		//&ProductFullReduction{},
-		//&MemberPrice{},
+		&ProductAttributeValue{},
+
+		&Product{},
+		&SkuStock{},
+		&ProductLadder{},
+		&ProductFullReduction{},
+		&MemberPrice{},
+
+		&Comment{},
+		&CommentReplay{},
+
+		&ProductVertifyRecord{},
+		&ProductOperateLog{},
 	); err != nil {
 		return err
 	}
