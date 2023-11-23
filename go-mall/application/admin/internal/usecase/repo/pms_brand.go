@@ -34,8 +34,12 @@ var (
 	updateBrandField []string
 )
 
-// InitBrandField 全字段修改
-func InitBrandField(db *gorm.DB) error {
+func init() {
+	registerInitField(initBrandField)
+}
+
+// initBrandField 全字段修改
+func initBrandField(db *gorm.DB) error {
 	columnTypes, err := db.Migrator().ColumnTypes(&entity.Brand{})
 	if err != nil {
 		return err

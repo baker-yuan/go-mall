@@ -9,13 +9,11 @@ import (
 
 // CreateBrand 添加商品品牌
 func (s *AdminApiImpl) CreateBrand(ctx context.Context, param *pb.AddOrUpdateBrandParam) (*pb.CommonRsp, error) {
-	err := s.brand.CreateBrand(ctx, param)
-	if err != nil {
+	if err := s.brand.CreateBrand(ctx, param); err != nil {
 		return nil, err
 	}
 
 	res := &pb.CommonRsp{}
-
 	res.Code, res.Message = retcode.GetRetCodeMsg(retcode.RetSuccess)
 	return res, nil
 }

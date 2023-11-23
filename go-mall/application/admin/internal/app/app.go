@@ -46,17 +46,8 @@ func Run(cfg *config.Config) {
 		l.Fatal(fmt.Errorf("app - Run - entity.Init: %w", err))
 	}
 
-	if err := repo.InitProductCategoryField(conn); err != nil {
-		l.Fatal(fmt.Errorf("app - Run - repo.InitProductCategoryField: %w", err))
-	}
-	if err := repo.InitBrandField(conn); err != nil {
-		l.Fatal(fmt.Errorf("app - Run - repo.InitBrandField: %w", err))
-	}
-	if err := repo.InitProductAttributeField(conn); err != nil {
-		l.Fatal(fmt.Errorf("app - Run - repo.InitProductAttributeField: %w", err))
-	}
-	if err := repo.InitProductAttributeCategoryField(conn); err != nil {
-		l.Fatal(fmt.Errorf("app - Run - repo.InitProductAttributeCategoryField: %w", err))
+	if err := repo.InitField(conn); err != nil {
+		l.Fatal(fmt.Errorf("app - Run - repo.InitField: %w", err))
 	}
 
 	util.InitBaseUrl(cfg.Oss.BaseUrl)

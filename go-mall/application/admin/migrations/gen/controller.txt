@@ -7,23 +7,21 @@ $!{define.vm}
 
 // Create$!{tableInfo.name} 添加$!{tableInfo.comment}
 func (s *AdminApiImpl) Create$!{tableInfo.name}(ctx context.Context, param *pb.AddOrUpdate$!{tableInfo.name}Param) (*pb.CommonRsp, error) {
-	err := s.$!tool.firstLowerCase($!{tableInfo.name}). Create$!{tableInfo.name}(ctx, param)
-	if err != nil {
+	if err := s.$!tool.firstLowerCase($!{tableInfo.name}). Create$!{tableInfo.name}(ctx, param); err != nil {
 		return nil, err
 	}
 
 	res := &pb.CommonRsp{}
-
 	res.Code, res.Message = retcode.GetRetCodeMsg(retcode.RetSuccess)
 	return res, nil
 }
 
 // Update$!{tableInfo.name} 修改$!{tableInfo.comment}
 func (s *AdminApiImpl) Update$!{tableInfo.name}(ctx context.Context, param *pb.AddOrUpdate$!{tableInfo.name}Param) (*pb.CommonRsp, error) {
-	err := s.$!tool.firstLowerCase($!{tableInfo.name}). Update$!{tableInfo.name}(ctx, param)
-	if err != nil {
+	if err := s.$!tool.firstLowerCase($!{tableInfo.name}). Update$!{tableInfo.name}(ctx, param); err != nil {
 		return nil, err
 	}
+
 	res := &pb.CommonRsp{}
 	res.Code, res.Message = retcode.GetRetCodeMsg(retcode.RetSuccess)
 	return res, nil
@@ -35,6 +33,7 @@ func (s *AdminApiImpl) Get$!{tableInfo.name}s(ctx context.Context, param *pb.Get
 	if err != nil {
 		return nil, err
 	}
+
     res := &pb.Get$!{tableInfo.name}sRsp{
         Data: &pb.$!{tableInfo.name}sData{
             Data:      $!tool.firstLowerCase($!{tableInfo.name})s,
@@ -64,8 +63,7 @@ func (s *AdminApiImpl) Get$!{tableInfo.name}(ctx context.Context, param *pb.Get$
 
 // Delete$!{tableInfo.name} 删除$!{tableInfo.comment}
 func (s *AdminApiImpl) Delete$!{tableInfo.name}(ctx context.Context, param *pb.Delete$!{tableInfo.name}Req) (*pb.CommonRsp, error) {
-	err := s.$!tool.firstLowerCase($!{tableInfo.name}). Delete$!{tableInfo.name}(ctx, param.GetId())
-	if err != nil {
+	if err := s.$!tool.firstLowerCase($!{tableInfo.name}). Delete$!{tableInfo.name}(ctx, param.GetId()); err != nil {
 		return nil, err
 	}
 

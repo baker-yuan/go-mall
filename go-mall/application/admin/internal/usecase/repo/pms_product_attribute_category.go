@@ -32,8 +32,12 @@ var (
 	updateProductAttributeCategoryField []string
 )
 
-// InitProductAttributeCategoryField 全字段修改
-func InitProductAttributeCategoryField(db *gorm.DB) error {
+func init() {
+	registerInitField(initProductAttributeCategoryField)
+}
+
+// initProductAttributeCategoryField 全字段修改
+func initProductAttributeCategoryField(db *gorm.DB) error {
 	columnTypes, err := db.Migrator().ColumnTypes(&entity.ProductAttributeCategory{})
 	if err != nil {
 		return err

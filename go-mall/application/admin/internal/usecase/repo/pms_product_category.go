@@ -34,7 +34,11 @@ var (
 	updateProductCategoryField []string
 )
 
-func InitProductCategoryField(db *gorm.DB) error {
+func init() {
+	registerInitField(initProductCategoryField)
+}
+
+func initProductCategoryField(db *gorm.DB) error {
 	columnTypes, err := db.Migrator().ColumnTypes(&entity.ProductCategory{})
 	if err != nil {
 		return err
