@@ -9,6 +9,8 @@ type FlashPromotionLog struct {
 	ProductName   string `gorm:"column:product_name;type:varchar(100);not null;default:'';comment:商品名称"`
 	SubscribeTime uint32 `gorm:"column:subscribe_time;type:int(10);unsigned;not null;default:0;comment:会员订阅时间"`
 	SendTime      uint32 `gorm:"column:send_time;type:int(10);unsigned;not null;default:0;comment:发送时间"`
+	// 公共字段
+	BaseTime
 }
 
 func (s FlashPromotionLog) TableName() string {

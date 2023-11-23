@@ -8,6 +8,8 @@ type FlashPromotion struct {
 	EndDate    uint32 `gorm:"column:end_date;type:int(10);unsigned;not null;default:0;comment:结束日期"`
 	Status     uint8  `gorm:"column:status;type:tinyint(4);unsigned;not null;default:0;comment:上下线状态"`
 	CreateTime uint32 `gorm:"column:create_time;type:int(10);unsigned;not null;default:0;comment:创建时间"`
+	// 公共字段
+	BaseTime
 }
 
 func (s FlashPromotion) TableName() string {

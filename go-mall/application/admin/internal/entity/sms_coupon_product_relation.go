@@ -8,6 +8,8 @@ type SmsCouponProductRelation struct {
 	ProductID   uint64 `gorm:"column:product_id;type:bigint;unsigned;not null;default:0;comment:商品id"`
 	ProductName string `gorm:"column:product_name;type:varchar(500);not null;default:'';comment:商品名称"`
 	ProductSN   string `gorm:"column:product_sn;type:varchar(200);not null;default:'';comment:商品条码"`
+	// 公共字段
+	BaseTime
 }
 
 func (r SmsCouponProductRelation) TableName() string {

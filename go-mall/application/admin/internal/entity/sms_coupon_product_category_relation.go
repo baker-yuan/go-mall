@@ -8,6 +8,8 @@ type CouponProductCategoryRelation struct {
 	ProductCategoryID   uint64 `gorm:"column:product_category_id;type:bigint;unsigned;not null;default:0;comment:商品分类id"`
 	ProductCategoryName string `gorm:"column:product_category_name;type:varchar(200);not null;default:'';comment:商品分类名称"`
 	ParentCategoryName  string `gorm:"column:parent_category_name;type:varchar(200);not null;default:'';comment:父分类名称"`
+	// 公共字段
+	BaseTime
 }
 
 func (r CouponProductCategoryRelation) TableName() string {

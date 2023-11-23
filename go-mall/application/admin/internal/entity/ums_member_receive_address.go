@@ -13,6 +13,8 @@ type MemberReceiveAddress struct {
 	City          string `gorm:"column:city;type:varchar(100);not null;default:'';comment:城市"`
 	Region        string `gorm:"column:region;type:varchar(100);not null;default:'';comment:区"`
 	DetailAddress string `gorm:"column:detail_address;type:varchar(128);not null;default:'';comment:详细地址(街道)"`
+	// 公共字段
+	BaseTime
 }
 
 func (a MemberReceiveAddress) TableName() string {

@@ -14,6 +14,8 @@ type CouponHistory struct {
 	UseStatus      uint8  `gorm:"column:use_status;type:tinyint(4);unsigned;not null;default:0;comment:使用状态：0->未使用；1->已使用；2->已过期"`
 	UseTime        uint32 `gorm:"column:use_time;type:int(10);unsigned;not null;default:0;comment:使用时间"`
 	OrderSN        string `gorm:"column:order_sn;type:varchar(100);not null;default:'';comment:订单号码"`
+	// 公共字段
+	BaseTime
 }
 
 func (h CouponHistory) TableName() string {

@@ -21,6 +21,8 @@ type Coupon struct {
 	EnableTime   uint32  `gorm:"column:enable_time;type:int(10);unsigned;not null;default:0;comment:可以领取的日期"`
 	Code         string  `gorm:"column:code;type:varchar(64);not null;default:'';comment:优惠码"`
 	MemberLevel  uint8   `gorm:"column:member_level;type:tinyint(4);unsigned;not null;default:0;comment:可领取的会员类型：0->无限制"`
+	// 公共字段
+	BaseTime
 }
 
 func (c Coupon) TableName() string {

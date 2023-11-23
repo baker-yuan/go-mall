@@ -22,6 +22,8 @@ type Member struct {
 	Growth                uint32 `gorm:"column:growth;type:int(10);unsigned;not null;default:0;comment:成长值"`
 	LuckeyCount           uint32 `gorm:"column:luckey_count;type:int(10);unsigned;not null;default:0;comment:剩余抽奖次数"`
 	HistoryIntegration    uint32 `gorm:"column:history_integration;type:int(10);unsigned;not null;default:0;comment:历史积分数量"`
+	// 公共字段
+	BaseTime
 }
 
 func (m Member) TableName() string {

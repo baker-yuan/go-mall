@@ -24,6 +24,8 @@ type OrderItem struct {
 	GiftIntegration   uint32  `gorm:"column:gift_integration;type:int(10);unsigned;not null;default:0;comment:商品赠送积分"`
 	GiftGrowth        uint32  `gorm:"column:gift_growth;type:int(10);unsigned;not null;default:0;comment:商品赠送成长值"`
 	ProductAttr       string  `gorm:"column:product_attr;type:varchar(500);not null;default:'';comment:商品销售属性:[{\"key\":\"颜色\",\"value\":\"颜色\"},{\"key\":\"容量\",\"value\":\"4G\"}]"`
+	// 公共字段
+	BaseTime
 }
 
 func (o OrderItem) TableName() string {

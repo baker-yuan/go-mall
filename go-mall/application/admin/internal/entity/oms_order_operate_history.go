@@ -9,6 +9,8 @@ type OrderOperateHistory struct {
 	CreateTime  uint32 `gorm:"column:create_time;type:int(10);unsigned;not null;default:0;comment:操作时间"`
 	OrderStatus uint8  `gorm:"column:order_status;type:tinyint(4);unsigned;not null;default:0;comment:订单状态：0->待付款；1->待发货；2->已发货；3->已完成；4->已关闭；5->无效订单"`
 	Note        string `gorm:"column:note;type:varchar(500);not null;default:'';comment:备注"`
+	// 公共字段
+	BaseTime
 }
 
 func (o OrderOperateHistory) TableName() string {

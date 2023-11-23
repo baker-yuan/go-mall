@@ -8,6 +8,8 @@ type HomeNewProduct struct {
 	ProductName     string `gorm:"column:product_name;type:varchar(64);not null;default:'';comment:商品名称"`
 	RecommendStatus uint8  `gorm:"column:recommend_status;type:tinyint(4);unsigned;not null;default:0;comment:推荐状态：0->不推荐;1->推荐"`
 	Sort            uint8  `gorm:"column:sort;type:tinyint(4);unsigned;not null;default:0;comment:排序"`
+	// 公共字段
+	BaseTime
 }
 
 func (p HomeNewProduct) TableName() string {

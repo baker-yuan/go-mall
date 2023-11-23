@@ -15,6 +15,8 @@ type HomeAdvertise struct {
 	URL        string `gorm:"column:url;type:varchar(500);not null;default:'';comment:链接地址"`
 	Note       string `gorm:"column:note;type:varchar(500);not null;default:'';comment:备注"`
 	Sort       uint32 `gorm:"column:sort;type:int(10);unsigned;not null;default:0;comment:排序"`
+	// 公共字段
+	BaseTime
 }
 
 func (a HomeAdvertise) TableName() string {

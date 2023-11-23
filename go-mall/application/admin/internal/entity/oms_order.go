@@ -47,6 +47,8 @@ type Order struct {
 	ReceiveTime           uint32  `gorm:"column:receive_time;type:int(10);unsigned;not null;default:0;comment:确认收货时间"`
 	CommentTime           uint32  `gorm:"column:comment_time;type:int(10);unsigned;not null;default:0;comment:评价时间"`
 	ModifyTime            uint32  `gorm:"column:modify_time;type:int(10);unsigned;not null;default:0;comment:修改时间"`
+	// 公共字段
+	BaseTime
 }
 
 func (o Order) TableName() string {

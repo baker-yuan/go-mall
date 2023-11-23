@@ -9,6 +9,8 @@ type OrderSetting struct {
 	ConfirmOvertime     uint32 `gorm:"column:confirm_overtime;type:int(10);unsigned;not null;default:0;comment:发货后自动确认收货时间（天）"`
 	FinishOvertime      uint32 `gorm:"column:finish_overtime;type:int(10);unsigned;not null;default:0;comment:自动完成交易时间，不能申请售后（天）"`
 	CommentOvertime     uint32 `gorm:"column:comment_overtime;type:int(10);unsigned;not null;default:0;comment:订单完成后自动好评时间（天）"`
+	// 公共字段
+	BaseTime
 }
 
 func (o OrderSetting) TableName() string {

@@ -10,6 +10,8 @@ type FlashPromotionProductRelation struct {
 	FlashPromotionCount     uint32  `gorm:"column:flash_promotion_count;type:int(10);unsigned;not null;default:0;comment:限时购数量"`
 	FlashPromotionLimit     uint32  `gorm:"column:flash_promotion_limit;type:int(10);unsigned;not null;default:0;comment:每人限购数量"`
 	Sort                    uint32  `gorm:"column:sort;type:int(10);unsigned;not null;default:0;comment:排序"`
+	// 公共字段
+	BaseTime
 }
 
 func (s FlashPromotionProductRelation) TableName() string {
