@@ -10,6 +10,7 @@ import "model/pms_product_category.proto";
 import "model/pms_brand.proto";
 import "model/pms_product_attribute_category.proto";
 import "model/pms_product_attribute.proto";
+import "model/pms_product.proto";
 
 option go_package = ".;mall";
 
@@ -281,6 +282,56 @@ message DeleteProductAttributeReq {
 
 // END ======================================= 商品属性参数 ======================================= END
 
+
+
+// START ======================================= 商品管理 ======================================= START
+
+// 添加或更新商品参数
+message AddOrUpdateProductParam {
+  uint64 id = 1;
+}
+
+// 分页查询商品
+message GetProductsParam {
+
+  uint32 page_num = 1 [(validate.rules).uint32.gte = 0];   // 页面大小
+  uint32 page_size = 2 [(validate.rules).uint32.gte = 0];  // 页码
+}
+
+// 分页查询商品
+message ProductsData {
+  repeated model.Product data = 1;    // 商品
+  uint32 page_total = 2;                         // 数据总数
+  uint32 page_size = 3;                          // 页码
+  uint32 page_num = 4;                           // 页面大小
+}
+message GetProductsRsp {
+  uint32 code = 1;          // 状态码
+  string message = 2;       // 提示信息
+
+  ProductsData data = 3; //
+}
+
+// 根据id获取商品
+message GetProductReq {
+  uint64 id = 1;
+}
+
+// 根据id获取商品
+message GetProductRsp {
+  uint32 code = 1;          // 状态码
+  string message = 2;       // 提示信息
+
+  model.Product data = 3;    // 数据
+}
+
+// 删除商品
+message DeleteProductReq {
+  uint64 id = 1;
+}
+
+// END ======================================= 商品管理 ======================================= END
+
 // 商品分类管理
 service AdminApi {
 
@@ -454,6 +505,48 @@ service AdminApi {
     };
   }
   // END ======================================= 商品属性参数 ======================================= END
+
+
+
+  // START ======================================= 商品管理 ======================================= START
+  // 添加商品
+  rpc CreateProduct (AddOrUpdateProductParam) returns (CommonRsp) {
+    option (google.api.http) = {
+      post: "/products"
+      body: "*"
+    };
+  }
+
+  // 修改商品
+  rpc UpdateProduct (AddOrUpdateProductParam) returns (CommonRsp) {
+    option (google.api.http) = {
+      put: "/products/{id}"
+      body: "*"
+    };
+  }
+
+  // 分页查询商品
+  rpc GetProducts (GetProductsParam) returns (GetProductsRsp) {
+    option (google.api.http) = {
+      get: "/products"
+    };
+  }
+
+  // 根据id获取商品
+  rpc GetProduct (GetProductReq) returns (GetProductRsp) {
+    option (google.api.http) = {
+      get: "/products/{id}"
+    };
+  }
+
+  // 删除商品
+  rpc DeleteProduct (DeleteProductReq) returns (CommonRsp) {
+    option (google.api.http) = {
+      delete: "/products/{id}"
+    };
+  }
+  // END ======================================= 商品管理 ======================================= END
+
 
 }
 

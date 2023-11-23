@@ -135,3 +135,16 @@ export namespace ProductAttribute {
   }
 
 }
+
+// 商品管理模块
+export namespace Product {
+  // 商品模型
+  export interface ProductModel {
+    id: number
+  }
+
+  // 分页查询商品
+  export interface ReqProductListParams extends ReqPage {
+  }
+
+}

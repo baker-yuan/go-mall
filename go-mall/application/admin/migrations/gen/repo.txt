@@ -19,6 +19,10 @@ func New$!{tableInfo.name}Repo(conn *gorm.DB) *$!{tableInfo.name}Repo {
 	}
 }
 
+func init() {
+	registerInitField(init$!{tableInfo.name}Field)
+}
+
 var (
 	// 全字段修改$!{tableInfo.name}那些字段不修改
 	notUpdate$!{tableInfo.name}Field = []string{
@@ -28,7 +32,7 @@ var (
 )
 
 // Init$!{tableInfo.name}Field 全字段修改
-func Init$!{tableInfo.name}Field(db *gorm.DB) error {
+func init$!{tableInfo.name}Field(db *gorm.DB) error {
 	columnTypes, err := db.Migrator().ColumnTypes(&entity.$!{tableInfo.name}{})
 	if err != nil {
 		return err

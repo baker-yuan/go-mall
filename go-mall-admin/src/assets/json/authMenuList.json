@@ -31,6 +31,20 @@
       },
       "children": [
         {
+          "path": "/pms/product",
+          "name": "product",
+          "component": "/pms/product/index",
+          "meta": {
+            "icon": "Present",
+            "title": "商品列表",
+            "isLink": "",
+            "isHide": false,
+            "isFull": false,
+            "isAffix": false,
+            "isKeepAlive": false
+          }
+        },
+        {
           "path": "/pms/category",
           "name": "category",
           "component": "/pms/category/index",

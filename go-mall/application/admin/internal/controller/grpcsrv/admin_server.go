@@ -14,18 +14,21 @@ type AdminApiImpl struct {
 	brand                    usecase.IBrandUseCase
 	productAttributeCategory usecase.IProductAttributeCategoryUseCase
 	productAttribute         usecase.IProductAttributeUseCase
+	product                  usecase.IProductUseCase
 }
 
 func New(category usecase.IProductCategoryUseCase,
 	brand usecase.IBrandUseCase,
 	productAttributeCategory usecase.IProductAttributeCategoryUseCase,
 	productAttribute usecase.IProductAttributeUseCase,
+	product usecase.IProductUseCase,
 ) pb.AdminApiServer {
 	return &AdminApiImpl{
 		category:                 category,
 		brand:                    brand,
 		productAttributeCategory: productAttributeCategory,
 		productAttribute:         productAttribute,
+		product:                  product,
 	}
 
 }

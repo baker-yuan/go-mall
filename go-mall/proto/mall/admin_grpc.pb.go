@@ -40,6 +40,11 @@ const (
 	AdminApi_GetProductAttributes_FullMethodName             = "/admin.AdminApi/GetProductAttributes"
 	AdminApi_GetProductAttribute_FullMethodName              = "/admin.AdminApi/GetProductAttribute"
 	AdminApi_DeleteProductAttribute_FullMethodName           = "/admin.AdminApi/DeleteProductAttribute"
+	AdminApi_CreateProduct_FullMethodName                    = "/admin.AdminApi/CreateProduct"
+	AdminApi_UpdateProduct_FullMethodName                    = "/admin.AdminApi/UpdateProduct"
+	AdminApi_GetProducts_FullMethodName                      = "/admin.AdminApi/GetProducts"
+	AdminApi_GetProduct_FullMethodName                       = "/admin.AdminApi/GetProduct"
+	AdminApi_DeleteProduct_FullMethodName                    = "/admin.AdminApi/DeleteProduct"
 )
 
 // AdminApiClient is the client API for AdminApi service.
@@ -88,6 +93,17 @@ type AdminApiClient interface {
 	GetProductAttribute(ctx context.Context, in *GetProductAttributeReq, opts ...grpc.CallOption) (*GetProductAttributeRsp, error)
 	// 删除商品属性参数
 	DeleteProductAttribute(ctx context.Context, in *DeleteProductAttributeReq, opts ...grpc.CallOption) (*CommonRsp, error)
+	// START ======================================= 商品管理 ======================================= START
+	// 添加商品
+	CreateProduct(ctx context.Context, in *AddOrUpdateProductParam, opts ...grpc.CallOption) (*CommonRsp, error)
+	// 修改商品
+	UpdateProduct(ctx context.Context, in *AddOrUpdateProductParam, opts ...grpc.CallOption) (*CommonRsp, error)
+	// 分页查询商品
+	GetProducts(ctx context.Context, in *GetProductsParam, opts ...grpc.CallOption) (*GetProductsRsp, error)
+	// 根据id获取商品
+	GetProduct(ctx context.Context, in *GetProductReq, opts ...grpc.CallOption) (*GetProductRsp, error)
+	// 删除商品
+	DeleteProduct(ctx context.Context, in *DeleteProductReq, opts ...grpc.CallOption) (*CommonRsp, error)
 }
 
 type adminApiClient struct {
@@ -287,6 +303,51 @@ func (c *adminApiClient) DeleteProductAttribute(ctx context.Context, in *DeleteP
 	return out, nil
 }
 
+func (c *adminApiClient) CreateProduct(ctx context.Context, in *AddOrUpdateProductParam, opts ...grpc.CallOption) (*CommonRsp, error) {
+	out := new(CommonRsp)
+	err := c.cc.Invoke(ctx, AdminApi_CreateProduct_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *adminApiClient) UpdateProduct(ctx context.Context, in *AddOrUpdateProductParam, opts ...grpc.CallOption) (*CommonRsp, error) {
+	out := new(CommonRsp)
+	err := c.cc.Invoke(ctx, AdminApi_UpdateProduct_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *adminApiClient) GetProducts(ctx context.Context, in *GetProductsParam, opts ...grpc.CallOption) (*GetProductsRsp, error) {
+	out := new(GetProductsRsp)
+	err := c.cc.Invoke(ctx, AdminApi_GetProducts_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *adminApiClient) GetProduct(ctx context.Context, in *GetProductReq, opts ...grpc.CallOption) (*GetProductRsp, error) {
+	out := new(GetProductRsp)
+	err := c.cc.Invoke(ctx, AdminApi_GetProduct_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *adminApiClient) DeleteProduct(ctx context.Context, in *DeleteProductReq, opts ...grpc.CallOption) (*CommonRsp, error) {
+	out := new(CommonRsp)
+	err := c.cc.Invoke(ctx, AdminApi_DeleteProduct_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // AdminApiServer is the server API for AdminApi service.
 // All implementations must embed UnimplementedAdminApiServer
 // for forward compatibility
@@ -333,6 +394,17 @@ type AdminApiServer interface {
 	GetProductAttribute(context.Context, *GetProductAttributeReq) (*GetProductAttributeRsp, error)
 	// 删除商品属性参数
 	DeleteProductAttribute(context.Context, *DeleteProductAttributeReq) (*CommonRsp, error)
+	// START ======================================= 商品管理 ======================================= START
+	// 添加商品
+	CreateProduct(context.Context, *AddOrUpdateProductParam) (*CommonRsp, error)
+	// 修改商品
+	UpdateProduct(context.Context, *AddOrUpdateProductParam) (*CommonRsp, error)
+	// 分页查询商品
+	GetProducts(context.Context, *GetProductsParam) (*GetProductsRsp, error)
+	// 根据id获取商品
+	GetProduct(context.Context, *GetProductReq) (*GetProductRsp, error)
+	// 删除商品
+	DeleteProduct(context.Context, *DeleteProductReq) (*CommonRsp, error)
 	mustEmbedUnimplementedAdminApiServer()
 }
 
@@ -402,6 +474,21 @@ func (UnimplementedAdminApiServer) GetProductAttribute(context.Context, *GetProd
 }
 func (UnimplementedAdminApiServer) DeleteProductAttribute(context.Context, *DeleteProductAttributeReq) (*CommonRsp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteProductAttribute not implemented")
+}
+func (UnimplementedAdminApiServer) CreateProduct(context.Context, *AddOrUpdateProductParam) (*CommonRsp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateProduct not implemented")
+}
+func (UnimplementedAdminApiServer) UpdateProduct(context.Context, *AddOrUpdateProductParam) (*CommonRsp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateProduct not implemented")
+}
+func (UnimplementedAdminApiServer) GetProducts(context.Context, *GetProductsParam) (*GetProductsRsp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetProducts not implemented")
+}
+func (UnimplementedAdminApiServer) GetProduct(context.Context, *GetProductReq) (*GetProductRsp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetProduct not implemented")
+}
+func (UnimplementedAdminApiServer) DeleteProduct(context.Context, *DeleteProductReq) (*CommonRsp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteProduct not implemented")
 }
 func (UnimplementedAdminApiServer) mustEmbedUnimplementedAdminApiServer() {}
 
@@ -794,6 +881,96 @@ func _AdminApi_DeleteProductAttribute_Handler(srv interface{}, ctx context.Conte
 	return interceptor(ctx, in, info, handler)
 }
 
+func _AdminApi_CreateProduct_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AddOrUpdateProductParam)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AdminApiServer).CreateProduct(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AdminApi_CreateProduct_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AdminApiServer).CreateProduct(ctx, req.(*AddOrUpdateProductParam))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AdminApi_UpdateProduct_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AddOrUpdateProductParam)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AdminApiServer).UpdateProduct(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AdminApi_UpdateProduct_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AdminApiServer).UpdateProduct(ctx, req.(*AddOrUpdateProductParam))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AdminApi_GetProducts_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetProductsParam)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AdminApiServer).GetProducts(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AdminApi_GetProducts_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AdminApiServer).GetProducts(ctx, req.(*GetProductsParam))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AdminApi_GetProduct_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetProductReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AdminApiServer).GetProduct(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AdminApi_GetProduct_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AdminApiServer).GetProduct(ctx, req.(*GetProductReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AdminApi_DeleteProduct_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteProductReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AdminApiServer).DeleteProduct(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AdminApi_DeleteProduct_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AdminApiServer).DeleteProduct(ctx, req.(*DeleteProductReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // AdminApi_ServiceDesc is the grpc.ServiceDesc for AdminApi service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -884,6 +1061,26 @@ var AdminApi_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DeleteProductAttribute",
 			Handler:    _AdminApi_DeleteProductAttribute_Handler,
+		},
+		{
+			MethodName: "CreateProduct",
+			Handler:    _AdminApi_CreateProduct_Handler,
+		},
+		{
+			MethodName: "UpdateProduct",
+			Handler:    _AdminApi_UpdateProduct_Handler,
+		},
+		{
+			MethodName: "GetProducts",
+			Handler:    _AdminApi_GetProducts_Handler,
+		},
+		{
+			MethodName: "GetProduct",
+			Handler:    _AdminApi_GetProduct_Handler,
+		},
+		{
+			MethodName: "DeleteProduct",
+			Handler:    _AdminApi_DeleteProduct_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

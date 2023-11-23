@@ -71,8 +71,18 @@ func Run(cfg *config.Config) {
 		repo.NewProductAttributeRepo(conn),
 	)
 
+	productUseCase := usecase.NewProduct(
+		repo.NewProductRepo(conn),
+	)
+
 	// grpc服务
-	impl := grpcsrv.New(categoryUseCase, brandUseCase, productAttributeCategoryUseCase, productAttributeUseCase)
+	impl := grpcsrv.New(
+		categoryUseCase,
+		brandUseCase,
+		productAttributeCategoryUseCase,
+		productAttributeUseCase,
+		productUseCase,
+	)
 	if err := configGrpc(impl, cfg.HTTP.IP, cfg.HTTP.Port); err != nil {
 		l.Fatal(fmt.Errorf("app - Run - configGrpc: %w", err))
 	}

@@ -92,10 +92,31 @@ type (
 type (
 	// IProductUseCase 业务逻辑
 	IProductUseCase interface {
+		// CreateProduct 添加商品
+		CreateProduct(ctx context.Context, param *pb.AddOrUpdateProductParam) error
+		// UpdateProduct 修改商品
+		UpdateProduct(ctx context.Context, param *pb.AddOrUpdateProductParam) error
+		// GetProducts 分页查询商品
+		GetProducts(ctx context.Context, param *pb.GetProductsParam) ([]*pb.Product, uint32, error)
+		// GetProduct 根据id获取商品
+		GetProduct(ctx context.Context, id uint64) (*pb.Product, error)
+		// DeleteProduct 删除商品
+		DeleteProduct(ctx context.Context, id uint64) error
 	}
 
 	// IProductRepo 数据存储操作
 	IProductRepo interface {
+		// Create 创建商品
+		Create(ctx context.Context, product *entity.Product) error
+		// DeleteByID 根据主键ID删除商品
+		DeleteByID(ctx context.Context, id uint64) error
+		// Update 修改商品
+		Update(ctx context.Context, product *entity.Product) error
+		// GetByID 根据主键ID查询商品
+		GetByID(ctx context.Context, id uint64) (*entity.Product, error)
+		// GetByDBOption 根据动态条件查询商品
+		GetByDBOption(ctx context.Context, pageNum uint32, pageSize uint32, opts ...db.DBOption) ([]*entity.Product, uint32, error)
+
 		// UpdateProductCategoryNameByProductCategoryIDWithTX 新商品中的名称
 		UpdateProductCategoryNameByProductCategoryIDWithTX(ctx context.Context, productCategoryID uint64, productCategoryName string) error
 	}
