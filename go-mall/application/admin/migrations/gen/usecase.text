@@ -46,17 +46,23 @@ func (c $!{tableInfo.name}UseCase) Create$!{tableInfo.name}(ctx context.Context,
 
 // Update$!{tableInfo.name} 修改$!{tableInfo.comment}
 func (c $!{tableInfo.name}UseCase) Update$!{tableInfo.name}(ctx context.Context, param *pb.AddOrUpdate$!{tableInfo.name}Param) error {
-	old$!{tableInfo.name}, err := c.$!tool.firstLowerCase($!{tableInfo.name})Repo .GetByID(ctx, param.GetId())
-	if err != nil {
+	var (
+		old$!{tableInfo.name} *entity.$!{tableInfo.name}
+		new$!{tableInfo.name} *entity.$!{tableInfo.name}
+		err         error
+	)
+
+    // 老数据
+	if old$!{tableInfo.name}, err = c.$!tool.firstLowerCase($!{tableInfo.name})Repo .GetByID(ctx, param.GetId()); err != nil {
 		return err
 	}
 
-	// 数据转换
-	$!tool.firstLowerCase($!{tableInfo.name}) := assembler.AddOrUpdate$!{tableInfo.name}ParamToEntity(param)
-	$!tool.firstLowerCase($!{tableInfo.name}) .ID = param.Id
-	$!tool.firstLowerCase($!{tableInfo.name}) .CreatedAt = old$!{tableInfo.name}.CreatedAt
+	// 新数据
+	new$!{tableInfo.name} = assembler.AddOrUpdate$!{tableInfo.name}ParamToEntity(param)
+	new$!{tableInfo.name} .ID = param.Id
+	new$!{tableInfo.name} .CreatedAt = old$!{tableInfo.name}.CreatedAt
 
-	// 更新分类
+	// 更新$!{tableInfo.comment}
 	return c.$!tool.firstLowerCase($!{tableInfo.name})Repo .Update(ctx, $!tool.firstLowerCase($!{tableInfo.name}))
 }
 

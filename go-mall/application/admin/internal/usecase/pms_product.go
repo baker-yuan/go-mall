@@ -10,13 +10,19 @@ import (
 
 // ProductUseCase 商品管理Service实现类
 type ProductUseCase struct {
-	productRepo IProductRepo // 操作商品
+	productRepo         IProductRepo         // 操作商品
+	brandRepo           IBrandRepo           // 操作商品品牌
+	productCategoryRepo IProductCategoryRepo // 操作商品分类
 }
 
 // NewProduct 创建商品管理Service实现类
-func NewProduct(productRepo IProductRepo) *ProductUseCase {
+func NewProduct(productRepo IProductRepo,
+	brandRepo IBrandRepo,
+	productCategoryRepo IProductCategoryRepo) *ProductUseCase {
 	return &ProductUseCase{
-		productRepo: productRepo,
+		productRepo:         productRepo,
+		brandRepo:           brandRepo,
+		productCategoryRepo: productCategoryRepo,
 	}
 }
 
@@ -45,7 +51,7 @@ func (c ProductUseCase) UpdateProduct(ctx context.Context, param *pb.AddOrUpdate
 	product.ID = param.Id
 	product.CreatedAt = oldProduct.CreatedAt
 
-	// 更新分类
+	// 更新商品
 	return c.productRepo.Update(ctx, product)
 }
 
@@ -57,9 +63,20 @@ func (c ProductUseCase) GetProducts(ctx context.Context, param *pb.GetProductsPa
 		return nil, 0, err
 	}
 
+	categories, err := c.productCategoryRepo.GetByIDs(ctx, products.CategoryIDs())
+	if err != nil {
+		return nil, 0, err
+	}
+
+	brands, err := c.brandRepo.GetByIDs(ctx, products.BrandIDs())
+	if err != nil {
+		return nil, 0, err
+	}
+
 	models := make([]*pb.Product, 0)
 	for _, product := range products {
-		models = append(models, assembler.ProductEntityToModel(product))
+		models = append(models, assembler.ProductEntityToModel(product, categories.NameMap(), brands.NameMap()))
+
 	}
 	return models, pageTotal, nil
 }
@@ -70,7 +87,18 @@ func (c ProductUseCase) GetProduct(ctx context.Context, id uint64) (*pb.Product,
 	if err != nil {
 		return nil, err
 	}
-	return assembler.ProductEntityToModel(product), nil
+
+	categories, err := c.productCategoryRepo.GetByIDs(ctx, []uint64{product.ProductCategoryID})
+	if err != nil {
+		return nil, err
+	}
+
+	brands, err := c.brandRepo.GetByIDs(ctx, []uint64{product.BrandID})
+	if err != nil {
+		return nil, err
+	}
+
+	return assembler.ProductEntityToModel(product, categories.NameMap(), brands.NameMap()), nil
 }
 
 // DeleteProduct 删除商品

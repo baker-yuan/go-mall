@@ -9,23 +9,21 @@ import (
 
 // CreateProductAttribute 添加商品属性参数表
 func (s *AdminApiImpl) CreateProductAttribute(ctx context.Context, param *pb.AddOrUpdateProductAttributeParam) (*pb.CommonRsp, error) {
-	err := s.productAttribute.CreateProductAttribute(ctx, param)
-	if err != nil {
+	if err := s.productAttribute.CreateProductAttribute(ctx, param); err != nil {
 		return nil, err
 	}
 
 	res := &pb.CommonRsp{}
-
 	res.Code, res.Message = retcode.GetRetCodeMsg(retcode.RetSuccess)
 	return res, nil
 }
 
 // UpdateProductAttribute 修改商品属性参数表
 func (s *AdminApiImpl) UpdateProductAttribute(ctx context.Context, param *pb.AddOrUpdateProductAttributeParam) (*pb.CommonRsp, error) {
-	err := s.productAttribute.UpdateProductAttribute(ctx, param)
-	if err != nil {
+	if err := s.productAttribute.UpdateProductAttribute(ctx, param); err != nil {
 		return nil, err
 	}
+
 	res := &pb.CommonRsp{}
 	res.Code, res.Message = retcode.GetRetCodeMsg(retcode.RetSuccess)
 	return res, nil
@@ -66,8 +64,7 @@ func (s *AdminApiImpl) GetProductAttribute(ctx context.Context, param *pb.GetPro
 
 // DeleteProductAttribute 删除商品属性参数表
 func (s *AdminApiImpl) DeleteProductAttribute(ctx context.Context, param *pb.DeleteProductAttributeReq) (*pb.CommonRsp, error) {
-	err := s.productAttribute.DeleteProductAttribute(ctx, param.GetId())
-	if err != nil {
+	if err := s.productAttribute.DeleteProductAttribute(ctx, param.GetId()); err != nil {
 		return nil, err
 	}
 

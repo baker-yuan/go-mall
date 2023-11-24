@@ -77,7 +77,7 @@ func (r ProductRepo) GetByID(ctx context.Context, id uint64) (*entity.Product, e
 }
 
 // GetByDBOption 根据动态条件查询商品
-func (r ProductRepo) GetByDBOption(ctx context.Context, pageNum uint32, pageSize uint32, opts ...db.DBOption) ([]*entity.Product, uint32, error) {
+func (r ProductRepo) GetByDBOption(ctx context.Context, pageNum uint32, pageSize uint32, opts ...db.DBOption) (entity.Products, uint32, error) {
 	var (
 		res       = make([]*entity.Product, 0)
 		pageTotal = int64(0)
@@ -96,15 +96,4 @@ func (r ProductRepo) GetByDBOption(ctx context.Context, pageNum uint32, pageSize
 		return nil, 0, err
 	}
 	return res, uint32(pageTotal), nil
-}
-
-func (r ProductRepo) UpdateProductCategoryNameByProductCategoryIDWithTX(ctx context.Context, productCategoryID uint64, productCategoryName string) error {
-	db, err := db.GetDbToCtx(ctx)
-	if err != nil {
-		return err
-	}
-
-	return db.WithContext(ctx).Model(&entity.Product{}).
-		Where("product_category_id = ?", productCategoryID).
-		Update("product_category_name", productCategoryName).Error
 }

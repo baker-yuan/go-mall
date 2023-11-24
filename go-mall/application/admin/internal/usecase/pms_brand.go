@@ -21,7 +21,7 @@ func NewBrandUseCase(brandRepo IBrandRepo) *BrandUseCase {
 	}
 }
 
-// CreateBrand 添加商品品牌表
+// CreateBrand 添加商品品牌
 func (c BrandUseCase) CreateBrand(ctx context.Context, param *pb.AddOrUpdateBrandParam) error {
 	// 数据转换
 	brand := assembler.AddOrUpdateBrandParamToEntity(param)
@@ -34,7 +34,7 @@ func (c BrandUseCase) CreateBrand(ctx context.Context, param *pb.AddOrUpdateBran
 	return nil
 }
 
-// UpdateBrand 修改商品品牌表
+// UpdateBrand 修改商品品牌
 func (c BrandUseCase) UpdateBrand(ctx context.Context, param *pb.AddOrUpdateBrandParam) error {
 	oldBrand, err := c.brandRepo.GetByID(ctx, param.GetId())
 	if err != nil {
@@ -46,11 +46,11 @@ func (c BrandUseCase) UpdateBrand(ctx context.Context, param *pb.AddOrUpdateBran
 	brand.ID = param.Id
 	brand.CreatedAt = oldBrand.CreatedAt
 
-	// 更新分类
+	// 更新商品品牌
 	return c.brandRepo.Update(ctx, brand)
 }
 
-// GetBrands 分页查询商品品牌表
+// GetBrands 分页查询商品品牌
 func (c BrandUseCase) GetBrands(ctx context.Context, param *pb.GetBrandsParam) ([]*pb.Brand, uint32, error) {
 	opts := make([]db.DBOption, 0)
 	if len(param.GetName()) != 0 {
@@ -74,7 +74,7 @@ func (c BrandUseCase) GetBrands(ctx context.Context, param *pb.GetBrandsParam) (
 	return models, pageTotal, nil
 }
 
-// GetBrand 根据id获取商品品牌表
+// GetBrand 根据id获取商品品牌
 func (c BrandUseCase) GetBrand(ctx context.Context, id uint64) (*pb.Brand, error) {
 	brand, err := c.brandRepo.GetByID(ctx, id)
 	if err != nil {

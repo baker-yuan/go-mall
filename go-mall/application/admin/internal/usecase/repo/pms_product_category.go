@@ -24,6 +24,10 @@ func NewProductCategoryRepo(conn *gorm.DB) *ProductCategoryRepo {
 	}
 }
 
+func init() {
+	registerInitField(initProductCategoryField)
+}
+
 var (
 	// 全字段修改PmsProductCategory那些字段不修改
 	notUpdateProductCategoryField = []string{
@@ -33,10 +37,6 @@ var (
 	}
 	updateProductCategoryField []string
 )
-
-func init() {
-	registerInitField(initProductCategoryField)
-}
 
 func initProductCategoryField(db *gorm.DB) error {
 	columnTypes, err := db.Migrator().ColumnTypes(&entity.ProductCategory{})
@@ -92,6 +92,15 @@ func (p ProductCategoryRepo) Update(ctx context.Context, productCategory *entity
 // GetByID 根据主键ID查询商品分类
 func (p ProductCategoryRepo) GetByID(ctx context.Context, id uint64) (*entity.ProductCategory, error) {
 	return p.GenericDao.GetByID(ctx, id)
+}
+
+// GetByIDs 根据主键ID查询商品分类
+func (p ProductCategoryRepo) GetByIDs(ctx context.Context, ids []uint64) (entity.ProductCategories, error) {
+	res := make([]*entity.ProductCategory, 0)
+	if err := p.GenericDao.DB.WithContext(ctx).Where("id in ?", ids).Find(&res).Error; err != nil {
+		return nil, err
+	}
+	return res, nil
 }
 
 // CreateWithTX 创建商品分类

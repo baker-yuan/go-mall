@@ -53,27 +53,28 @@ func (p ProductCategoryUseCase) CreateProductCategory(ctx context.Context, param
 
 // UpdateProductCategory 修改商品分类
 func (p ProductCategoryUseCase) UpdateProductCategory(ctx context.Context, param *pb.AddOrUpdateProductCategoryParam) error {
-	oldProductCategory, err := p.categoryRepo.GetByID(ctx, param.GetId())
-	if err != nil {
+	var (
+		oldCategory *entity.ProductCategory
+		newCategory *entity.ProductCategory
+		err         error
+	)
+
+	// 老数据
+	if oldCategory, err = p.categoryRepo.GetByID(ctx, param.GetId()); err != nil {
 		return err
 	}
 
-	// 数据转换
-	productCategory := assembler.AddOrUpdateProductCategoryParamToEntity(param)
-	productCategory.ID = param.Id
-	productCategory.CreatedAt = oldProductCategory.CreatedAt
+	// 新数据
+	newCategory = assembler.AddOrUpdateProductCategoryParamToEntity(param)
+	newCategory.ID = param.Id
+	newCategory.CreatedAt = oldCategory.CreatedAt
 
 	// 根据分类的parentId设置分类的level
-	if err := p.setCategoryLevel(ctx, productCategory); err != nil {
+	if err := p.setCategoryLevel(ctx, newCategory); err != nil {
 		return err
 	}
 
 	return db.PutDbToCtx(ctx, func(ctx context.Context) error {
-		// 更新商品分类时要更新商品中的名称
-		if err := p.productRepo.UpdateProductCategoryNameByProductCategoryIDWithTX(ctx, param.GetId(), param.GetName()); err != nil {
-			return err
-		}
-
 		// 同时更新筛选属性的信息，先删除在添加
 		if err := p.categoryAttributeRelationRepo.DeleteByProductCategoryIDWithTX(ctx, param.GetId()); err != nil {
 			return err
@@ -85,7 +86,7 @@ func (p ProductCategoryUseCase) UpdateProductCategory(ctx context.Context, param
 		}
 
 		// 更新分类
-		return p.categoryRepo.UpdateWithTX(ctx, productCategory)
+		return p.categoryRepo.UpdateWithTX(ctx, newCategory)
 	})
 }
 
@@ -127,16 +128,6 @@ func (p ProductCategoryUseCase) DeleteProductCategory(ctx context.Context, categ
 	return p.categoryRepo.DeleteByID(ctx, categoryID)
 }
 
-// UpdateProductCategoryNavStatus 修改导航栏显示状态
-func (p ProductCategoryUseCase) UpdateProductCategoryNavStatus(ctx context.Context, categoryIDs []uint64, navStatus uint32) error {
-	return p.categoryRepo.UpdateProductCategoryNavStatus(ctx, categoryIDs, navStatus)
-}
-
-// UpdateProductCategoryShowStatus 修改显示状态
-func (p ProductCategoryUseCase) UpdateProductCategoryShowStatus(ctx context.Context, categoryIDs []uint64, showStatus uint32) error {
-	return p.categoryRepo.UpdateProductCategoryShowStatus(ctx, categoryIDs, showStatus)
-}
-
 // setCategoryLevel 根据分类的parentId设置分类的level
 func (p ProductCategoryUseCase) setCategoryLevel(ctx context.Context, productCategory *entity.ProductCategory) error {
 	if productCategory.ParentID == 0 {
@@ -159,26 +150,25 @@ func (p ProductCategoryUseCase) GetProductCategoriesWithChildren(ctx context.Con
 	if err != nil {
 		return nil, err
 	}
-
-	return buildCategoryTree(categories), nil
+	return p.buildCategoryTree(categories), nil
 }
 
-func buildCategoryTree(categories []*entity.ProductCategory) []*pb.ProductCategoryTreeItem {
-	var tree []*pb.ProductCategoryTreeItem
-	categoryMap := make(map[uint64][]*pb.ProductCategory)
-
+func (p ProductCategoryUseCase) buildCategoryTree(categories []*entity.ProductCategory) []*pb.ProductCategoryTreeItem {
+	var (
+		categoryMap = make(map[uint64][]*pb.ProductCategory)
+	)
 	// 将所有分类按照ParentID分类
 	for _, category := range categories {
 		categoryMap[category.ParentID] = append(categoryMap[category.ParentID], assembler.ProductCategoryEntityToModel(category))
 	}
-
 	// 构建树形结构
-	tree = buildTree(0, categoryMap)
-
-	return tree
+	return p.buildTree(0, categoryMap)
 }
-func buildTree(parentID uint64, categoryMap map[uint64][]*pb.ProductCategory) []*pb.ProductCategoryTreeItem {
-	var tree []*pb.ProductCategoryTreeItem
+
+func (p ProductCategoryUseCase) buildTree(parentID uint64, categoryMap map[uint64][]*pb.ProductCategory) []*pb.ProductCategoryTreeItem {
+	var (
+		tree []*pb.ProductCategoryTreeItem
+	)
 	if categories, ok := categoryMap[parentID]; ok {
 		for _, category := range categories {
 			item := &pb.ProductCategoryTreeItem{
@@ -188,6 +178,5 @@ func buildTree(parentID uint64, categoryMap map[uint64][]*pb.ProductCategory) []
 			tree = append(tree, item)
 		}
 	}
-
 	return tree
 }

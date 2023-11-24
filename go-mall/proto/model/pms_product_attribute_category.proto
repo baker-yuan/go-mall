@@ -4,7 +4,7 @@ package model;
 
 option go_package = ".;mall";
 
-// ProductAttributeCategory 产品属性分类
+// 商品属性分类
 message ProductAttributeCategory {
   uint64 id = 1;              // 编号
   string name = 2;            // 类型名称

@@ -5,7 +5,7 @@ package model;
 option go_package = ".;mall";
 
 
-// Brand 商品品牌表
+// Brand 商品品牌
 message Brand {
   uint64 id = 1;                      // 主键
   string name = 2;                    // 名称

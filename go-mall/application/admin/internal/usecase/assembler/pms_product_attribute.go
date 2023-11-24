@@ -9,6 +9,7 @@ import (
 func ProductAttributeEntityToModel(productAttribute *entity.ProductAttribute) *pb.ProductAttribute {
 	return &pb.ProductAttribute{
 		Id:                         productAttribute.ID,
+		Type:                       uint32(productAttribute.Type),
 		ProductAttributeCategoryId: productAttribute.ProductAttributeCategoryID,
 		Name:                       productAttribute.Name,
 		SelectType:                 uint32(productAttribute.SelectType),
@@ -19,7 +20,6 @@ func ProductAttributeEntityToModel(productAttribute *entity.ProductAttribute) *p
 		SearchType:                 uint32(productAttribute.SearchType),
 		RelatedStatus:              uint32(productAttribute.RelatedStatus),
 		HandAddStatus:              uint32(productAttribute.HandAddStatus),
-		Type:                       uint32(productAttribute.Type),
 	}
 
 }
@@ -27,6 +27,7 @@ func ProductAttributeEntityToModel(productAttribute *entity.ProductAttribute) *p
 // AddOrUpdateProductAttributeParamToEntity pb转entity
 func AddOrUpdateProductAttributeParamToEntity(param *pb.AddOrUpdateProductAttributeParam) *entity.ProductAttribute {
 	return &entity.ProductAttribute{
+		Type:                       uint8(param.GetType()),
 		ProductAttributeCategoryID: param.GetProductAttributeCategoryId(),
 		Name:                       param.GetName(),
 		SelectType:                 uint8(param.GetSelectType()),
@@ -37,6 +38,5 @@ func AddOrUpdateProductAttributeParamToEntity(param *pb.AddOrUpdateProductAttrib
 		SearchType:                 uint8(param.GetSearchType()),
 		RelatedStatus:              uint8(param.GetRelatedStatus()),
 		HandAddStatus:              uint8(param.GetHandAddStatus()),
-		Type:                       uint8(param.GetType()),
 	}
 }

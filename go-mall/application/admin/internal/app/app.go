@@ -40,16 +40,18 @@ func Run(cfg *config.Config) {
 		l.Fatal(fmt.Errorf("app - Run - db.GetConn: %w", err))
 	}
 
+	// gorm事务封装
 	db.InitTransaction(conn)
 
+	// gorm创建表
 	if err := entity.Init(conn); err != nil {
 		l.Fatal(fmt.Errorf("app - Run - entity.Init: %w", err))
 	}
-
+	// 全字段更新，初始化那些字段不更新，那些字段需要更新
 	if err := repo.InitField(conn); err != nil {
 		l.Fatal(fmt.Errorf("app - Run - repo.InitField: %w", err))
 	}
-
+	// oss url 前缀
 	util.InitBaseUrl(cfg.Oss.BaseUrl)
 
 	// 业务逻辑
@@ -62,17 +64,16 @@ func Run(cfg *config.Config) {
 	brandUseCase := usecase.NewBrandUseCase(
 		repo.NewBrandRepo(conn),
 	)
-
 	productAttributeCategoryUseCase := usecase.NewProductAttributeCategory(
 		repo.NewProductAttributeCategoryRepo(conn),
 	)
-
 	productAttributeUseCase := usecase.NewProductAttribute(
 		repo.NewProductAttributeRepo(conn),
 	)
-
 	productUseCase := usecase.NewProduct(
 		repo.NewProductRepo(conn),
+		repo.NewBrandRepo(conn),
+		repo.NewProductCategoryRepo(conn),
 	)
 
 	// grpc服务
@@ -111,7 +112,9 @@ func configGrpc(impl pb.AdminApiServer, ip string, port uint32) error {
 		addr = fmt.Sprintf("%s:%d", ip, port)
 	)
 	// 创建一个gRPC server对象
-	grpcServer := grpc.NewServer(grpc.UnaryInterceptor(interceptor.ValidationInterceptor))
+	grpcServer := grpc.NewServer(
+		grpc.UnaryInterceptor(interceptor.ValidationInterceptor),
+	)
 
 	// 注册grpc服务
 	pb.RegisterAdminApiServer(grpcServer, impl)

@@ -6,7 +6,7 @@ import (
 )
 
 // ProductEntityToModel entity转pb
-func ProductEntityToModel(product *entity.Product) *pb.Product {
+func ProductEntityToModel(product *entity.Product, categoryNames map[uint64]string, brandNames map[uint64]string) *pb.Product {
 	return &pb.Product{}
 }
 

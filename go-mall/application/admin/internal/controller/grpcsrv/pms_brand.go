@@ -20,10 +20,10 @@ func (s *AdminApiImpl) CreateBrand(ctx context.Context, param *pb.AddOrUpdateBra
 
 // UpdateBrand 修改商品品牌
 func (s *AdminApiImpl) UpdateBrand(ctx context.Context, param *pb.AddOrUpdateBrandParam) (*pb.CommonRsp, error) {
-	err := s.brand.UpdateBrand(ctx, param)
-	if err != nil {
+	if err := s.brand.UpdateBrand(ctx, param); err != nil {
 		return nil, err
 	}
+
 	res := &pb.CommonRsp{}
 	res.Code, res.Message = retcode.GetRetCodeMsg(retcode.RetSuccess)
 	return res, nil
@@ -35,6 +35,7 @@ func (s *AdminApiImpl) GetBrands(ctx context.Context, param *pb.GetBrandsParam) 
 	if err != nil {
 		return nil, err
 	}
+
 	res := &pb.GetBrandsRsp{
 		Data: &pb.GetBrandsData{
 			Data:      brands,

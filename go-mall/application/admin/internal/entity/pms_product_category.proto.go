@@ -23,3 +23,15 @@ type ProductCategory struct {
 func (c ProductCategory) TableName() string {
 	return "pms_product_category"
 }
+
+// ProductCategories 商品分类集合
+type ProductCategories []*ProductCategory
+
+// NameMap 获取分类名 key=id value=name
+func (c ProductCategories) NameMap() map[uint64]string {
+	res := make(map[uint64]string)
+	for _, category := range c {
+		res[category.ID] = category.Name
+	}
+	return res
+}
