@@ -24,6 +24,10 @@ func NewProductCategoryRepo(conn *gorm.DB) *ProductCategoryRepo {
 	}
 }
 
+func init() {
+	registerInitField(initProductCategoryField)
+}
+
 var (
 	// 全字段修改PmsProductCategory那些字段不修改
 	notUpdateProductCategoryField = []string{
@@ -33,10 +37,6 @@ var (
 	}
 	updateProductCategoryField []string
 )
-
-func init() {
-	registerInitField(initProductCategoryField)
-}
 
 func initProductCategoryField(db *gorm.DB) error {
 	columnTypes, err := db.Migrator().ColumnTypes(&entity.ProductCategory{})

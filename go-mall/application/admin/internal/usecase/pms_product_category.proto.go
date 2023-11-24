@@ -127,16 +127,6 @@ func (p ProductCategoryUseCase) DeleteProductCategory(ctx context.Context, categ
 	return p.categoryRepo.DeleteByID(ctx, categoryID)
 }
 
-// UpdateProductCategoryNavStatus 修改导航栏显示状态
-func (p ProductCategoryUseCase) UpdateProductCategoryNavStatus(ctx context.Context, categoryIDs []uint64, navStatus uint32) error {
-	return p.categoryRepo.UpdateProductCategoryNavStatus(ctx, categoryIDs, navStatus)
-}
-
-// UpdateProductCategoryShowStatus 修改显示状态
-func (p ProductCategoryUseCase) UpdateProductCategoryShowStatus(ctx context.Context, categoryIDs []uint64, showStatus uint32) error {
-	return p.categoryRepo.UpdateProductCategoryShowStatus(ctx, categoryIDs, showStatus)
-}
-
 // setCategoryLevel 根据分类的parentId设置分类的level
 func (p ProductCategoryUseCase) setCategoryLevel(ctx context.Context, productCategory *entity.ProductCategory) error {
 	if productCategory.ParentID == 0 {
@@ -159,11 +149,10 @@ func (p ProductCategoryUseCase) GetProductCategoriesWithChildren(ctx context.Con
 	if err != nil {
 		return nil, err
 	}
-
-	return buildCategoryTree(categories), nil
+	return p.buildCategoryTree(categories), nil
 }
 
-func buildCategoryTree(categories []*entity.ProductCategory) []*pb.ProductCategoryTreeItem {
+func (p ProductCategoryUseCase) buildCategoryTree(categories []*entity.ProductCategory) []*pb.ProductCategoryTreeItem {
 	var tree []*pb.ProductCategoryTreeItem
 	categoryMap := make(map[uint64][]*pb.ProductCategory)
 
@@ -173,11 +162,12 @@ func buildCategoryTree(categories []*entity.ProductCategory) []*pb.ProductCatego
 	}
 
 	// 构建树形结构
-	tree = buildTree(0, categoryMap)
+	tree = p.buildTree(0, categoryMap)
 
 	return tree
 }
-func buildTree(parentID uint64, categoryMap map[uint64][]*pb.ProductCategory) []*pb.ProductCategoryTreeItem {
+
+func (p ProductCategoryUseCase) buildTree(parentID uint64, categoryMap map[uint64][]*pb.ProductCategory) []*pb.ProductCategoryTreeItem {
 	var tree []*pb.ProductCategoryTreeItem
 	if categories, ok := categoryMap[parentID]; ok {
 		for _, category := range categories {
@@ -188,6 +178,5 @@ func buildTree(parentID uint64, categoryMap map[uint64][]*pb.ProductCategory) []
 			tree = append(tree, item)
 		}
 	}
-
 	return tree
 }

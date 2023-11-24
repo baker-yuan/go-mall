@@ -24,6 +24,10 @@ func NewProductAttributeRepo(conn *gorm.DB) *ProductAttributeRepo {
 	}
 }
 
+func init() {
+	registerInitField(initProductAttributeField)
+}
+
 var (
 	// 全字段修改ProductAttribute那些字段不修改
 	notUpdateProductAttributeField = []string{
@@ -31,10 +35,6 @@ var (
 	}
 	updateProductAttributeField []string
 )
-
-func init() {
-	registerInitField(initProductAttributeField)
-}
 
 // initProductAttributeField 全字段修改
 func initProductAttributeField(db *gorm.DB) error {

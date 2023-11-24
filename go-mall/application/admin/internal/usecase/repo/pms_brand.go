@@ -24,6 +24,10 @@ func NewBrandRepo(conn *gorm.DB) *BrandRepo {
 	}
 }
 
+func init() {
+	registerInitField(initBrandField)
+}
+
 var (
 	// 全字段修改Brand那些字段不修改
 	notUpdateBrandField = []string{
@@ -33,10 +37,6 @@ var (
 	}
 	updateBrandField []string
 )
-
-func init() {
-	registerInitField(initBrandField)
-}
 
 // initBrandField 全字段修改
 func initBrandField(db *gorm.DB) error {

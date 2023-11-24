@@ -53,7 +53,7 @@ func (p PmsProductCategoryAttributeRelationRepo) CreateWithTX(ctx context.Contex
 
 // BatchCreateWithTX 批量插入商品分类与筛选属性关系表
 // attributeIds 商品分类id
-// productAttributeIDList 相关商品筛选属性id集合
+// productAttributeIDList 相关商品筛选属性id集合(pms_product_attribute#id type=1)
 func (p PmsProductCategoryAttributeRelationRepo) BatchCreateWithTX(ctx context.Context, productCategoryID uint64, attributeIds []uint64) error {
 	relations := make([]*entity.ProductCategoryAttributeRelation, 0)
 	for _, productAttrID := range attributeIds {

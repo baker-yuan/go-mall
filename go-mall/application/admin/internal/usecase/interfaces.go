@@ -26,10 +26,6 @@ type (
 		GetProductCategory(ctx context.Context, categoryID uint64) (*pb.ProductCategory, error)
 		// DeleteProductCategory 删除商品分类
 		DeleteProductCategory(ctx context.Context, categoryID uint64) error
-		// UpdateProductCategoryNavStatus 修改导航栏显示状态
-		UpdateProductCategoryNavStatus(ctx context.Context, categoryIDs []uint64, navStatus uint32) error
-		// UpdateProductCategoryShowStatus 修改显示状态
-		UpdateProductCategoryShowStatus(ctx context.Context, categoryIDs []uint64, showStatus uint32) error
 		// GetProductCategoriesWithChildren 查询所有一级分类及子分类
 		GetProductCategoriesWithChildren(ctx context.Context) ([]*pb.ProductCategoryTreeItem, error)
 	}

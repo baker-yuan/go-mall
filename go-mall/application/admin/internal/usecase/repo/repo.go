@@ -8,7 +8,7 @@ var (
 	initFieldFuncTypes []RegisterFuncType
 )
 
-// 注册函数回调
+// 注册全字段更新初始化函数回调
 func registerInitField(funcType RegisterFuncType) {
 	initFieldFuncTypes = append(initFieldFuncTypes, funcType)
 }
