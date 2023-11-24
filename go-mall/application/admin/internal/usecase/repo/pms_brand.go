@@ -78,8 +78,17 @@ func (r BrandRepo) GetByID(ctx context.Context, id uint64) (*entity.Brand, error
 	return r.GenericDao.GetByID(ctx, id)
 }
 
+// GetByIDs 根据主键ID批量查询商品品牌表
+func (r BrandRepo) GetByIDs(ctx context.Context, ids []uint64) (entity.Brands, error) {
+	res := make([]*entity.Brand, 0)
+	if err := r.GenericDao.DB.WithContext(ctx).Where("id in ?", ids).Find(&res).Error; err != nil {
+		return nil, err
+	}
+	return res, nil
+}
+
 // GetByDBOption 根据动态条件查询商品品牌表
-func (r BrandRepo) GetByDBOption(ctx context.Context, pageNum uint32, pageSize uint32, opts ...db.DBOption) ([]*entity.Brand, uint32, error) {
+func (r BrandRepo) GetByDBOption(ctx context.Context, pageNum uint32, pageSize uint32, opts ...db.DBOption) (entity.Brands, uint32, error) {
 	var (
 		res       = make([]*entity.Brand, 0)
 		pageTotal = int64(0)

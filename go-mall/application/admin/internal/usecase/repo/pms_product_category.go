@@ -94,6 +94,15 @@ func (p ProductCategoryRepo) GetByID(ctx context.Context, id uint64) (*entity.Pr
 	return p.GenericDao.GetByID(ctx, id)
 }
 
+// GetByIDs 根据主键ID查询商品分类
+func (p ProductCategoryRepo) GetByIDs(ctx context.Context, ids []uint64) (entity.ProductCategories, error) {
+	res := make([]*entity.ProductCategory, 0)
+	if err := p.GenericDao.DB.WithContext(ctx).Where("id in ?", ids).Find(&res).Error; err != nil {
+		return nil, err
+	}
+	return res, nil
+}
+
 // CreateWithTX 创建商品分类
 func (p ProductCategoryRepo) CreateWithTX(ctx context.Context, productCategory *entity.ProductCategory) error {
 	db, err := db.GetDbToCtx(ctx)

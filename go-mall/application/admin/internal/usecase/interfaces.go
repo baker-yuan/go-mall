@@ -44,6 +44,8 @@ type (
 		Update(ctx context.Context, productCategory *entity.ProductCategory) error
 		// GetByID 根据主键ID查询商品分类
 		GetByID(ctx context.Context, id uint64) (*entity.ProductCategory, error)
+		// GetByIDs 根据主键ID批量查询商品分类
+		GetByIDs(ctx context.Context, ids []uint64) (entity.ProductCategories, error)
 
 		// GetByDBOption 根据动态条件查询商品分类
 		GetByDBOption(ctx context.Context, pageNum uint32, pageSize uint32, opts ...db.DBOption) ([]*entity.ProductCategory, uint32, error)
@@ -111,10 +113,7 @@ type (
 		// GetByID 根据主键ID查询商品
 		GetByID(ctx context.Context, id uint64) (*entity.Product, error)
 		// GetByDBOption 根据动态条件查询商品
-		GetByDBOption(ctx context.Context, pageNum uint32, pageSize uint32, opts ...db.DBOption) ([]*entity.Product, uint32, error)
-
-		// UpdateProductCategoryNameByProductCategoryIDWithTX 新商品中的名称
-		UpdateProductCategoryNameByProductCategoryIDWithTX(ctx context.Context, productCategoryID uint64, productCategoryName string) error
+		GetByDBOption(ctx context.Context, pageNum uint32, pageSize uint32, opts ...db.DBOption) (entity.Products, uint32, error)
 	}
 )
 
@@ -147,8 +146,10 @@ type (
 		Update(ctx context.Context, brand *entity.Brand) error
 		// GetByID 根据主键ID查询商品品牌表
 		GetByID(ctx context.Context, id uint64) (*entity.Brand, error)
+		// GetByIDs 根据主键ID批量查询商品品牌表
+		GetByIDs(ctx context.Context, ids []uint64) (entity.Brands, error)
 		// GetByDBOption 根据动态条件查询商品品牌表
-		GetByDBOption(ctx context.Context, pageNum uint32, pageSize uint32, opts ...db.DBOption) ([]*entity.Brand, uint32, error)
+		GetByDBOption(ctx context.Context, pageNum uint32, pageSize uint32, opts ...db.DBOption) (entity.Brands, uint32, error)
 	}
 )
 

@@ -21,3 +21,15 @@ type Brand struct {
 func (c Brand) TableName() string {
 	return "pms_brand"
 }
+
+// Brands 商品商品品牌集合
+type Brands []*Brand
+
+// NameMap 获取商品品牌名 key=id value=name
+func (b Brands) NameMap() map[uint64]string {
+	res := make(map[uint64]string)
+	for _, brand := range b {
+		res[brand.ID] = brand.Name
+	}
+	return res
+}

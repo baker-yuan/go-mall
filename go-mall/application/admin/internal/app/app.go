@@ -72,6 +72,8 @@ func Run(cfg *config.Config) {
 	)
 	productUseCase := usecase.NewProduct(
 		repo.NewProductRepo(conn),
+		repo.NewBrandRepo(conn),
+		repo.NewProductCategoryRepo(conn),
 	)
 
 	// grpc服务

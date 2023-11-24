@@ -45,12 +45,33 @@ type Product struct {
 	PromotionType              uint8   `gorm:"column:promotion_type;type:tinyint(4);unsigned;not null;default:0;comment:促销类型：0->没有促销使用原价;1->使用促销价；2->使用会员价；3->使用阶梯价格；4->使用满减价格；5->限时购"`
 
 	// 冗余字段
-	BrandName           string `gorm:"column:brand_name;type:varchar(255);comment:品牌名称" json:"brand_name"`
-	ProductCategoryName string `gorm:"column:product_category_name;type:varchar(255);comment:商品分类名称" json:"product_category_name"`
+	BrandName           string `gorm:"column:brand_name;type:varchar(255);comment:品牌名称"`
+	ProductCategoryName string `gorm:"column:product_category_name;type:varchar(255);comment:商品分类名称"`
 	// 公共字段
 	BaseTime
 }
 
 func (c Product) TableName() string {
 	return "pms_product"
+}
+
+// Products 商品信息集合
+type Products []*Product
+
+// CategoryIDs 获取商品品牌ID
+func (p Products) CategoryIDs() []uint64 {
+	ids := make([]uint64, len(p))
+	for i, product := range p {
+		ids[i] = product.ProductCategoryID
+	}
+	return ids
+}
+
+// BrandIDs 获取商品分类ID
+func (p Products) BrandIDs() []uint64 {
+	ids := make([]uint64, len(p))
+	for i, product := range p {
+		ids[i] = product.BrandID
+	}
+	return ids
 }

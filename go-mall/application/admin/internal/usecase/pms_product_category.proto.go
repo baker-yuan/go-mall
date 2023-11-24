@@ -75,11 +75,6 @@ func (p ProductCategoryUseCase) UpdateProductCategory(ctx context.Context, param
 	}
 
 	return db.PutDbToCtx(ctx, func(ctx context.Context) error {
-		// 更新商品分类时要更新商品中的名称
-		if err := p.productRepo.UpdateProductCategoryNameByProductCategoryIDWithTX(ctx, param.GetId(), param.GetName()); err != nil {
-			return err
-		}
-
 		// 同时更新筛选属性的信息，先删除在添加
 		if err := p.categoryAttributeRelationRepo.DeleteByProductCategoryIDWithTX(ctx, param.GetId()); err != nil {
 			return err
