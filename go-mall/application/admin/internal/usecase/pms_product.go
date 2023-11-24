@@ -45,7 +45,7 @@ func (c ProductUseCase) UpdateProduct(ctx context.Context, param *pb.AddOrUpdate
 	product.ID = param.Id
 	product.CreatedAt = oldProduct.CreatedAt
 
-	// 更新分类
+	// 更新商品
 	return c.productRepo.Update(ctx, product)
 }
 

@@ -110,7 +110,9 @@ func configGrpc(impl pb.AdminApiServer, ip string, port uint32) error {
 		addr = fmt.Sprintf("%s:%d", ip, port)
 	)
 	// 创建一个gRPC server对象
-	grpcServer := grpc.NewServer(grpc.UnaryInterceptor(interceptor.ValidationInterceptor))
+	grpcServer := grpc.NewServer(
+		grpc.UnaryInterceptor(interceptor.ValidationInterceptor),
+	)
 
 	// 注册grpc服务
 	pb.RegisterAdminApiServer(grpcServer, impl)

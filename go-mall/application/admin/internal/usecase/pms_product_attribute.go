@@ -45,7 +45,7 @@ func (c ProductAttributeUseCase) UpdateProductAttribute(ctx context.Context, par
 	productAttribute.ID = param.Id
 	productAttribute.CreatedAt = oldProductAttribute.CreatedAt
 
-	// 更新分类
+	// 更新商品属性参数
 	return c.productAttributeRepo.Update(ctx, productAttribute)
 }
 

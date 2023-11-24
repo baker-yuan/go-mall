@@ -2,6 +2,7 @@ syntax = "proto3";
 package model;
 option go_package = ".;mall";
 
+// 商品
 message Product {
   uint64 id = 1; // 主键
   uint64 brand_id = 2; // 品牌id

@@ -32,7 +32,7 @@ func (c ProductAttributeCategoryUseCase) CreateProductAttributeCategory(ctx cont
 	return nil
 }
 
-// UpdateProductAttributeCategory 修改产品属性分类表
+// UpdateProductAttributeCategory 修改产品属性分类
 func (c ProductAttributeCategoryUseCase) UpdateProductAttributeCategory(ctx context.Context, param *pb.AddOrUpdateProductAttributeCategoryParam) error {
 	oldProductAttributeCategory, err := c.productAttributeCategoryRepo.GetByID(ctx, param.GetId())
 	if err != nil {
@@ -44,11 +44,11 @@ func (c ProductAttributeCategoryUseCase) UpdateProductAttributeCategory(ctx cont
 	productAttributeCategory.ID = param.Id
 	productAttributeCategory.CreatedAt = oldProductAttributeCategory.CreatedAt
 
-	// 更新分类
+	// 更新产品属性分类
 	return c.productAttributeCategoryRepo.Update(ctx, productAttributeCategory)
 }
 
-// GetProductAttributeCategories 分页查询产品属性分类表
+// GetProductAttributeCategories 分页查询产品属性分类
 func (c ProductAttributeCategoryUseCase) GetProductAttributeCategories(ctx context.Context, param *pb.GetProductAttributeCategoriesParam) ([]*pb.ProductAttributeCategory, uint32, error) {
 	opts := make([]db.DBOption, 0)
 	if len(param.GetName()) != 0 {
@@ -66,7 +66,7 @@ func (c ProductAttributeCategoryUseCase) GetProductAttributeCategories(ctx conte
 	return models, pageTotal, nil
 }
 
-// GetProductAttributeCategory 根据id获取产品属性分类表
+// GetProductAttributeCategory 根据id获取产品属性分类
 func (c ProductAttributeCategoryUseCase) GetProductAttributeCategory(ctx context.Context, id uint64) (*pb.ProductAttributeCategory, error) {
 	productAttributeCategory, err := c.productAttributeCategoryRepo.GetByID(ctx, id)
 	if err != nil {
@@ -75,7 +75,7 @@ func (c ProductAttributeCategoryUseCase) GetProductAttributeCategory(ctx context
 	return assembler.ProductAttributeCategoryEntityToModel(productAttributeCategory), nil
 }
 
-// DeleteProductAttributeCategory 删除产品属性分类表
+// DeleteProductAttributeCategory 删除产品属性分类
 func (c ProductAttributeCategoryUseCase) DeleteProductAttributeCategory(ctx context.Context, id uint64) error {
 	return c.productAttributeCategoryRepo.DeleteByID(ctx, id)
 }
