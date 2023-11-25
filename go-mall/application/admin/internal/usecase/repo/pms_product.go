@@ -97,3 +97,12 @@ func (r ProductRepo) GetByDBOption(ctx context.Context, pageNum uint32, pageSize
 	}
 	return res, uint32(pageTotal), nil
 }
+
+// CreateWithTX 创建商品
+func (r ProductRepo) CreateWithTX(ctx context.Context, product *entity.Product) error {
+	db, err := db.GetDbToCtx(ctx)
+	if err != nil {
+		return err
+	}
+	return db.WithContext(ctx).Create(product).Error
+}

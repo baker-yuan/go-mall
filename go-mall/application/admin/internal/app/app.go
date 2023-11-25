@@ -74,6 +74,13 @@ func Run(cfg *config.Config) {
 		repo.NewProductRepo(conn),
 		repo.NewBrandRepo(conn),
 		repo.NewProductCategoryRepo(conn),
+		repo.NewMemberPriceRepo(conn),
+		repo.NewProductLadderRepo(conn),
+		repo.NewProductFullReductionRepo(conn),
+		repo.NewSkuStockRepo(conn),
+		repo.NewProductAttributeValueRepo(conn),
+		repo.NewSubjectProductRelationRepo(conn),
+		repo.NewPrefrenceAreaProductRelationRepo(conn),
 	)
 
 	// grpc服务

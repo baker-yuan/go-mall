@@ -2,6 +2,9 @@ package usecase
 
 import (
 	"context"
+	"fmt"
+	"strings"
+	"time"
 
 	"github.com/baker-yuan/go-mall/application/admin/internal/usecase/assembler"
 	"github.com/baker-yuan/go-mall/application/admin/pkg/db"
@@ -10,19 +13,42 @@ import (
 
 // ProductUseCase 商品管理Service实现类
 type ProductUseCase struct {
-	productRepo         IProductRepo         // 操作商品
-	brandRepo           IBrandRepo           // 操作商品品牌
-	productCategoryRepo IProductCategoryRepo // 操作商品分类
+	productRepo                      IProductRepo                      // 操作商品
+	brandRepo                        IBrandRepo                        // 操作商品品牌
+	productCategoryRepo              IProductCategoryRepo              // 操作商品分类
+	memberPriceRepo                  IMemberPriceRepo                  // 商品会员价格
+	productLadderRepo                IProductLadderRepo                // 商品阶梯价格
+	productFullReductionRepo         IProductFullReductionRepo         // 产品满减
+	skuStockRepo                     ISkuStockRepo                     // sku库存
+	productAttributeValueRepo        IProductAttributeValueRepo        // 产品参数信息
+	subjectProductRelationRepo       ISubjectProductRelationRepo       // 专题商品关系
+	prefrenceAreaProductRelationRepo IPrefrenceAreaProductRelationRepo // 优选专区和产品关系
 }
 
 // NewProduct 创建商品管理Service实现类
-func NewProduct(productRepo IProductRepo,
+func NewProduct(
+	productRepo IProductRepo,
 	brandRepo IBrandRepo,
-	productCategoryRepo IProductCategoryRepo) *ProductUseCase {
+	productCategoryRepo IProductCategoryRepo,
+	memberPriceRepo IMemberPriceRepo,
+	productLadderRepo IProductLadderRepo,
+	productFullReductionRepo IProductFullReductionRepo,
+	skuStockRepo ISkuStockRepo,
+	productAttributeValueRepo IProductAttributeValueRepo,
+	subjectProductRelationRepo ISubjectProductRelationRepo,
+	prefrenceAreaProductRelationRepo IPrefrenceAreaProductRelationRepo,
+) *ProductUseCase {
 	return &ProductUseCase{
-		productRepo:         productRepo,
-		brandRepo:           brandRepo,
-		productCategoryRepo: productCategoryRepo,
+		productRepo:                      productRepo,
+		brandRepo:                        brandRepo,
+		productCategoryRepo:              productCategoryRepo,
+		memberPriceRepo:                  memberPriceRepo,
+		productLadderRepo:                productLadderRepo,
+		productFullReductionRepo:         productFullReductionRepo,
+		skuStockRepo:                     skuStockRepo,
+		productAttributeValueRepo:        productAttributeValueRepo,
+		subjectProductRelationRepo:       subjectProductRelationRepo,
+		prefrenceAreaProductRelationRepo: prefrenceAreaProductRelationRepo,
 	}
 }
 
@@ -31,12 +57,74 @@ func (c ProductUseCase) CreateProduct(ctx context.Context, param *pb.AddOrUpdate
 	// 数据转换
 	product := assembler.AddOrUpdateProductParamToEntity(param)
 
-	// 保存
-	if err := c.productRepo.Create(ctx, product); err != nil {
-		return err
-	}
+	// 事务执行
+	return db.PutDbToCtx(ctx, func(ctx context.Context) error {
+		// 创建商品
+		if err := c.productRepo.CreateWithTX(ctx, product); err != nil {
+			return err
+		}
+		// 根据促销类型设置价格：会员价格、阶梯价格、满减价格
+		productID := product.ID
 
-	return nil
+		// 会员价格
+		if err := c.memberPriceRepo.BatchCreateWithTX(ctx, productID, assembler.MemberPricesToEntity(param.GetMemberPrices())); err != nil {
+			return err
+		}
+
+		// 阶梯价格
+		if err := c.productLadderRepo.BatchCreateWithTX(ctx, productID, assembler.ProductLaddersToEntity(param.GetProductLadders())); err != nil {
+			return err
+		}
+
+		// 满减价格
+		if err := c.productFullReductionRepo.BatchCreateWithTX(ctx, productID, assembler.ProductFullReductionsToEntity(param.GetProductFullReductions())); err != nil {
+			return err
+		}
+
+		// 处理sku的编码
+		c.handleSkuStockCode(param.GetSkuStocks(), productID)
+		// 添加sku库存信息
+		if err := c.skuStockRepo.BatchCreateWithTX(ctx, productID, assembler.SkuStocksToEntity(param.GetSkuStocks())); err != nil {
+			return err
+		}
+
+		// 添加商品参数，添加自定义商品规格
+		if err := c.productAttributeValueRepo.BatchCreateWithTX(ctx, productID, assembler.ProductAttributeValuesToEntity(param.GetAttributeValues())); err != nil {
+			return err
+		}
+
+		// 关联专题
+		if err := c.subjectProductRelationRepo.BatchCreateWithTX(ctx, productID, assembler.SubjectProductRelationsToEntity(param.GetSubjectProductRelations())); err != nil {
+			return err
+		}
+
+		// 关联优选
+		if err := c.prefrenceAreaProductRelationRepo.BatchCreateWithTX(ctx, productID, assembler.PrefrenceAreaProductRelationsToEntity(param.GetPrefrenceAreaProductRelations())); err != nil {
+			return err
+		}
+
+		return nil
+	})
+}
+
+func (c ProductUseCase) handleSkuStockCode(skuStockList []*pb.SkuStock, productId uint64) {
+	if len(skuStockList) == 0 {
+		return
+	}
+	for i := 0; i < len(skuStockList); i++ {
+		skuStock := skuStockList[i]
+		if skuStock.SkuCode == "" {
+			// 日期
+			date := time.Now().Format("20060102")
+			// 四位商品id
+			productIdStr := fmt.Sprintf("%04d", productId)
+			// 三位索引id
+			indexIdStr := fmt.Sprintf("%03d", i+1)
+			// 设置sku编码
+			skuStock.SkuCode = strings.Join([]string{date, productIdStr, indexIdStr}, "")
+			skuStockList[i] = skuStock
+		}
+	}
 }
 
 // UpdateProduct 修改商品

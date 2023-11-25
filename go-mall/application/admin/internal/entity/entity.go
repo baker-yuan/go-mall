@@ -179,6 +179,16 @@ func Init(db *gorm.DB) error {
 		//	TableName: "会员收货地址表",
 		//	StructPtr: &MemberReceiveAddress{},
 		//},
+
+		//{
+		//	TableName: "优选专区和产品关系表",
+		//	StructPtr: &PrefrenceAreaProductRelation{},
+		//},
+		//{
+		//	TableName: "专题商品关系表",
+		//	StructPtr: &SubjectProductRelation{},
+		//},
+
 	}
 	if err := autoMigrate(db, schemas); err != nil {
 		return err

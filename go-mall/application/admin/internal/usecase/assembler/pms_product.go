@@ -69,7 +69,6 @@ func ProductEntityToModel(product *entity.Product, categoryNames map[uint64]stri
 func AddOrUpdateProductParamToEntity(param *pb.AddOrUpdateProductParam) *entity.Product {
 	return &entity.Product{
 		// 基本信息
-		ID:                param.Id,
 		ProductCategoryID: param.ProductCategoryId,
 		Name:              param.Name,
 		SubTitle:          param.SubTitle,

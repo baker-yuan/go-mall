@@ -11,6 +11,13 @@ import "model/pms_brand.proto";
 import "model/pms_product_attribute_category.proto";
 import "model/pms_product_attribute.proto";
 import "model/pms_product.proto";
+import "model/pms_product_ladder.proto";
+import "model/pms_product_full_reduction.proto";
+import "model/pms_member_price.proto";
+import "model/pms_sku_stock.proto";
+import "model/pms_product_attribute_value.proto";
+import "model/cms_prefrence_area_product_relation.proto";
+import "model/cms_subject_product_relation.proto";
 
 option go_package = ".;mall";
 
@@ -288,8 +295,9 @@ message DeleteProductAttributeReq {
 
 // 添加或更新商品参数
 message AddOrUpdateProductParam {
-  // 基本信息
   uint64 id = 1; // 主键
+
+  // 基本信息
   uint64 productCategoryId = 2; // 商品分类id
   string name = 3; // 商品名称
   string subTitle = 4; // 副标题
@@ -342,6 +350,14 @@ message AddOrUpdateProductParam {
   string brandName = 41; // 品牌名称
   string productCategoryName = 42; // 商品分类名称
 
+  // 设置
+  repeated model.ProductLadder productLadders = 50; // 商品阶梯价格设置
+  repeated model.ProductFullReduction productFullReductions = 51; // 商品满减价格设置
+  repeated model.MemberPrice memberPrices = 52; // 商品会员价格设置
+  repeated model.SkuStock skuStocks = 53; // 商品的sku库存信息
+  repeated model.ProductAttributeValue attributeValues = 54; // 商品参数及自定义规格属性
+  repeated model.SubjectProductRelation subjectProductRelations = 55; // 专题和商品关系
+  repeated model.PrefrenceAreaProductRelation prefrenceAreaProductRelations = 56; // 优选专区和商品的关系
 }
 
 // 分页查询商品
