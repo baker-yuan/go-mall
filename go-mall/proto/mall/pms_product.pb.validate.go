@@ -58,21 +58,37 @@ func (m *Product) validate(all bool) error {
 
 	// no validation rules for Id
 
-	// no validation rules for BrandId
-
 	// no validation rules for ProductCategoryId
-
-	// no validation rules for FeightTemplateId
-
-	// no validation rules for ProductAttributeCategoryId
 
 	// no validation rules for Name
 
-	// no validation rules for Pic
+	// no validation rules for SubTitle
 
-	// no validation rules for ProductSn
+	// no validation rules for BrandId
 
-	// no validation rules for DeleteStatus
+	// no validation rules for Description
+
+	// no validation rules for ProductSN
+
+	// no validation rules for Price
+
+	// no validation rules for OriginalPrice
+
+	// no validation rules for Stock
+
+	// no validation rules for Unit
+
+	// no validation rules for Weight
+
+	// no validation rules for Sort
+
+	// no validation rules for GiftPoint
+
+	// no validation rules for GiftGrowth
+
+	// no validation rules for UsePointLimit
+
+	// no validation rules for PreviewStatus
 
 	// no validation rules for PublishStatus
 
@@ -80,61 +96,45 @@ func (m *Product) validate(all bool) error {
 
 	// no validation rules for RecommandStatus
 
-	// no validation rules for VerifyStatus
-
-	// no validation rules for Sort
-
-	// no validation rules for Sale
-
-	// no validation rules for Price
-
-	// no validation rules for PromotionPrice
-
-	// no validation rules for GiftGrowth
-
-	// no validation rules for GiftPoint
-
-	// no validation rules for UsePointLimit
-
-	// no validation rules for SubTitle
-
-	// no validation rules for Description
-
-	// no validation rules for OriginalPrice
-
-	// no validation rules for Stock
-
-	// no validation rules for LowStock
-
-	// no validation rules for Unit
-
-	// no validation rules for Weight
-
-	// no validation rules for PreviewStatus
-
 	// no validation rules for ServiceIds
-
-	// no validation rules for Keywords
-
-	// no validation rules for Note
-
-	// no validation rules for AlbumPics
 
 	// no validation rules for DetailTitle
 
 	// no validation rules for DetailDesc
 
-	// no validation rules for DetailHtml
+	// no validation rules for Keywords
 
-	// no validation rules for DetailMobileHtml
+	// no validation rules for Note
+
+	// no validation rules for PromotionType
+
+	// no validation rules for PromotionPrice
 
 	// no validation rules for PromotionStartTime
 
 	// no validation rules for PromotionEndTime
 
-	// no validation rules for PromotionPerLimit
+	// no validation rules for ProductAttributeCategoryId
 
-	// no validation rules for PromotionType
+	// no validation rules for Pic
+
+	// no validation rules for AlbumPics
+
+	// no validation rules for DetailHTML
+
+	// no validation rules for DetailMobileHTML
+
+	// no validation rules for VerifyStatus
+
+	// no validation rules for DeleteStatus
+
+	// no validation rules for FeightTemplateId
+
+	// no validation rules for Sale
+
+	// no validation rules for LowStock
+
+	// no validation rules for PromotionPerLimit
 
 	// no validation rules for BrandName
 

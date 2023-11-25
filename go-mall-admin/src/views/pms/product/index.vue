@@ -14,6 +14,71 @@
         <el-button type="primary" :icon="CirclePlus" @click="openDrawer('新增')">新增商品</el-button>
       </template>
 
+      <!-- 商品图片 -->
+      <template #pic="scope">
+        <!-- eslint-disable-next-line prettier/prettier -->
+        <img style="height: 80px" :src="scope.row.pic">
+      </template>
+
+      <!-- 商品名称 -->
+      <template #nameAndBrand="scope">
+        <p>{{ scope.row.name }}</p>
+        <p>品牌：{{ scope.row.brandName }}</p>
+      </template>
+
+      <!-- 价格/货号 -->
+      <template #priceAndSn="scope">
+        <p>价格：￥{{ scope.row.price }}</p>
+        <p>货号：{{ scope.row.productSN }}</p>
+      </template>
+
+      <!-- 标签 -->
+      <template #setupState="scope">
+        <p>
+          上架：
+          <el-switch
+            @change="handlePublishStatusChange(scope.row)"
+            :active-value="1"
+            :inactive-value="0"
+            v-model="scope.row.publishStatus"
+          >
+          </el-switch>
+        </p>
+        <p>
+          新品：
+          <el-switch
+            @change="handleNewStatusChange(scope.row)"
+            :active-value="1"
+            :inactive-value="0"
+            v-model="scope.row.newStatus"
+          >
+          </el-switch>
+        </p>
+        <p>
+          推荐：
+          <el-switch
+            @change="handleRecommendStatusChange(scope.row)"
+            :active-value="1"
+            :inactive-value="0"
+            v-model="scope.row.recommandStatus"
+          >
+          </el-switch>
+        </p>
+      </template>
+
+      <!-- SKU库存 -->
+      <template #setupSku="scope">
+        <el-button type="primary" :icon="EditPen" @click="handleShowSkuEditDialog(scope.row)" circle></el-button>
+      </template>
+
+      <!-- 审核状态 -->
+      <template #verifyStatus="scope">
+        <p>{{ verifyStatusFilter(scope.row.verifyStatus) }}</p>
+        <p>
+          <el-button type="text" @click="handleShowVerifyDetail(scope.row)">审核详情</el-button>
+        </p>
+      </template>
+
       <!-- 表格操作 -->
       <template #operation="scope">
         <el-button type="primary" link :icon="EditPen" @click="openDrawer('编辑', scope.row)">编辑</el-button>
@@ -39,7 +104,53 @@ const proTable = ref<ProTableInstance>();
 
 // 表格配置项
 const columns = reactive<ColumnProps<Product.ProductModel>[]>([
-  { type: "selection", fixed: "left", width: 70 },
+  { type: "selection", width: 60, fixed: "left" },
+  {
+    prop: "id",
+    width: 100,
+    label: "编号",
+    search: { el: "input" }
+  },
+  {
+    prop: "pic",
+    width: 120,
+    label: "商品图片"
+  },
+  {
+    prop: "nameAndBrand",
+    width: 200,
+    label: "商品名称"
+  },
+  {
+    prop: "priceAndSn",
+    width: 120,
+    label: "价格/货号"
+  },
+  {
+    prop: "setupState",
+    width: 140,
+    label: "标签"
+  },
+  {
+    prop: "sort",
+    width: 100,
+    label: "排序"
+  },
+  {
+    prop: "setupSku",
+    width: 100,
+    label: "SKU库存"
+  },
+  {
+    prop: "sale",
+    width: 100,
+    label: "销量"
+  },
+  {
+    prop: "verifyStatus",
+    width: 100,
+    label: "审核状态"
+  },
   { prop: "operation", label: "操作", fixed: "right", width: 170 }
 ]);
 
@@ -71,10 +182,42 @@ const sortTable = ({ newIndex, oldIndex }: { newIndex?: number; oldIndex?: numbe
   console.log(newIndex, oldIndex);
 };
 
+const verifyStatusFilter = (value: number) => {
+  if (value === 1) {
+    return "审核通过";
+  } else {
+    return "未审核";
+  }
+};
+
+const handleShowVerifyDetail = (row: Product.ProductModel) => {
+  console.log(row);
+};
+
 // 删除商品
 const deleteProduct = async (row: Product.ProductModel) => {
   await useHandleData(deleteProductApi, row.id, `删除【${row.name}】商品`);
   proTable.value?.getTableList();
+};
+
+// 上架切换
+const handlePublishStatusChange = (row: Product.ProductModel) => {
+  console.log(row);
+};
+
+// 新品切换
+const handleNewStatusChange = (row: Product.ProductModel) => {
+  console.log(row);
+};
+
+// 推荐切换
+const handleRecommendStatusChange = (row: Product.ProductModel) => {
+  console.log(row);
+};
+
+// sku库存
+const handleShowSkuEditDialog = (row: Product.ProductModel) => {
+  console.log(row);
 };
 
 // 打开 drawer(新增、查看、编辑)

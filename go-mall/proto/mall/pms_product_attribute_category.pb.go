@@ -20,7 +20,7 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// ProductAttributeCategory 产品属性分类
+// 商品属性分类
 type ProductAttributeCategory struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache

@@ -20,7 +20,7 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// Brand 商品品牌表
+// Brand 商品品牌
 type Brand struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache

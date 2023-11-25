@@ -3345,6 +3345,17 @@ func (m *AddOrUpdateProductAttributeParam) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
+	if _, ok := _AddOrUpdateProductAttributeParam_Type_InLookup[m.GetType()]; !ok {
+		err := AddOrUpdateProductAttributeParamValidationError{
+			field:  "Type",
+			reason: "value must be in list [0 1]",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
 	if utf8.RuneCountInString(m.GetName()) < 1 {
 		err := AddOrUpdateProductAttributeParamValidationError{
 			field:  "Name",
@@ -3418,17 +3429,6 @@ func (m *AddOrUpdateProductAttributeParam) validate(all bool) error {
 	if _, ok := _AddOrUpdateProductAttributeParam_HandAddStatus_InLookup[m.GetHandAddStatus()]; !ok {
 		err := AddOrUpdateProductAttributeParamValidationError{
 			field:  "HandAddStatus",
-			reason: "value must be in list [0 1]",
-		}
-		if !all {
-			return err
-		}
-		errors = append(errors, err)
-	}
-
-	if _, ok := _AddOrUpdateProductAttributeParam_Type_InLookup[m.GetType()]; !ok {
-		err := AddOrUpdateProductAttributeParamValidationError{
-			field:  "Type",
 			reason: "value must be in list [0 1]",
 		}
 		if !all {
@@ -3519,6 +3519,11 @@ var _ interface {
 	ErrorName() string
 } = AddOrUpdateProductAttributeParamValidationError{}
 
+var _AddOrUpdateProductAttributeParam_Type_InLookup = map[uint32]struct{}{
+	0: {},
+	1: {},
+}
+
 var _AddOrUpdateProductAttributeParam_SelectType_InLookup = map[uint32]struct{}{
 	0: {},
 	1: {},
@@ -3547,11 +3552,6 @@ var _AddOrUpdateProductAttributeParam_RelatedStatus_InLookup = map[uint32]struct
 }
 
 var _AddOrUpdateProductAttributeParam_HandAddStatus_InLookup = map[uint32]struct{}{
-	0: {},
-	1: {},
-}
-
-var _AddOrUpdateProductAttributeParam_Type_InLookup = map[uint32]struct{}{
 	0: {},
 	1: {},
 }
@@ -4383,6 +4383,88 @@ func (m *AddOrUpdateProductParam) validate(all bool) error {
 	var errors []error
 
 	// no validation rules for Id
+
+	// no validation rules for ProductCategoryId
+
+	// no validation rules for Name
+
+	// no validation rules for SubTitle
+
+	// no validation rules for BrandId
+
+	// no validation rules for Description
+
+	// no validation rules for ProductSN
+
+	// no validation rules for Price
+
+	// no validation rules for OriginalPrice
+
+	// no validation rules for Stock
+
+	// no validation rules for Unit
+
+	// no validation rules for Weight
+
+	// no validation rules for Sort
+
+	// no validation rules for GiftPoint
+
+	// no validation rules for GiftGrowth
+
+	// no validation rules for UsePointLimit
+
+	// no validation rules for PreviewStatus
+
+	// no validation rules for PublishStatus
+
+	// no validation rules for NewStatus
+
+	// no validation rules for RecommandStatus
+
+	// no validation rules for ServiceIds
+
+	// no validation rules for DetailTitle
+
+	// no validation rules for DetailDesc
+
+	// no validation rules for Keywords
+
+	// no validation rules for Note
+
+	// no validation rules for PromotionType
+
+	// no validation rules for PromotionPrice
+
+	// no validation rules for PromotionStartTime
+
+	// no validation rules for PromotionEndTime
+
+	// no validation rules for ProductAttributeCategoryId
+
+	// no validation rules for Pic
+
+	// no validation rules for AlbumPics
+
+	// no validation rules for DetailHTML
+
+	// no validation rules for DetailMobileHTML
+
+	// no validation rules for VerifyStatus
+
+	// no validation rules for DeleteStatus
+
+	// no validation rules for FeightTemplateId
+
+	// no validation rules for Sale
+
+	// no validation rules for LowStock
+
+	// no validation rules for PromotionPerLimit
+
+	// no validation rules for BrandName
+
+	// no validation rules for ProductCategoryName
 
 	if len(errors) > 0 {
 		return AddOrUpdateProductParamMultiError(errors)

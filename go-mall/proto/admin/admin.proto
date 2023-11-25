@@ -288,7 +288,60 @@ message DeleteProductAttributeReq {
 
 // 添加或更新商品参数
 message AddOrUpdateProductParam {
-  uint64 id = 1;
+  // 基本信息
+  uint64 id = 1; // 主键
+  uint64 productCategoryId = 2; // 商品分类id
+  string name = 3; // 商品名称
+  string subTitle = 4; // 副标题
+  uint64 brandId = 5; // 品牌id
+  string description = 6; // 商品描述
+  string productSN = 7; // 货号
+  double price = 8; // 价格
+  double originalPrice = 9; // 市场价
+  uint32 stock = 10; // 库存
+  string unit = 11; // 单位
+  double weight = 12; // 商品重量，默认为克
+  uint32 sort = 13; // 排序
+
+  // 促销信息
+  uint32 giftPoint = 14; // 赠送的积分
+  uint32 giftGrowth = 15; // 赠送的成长值
+  uint32 usePointLimit = 16; // 限制使用的积分数
+  uint32 previewStatus = 17; // 是否为预告商品：0->不是；1->是
+  uint32 publishStatus = 18; // 上架状态：0->下架；1->上架
+  uint32 newStatus = 19; // 新品状态:0->不是新品；1->新品
+  uint32 recommandStatus = 20; // 推荐状态；0->不推荐；1->推荐
+  string serviceIds = 21; // 以逗号分割的产品服务：1->无忧退货；2->快速退款；3->免费包邮
+  string detailTitle = 22; // 详情标题
+  string detailDesc = 23; // 详情描述
+  string keywords = 24; // 关键字
+  string note = 25; // 备注
+  uint32 promotionType = 26; // 促销类型：0->没有促销使用原价;1->使用促销价；2->使用会员价；3->使用阶梯价格；4->使用满减价格；5->限时购
+  double promotionPrice = 27; // 促销价格
+  uint32 promotionStartTime = 28; // 促销开始时间
+  uint32 promotionEndTime = 29; // 促销结束时间
+
+  // 属性信息
+  uint64 productAttributeCategoryId = 30; // 品牌属性分类id
+  string pic = 31; // 图片
+  string albumPics = 32; // 画册图片，连产品图片限制为5张，以逗号分割
+  string detailHTML = 33; // 电脑端详情
+  string detailMobileHTML = 34; // 移动端详情
+
+  // 状态
+  int32 verifyStatus = 35; // 审核状态：0->未审核；1->审核通过
+  int32 deleteStatus = 36; // 删除状态：0->未删除；1->已删除
+
+  // 其他
+  uint64 feightTemplateId = 37; // 运费模版id
+  uint32 sale = 38; // 销量
+  uint32 lowStock = 39; // 库存预警值
+  uint32 promotionPerLimit = 40; // 活动限购数量
+
+  // 冗余字段
+  string brandName = 41; // 品牌名称
+  string productCategoryName = 42; // 商品分类名称
+
 }
 
 // 分页查询商品

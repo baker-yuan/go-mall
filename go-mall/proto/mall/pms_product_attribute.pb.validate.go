@@ -59,6 +59,8 @@ func (m *ProductAttribute) validate(all bool) error {
 
 	// no validation rules for Id
 
+	// no validation rules for Type
+
 	// no validation rules for ProductAttributeCategoryId
 
 	// no validation rules for Name
@@ -78,8 +80,6 @@ func (m *ProductAttribute) validate(all bool) error {
 	// no validation rules for RelatedStatus
 
 	// no validation rules for HandAddStatus
-
-	// no validation rules for Type
 
 	if len(errors) > 0 {
 		return ProductAttributeMultiError(errors)

@@ -20,7 +20,7 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// 产品的分类和属性的关系表，用于设置分类筛选条件（只支持一级分类）
+// 商品分类和属性的关系表，用于设置分类筛选条件（只支持一级分类）
 type ProductCategoryAttributeRelation struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
