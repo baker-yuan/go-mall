@@ -7,14 +7,14 @@ import (
 	"gorm.io/gorm"
 )
 
-var defaultTx Transaction
+var defaultTx TransactionImpl
 
-type Transaction struct {
+type TransactionImpl struct {
 	DB *gorm.DB
 }
 
 func InitTransaction(db *gorm.DB) {
-	defaultTx = Transaction{
+	defaultTx = TransactionImpl{
 		DB: db,
 	}
 }
@@ -22,7 +22,7 @@ func InitTransaction(db *gorm.DB) {
 type contextTxKey struct{}
 
 // PutDbToCtx 将tx放入到ctx中
-func (t Transaction) PutDbToCtx(ctx context.Context, fn func(ctx context.Context) error) error {
+func (t TransactionImpl) PutDbToCtx(ctx context.Context, fn func(ctx context.Context) error) error {
 	return t.DB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
 		ctx = context.WithValue(ctx, contextTxKey{}, tx)
 		return fn(ctx)
@@ -30,7 +30,7 @@ func (t Transaction) PutDbToCtx(ctx context.Context, fn func(ctx context.Context
 }
 
 // GetDbToCtx 获取PutDbToCtx存入的tx
-func (t Transaction) GetDbToCtx(ctx context.Context) (*gorm.DB, error) {
+func (t TransactionImpl) GetDbToCtx(ctx context.Context) (*gorm.DB, error) {
 	txKey := ctx.Value(contextTxKey{})
 	tx, ok := txKey.(*gorm.DB)
 	if ok {
@@ -39,8 +39,8 @@ func (t Transaction) GetDbToCtx(ctx context.Context) (*gorm.DB, error) {
 	return nil, errors.New("get gorm.DB fail from context")
 }
 
-// PutDbToCtx 将tx放入到ctx中
-func PutDbToCtx(ctx context.Context, fn func(ctx context.Context) error) error {
+// Transaction 将tx放入到ctx中
+func Transaction(ctx context.Context, fn func(ctx context.Context) error) error {
 	return defaultTx.PutDbToCtx(ctx, fn)
 }
 

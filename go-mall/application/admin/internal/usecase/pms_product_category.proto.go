@@ -36,7 +36,7 @@ func (p ProductCategoryUseCase) CreateProductCategory(ctx context.Context, param
 	}
 
 	// 事务执行
-	return db.PutDbToCtx(ctx, func(ctx context.Context) error {
+	return db.Transaction(ctx, func(ctx context.Context) error {
 		// save
 		if err := p.categoryRepo.CreateWithTX(ctx, productCategory); err != nil {
 			return err
@@ -74,7 +74,7 @@ func (p ProductCategoryUseCase) UpdateProductCategory(ctx context.Context, param
 		return err
 	}
 
-	return db.PutDbToCtx(ctx, func(ctx context.Context) error {
+	return db.Transaction(ctx, func(ctx context.Context) error {
 		// 同时更新筛选属性的信息，先删除在添加
 		if err := p.categoryAttributeRelationRepo.DeleteByProductCategoryIDWithTX(ctx, param.GetId()); err != nil {
 			return err

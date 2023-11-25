@@ -58,7 +58,7 @@ func (c ProductUseCase) CreateProduct(ctx context.Context, param *pb.AddOrUpdate
 	product := assembler.AddOrUpdateProductParamToEntity(param)
 
 	// 事务执行
-	return db.PutDbToCtx(ctx, func(ctx context.Context) error {
+	return db.Transaction(ctx, func(ctx context.Context) error {
 		// 创建商品
 		if err := c.productRepo.CreateWithTX(ctx, product); err != nil {
 			return err
