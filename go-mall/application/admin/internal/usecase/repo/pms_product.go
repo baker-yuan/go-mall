@@ -50,6 +50,44 @@ func initProductField(db *gorm.DB) error {
 	return nil
 }
 
+func (r ProductRepo) WithByID(id uint64) db.DBOption {
+	return func(db *gorm.DB) *gorm.DB {
+		return db.Where("id = ?", id)
+	}
+}
+
+func (r ProductRepo) WithByName(name string) db.DBOption {
+	return func(db *gorm.DB) *gorm.DB {
+		return db.Where("name like ?", "%"+name+"%")
+	}
+}
+
+func (r ProductRepo) WithByProductSN(productSN string) db.DBOption {
+	return func(db *gorm.DB) *gorm.DB {
+		return db.Where("product_sn = ?", productSN)
+	}
+}
+func (r ProductRepo) WithByBrandID(brandID uint64) db.DBOption {
+	return func(db *gorm.DB) *gorm.DB {
+		return db.Where("brand_id = ?", brandID)
+	}
+}
+func (r ProductRepo) WithByPublishStatus(publishStatus uint32) db.DBOption {
+	return func(db *gorm.DB) *gorm.DB {
+		return db.Where("publish_status = ?", publishStatus)
+	}
+}
+func (r ProductRepo) WithByVerifyStatus(verifyStatus uint32) db.DBOption {
+	return func(db *gorm.DB) *gorm.DB {
+		return db.Where("verify_status = ?", verifyStatus)
+	}
+}
+func (r ProductRepo) WithByProductCategoryID(productCategoryID uint64) db.DBOption {
+	return func(db *gorm.DB) *gorm.DB {
+		return db.Where("product_category_id = ?", productCategoryID)
+	}
+}
+
 // Create 创建商品
 func (r ProductRepo) Create(ctx context.Context, product *entity.Product) error {
 	if product.ID > 0 {

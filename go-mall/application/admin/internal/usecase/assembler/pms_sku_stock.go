@@ -6,8 +6,20 @@ import (
 )
 
 // SkuStockEntityToModel entity转pb
-func SkuStockEntityToModel(skuStock *entity.SkuStock) *pb.SkuStock {
-	return &pb.SkuStock{}
+func SkuStockEntityToModel(skuStockEntity *entity.SkuStock) *pb.SkuStock {
+	return &pb.SkuStock{
+		Id:             skuStockEntity.ID,
+		ProductId:      skuStockEntity.ProductID,
+		SkuCode:        skuStockEntity.SkuCode,
+		Price:          skuStockEntity.Price,
+		Stock:          skuStockEntity.Stock,
+		LowStock:       skuStockEntity.LowStock,
+		Pic:            skuStockEntity.Pic,
+		Sale:           skuStockEntity.Sale,
+		PromotionPrice: skuStockEntity.PromotionPrice,
+		LockStock:      skuStockEntity.LockStock,
+		SpData:         skuStockEntity.SpData,
+	}
 }
 
 // SkuStocksToEntity pb转entity

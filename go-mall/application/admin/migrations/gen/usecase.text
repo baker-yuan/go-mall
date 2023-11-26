@@ -76,11 +76,11 @@ func (c $!{tableInfo.name}UseCase) Get$!{tableInfo.name}s(ctx context.Context, p
 		return nil, 0, err
 	}
 
-	models := make([]*pb.$!{tableInfo.name}, 0)
+	results := make([]*pb.$!{tableInfo.name}, 0)
 	for _, $!tool.firstLowerCase($!{tableInfo.name}) := range $!tool.firstLowerCase($!{tableInfo.name})s {
-		models = append(models, assembler.$!{tableInfo.name}EntityToModel($!tool.firstLowerCase($!{tableInfo.name})))
+		results = append(results, assembler.$!{tableInfo.name}EntityToModel($!tool.firstLowerCase($!{tableInfo.name})))
 	}
-	return models, pageTotal, nil
+	return results, pageTotal, nil
 }
 
 // Get$!{tableInfo.name} 根据id获取$!{tableInfo.comment}

@@ -65,13 +65,13 @@ func (c BrandUseCase) GetBrands(ctx context.Context, param *pb.GetBrandsParam) (
 		return nil, 0, err
 	}
 
-	models := make([]*pb.Brand, 0)
+	results := make([]*pb.Brand, 0)
 	for _, brand := range brands {
 		brand.BigPic = util.GetFullUrl(brand.BigPic)
 		brand.Logo = util.GetFullUrl(brand.Logo)
-		models = append(models, assembler.BrandEntityToModel(brand))
+		results = append(results, assembler.BrandEntityToModel(brand))
 	}
-	return models, pageTotal, nil
+	return results, pageTotal, nil
 }
 
 // GetBrand 根据id获取商品品牌

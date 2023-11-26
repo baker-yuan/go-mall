@@ -70,6 +70,9 @@ func Run(cfg *config.Config) {
 	productAttributeUseCase := usecase.NewProductAttribute(
 		repo.NewProductAttributeRepo(conn),
 	)
+	skuStockUseCase := usecase.NewSkuStock(
+		repo.NewSkuStockRepo(conn),
+	)
 	productUseCase := usecase.NewProduct(
 		repo.NewProductRepo(conn),
 		repo.NewBrandRepo(conn),
@@ -90,6 +93,7 @@ func Run(cfg *config.Config) {
 		productAttributeCategoryUseCase,
 		productAttributeUseCase,
 		productUseCase,
+		skuStockUseCase,
 	)
 	if err := configGrpc(impl, cfg.HTTP.IP, cfg.HTTP.Port); err != nil {
 		l.Fatal(fmt.Errorf("app - Run - configGrpc: %w", err))

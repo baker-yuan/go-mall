@@ -50,6 +50,17 @@ func initSkuStockField(db *gorm.DB) error {
 	return nil
 }
 
+func (r SkuStockRepo) WithByProductID(productID uint64) db.DBOption {
+	return func(db *gorm.DB) *gorm.DB {
+		return db.Where("product_id = ?", productID)
+	}
+}
+func (r SkuStockRepo) WithBySkuCode(skuCode string) db.DBOption {
+	return func(db *gorm.DB) *gorm.DB {
+		return db.Where("sku_code like ?", "%"+skuCode+"%")
+	}
+}
+
 // Create 创建sku的库存
 func (r SkuStockRepo) Create(ctx context.Context, skuStock *entity.SkuStock) error {
 	if skuStock.ID > 0 {
@@ -108,4 +119,31 @@ func (r SkuStockRepo) BatchCreateWithTX(ctx context.Context, productID uint64, s
 		return err
 	}
 	return db.WithContext(ctx).Create(skuStocks).Error
+}
+
+// BatchUpdateOrInsertSkuStock 批量插入或者更新
+func (r SkuStockRepo) BatchUpdateOrInsertSkuStock(ctx context.Context, stocks []*entity.SkuStock) error {
+	return r.DB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
+		for _, stock := range stocks {
+			findStock := &entity.SkuStock{}
+			findErr := tx.Where("id = ?", stock.ID).First(&findStock).Error
+			if findErr == nil {
+				// 没有错误直接更新
+				if err := tx.Where("id = ?", stock.ID).Select(updateSkuStockField).Updates(stock).Error; err != nil {
+					return err
+				}
+			} else {
+				if errors.Is(findErr, gorm.ErrRecordNotFound) {
+					// 记录没找到插入
+					if err := tx.Create(stock).Error; err != nil {
+						return err
+					}
+				} else {
+					// 返回错误
+					return findErr
+				}
+			}
+		}
+		return nil
+	})
 }

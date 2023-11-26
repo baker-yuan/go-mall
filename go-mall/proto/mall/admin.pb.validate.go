@@ -3309,6 +3309,538 @@ var _ interface {
 	ErrorName() string
 } = DeleteProductAttributeCategoryReqValidationError{}
 
+// Validate checks the field values on BatchUpdateSkuStockParam with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *BatchUpdateSkuStockParam) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on BatchUpdateSkuStockParam with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// BatchUpdateSkuStockParamMultiError, or nil if none found.
+func (m *BatchUpdateSkuStockParam) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *BatchUpdateSkuStockParam) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if m.GetProductId() < 0 {
+		err := BatchUpdateSkuStockParamValidationError{
+			field:  "ProductId",
+			reason: "value must be greater than or equal to 0",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	for idx, item := range m.GetSkuStocks() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, BatchUpdateSkuStockParamValidationError{
+						field:  fmt.Sprintf("SkuStocks[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, BatchUpdateSkuStockParamValidationError{
+						field:  fmt.Sprintf("SkuStocks[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return BatchUpdateSkuStockParamValidationError{
+					field:  fmt.Sprintf("SkuStocks[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	if len(errors) > 0 {
+		return BatchUpdateSkuStockParamMultiError(errors)
+	}
+
+	return nil
+}
+
+// BatchUpdateSkuStockParamMultiError is an error wrapping multiple validation
+// errors returned by BatchUpdateSkuStockParam.ValidateAll() if the designated
+// constraints aren't met.
+type BatchUpdateSkuStockParamMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m BatchUpdateSkuStockParamMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m BatchUpdateSkuStockParamMultiError) AllErrors() []error { return m }
+
+// BatchUpdateSkuStockParamValidationError is the validation error returned by
+// BatchUpdateSkuStockParam.Validate if the designated constraints aren't met.
+type BatchUpdateSkuStockParamValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e BatchUpdateSkuStockParamValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e BatchUpdateSkuStockParamValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e BatchUpdateSkuStockParamValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e BatchUpdateSkuStockParamValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e BatchUpdateSkuStockParamValidationError) ErrorName() string {
+	return "BatchUpdateSkuStockParamValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e BatchUpdateSkuStockParamValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sBatchUpdateSkuStockParam.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = BatchUpdateSkuStockParamValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = BatchUpdateSkuStockParamValidationError{}
+
+// Validate checks the field values on GetSkuStocksByProductIdParam with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *GetSkuStocksByProductIdParam) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on GetSkuStocksByProductIdParam with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// GetSkuStocksByProductIdParamMultiError, or nil if none found.
+func (m *GetSkuStocksByProductIdParam) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *GetSkuStocksByProductIdParam) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if m.GetProductId() < 0 {
+		err := GetSkuStocksByProductIdParamValidationError{
+			field:  "ProductId",
+			reason: "value must be greater than or equal to 0",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	// no validation rules for SkuCode
+
+	if len(errors) > 0 {
+		return GetSkuStocksByProductIdParamMultiError(errors)
+	}
+
+	return nil
+}
+
+// GetSkuStocksByProductIdParamMultiError is an error wrapping multiple
+// validation errors returned by GetSkuStocksByProductIdParam.ValidateAll() if
+// the designated constraints aren't met.
+type GetSkuStocksByProductIdParamMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m GetSkuStocksByProductIdParamMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m GetSkuStocksByProductIdParamMultiError) AllErrors() []error { return m }
+
+// GetSkuStocksByProductIdParamValidationError is the validation error returned
+// by GetSkuStocksByProductIdParam.Validate if the designated constraints
+// aren't met.
+type GetSkuStocksByProductIdParamValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e GetSkuStocksByProductIdParamValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e GetSkuStocksByProductIdParamValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e GetSkuStocksByProductIdParamValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e GetSkuStocksByProductIdParamValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e GetSkuStocksByProductIdParamValidationError) ErrorName() string {
+	return "GetSkuStocksByProductIdParamValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e GetSkuStocksByProductIdParamValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sGetSkuStocksByProductIdParam.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = GetSkuStocksByProductIdParamValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = GetSkuStocksByProductIdParamValidationError{}
+
+// Validate checks the field values on SkuStocksData with the rules defined in
+// the proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *SkuStocksData) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on SkuStocksData with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in SkuStocksDataMultiError, or
+// nil if none found.
+func (m *SkuStocksData) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *SkuStocksData) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	for idx, item := range m.GetData() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, SkuStocksDataValidationError{
+						field:  fmt.Sprintf("Data[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, SkuStocksDataValidationError{
+						field:  fmt.Sprintf("Data[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return SkuStocksDataValidationError{
+					field:  fmt.Sprintf("Data[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	if len(errors) > 0 {
+		return SkuStocksDataMultiError(errors)
+	}
+
+	return nil
+}
+
+// SkuStocksDataMultiError is an error wrapping multiple validation errors
+// returned by SkuStocksData.ValidateAll() if the designated constraints
+// aren't met.
+type SkuStocksDataMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m SkuStocksDataMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m SkuStocksDataMultiError) AllErrors() []error { return m }
+
+// SkuStocksDataValidationError is the validation error returned by
+// SkuStocksData.Validate if the designated constraints aren't met.
+type SkuStocksDataValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e SkuStocksDataValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e SkuStocksDataValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e SkuStocksDataValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e SkuStocksDataValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e SkuStocksDataValidationError) ErrorName() string { return "SkuStocksDataValidationError" }
+
+// Error satisfies the builtin error interface
+func (e SkuStocksDataValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sSkuStocksData.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = SkuStocksDataValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = SkuStocksDataValidationError{}
+
+// Validate checks the field values on GetSkuStocksByProductIdRsp with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *GetSkuStocksByProductIdRsp) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on GetSkuStocksByProductIdRsp with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// GetSkuStocksByProductIdRspMultiError, or nil if none found.
+func (m *GetSkuStocksByProductIdRsp) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *GetSkuStocksByProductIdRsp) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Code
+
+	// no validation rules for Message
+
+	if all {
+		switch v := interface{}(m.GetData()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, GetSkuStocksByProductIdRspValidationError{
+					field:  "Data",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, GetSkuStocksByProductIdRspValidationError{
+					field:  "Data",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetData()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return GetSkuStocksByProductIdRspValidationError{
+				field:  "Data",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if len(errors) > 0 {
+		return GetSkuStocksByProductIdRspMultiError(errors)
+	}
+
+	return nil
+}
+
+// GetSkuStocksByProductIdRspMultiError is an error wrapping multiple
+// validation errors returned by GetSkuStocksByProductIdRsp.ValidateAll() if
+// the designated constraints aren't met.
+type GetSkuStocksByProductIdRspMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m GetSkuStocksByProductIdRspMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m GetSkuStocksByProductIdRspMultiError) AllErrors() []error { return m }
+
+// GetSkuStocksByProductIdRspValidationError is the validation error returned
+// by GetSkuStocksByProductIdRsp.Validate if the designated constraints aren't met.
+type GetSkuStocksByProductIdRspValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e GetSkuStocksByProductIdRspValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e GetSkuStocksByProductIdRspValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e GetSkuStocksByProductIdRspValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e GetSkuStocksByProductIdRspValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e GetSkuStocksByProductIdRspValidationError) ErrorName() string {
+	return "GetSkuStocksByProductIdRspValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e GetSkuStocksByProductIdRspValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sGetSkuStocksByProductIdRsp.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = GetSkuStocksByProductIdRspValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = GetSkuStocksByProductIdRspValidationError{}
+
 // Validate checks the field values on AddOrUpdateProductAttributeParam with
 // the rules defined in the proto definition for this message. If any rules
 // are violated, the first error encountered is returned, or nil if there are
@@ -4394,7 +4926,7 @@ func (m *AddOrUpdateProductParam) validate(all bool) error {
 
 	// no validation rules for Description
 
-	// no validation rules for ProductSN
+	// no validation rules for ProductSn
 
 	// no validation rules for Price
 
@@ -4446,9 +4978,9 @@ func (m *AddOrUpdateProductParam) validate(all bool) error {
 
 	// no validation rules for AlbumPics
 
-	// no validation rules for DetailHTML
+	// no validation rules for DetailHtml
 
-	// no validation rules for DetailMobileHTML
+	// no validation rules for DetailMobileHtml
 
 	// no validation rules for VerifyStatus
 
@@ -4805,6 +5337,155 @@ func (m *GetProductsParam) validate(all bool) error {
 	}
 
 	var errors []error
+
+	if all {
+		switch v := interface{}(m.GetId()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, GetProductsParamValidationError{
+					field:  "Id",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, GetProductsParamValidationError{
+					field:  "Id",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetId()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return GetProductsParamValidationError{
+				field:  "Id",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	// no validation rules for Name
+
+	// no validation rules for ProductSn
+
+	if all {
+		switch v := interface{}(m.GetBrandId()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, GetProductsParamValidationError{
+					field:  "BrandId",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, GetProductsParamValidationError{
+					field:  "BrandId",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetBrandId()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return GetProductsParamValidationError{
+				field:  "BrandId",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if all {
+		switch v := interface{}(m.GetPublishStatus()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, GetProductsParamValidationError{
+					field:  "PublishStatus",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, GetProductsParamValidationError{
+					field:  "PublishStatus",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetPublishStatus()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return GetProductsParamValidationError{
+				field:  "PublishStatus",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if all {
+		switch v := interface{}(m.GetVerifyStatus()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, GetProductsParamValidationError{
+					field:  "VerifyStatus",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, GetProductsParamValidationError{
+					field:  "VerifyStatus",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetVerifyStatus()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return GetProductsParamValidationError{
+				field:  "VerifyStatus",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if all {
+		switch v := interface{}(m.GetProductCategoryId()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, GetProductsParamValidationError{
+					field:  "ProductCategoryId",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, GetProductsParamValidationError{
+					field:  "ProductCategoryId",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetProductCategoryId()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return GetProductsParamValidationError{
+				field:  "ProductCategoryId",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
 
 	if m.GetPageNum() < 0 {
 		err := GetProductsParamValidationError{

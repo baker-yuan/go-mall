@@ -68,7 +68,7 @@ func (m *Product) validate(all bool) error {
 
 	// no validation rules for Description
 
-	// no validation rules for ProductSN
+	// no validation rules for ProductSn
 
 	// no validation rules for Price
 
@@ -120,9 +120,9 @@ func (m *Product) validate(all bool) error {
 
 	// no validation rules for AlbumPics
 
-	// no validation rules for DetailHTML
+	// no validation rules for DetailHtml
 
-	// no validation rules for DetailMobileHTML
+	// no validation rules for DetailMobileHtml
 
 	// no validation rules for VerifyStatus
 

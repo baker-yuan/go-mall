@@ -146,6 +146,27 @@ func (c ProductUseCase) UpdateProduct(ctx context.Context, param *pb.AddOrUpdate
 // GetProducts 分页查询商品
 func (c ProductUseCase) GetProducts(ctx context.Context, param *pb.GetProductsParam) ([]*pb.Product, uint32, error) {
 	opts := make([]db.DBOption, 0)
+	if param.GetId() != nil {
+		opts = append(opts, c.productRepo.WithByID(param.GetId().GetValue()))
+	}
+	if len(param.GetName()) != 0 {
+		opts = append(opts, c.productRepo.WithByName(param.GetName()))
+	}
+	if len(param.GetProductSn()) != 0 {
+		opts = append(opts, c.productRepo.WithByProductSN(param.GetProductSn()))
+	}
+	if param.GetBrandId() != nil {
+		opts = append(opts, c.productRepo.WithByBrandID(param.GetBrandId().GetValue()))
+	}
+	if param.GetProductCategoryId() != nil {
+		opts = append(opts, c.productRepo.WithByProductCategoryID(param.GetProductCategoryId().GetValue()))
+	}
+	if param.GetPublishStatus() != nil {
+		opts = append(opts, c.productRepo.WithByPublishStatus(param.GetPublishStatus().GetValue()))
+	}
+	if param.GetVerifyStatus() != nil {
+		opts = append(opts, c.productRepo.WithByVerifyStatus(param.GetVerifyStatus().GetValue()))
+	}
 	products, pageTotal, err := c.productRepo.GetByDBOption(ctx, param.GetPageNum(), param.GetPageSize(), opts...)
 	if err != nil {
 		return nil, 0, err
@@ -161,12 +182,12 @@ func (c ProductUseCase) GetProducts(ctx context.Context, param *pb.GetProductsPa
 		return nil, 0, err
 	}
 
-	models := make([]*pb.Product, 0)
+	results := make([]*pb.Product, 0)
 	for _, product := range products {
-		models = append(models, assembler.ProductEntityToModel(product, categories.NameMap(), brands.NameMap()))
+		results = append(results, assembler.ProductEntityToModel(product, categories.NameMap(), brands.NameMap()))
 
 	}
-	return models, pageTotal, nil
+	return results, pageTotal, nil
 }
 
 // GetProduct 根据id获取商品

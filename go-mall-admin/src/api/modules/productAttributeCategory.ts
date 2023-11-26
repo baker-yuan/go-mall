@@ -1,5 +1,6 @@
-import { ProductAttributeCategory, ResPage } from "@/api/interface/index";
+import {ProductAttributeCategory, ReqPage, ResPage} from "@/api/interface/index";
 import http from "@/api";
+import {getBrands} from "@/api/modules/brand";
 
 // 添加产品属性分类
 export const createProductAttributeCategoryApi = (params: ProductAttributeCategory.ProductAttributeCategoryModel) => {

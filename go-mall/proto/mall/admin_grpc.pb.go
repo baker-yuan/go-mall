@@ -45,6 +45,8 @@ const (
 	AdminApi_GetProducts_FullMethodName                      = "/admin.AdminApi/GetProducts"
 	AdminApi_GetProduct_FullMethodName                       = "/admin.AdminApi/GetProduct"
 	AdminApi_DeleteProduct_FullMethodName                    = "/admin.AdminApi/DeleteProduct"
+	AdminApi_BatchUpdateSkuStock_FullMethodName              = "/admin.AdminApi/BatchUpdateSkuStock"
+	AdminApi_GetSkuStocksByProductId_FullMethodName          = "/admin.AdminApi/GetSkuStocksByProductId"
 )
 
 // AdminApiClient is the client API for AdminApi service.
@@ -104,6 +106,11 @@ type AdminApiClient interface {
 	GetProduct(ctx context.Context, in *GetProductReq, opts ...grpc.CallOption) (*GetProductRsp, error)
 	// 删除商品
 	DeleteProduct(ctx context.Context, in *DeleteProductReq, opts ...grpc.CallOption) (*CommonRsp, error)
+	// START ======================================= sku库存 ======================================= START
+	// 批量更新sku的库存
+	BatchUpdateSkuStock(ctx context.Context, in *BatchUpdateSkuStockParam, opts ...grpc.CallOption) (*CommonRsp, error)
+	// 分页查询sku的库存
+	GetSkuStocksByProductId(ctx context.Context, in *GetSkuStocksByProductIdParam, opts ...grpc.CallOption) (*GetSkuStocksByProductIdRsp, error)
 }
 
 type adminApiClient struct {
@@ -348,6 +355,24 @@ func (c *adminApiClient) DeleteProduct(ctx context.Context, in *DeleteProductReq
 	return out, nil
 }
 
+func (c *adminApiClient) BatchUpdateSkuStock(ctx context.Context, in *BatchUpdateSkuStockParam, opts ...grpc.CallOption) (*CommonRsp, error) {
+	out := new(CommonRsp)
+	err := c.cc.Invoke(ctx, AdminApi_BatchUpdateSkuStock_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *adminApiClient) GetSkuStocksByProductId(ctx context.Context, in *GetSkuStocksByProductIdParam, opts ...grpc.CallOption) (*GetSkuStocksByProductIdRsp, error) {
+	out := new(GetSkuStocksByProductIdRsp)
+	err := c.cc.Invoke(ctx, AdminApi_GetSkuStocksByProductId_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // AdminApiServer is the server API for AdminApi service.
 // All implementations must embed UnimplementedAdminApiServer
 // for forward compatibility
@@ -405,6 +430,11 @@ type AdminApiServer interface {
 	GetProduct(context.Context, *GetProductReq) (*GetProductRsp, error)
 	// 删除商品
 	DeleteProduct(context.Context, *DeleteProductReq) (*CommonRsp, error)
+	// START ======================================= sku库存 ======================================= START
+	// 批量更新sku的库存
+	BatchUpdateSkuStock(context.Context, *BatchUpdateSkuStockParam) (*CommonRsp, error)
+	// 分页查询sku的库存
+	GetSkuStocksByProductId(context.Context, *GetSkuStocksByProductIdParam) (*GetSkuStocksByProductIdRsp, error)
 	mustEmbedUnimplementedAdminApiServer()
 }
 
@@ -489,6 +519,12 @@ func (UnimplementedAdminApiServer) GetProduct(context.Context, *GetProductReq) (
 }
 func (UnimplementedAdminApiServer) DeleteProduct(context.Context, *DeleteProductReq) (*CommonRsp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteProduct not implemented")
+}
+func (UnimplementedAdminApiServer) BatchUpdateSkuStock(context.Context, *BatchUpdateSkuStockParam) (*CommonRsp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method BatchUpdateSkuStock not implemented")
+}
+func (UnimplementedAdminApiServer) GetSkuStocksByProductId(context.Context, *GetSkuStocksByProductIdParam) (*GetSkuStocksByProductIdRsp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetSkuStocksByProductId not implemented")
 }
 func (UnimplementedAdminApiServer) mustEmbedUnimplementedAdminApiServer() {}
 
@@ -971,6 +1007,42 @@ func _AdminApi_DeleteProduct_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
+func _AdminApi_BatchUpdateSkuStock_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(BatchUpdateSkuStockParam)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AdminApiServer).BatchUpdateSkuStock(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AdminApi_BatchUpdateSkuStock_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AdminApiServer).BatchUpdateSkuStock(ctx, req.(*BatchUpdateSkuStockParam))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AdminApi_GetSkuStocksByProductId_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetSkuStocksByProductIdParam)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AdminApiServer).GetSkuStocksByProductId(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AdminApi_GetSkuStocksByProductId_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AdminApiServer).GetSkuStocksByProductId(ctx, req.(*GetSkuStocksByProductIdParam))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // AdminApi_ServiceDesc is the grpc.ServiceDesc for AdminApi service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -1081,6 +1153,14 @@ var AdminApi_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DeleteProduct",
 			Handler:    _AdminApi_DeleteProduct_Handler,
+		},
+		{
+			MethodName: "BatchUpdateSkuStock",
+			Handler:    _AdminApi_BatchUpdateSkuStock_Handler,
+		},
+		{
+			MethodName: "GetSkuStocksByProductId",
+			Handler:    _AdminApi_GetSkuStocksByProductId_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

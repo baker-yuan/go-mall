@@ -29,7 +29,7 @@
       <!-- 价格/货号 -->
       <template #priceAndSn="scope">
         <p>价格：￥{{ scope.row.price }}</p>
-        <p>货号：{{ scope.row.productSN }}</p>
+        <p>货号：{{ scope.row.productSn }}</p>
       </template>
 
       <!-- 标签 -->
@@ -85,6 +85,48 @@
         <el-button type="primary" link :icon="Delete" @click="deleteProduct(scope.row)">删除</el-button>
       </template>
     </ProTable>
+
+    <!-- sku编辑 -->
+    <el-dialog title="编辑商品信息" v-model="editSkuInfo.dialogVisible" width="50%">
+      <span>商品货号：</span>
+      <span>{{ editSkuInfo.productSn }}</span>
+      <el-input placeholder="按sku编号搜索" v-model="editSkuInfo.keyword" size="small" style="width: 50%; margin-left: 20px">
+        <template #append>
+          <el-button :icon="Search" @click="handleSearchEditSku" />
+        </template>
+      </el-input>
+      <el-table style="width: 100%; margin-top: 20px" :data="editSkuInfo.stockList" border>
+        <el-table-column label="SKU编号" width="170" align="center">
+          <template #default="scope">
+            <el-input v-model="scope.row.skuCode"></el-input>
+          </template>
+        </el-table-column>
+        <el-table-column v-for="(item, index) in editSkuInfo.productAttr" :label="item.name" :key="item.id" align="center">
+          <template #default="scope">
+            {{ getProductSkuSp(scope.row, index) }}
+          </template>
+        </el-table-column>
+        <el-table-column label="销售价格" width="100" align="center">
+          <template #default="scope">
+            <el-input v-model="scope.row.price"></el-input>
+          </template>
+        </el-table-column>
+        <el-table-column label="商品库存" width="100" align="center">
+          <template #default="scope">
+            <el-input v-model="scope.row.stock"></el-input>
+          </template>
+        </el-table-column>
+        <el-table-column label="库存预警值" width="100" align="center">
+          <template #default="scope">
+            <el-input v-model="scope.row.lowStock"></el-input>
+          </template>
+        </el-table-column>
+      </el-table>
+      <template #footer>
+        <el-button @click="editSkuInfo.dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="handleEditSkuConfirm">确 定</el-button>
+      </template>
+    </el-dialog>
     <ProductDrawer ref="drawerRef" />
   </div>
 </template>
@@ -92,12 +134,16 @@
 <script setup lang="ts" name="ProductManage">
 import { ProTableInstance, ColumnProps } from "@/components/ProTable/interface";
 import ProTable from "@/components/ProTable/index.vue";
-import { Product } from "@/api/interface";
+import { Product, ProductAttribute, SkuStock } from "@/api/interface";
 import { ref, reactive } from "vue";
 import { useHandleData } from "@/hooks/useHandleData";
-import ProductDrawer from "@/views/pms/brand/detail.vue";
-import { CirclePlus, Delete, EditPen } from "@element-plus/icons-vue";
-import { createProductApi, updateProductApi, deleteProductApi, getProductsApi } from "@/api/modules/product";
+import { CirclePlus, Delete, EditPen, Search } from "@element-plus/icons-vue";
+import { createProductApi, deleteProductApi, getProductsApi, updateProductApi } from "@/api/modules/product";
+import { getAllBrandsApi } from "@/api/modules/brand";
+import { getProductAttributesApi } from "@/api/modules/attribute";
+import { batchUpdateSkuStockApi, getSkuStocksByProductIdApi } from "@/api/modules/skuStock";
+import { ElMessage, ElMessageBox } from "element-plus";
+import ProductDrawer from "@/views/pms/product/detail.vue";
 
 // ProTable 实例
 const proTable = ref<ProTableInstance>();
@@ -119,12 +165,70 @@ const columns = reactive<ColumnProps<Product.ProductModel>[]>([
   {
     prop: "nameAndBrand",
     width: 200,
-    label: "商品名称"
+    label: "名称&分类"
+  },
+  {
+    prop: "name",
+    isShow: false,
+    label: "商品名称",
+    search: { el: "input" }
+  },
+  {
+    prop: "productSn",
+    isShow: false,
+    label: "商品货号",
+    search: { el: "input" }
+  },
+  {
+    prop: "brandId",
+    isShow: false,
+    label: "商品品牌",
+    enum: getAllBrandsApi,
+    search: { el: "select", props: { filterable: true } },
+    fieldNames: { label: "name", value: "id" }
+  },
+  {
+    prop: "productCategoryId",
+    isShow: false,
+    label: "商品分类",
+    search: { el: "input" }
+  },
+  {
+    prop: "publishStatus",
+    isShow: false,
+    label: "上架状态",
+    enum: [
+      {
+        label: "下架",
+        value: 0
+      },
+      {
+        label: "上架",
+        value: 1
+      }
+    ],
+    search: { el: "select", props: { filterable: true } }
+  },
+  {
+    prop: "verifyStatus",
+    isShow: false,
+    label: "审核状态",
+    enum: [
+      {
+        label: "未审核",
+        value: 0
+      },
+      {
+        label: "审核通过",
+        value: 1
+      }
+    ],
+    search: { el: "select", props: { filterable: true } }
   },
   {
     prop: "priceAndSn",
     width: 120,
-    label: "价格/货号"
+    label: "价格&货号"
   },
   {
     prop: "setupState",
@@ -215,9 +319,90 @@ const handleRecommendStatusChange = (row: Product.ProductModel) => {
   console.log(row);
 };
 
+const editSkuInfo = reactive<{
+  dialogVisible: boolean;
+  productId: number;
+  productSn: string;
+  productAttributeCategoryId: number;
+  stockList: SkuStock.SkuStockModel[];
+  productAttr: ProductAttribute.ProductAttributeModel[];
+  keyword: string;
+}>({
+  dialogVisible: false,
+  productId: 0,
+  productSn: "",
+  productAttributeCategoryId: 0,
+  stockList: [],
+  productAttr: [],
+  keyword: ""
+});
+
 // sku库存
 const handleShowSkuEditDialog = (row: Product.ProductModel) => {
-  console.log(row);
+  editSkuInfo.dialogVisible = true;
+  editSkuInfo.productId = row.id;
+  editSkuInfo.productSn = row.productSn;
+  editSkuInfo.productAttributeCategoryId = row.productAttributeCategoryId;
+
+  getSkuStocksByProductIdApi({
+    pageNum: 1,
+    pageSize: 10000,
+    productId: row.id,
+    skuCode: editSkuInfo.keyword
+  }).then(response => {
+    editSkuInfo.stockList = response.data.data;
+  });
+
+  if (row.productAttributeCategoryId != null) {
+    getProductAttributesApi({
+      pageNum: 1,
+      pageSize: 10000,
+      type: 0,
+      productAttributeCategoryId: row.productAttributeCategoryId
+    }).then(response => {
+      editSkuInfo.productAttr = response.data.data;
+    });
+  }
+};
+
+const handleSearchEditSku = () => {
+  getSkuStocksByProductIdApi({
+    pageNum: 1,
+    pageSize: 10000,
+    productId: editSkuInfo.productId,
+    skuCode: editSkuInfo.keyword
+  }).then(response => {
+    editSkuInfo.stockList = response.data.data;
+  });
+};
+
+const handleEditSkuConfirm = () => {
+  if (editSkuInfo.stockList.length <= 0) {
+    ElMessage.warning({ message: "暂无sku信息", duration: 1000 });
+    return;
+  }
+  ElMessageBox.confirm("是否要进行修改?", "提示", {
+    confirmButtonText: "确定",
+    cancelButtonText: "取消",
+    type: "warning"
+  }).then(() => {
+    batchUpdateSkuStockApi({
+      productId: editSkuInfo.productId,
+      skuStocks: editSkuInfo.stockList
+    }).then(() => {
+      ElMessage.success({ message: "修改成功", duration: 1000 });
+      editSkuInfo.dialogVisible = false;
+    });
+  });
+};
+
+const getProductSkuSp = (row: SkuStock.SkuStockModel, index: number) => {
+  let spData = JSON.parse(row.spData);
+  if (spData != null && index < spData.length) {
+    return spData[index].value;
+  } else {
+    return null;
+  }
 };
 
 // 打开 drawer(新增、查看、编辑)

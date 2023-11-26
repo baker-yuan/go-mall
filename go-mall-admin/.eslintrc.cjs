@@ -58,7 +58,20 @@ module.exports = {
     "vue/multi-word-component-names": "off", // 要求组件名称始终为 “-” 链接的单词
     "vue/no-setup-props-destructure": "off", // 禁止解构 props 传递给 setup
 
-    // 误报
+    // 全关
     // "prettier/prettier": "off"
+    // 误报
+    // Vue组件使用多行格式，并且每行只有一个属性
+    // singleline 规则表示单行格式的配置，multiline 规则表示多行格式的配置。max 是每行最多允许的属性数量，allowFirstLine 表示是否允许第一行有属性。
+    // "vue/max-attributes-per-line": ["error", {
+    //   "singleline": {
+    //     "max": 4,
+    //     "allowFirstLine": true
+    //   },
+    //   "multiline": {
+    //     "max": 1,
+    //     "allowFirstLine": false
+    //   }
+    // }]
   }
 };

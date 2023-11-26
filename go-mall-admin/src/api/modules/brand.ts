@@ -25,3 +25,13 @@ export const getBrand = (id: number) => {
 export const deleteBrandApi = (id: number) => {
   return http.delete<Brand.BrandModel>(`/brands/${id}`);
 };
+
+// 获取所有商品品牌
+export const getAllBrandsApi = async (): Promise<ResPage<Brand.BrandModel>> => {
+  let params = {
+    pageNum: 1,
+    pageSize: 10000
+  };
+  const res = await getBrands(params);
+  return res.data;
+};

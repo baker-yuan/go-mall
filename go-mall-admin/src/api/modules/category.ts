@@ -1,4 +1,4 @@
-import { Category } from "@/api/interface/index";
+import {Category, ResPage} from "@/api/interface/index";
 import http from "@/api";
 
 // 添加商品分类
@@ -13,7 +13,7 @@ export const updateCategory = (category: Category.CategoryModel) => {
 
 // 分页查询商品分类
 export const getCategories = (params: Category.ReqCategoryListParams) => {
-  return http.get<Category.CategoryModel[]>(`/categories`, params);
+  return http.get<ResPage<Category.CategoryModel>>(`/categories`, params);
 };
 
 // 根据id获取商品分类

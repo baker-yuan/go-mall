@@ -59,11 +59,11 @@ func (c ProductAttributeCategoryUseCase) GetProductAttributeCategories(ctx conte
 		return nil, 0, err
 	}
 
-	models := make([]*pb.ProductAttributeCategory, 0)
+	results := make([]*pb.ProductAttributeCategory, 0)
 	for _, productAttributeCategory := range productAttributeCategories {
-		models = append(models, assembler.ProductAttributeCategoryEntityToModel(productAttributeCategory))
+		results = append(results, assembler.ProductAttributeCategoryEntityToModel(productAttributeCategory))
 	}
-	return models, pageTotal, nil
+	return results, pageTotal, nil
 }
 
 // GetProductAttributeCategory 根据id获取产品属性分类

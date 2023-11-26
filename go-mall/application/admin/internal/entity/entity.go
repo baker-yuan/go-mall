@@ -67,10 +67,10 @@ func Init(db *gorm.DB) error {
 			TableName: "商品表",
 			StructPtr: &Product{},
 		},
-		//{
-		//	TableName: "商品SKU表",
-		//	StructPtr: &SkuStock{},
-		//},
+		{
+			TableName: "商品SKU表",
+			StructPtr: &SkuStock{},
+		},
 		//{
 		//	TableName: "商品阶梯价格表",
 		//	StructPtr: &ProductLadder{},

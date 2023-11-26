@@ -67,11 +67,11 @@ func (c ProductAttributeUseCase) GetProductAttributes(ctx context.Context, param
 		return nil, 0, err
 	}
 
-	models := make([]*pb.ProductAttribute, 0)
+	results := make([]*pb.ProductAttribute, 0)
 	for _, productAttribute := range productAttributes {
-		models = append(models, assembler.ProductAttributeEntityToModel(productAttribute))
+		results = append(results, assembler.ProductAttributeEntityToModel(productAttribute))
 	}
-	return models, pageTotal, nil
+	return results, pageTotal, nil
 }
 
 // GetProductAttribute 根据id获取商品属性参数

@@ -104,6 +104,14 @@ type (
 
 	// IProductRepo 数据存储操作
 	IProductRepo interface {
+		WithByID(value uint64) db.DBOption
+		WithByName(name string) db.DBOption
+		WithByProductSN(productSN string) db.DBOption
+		WithByBrandID(brandID uint64) db.DBOption
+		WithByPublishStatus(publishStatus uint32) db.DBOption
+		WithByVerifyStatus(verifyStatus uint32) db.DBOption
+		WithByProductCategoryID(productCategoryID uint64) db.DBOption
+
 		// Create 创建商品
 		Create(ctx context.Context, product *entity.Product) error
 		// DeleteByID 根据主键ID删除商品
@@ -300,10 +308,17 @@ type (
 type (
 	// ISkuStockUseCase 业务逻辑
 	ISkuStockUseCase interface {
+		// BatchUpdateSkuStock 批量修改sku的库存
+		BatchUpdateSkuStock(ctx context.Context, param *pb.BatchUpdateSkuStockParam) error
+		// GetSkuStocksByProductID 根据商品id分页查询sku的库存
+		GetSkuStocksByProductID(ctx context.Context, param *pb.GetSkuStocksByProductIdParam) ([]*pb.SkuStock, error)
 	}
 
 	// ISkuStockRepo 数据存储操作
 	ISkuStockRepo interface {
+		WithByProductID(productId uint64) db.DBOption
+		WithBySkuCode(skuCode string) db.DBOption
+
 		// Create 创建sku的库存
 		Create(ctx context.Context, skuStock *entity.SkuStock) error
 		// DeleteByID 根据主键ID删除sku的库存
@@ -317,6 +332,8 @@ type (
 
 		// BatchCreateWithTX 创建sku的库存
 		BatchCreateWithTX(ctx context.Context, productID uint64, skuStocks []*entity.SkuStock) error
+		// BatchUpdateOrInsertSkuStock 批量插入或者更新
+		BatchUpdateOrInsertSkuStock(ctx context.Context, stocks []*entity.SkuStock) error
 	}
 )
 

@@ -228,6 +228,38 @@ message DeleteProductAttributeCategoryReq {
 
 // START ======================================= 商品属性参数 ======================================= START
 
+
+
+
+
+// START ======================================= sku库存 ======================================= START
+
+// 批量更新sku的库存参数
+message BatchUpdateSkuStockParam {
+  uint64 product_id = 1 [(validate.rules).uint64.gte = 0]; // 产品ID
+  repeated model.SkuStock sku_stocks = 2; // 商品SKU
+}
+
+// 根据商品ID查询sku的库存
+message GetSkuStocksByProductIdParam {
+  uint64 product_id = 1 [(validate.rules).uint64.gte = 0]; // 产品ID
+  string sku_code = 2;   // sku编码
+}
+
+// 根据商品id分页查询sku的库存
+message SkuStocksData {
+  repeated model.SkuStock data = 1;    // sku的库存
+}
+
+message GetSkuStocksByProductIdRsp {
+  uint32 code = 1;          // 状态码
+  string message = 2;       // 提示信息
+
+  SkuStocksData data = 3; // 数据
+}
+
+// END ======================================= sku库存 ======================================= END
+
 // 添加或更新商品属性参数
 message AddOrUpdateProductAttributeParam {
   uint64 id = 20 ;                                                                  // 编号
@@ -298,73 +330,80 @@ message AddOrUpdateProductParam {
   uint64 id = 1; // 主键
 
   // 基本信息
-  uint64 productCategoryId = 2; // 商品分类id
+  uint64 product_category_id = 2; // 商品分类id
   string name = 3; // 商品名称
-  string subTitle = 4; // 副标题
-  uint64 brandId = 5; // 品牌id
+  string sub_title = 4; // 副标题
+  uint64 brand_id = 5; // 品牌id
   string description = 6; // 商品描述
-  string productSN = 7; // 货号
+  string product_sn = 7; // 货号
   double price = 8; // 价格
-  double originalPrice = 9; // 市场价
+  double original_price = 9; // 市场价
   uint32 stock = 10; // 库存
   string unit = 11; // 单位
   double weight = 12; // 商品重量，默认为克
   uint32 sort = 13; // 排序
 
   // 促销信息
-  uint32 giftPoint = 14; // 赠送的积分
-  uint32 giftGrowth = 15; // 赠送的成长值
-  uint32 usePointLimit = 16; // 限制使用的积分数
-  uint32 previewStatus = 17; // 是否为预告商品：0->不是；1->是
-  uint32 publishStatus = 18; // 上架状态：0->下架；1->上架
-  uint32 newStatus = 19; // 新品状态:0->不是新品；1->新品
-  uint32 recommandStatus = 20; // 推荐状态；0->不推荐；1->推荐
-  string serviceIds = 21; // 以逗号分割的产品服务：1->无忧退货；2->快速退款；3->免费包邮
-  string detailTitle = 22; // 详情标题
-  string detailDesc = 23; // 详情描述
+  uint32 gift_point = 14; // 赠送的积分
+  uint32 gift_growth = 15; // 赠送的成长值
+  uint32 use_point_limit = 16; // 限制使用的积分数
+  uint32 preview_status = 17; // 是否为预告商品：0->不是；1->是
+  uint32 publish_status = 18; // 上架状态：0->下架；1->上架
+  uint32 new_status = 19; // 新品状态:0->不是新品；1->新品
+  uint32 recommand_status = 20; // 推荐状态；0->不推荐；1->推荐
+  string service_ids = 21; // 以逗号分割的产品服务：1->无忧退货；2->快速退款；3->免费包邮
+  string detail_title = 22; // 详情标题
+  string detail_desc = 23; // 详情描述
   string keywords = 24; // 关键字
   string note = 25; // 备注
-  uint32 promotionType = 26; // 促销类型：0->没有促销使用原价;1->使用促销价；2->使用会员价；3->使用阶梯价格；4->使用满减价格；5->限时购
-  double promotionPrice = 27; // 促销价格
-  uint32 promotionStartTime = 28; // 促销开始时间
-  uint32 promotionEndTime = 29; // 促销结束时间
+  uint32 promotion_type = 26; // 促销类型：0->没有促销使用原价;1->使用促销价；2->使用会员价；3->使用阶梯价格；4->使用满减价格；5->限时购
+  double promotion_price = 27; // 促销价格
+  uint32 promotion_start_time = 28; // 促销开始时间
+  uint32 promotion_end_time = 29; // 促销结束时间
 
   // 属性信息
-  uint64 productAttributeCategoryId = 30; // 品牌属性分类id
+  uint64 product_attribute_category_id = 30; // 品牌属性分类id
   string pic = 31; // 图片
-  string albumPics = 32; // 画册图片，连产品图片限制为5张，以逗号分割
-  string detailHTML = 33; // 电脑端详情
-  string detailMobileHTML = 34; // 移动端详情
+  string album_pics = 32; // 画册图片，连产品图片限制为5张，以逗号分割
+  string detail_html = 33; // 电脑端详情
+  string detail_mobile_html = 34; // 移动端详情
 
   // 状态
-  int32 verifyStatus = 35; // 审核状态：0->未审核；1->审核通过
-  int32 deleteStatus = 36; // 删除状态：0->未删除；1->已删除
+  int32 verify_status = 35; // 审核状态：0->未审核；1->审核通过
+  int32 delete_status = 36; // 删除状态：0->未删除；1->已删除
 
   // 其他
-  uint64 feightTemplateId = 37; // 运费模版id
+  uint64 feight_template_id = 37; // 运费模版id
   uint32 sale = 38; // 销量
-  uint32 lowStock = 39; // 库存预警值
-  uint32 promotionPerLimit = 40; // 活动限购数量
+  uint32 low_stock = 39; // 库存预警值
+  uint32 promotion_per_limit = 40; // 活动限购数量
 
   // 冗余字段
-  string brandName = 41; // 品牌名称
-  string productCategoryName = 42; // 商品分类名称
+  string brand_name = 41; // 品牌名称
+  string product_category_name = 42; // 商品分类名称
 
   // 设置
-  repeated model.ProductLadder productLadders = 50; // 商品阶梯价格设置
-  repeated model.ProductFullReduction productFullReductions = 51; // 商品满减价格设置
-  repeated model.MemberPrice memberPrices = 52; // 商品会员价格设置
-  repeated model.SkuStock skuStocks = 53; // 商品的sku库存信息
-  repeated model.ProductAttributeValue attributeValues = 54; // 商品参数及自定义规格属性
-  repeated model.SubjectProductRelation subjectProductRelations = 55; // 专题和商品关系
-  repeated model.PrefrenceAreaProductRelation prefrenceAreaProductRelations = 56; // 优选专区和商品的关系
+  repeated model.ProductLadder product_ladders = 50; // 商品阶梯价格设置
+  repeated model.ProductFullReduction product_full_reductions = 51; // 商品满减价格设置
+  repeated model.MemberPrice member_prices = 52; // 商品会员价格设置
+  repeated model.SkuStock sku_stocks = 53; // 商品sku库存信息
+  repeated model.ProductAttributeValue attribute_values = 54; // 商品参数及自定义规格属性
+  repeated model.SubjectProductRelation subject_product_relations = 55; // 专题和商品关系
+  repeated model.PrefrenceAreaProductRelation prefrence_area_product_relations = 56; // 优选专区和商品的关系
 }
 
 // 分页查询商品
 message GetProductsParam {
+  google.protobuf.UInt64Value id = 1; // 主键
+  string name = 2; // 商品名称
+  string product_sn = 3; // 货号
+  google.protobuf.UInt64Value brand_id = 4; // 商品品牌
+  google.protobuf.UInt32Value publish_status = 5; // 上架状态
+  google.protobuf.UInt32Value verify_status = 6; // 审核状态
+  google.protobuf.UInt64Value product_category_id = 7; // 商品分类id
 
-  uint32 page_num = 1 [(validate.rules).uint32.gte = 0];   // 页面大小
-  uint32 page_size = 2 [(validate.rules).uint32.gte = 0];  // 页码
+  uint32 page_num = 10 [(validate.rules).uint32.gte = 0];   // 页面大小
+  uint32 page_size = 11 [(validate.rules).uint32.gte = 0];  // 页码
 }
 
 // 分页查询商品
@@ -615,6 +654,26 @@ service AdminApi {
     };
   }
   // END ======================================= 商品管理 ======================================= END
+
+
+
+  // START ======================================= sku库存 ======================================= START
+  // 批量更新sku的库存
+  rpc BatchUpdateSkuStock (BatchUpdateSkuStockParam) returns (CommonRsp) {
+    option (google.api.http) = {
+      put: "/skuStocks/update/batchUpdateByProductId"
+      body: "*"
+    };
+  }
+
+  // 分页查询sku的库存
+  rpc GetSkuStocksByProductId (GetSkuStocksByProductIdParam) returns (GetSkuStocksByProductIdRsp) {
+    option (google.api.http) = {
+      get: "/skuStocks/search/searchByProductId"
+    };
+  }
+
+  // END ======================================= sku库存 ======================================= END
 
 
 }
