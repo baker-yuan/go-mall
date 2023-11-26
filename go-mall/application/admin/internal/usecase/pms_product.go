@@ -67,40 +67,54 @@ func (c ProductUseCase) CreateProduct(ctx context.Context, param *pb.AddOrUpdate
 		productID := product.ID
 
 		// 会员价格
-		if err := c.memberPriceRepo.BatchCreateWithTX(ctx, productID, assembler.MemberPricesToEntity(param.GetMemberPrices())); err != nil {
-			return err
+		if len(param.GetMemberPrices()) != 0 {
+			if err := c.memberPriceRepo.BatchCreateWithTX(ctx, productID, assembler.MemberPricesToEntity(param.GetMemberPrices())); err != nil {
+				return err
+			}
 		}
 
 		// 阶梯价格
-		if err := c.productLadderRepo.BatchCreateWithTX(ctx, productID, assembler.ProductLaddersToEntity(param.GetProductLadders())); err != nil {
-			return err
+		if len(param.GetProductLadders()) != 0 {
+			if err := c.productLadderRepo.BatchCreateWithTX(ctx, productID, assembler.ProductLaddersToEntity(param.GetProductLadders())); err != nil {
+				return err
+			}
 		}
 
 		// 满减价格
-		if err := c.productFullReductionRepo.BatchCreateWithTX(ctx, productID, assembler.ProductFullReductionsToEntity(param.GetProductFullReductions())); err != nil {
-			return err
+		if len(param.GetProductFullReductions()) != 0 {
+			if err := c.productFullReductionRepo.BatchCreateWithTX(ctx, productID, assembler.ProductFullReductionsToEntity(param.GetProductFullReductions())); err != nil {
+				return err
+			}
 		}
 
-		// 处理sku的编码
-		c.handleSkuStockCode(param.GetSkuStocks(), productID)
 		// 添加sku库存信息
-		if err := c.skuStockRepo.BatchCreateWithTX(ctx, productID, assembler.SkuStocksToEntity(param.GetSkuStocks())); err != nil {
-			return err
+		if len(param.GetSkuStocks()) != 0 {
+			// 处理sku的编码
+			c.handleSkuStockCode(param.GetSkuStocks(), productID)
+			if err := c.skuStockRepo.BatchCreateWithTX(ctx, productID, assembler.SkuStocksToEntity(param.GetSkuStocks())); err != nil {
+				return err
+			}
 		}
 
 		// 添加商品参数，添加自定义商品规格
-		if err := c.productAttributeValueRepo.BatchCreateWithTX(ctx, productID, assembler.ProductAttributeValuesToEntity(param.GetAttributeValues())); err != nil {
-			return err
+		if len(param.GetAttributeValues()) != 0 {
+			if err := c.productAttributeValueRepo.BatchCreateWithTX(ctx, productID, assembler.ProductAttributeValuesToEntity(param.GetAttributeValues())); err != nil {
+				return err
+			}
 		}
 
 		// 关联专题
-		if err := c.subjectProductRelationRepo.BatchCreateWithTX(ctx, productID, assembler.SubjectProductRelationsToEntity(param.GetSubjectProductRelations())); err != nil {
-			return err
+		if len(param.GetSubjectProductRelations()) != 0 {
+			if err := c.subjectProductRelationRepo.BatchCreateWithTX(ctx, productID, assembler.SubjectProductRelationsToEntity(param.GetSubjectProductRelations())); err != nil {
+				return err
+			}
 		}
 
 		// 关联优选
-		if err := c.prefrenceAreaProductRelationRepo.BatchCreateWithTX(ctx, productID, assembler.PrefrenceAreaProductRelationsToEntity(param.GetPrefrenceAreaProductRelations())); err != nil {
-			return err
+		if len(param.GetPrefrenceAreaProductRelations()) != 0 {
+			if err := c.prefrenceAreaProductRelationRepo.BatchCreateWithTX(ctx, productID, assembler.PrefrenceAreaProductRelationsToEntity(param.GetPrefrenceAreaProductRelations())); err != nil {
+				return err
+			}
 		}
 
 		return nil
