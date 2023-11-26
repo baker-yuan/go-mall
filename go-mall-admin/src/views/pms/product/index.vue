@@ -164,7 +164,7 @@ const columns = reactive<ColumnProps<Product.ProductModel>[]>([
   },
   {
     prop: "nameAndBrand",
-    width: 200,
+    minWidth: 200,
     label: "名称&分类"
   },
   {
