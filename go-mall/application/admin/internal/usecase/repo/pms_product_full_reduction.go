@@ -103,7 +103,7 @@ func (r ProductFullReductionRepo) BatchCreateWithTX(ctx context.Context, product
 	for _, productFullReduction := range productFullReductions {
 		productFullReduction.ProductID = productID
 	}
-	db, err := db.GetDbToCtx(ctx)
+	db, err := db.GetTransactionDB(ctx)
 	if err != nil {
 		return err
 	}
@@ -112,7 +112,7 @@ func (r ProductFullReductionRepo) BatchCreateWithTX(ctx context.Context, product
 
 // DeleteByProductIDWithTX 根据商品ID删除记录
 func (r ProductFullReductionRepo) DeleteByProductIDWithTX(ctx context.Context, productID uint64) error {
-	db, err := db.GetDbToCtx(ctx)
+	db, err := db.GetTransactionDB(ctx)
 	if err != nil {
 		return err
 	}

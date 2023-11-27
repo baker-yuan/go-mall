@@ -103,7 +103,7 @@ func (r ProductAttributeValueRepo) BatchCreateWithTX(ctx context.Context, produc
 	for _, productAttributeValue := range productAttributeValues {
 		productAttributeValue.ProductID = productID
 	}
-	db, err := db.GetDbToCtx(ctx)
+	db, err := db.GetTransactionDB(ctx)
 	if err != nil {
 		return err
 	}
@@ -112,7 +112,7 @@ func (r ProductAttributeValueRepo) BatchCreateWithTX(ctx context.Context, produc
 
 // DeleteByProductIDWithTX 根据商品ID删除记录
 func (r ProductAttributeValueRepo) DeleteByProductIDWithTX(ctx context.Context, productID uint64) error {
-	db, err := db.GetDbToCtx(ctx)
+	db, err := db.GetTransactionDB(ctx)
 	if err != nil {
 		return err
 	}

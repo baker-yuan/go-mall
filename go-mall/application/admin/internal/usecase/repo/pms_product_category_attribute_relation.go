@@ -44,7 +44,7 @@ func (p PmsProductCategoryAttributeRelationRepo) GetByID(ctx context.Context, id
 
 // CreateWithTX 创建
 func (p PmsProductCategoryAttributeRelationRepo) CreateWithTX(ctx context.Context, relation *entity.ProductCategoryAttributeRelation) error {
-	db, err := db.GetDbToCtx(ctx)
+	db, err := db.GetTransactionDB(ctx)
 	if err != nil {
 		return err
 	}
@@ -63,7 +63,7 @@ func (p PmsProductCategoryAttributeRelationRepo) BatchCreateWithTX(ctx context.C
 		})
 	}
 
-	db, err := db.GetDbToCtx(ctx)
+	db, err := db.GetTransactionDB(ctx)
 	if err != nil {
 		return err
 	}
@@ -71,7 +71,7 @@ func (p PmsProductCategoryAttributeRelationRepo) BatchCreateWithTX(ctx context.C
 }
 
 func (p PmsProductCategoryAttributeRelationRepo) DeleteByProductCategoryIDWithTX(ctx context.Context, productCategoryID uint64) error {
-	db, err := db.GetDbToCtx(ctx)
+	db, err := db.GetTransactionDB(ctx)
 	if err != nil {
 		return err
 	}

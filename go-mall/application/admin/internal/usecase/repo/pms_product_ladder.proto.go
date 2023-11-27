@@ -103,7 +103,7 @@ func (r ProductLadderRepo) BatchCreateWithTX(ctx context.Context, productID uint
 	for _, productLadder := range productLadders {
 		productLadder.ProductID = productID
 	}
-	db, err := db.GetDbToCtx(ctx)
+	db, err := db.GetTransactionDB(ctx)
 	if err != nil {
 		return err
 	}
@@ -112,7 +112,7 @@ func (r ProductLadderRepo) BatchCreateWithTX(ctx context.Context, productID uint
 
 // DeleteByProductIDWithTX 根据商品ID删除记录
 func (r ProductLadderRepo) DeleteByProductIDWithTX(ctx context.Context, productID uint64) error {
-	db, err := db.GetDbToCtx(ctx)
+	db, err := db.GetTransactionDB(ctx)
 	if err != nil {
 		return err
 	}

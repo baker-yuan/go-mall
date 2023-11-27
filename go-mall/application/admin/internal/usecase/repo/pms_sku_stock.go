@@ -127,7 +127,7 @@ func (r SkuStockRepo) BatchCreateWithTX(ctx context.Context, productID uint64, s
 	for _, skuStock := range skuStocks {
 		skuStock.ProductID = productID
 	}
-	db, err := db.GetDbToCtx(ctx)
+	db, err := db.GetTransactionDB(ctx)
 	if err != nil {
 		return err
 	}
@@ -163,7 +163,7 @@ func (r SkuStockRepo) BatchUpdateOrInsertSkuStock(ctx context.Context, stocks []
 
 // DeleteByProductIDWithTX 根据商品ID删除记录
 func (r SkuStockRepo) DeleteByProductIDWithTX(ctx context.Context, productID uint64) error {
-	db, err := db.GetDbToCtx(ctx)
+	db, err := db.GetTransactionDB(ctx)
 	if err != nil {
 		return err
 	}
@@ -172,7 +172,7 @@ func (r SkuStockRepo) DeleteByProductIDWithTX(ctx context.Context, productID uin
 
 // BatchDeleteByIDWithTX 根据ID删除记录
 func (r SkuStockRepo) BatchDeleteByIDWithTX(ctx context.Context, ids []uint64) error {
-	db, err := db.GetDbToCtx(ctx)
+	db, err := db.GetTransactionDB(ctx)
 	if err != nil {
 		return err
 	}
@@ -181,7 +181,7 @@ func (r SkuStockRepo) BatchDeleteByIDWithTX(ctx context.Context, ids []uint64) e
 
 // BatchUpDateByIDWithTX 根据ID修改记录
 func (r SkuStockRepo) BatchUpDateByIDWithTX(ctx context.Context, skuStocks []*entity.SkuStock) error {
-	db, err := db.GetDbToCtx(ctx)
+	db, err := db.GetTransactionDB(ctx)
 	if err != nil {
 		return err
 	}

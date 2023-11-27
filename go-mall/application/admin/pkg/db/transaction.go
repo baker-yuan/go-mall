@@ -44,7 +44,7 @@ func Transaction(ctx context.Context, fn func(ctx context.Context) error) error 
 	return defaultTx.PutDbToCtx(ctx, fn)
 }
 
-// GetDbToCtx 获取PutDbToCtx存入的tx
-func GetDbToCtx(ctx context.Context) (*gorm.DB, error) {
+// GetTransactionDB 获取PutDbToCtx存入的tx
+func GetTransactionDB(ctx context.Context) (*gorm.DB, error) {
 	return defaultTx.GetDbToCtx(ctx)
 }
