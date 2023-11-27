@@ -100,8 +100,8 @@ func (c ProductUseCase) CreateProduct(ctx context.Context, param *pb.AddOrUpdate
 		}
 
 		// 添加商品参数，添加自定义商品规格
-		if len(param.GetAttributeValues()) != 0 {
-			if err := c.productAttributeValueRepo.BatchCreateWithTX(ctx, productID, assembler.ProductAttributeValuesToEntity(param.GetAttributeValues())); err != nil {
+		if len(param.GetProductAttributeValues()) != 0 {
+			if err := c.productAttributeValueRepo.BatchCreateWithTX(ctx, productID, assembler.ProductAttributeValuesToEntity(param.GetProductAttributeValues())); err != nil {
 				return err
 			}
 		}
@@ -255,8 +255,8 @@ func (c ProductUseCase) UpdateProduct(ctx context.Context, param *pb.AddOrUpdate
 		if err := c.productAttributeValueRepo.DeleteByProductIDWithTX(ctx, productID); err != nil {
 			return err
 		}
-		if len(param.GetAttributeValues()) != 0 {
-			if err := c.productAttributeValueRepo.BatchCreateWithTX(ctx, productID, assembler.ProductAttributeValuesToEntity(param.GetAttributeValues())); err != nil {
+		if len(param.GetProductAttributeValues()) != 0 {
+			if err := c.productAttributeValueRepo.BatchCreateWithTX(ctx, productID, assembler.ProductAttributeValuesToEntity(param.GetProductAttributeValues())); err != nil {
 				return err
 			}
 		}

@@ -11,6 +11,7 @@ import (
 	"os/signal"
 	"strings"
 	"syscall"
+	"time"
 
 	config "github.com/baker-yuan/go-mall/application/admin/config"
 	"github.com/baker-yuan/go-mall/application/admin/internal/controller/grpcsrv"
@@ -32,12 +33,12 @@ import (
 // Run 启动服务
 func Run(cfg *config.Config) {
 	// 日志
-	l := logger.New(cfg.Log.Level)
+	customLog := logger.New(cfg.Log.Level)
 
 	// 初始化数据库
 	conn, err := db.GetConn(cfg.DB.Username, cfg.DB.Password, cfg.DB.Host, cfg.DB.Port, cfg.DB.Timeout, cfg.DB.DbName)
 	if err != nil {
-		l.Fatal(fmt.Errorf("app - Run - db.GetConn: %w", err))
+		customLog.Fatal(fmt.Errorf("app - Run - db.GetConn: %w", err))
 	}
 
 	// gorm事务封装
@@ -45,11 +46,11 @@ func Run(cfg *config.Config) {
 
 	// gorm创建表
 	if err := entity.Init(conn); err != nil {
-		l.Fatal(fmt.Errorf("app - Run - entity.Init: %w", err))
+		customLog.Fatal(fmt.Errorf("app - Run - entity.Init: %w", err))
 	}
 	// 全字段更新，初始化那些字段不更新，那些字段需要更新
 	if err := repo.InitField(conn); err != nil {
-		l.Fatal(fmt.Errorf("app - Run - repo.InitField: %w", err))
+		customLog.Fatal(fmt.Errorf("app - Run - repo.InitField: %w", err))
 	}
 	// oss url 前缀
 	util.InitBaseUrl(cfg.Oss.BaseUrl)
@@ -110,9 +111,13 @@ func Run(cfg *config.Config) {
 		productUseCase,
 		skuStockUseCase,
 	)
-	if err := configGrpc(grpcSrvImpl, cfg.HTTP.IP, cfg.HTTP.Port); err != nil {
-		l.Fatal(fmt.Errorf("app - Run - configGrpc: %w", err))
+	grpcServer, err := configGrpc(customLog, grpcSrvImpl, cfg.HTTP.IP, cfg.HTTP.Port)
+	if err != nil {
+		log.Fatal(fmt.Errorf("app - Run - configGrpc: %w", err))
 	}
+
+	// 打印当前进程的 ID
+	customLog.Info("project started with pid %d", os.Getpid())
 
 	// 监听关闭信号
 	interrupt := make(chan os.Signal, 1)
@@ -120,20 +125,42 @@ func Run(cfg *config.Config) {
 
 	select {
 	case s := <-interrupt:
-		l.Info("app - Run - signal: " + s.String())
-		//case err = <-httpServer.Notify():
-		//	l.Error(fmt.Errorf("app - Run - httpServer.Notify: %w", err))
+		customLog.Info("app - Run - signal: " + s.String())
 	}
 
-	// 处理关闭
-	//err = httpServer.Shutdown()
-	//if err != nil {
-	//	l.Error(fmt.Errorf("app - Run - httpServer.Shutdown: %w", err))
-	//}
-
+	// grpc优雅关闭，5s内必须完成关闭
+	gracefulStopWithTimeout(customLog, grpcServer, 5*time.Second)
 }
 
-func configGrpc(grpcSrvImpl pb.AdminApiServer, ip string, port uint32) error {
+// gracefulStopWithTimeout 尝试在给定的超时时间内优雅地关闭 gRPC 服务器。
+// 如果服务器在超时时间内成功关闭，那么函数会打印一条信息并返回。
+// 如果超时时间到了但服务器还没有关闭，那么函数会强制关闭服务器并打印一条错误信息。
+func gracefulStopWithTimeout(customLog *logger.Logger, grpcServer *grpc.Server, timeout time.Duration) {
+	// 创建一个带有超时的上下文
+	ctx, cancel := context.WithTimeout(context.Background(), timeout)
+	defer cancel()
+
+	// 创建一个通道，用于接收服务器关闭的信号
+	ch := make(chan struct{})
+	go func() {
+		// 在一个新的 goroutine 中优雅地关闭服务器
+		grpcServer.GracefulStop()
+		// 当服务器关闭时，关闭通道
+		close(ch)
+	}()
+
+	select {
+	case <-ch:
+		// 如果从通道接收到了信号，说明服务器已经成功关闭
+		customLog.Info("gRPC server stopped gracefully")
+	case <-ctx.Done():
+		// 如果上下文超时，说明服务器没有在给定的时间内关闭，此时强制关闭服务器
+		customLog.Error("gRPC server stop timeout, force stopping")
+		grpcServer.Stop()
+	}
+}
+
+func configGrpc(customLog *logger.Logger, grpcSrvImpl pb.AdminApiServer, ip string, port uint32) (*grpc.Server, error) {
 	var (
 		addr = fmt.Sprintf("%s:%d", ip, port)
 	)
@@ -149,7 +176,7 @@ func configGrpc(grpcSrvImpl pb.AdminApiServer, ip string, port uint32) error {
 	gwmux := runtime.NewServeMux()
 	dops := []grpc.DialOption{grpc.WithTransportCredentials(insecure.NewCredentials())}
 	if err := pb.RegisterAdminApiHandlerFromEndpoint(context.Background(), gwmux, addr, dops); err != nil {
-		return err
+		return nil, err
 	}
 	mux := http.NewServeMux()
 	mux.Handle("/", gwmux)
@@ -163,14 +190,14 @@ func configGrpc(grpcSrvImpl pb.AdminApiServer, ip string, port uint32) error {
 	// tpc监听
 	lis, err := net.Listen("tcp", addr)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	go func() {
-		log.Fatalln(gwServer.Serve(lis)) // 启动HTTP服务
+		customLog.Fatal(gwServer.Serve(lis)) // 启动HTTP服务
 	}()
 
-	return nil
+	return grpcServer, nil
 }
 
 // grpcHandlerFunc 将gRPC请求和HTTP请求分别调用不同的handler处理

@@ -5134,7 +5134,7 @@ func (m *AddOrUpdateProductParam) validate(all bool) error {
 
 	}
 
-	for idx, item := range m.GetAttributeValues() {
+	for idx, item := range m.GetProductAttributeValues() {
 		_, _ = idx, item
 
 		if all {
@@ -5142,7 +5142,7 @@ func (m *AddOrUpdateProductParam) validate(all bool) error {
 			case interface{ ValidateAll() error }:
 				if err := v.ValidateAll(); err != nil {
 					errors = append(errors, AddOrUpdateProductParamValidationError{
-						field:  fmt.Sprintf("AttributeValues[%v]", idx),
+						field:  fmt.Sprintf("ProductAttributeValues[%v]", idx),
 						reason: "embedded message failed validation",
 						cause:  err,
 					})
@@ -5150,7 +5150,7 @@ func (m *AddOrUpdateProductParam) validate(all bool) error {
 			case interface{ Validate() error }:
 				if err := v.Validate(); err != nil {
 					errors = append(errors, AddOrUpdateProductParamValidationError{
-						field:  fmt.Sprintf("AttributeValues[%v]", idx),
+						field:  fmt.Sprintf("ProductAttributeValues[%v]", idx),
 						reason: "embedded message failed validation",
 						cause:  err,
 					})
@@ -5159,7 +5159,7 @@ func (m *AddOrUpdateProductParam) validate(all bool) error {
 		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
 			if err := v.Validate(); err != nil {
 				return AddOrUpdateProductParamValidationError{
-					field:  fmt.Sprintf("AttributeValues[%v]", idx),
+					field:  fmt.Sprintf("ProductAttributeValues[%v]", idx),
 					reason: "embedded message failed validation",
 					cause:  err,
 				}
