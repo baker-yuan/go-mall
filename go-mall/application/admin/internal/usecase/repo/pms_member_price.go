@@ -103,18 +103,18 @@ func (r MemberPriceRepo) BatchCreateWithTX(ctx context.Context, productID uint64
 	for _, memberPrice := range memberPrices {
 		memberPrice.ProductID = productID
 	}
-	db, err := db.GetTransactionDB(ctx)
+	tdb, err := db.GetTransactionDB(ctx)
 	if err != nil {
 		return err
 	}
-	return db.WithContext(ctx).Create(memberPrices).Error
+	return tdb.WithContext(ctx).Create(memberPrices).Error
 }
 
 // DeleteByProductIDWithTX 根据商品ID删除记录
 func (r MemberPriceRepo) DeleteByProductIDWithTX(ctx context.Context, productID uint64) error {
-	db, err := db.GetTransactionDB(ctx)
+	tdb, err := db.GetTransactionDB(ctx)
 	if err != nil {
 		return err
 	}
-	return db.WithContext(ctx).Where("product_id = ?", productID).Delete(&entity.MemberPrice{}).Error
+	return tdb.WithContext(ctx).Where("product_id = ?", productID).Delete(&entity.MemberPrice{}).Error
 }

@@ -138,18 +138,18 @@ func (r ProductRepo) GetByDBOption(ctx context.Context, pageNum uint32, pageSize
 
 // CreateWithTX 创建商品
 func (r ProductRepo) CreateWithTX(ctx context.Context, product *entity.Product) error {
-	db, err := db.GetTransactionDB(ctx)
+	tdb, err := db.GetTransactionDB(ctx)
 	if err != nil {
 		return err
 	}
-	return db.WithContext(ctx).Create(product).Error
+	return tdb.WithContext(ctx).Create(product).Error
 }
 
 // UpdateWithTX 修改商品
 func (r ProductRepo) UpdateWithTX(ctx context.Context, product *entity.Product) error {
-	db, err := db.GetTransactionDB(ctx)
+	tdb, err := db.GetTransactionDB(ctx)
 	if err != nil {
 		return err
 	}
-	return db.WithContext(ctx).Select(updateProductField).Updates(product).Error
+	return tdb.WithContext(ctx).Select(updateProductField).Updates(product).Error
 }

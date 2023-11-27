@@ -44,11 +44,11 @@ func (p PmsProductCategoryAttributeRelationRepo) GetByID(ctx context.Context, id
 
 // CreateWithTX 创建
 func (p PmsProductCategoryAttributeRelationRepo) CreateWithTX(ctx context.Context, relation *entity.ProductCategoryAttributeRelation) error {
-	db, err := db.GetTransactionDB(ctx)
+	tdb, err := db.GetTransactionDB(ctx)
 	if err != nil {
 		return err
 	}
-	return db.WithContext(ctx).Create(relation).Error
+	return tdb.WithContext(ctx).Create(relation).Error
 }
 
 // BatchCreateWithTX 批量插入商品分类与筛选属性关系表
@@ -63,19 +63,19 @@ func (p PmsProductCategoryAttributeRelationRepo) BatchCreateWithTX(ctx context.C
 		})
 	}
 
-	db, err := db.GetTransactionDB(ctx)
+	tdb, err := db.GetTransactionDB(ctx)
 	if err != nil {
 		return err
 	}
-	return db.WithContext(ctx).Create(relations).Error
+	return tdb.WithContext(ctx).Create(relations).Error
 }
 
 func (p PmsProductCategoryAttributeRelationRepo) DeleteByProductCategoryIDWithTX(ctx context.Context, productCategoryID uint64) error {
-	db, err := db.GetTransactionDB(ctx)
+	tdb, err := db.GetTransactionDB(ctx)
 	if err != nil {
 		return err
 	}
-	return db.WithContext(ctx).
+	return tdb.WithContext(ctx).
 		Where("product_category_id = ?", productCategoryID).
 		Delete(&entity.ProductCategoryAttributeRelation{}).Error
 }

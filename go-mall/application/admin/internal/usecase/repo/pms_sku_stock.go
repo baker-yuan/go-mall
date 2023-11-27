@@ -127,11 +127,11 @@ func (r SkuStockRepo) BatchCreateWithTX(ctx context.Context, productID uint64, s
 	for _, skuStock := range skuStocks {
 		skuStock.ProductID = productID
 	}
-	db, err := db.GetTransactionDB(ctx)
+	tdb, err := db.GetTransactionDB(ctx)
 	if err != nil {
 		return err
 	}
-	return db.WithContext(ctx).Create(skuStocks).Error
+	return tdb.WithContext(ctx).Create(skuStocks).Error
 }
 
 // BatchUpdateOrInsertSkuStock 批量插入或者更新
@@ -163,31 +163,31 @@ func (r SkuStockRepo) BatchUpdateOrInsertSkuStock(ctx context.Context, stocks []
 
 // DeleteByProductIDWithTX 根据商品ID删除记录
 func (r SkuStockRepo) DeleteByProductIDWithTX(ctx context.Context, productID uint64) error {
-	db, err := db.GetTransactionDB(ctx)
+	tdb, err := db.GetTransactionDB(ctx)
 	if err != nil {
 		return err
 	}
-	return db.WithContext(ctx).Where("product_id = ?", productID).Delete(&entity.SkuStock{}).Error
+	return tdb.WithContext(ctx).Where("product_id = ?", productID).Delete(&entity.SkuStock{}).Error
 }
 
 // BatchDeleteByIDWithTX 根据ID删除记录
 func (r SkuStockRepo) BatchDeleteByIDWithTX(ctx context.Context, ids []uint64) error {
-	db, err := db.GetTransactionDB(ctx)
+	tdb, err := db.GetTransactionDB(ctx)
 	if err != nil {
 		return err
 	}
-	return db.WithContext(ctx).Where("id in ?", ids).Delete(&entity.SkuStock{}).Error
+	return tdb.WithContext(ctx).Where("id in ?", ids).Delete(&entity.SkuStock{}).Error
 }
 
 // BatchUpDateByIDWithTX 根据ID修改记录
 func (r SkuStockRepo) BatchUpDateByIDWithTX(ctx context.Context, skuStocks []*entity.SkuStock) error {
-	db, err := db.GetTransactionDB(ctx)
+	tdb, err := db.GetTransactionDB(ctx)
 	if err != nil {
 		return err
 	}
 	for _, skuStock := range skuStocks {
 		// 没有错误直接更新
-		if err := db.Where("id = ?", skuStock.ID).Select(updateSkuStockField).Updates(skuStock).Error; err != nil {
+		if err := tdb.Where("id = ?", skuStock.ID).Select(updateSkuStockField).Updates(skuStock).Error; err != nil {
 			return err
 		}
 	}

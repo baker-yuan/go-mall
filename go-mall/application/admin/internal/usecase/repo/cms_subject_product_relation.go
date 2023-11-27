@@ -103,18 +103,18 @@ func (r SubjectProductRelationRepo) BatchCreateWithTX(ctx context.Context, produ
 	for _, subjectProductRelation := range subjectProductRelations {
 		subjectProductRelation.ProductID = productID
 	}
-	db, err := db.GetTransactionDB(ctx)
+	tdb, err := db.GetTransactionDB(ctx)
 	if err != nil {
 		return err
 	}
-	return db.WithContext(ctx).Create(subjectProductRelations).Error
+	return tdb.WithContext(ctx).Create(subjectProductRelations).Error
 }
 
 // DeleteByProductIDWithTX 根据商品ID删除记录
 func (r SubjectProductRelationRepo) DeleteByProductIDWithTX(ctx context.Context, productID uint64) error {
-	db, err := db.GetTransactionDB(ctx)
+	tdb, err := db.GetTransactionDB(ctx)
 	if err != nil {
 		return err
 	}
-	return db.WithContext(ctx).Where("product_id = ?", productID).Delete(&entity.SubjectProductRelation{}).Error
+	return tdb.WithContext(ctx).Where("product_id = ?", productID).Delete(&entity.SubjectProductRelation{}).Error
 }

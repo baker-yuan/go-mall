@@ -105,11 +105,11 @@ func (p ProductCategoryRepo) GetByIDs(ctx context.Context, ids []uint64) (entity
 
 // CreateWithTX 创建商品分类
 func (p ProductCategoryRepo) CreateWithTX(ctx context.Context, productCategory *entity.ProductCategory) error {
-	db, err := db.GetTransactionDB(ctx)
+	tdb, err := db.GetTransactionDB(ctx)
 	if err != nil {
 		return err
 	}
-	return db.WithContext(ctx).Create(productCategory).Error
+	return tdb.WithContext(ctx).Create(productCategory).Error
 }
 
 // UpdateWithTX 修改商品分类
@@ -117,11 +117,11 @@ func (p ProductCategoryRepo) UpdateWithTX(ctx context.Context, productCategory *
 	if productCategory.ID == 0 {
 		return errors.New("productCategory not exist")
 	}
-	db, err := db.GetTransactionDB(ctx)
+	tdb, err := db.GetTransactionDB(ctx)
 	if err != nil {
 		return err
 	}
-	return db.WithContext(ctx).Select(updateProductCategoryField).Updates(productCategory).Error
+	return tdb.WithContext(ctx).Select(updateProductCategoryField).Updates(productCategory).Error
 }
 
 // GetByDBOption 根据动态条件查询商品分类
