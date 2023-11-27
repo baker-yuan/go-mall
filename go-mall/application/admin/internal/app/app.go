@@ -54,40 +54,55 @@ func Run(cfg *config.Config) {
 	// oss url 前缀
 	util.InitBaseUrl(cfg.Oss.BaseUrl)
 
-	// 业务逻辑
-	categoryUseCase := usecase.NewCategoryUseCase(
-		repo.NewProductCategoryRepo(conn),
-		repo.NewProductCategoryAttributeRelationRepo(conn),
-		repo.NewProductRepo(conn),
+	var (
+		productCategoryRepo                  = repo.NewProductCategoryRepo(conn)
+		productCategoryAttributeRelationRepo = repo.NewProductCategoryAttributeRelationRepo(conn)
+		productRepo                          = repo.NewProductRepo(conn)
+		brandRepo                            = repo.NewBrandRepo(conn)
+		productAttributeCategoryRepo         = repo.NewProductAttributeCategoryRepo(conn)
+		productAttributeRepo                 = repo.NewProductAttributeRepo(conn)
+		skuStockRepo                         = repo.NewSkuStockRepo(conn)
+		memberPriceRepo                      = repo.NewMemberPriceRepo(conn)
+		productLadderRepo                    = repo.NewProductLadderRepo(conn)
+		productFullReductionRepo             = repo.NewProductFullReductionRepo(conn)
+		productAttributeValueRepo            = repo.NewProductAttributeValueRepo(conn)
+		subjectProductRelationRepo           = repo.NewSubjectProductRelationRepo(conn)
+		prefrenceAreaProductRelationRepo     = repo.NewPrefrenceAreaProductRelationRepo(conn)
 	)
 
+	// 业务逻辑
+	categoryUseCase := usecase.NewCategoryUseCase(
+		productCategoryRepo,
+		productCategoryAttributeRelationRepo,
+		productRepo,
+	)
 	brandUseCase := usecase.NewBrandUseCase(
-		repo.NewBrandRepo(conn),
+		brandRepo,
 	)
 	productAttributeCategoryUseCase := usecase.NewProductAttributeCategory(
-		repo.NewProductAttributeCategoryRepo(conn),
+		productAttributeCategoryRepo,
 	)
 	productAttributeUseCase := usecase.NewProductAttribute(
-		repo.NewProductAttributeRepo(conn),
+		productAttributeRepo,
 	)
 	skuStockUseCase := usecase.NewSkuStock(
-		repo.NewSkuStockRepo(conn),
+		skuStockRepo,
 	)
 	productUseCase := usecase.NewProduct(
-		repo.NewProductRepo(conn),
-		repo.NewBrandRepo(conn),
-		repo.NewProductCategoryRepo(conn),
-		repo.NewMemberPriceRepo(conn),
-		repo.NewProductLadderRepo(conn),
-		repo.NewProductFullReductionRepo(conn),
-		repo.NewSkuStockRepo(conn),
-		repo.NewProductAttributeValueRepo(conn),
-		repo.NewSubjectProductRelationRepo(conn),
-		repo.NewPrefrenceAreaProductRelationRepo(conn),
+		productRepo,
+		brandRepo,
+		productCategoryRepo,
+		memberPriceRepo,
+		productLadderRepo,
+		productFullReductionRepo,
+		skuStockRepo,
+		productAttributeValueRepo,
+		subjectProductRelationRepo,
+		prefrenceAreaProductRelationRepo,
 	)
 
 	// grpc服务
-	impl := grpcsrv.New(
+	grpcSrvImpl := grpcsrv.New(
 		categoryUseCase,
 		brandUseCase,
 		productAttributeCategoryUseCase,
@@ -95,7 +110,7 @@ func Run(cfg *config.Config) {
 		productUseCase,
 		skuStockUseCase,
 	)
-	if err := configGrpc(impl, cfg.HTTP.IP, cfg.HTTP.Port); err != nil {
+	if err := configGrpc(grpcSrvImpl, cfg.HTTP.IP, cfg.HTTP.Port); err != nil {
 		l.Fatal(fmt.Errorf("app - Run - configGrpc: %w", err))
 	}
 
@@ -118,7 +133,7 @@ func Run(cfg *config.Config) {
 
 }
 
-func configGrpc(impl pb.AdminApiServer, ip string, port uint32) error {
+func configGrpc(grpcSrvImpl pb.AdminApiServer, ip string, port uint32) error {
 	var (
 		addr = fmt.Sprintf("%s:%d", ip, port)
 	)
@@ -128,7 +143,7 @@ func configGrpc(impl pb.AdminApiServer, ip string, port uint32) error {
 	)
 
 	// 注册grpc服务
-	pb.RegisterAdminApiServer(grpcServer, impl)
+	pb.RegisterAdminApiServer(grpcServer, grpcSrvImpl)
 
 	// gRPC-Gateway mux
 	gwmux := runtime.NewServeMux()
