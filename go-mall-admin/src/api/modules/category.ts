@@ -1,4 +1,4 @@
-import {Category, ResPage} from "@/api/interface/index";
+import { Category, ResPage } from "@/api/interface/index";
 import http from "@/api";
 
 // 添加商品分类
