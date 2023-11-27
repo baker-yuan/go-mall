@@ -18,3 +18,13 @@ func SliceRemove[T comparable](slice []T, removes ...T) []T {
 	}
 	return res
 }
+
+// SliceExist 判断切片中是否存在某个元素
+func SliceExist[T comparable](slice []T, value T) bool {
+	for _, v := range slice {
+		if value == v {
+			return true
+		}
+	}
+	return false
+}

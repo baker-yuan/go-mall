@@ -21,3 +21,6 @@ type SkuStock struct {
 func (c SkuStock) TableName() string {
 	return "pms_sku_stock"
 }
+
+// SkuStocks 商品SKU集合
+type SkuStocks []*SkuStock

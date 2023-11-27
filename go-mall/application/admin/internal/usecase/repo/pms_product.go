@@ -144,3 +144,12 @@ func (r ProductRepo) CreateWithTX(ctx context.Context, product *entity.Product) 
 	}
 	return db.WithContext(ctx).Create(product).Error
 }
+
+// UpdateWithTX 修改商品
+func (r ProductRepo) UpdateWithTX(ctx context.Context, product *entity.Product) error {
+	db, err := db.GetDbToCtx(ctx)
+	if err != nil {
+		return err
+	}
+	return db.WithContext(ctx).Select(updateProductField).Updates(product).Error
+}

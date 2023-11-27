@@ -109,3 +109,12 @@ func (r PrefrenceAreaProductRelationRepo) BatchCreateWithTX(ctx context.Context,
 	}
 	return db.WithContext(ctx).Create(prefrenceAreaProductRelations).Error
 }
+
+// DeleteByProductIDWithTX 根据商品ID删除记录
+func (r PrefrenceAreaProductRelationRepo) DeleteByProductIDWithTX(ctx context.Context, productID uint64) error {
+	db, err := db.GetDbToCtx(ctx)
+	if err != nil {
+		return err
+	}
+	return db.WithContext(ctx).Where("product_id = ?", productID).Delete(&entity.PrefrenceAreaProductRelation{}).Error
+}

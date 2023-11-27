@@ -387,7 +387,7 @@ message AddOrUpdateProductParam {
   repeated model.ProductFullReduction product_full_reductions = 51; // 商品满减价格设置
   repeated model.MemberPrice member_prices = 52; // 商品会员价格设置
   repeated model.SkuStock sku_stocks = 53; // 商品sku库存信息
-  repeated model.ProductAttributeValue attribute_values = 54; // 商品参数及自定义规格属性
+  repeated model.ProductAttributeValue product_attribute_values = 54; // 商品参数及自定义规格属性
   repeated model.SubjectProductRelation subject_product_relations = 55; // 专题和商品关系
   repeated model.PrefrenceAreaProductRelation prefrence_area_product_relations = 56; // 优选专区和商品的关系
 }

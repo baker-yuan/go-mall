@@ -109,3 +109,12 @@ func (r ProductFullReductionRepo) BatchCreateWithTX(ctx context.Context, product
 	}
 	return db.WithContext(ctx).Create(productFullReductions).Error
 }
+
+// DeleteByProductIDWithTX 根据商品ID删除记录
+func (r ProductFullReductionRepo) DeleteByProductIDWithTX(ctx context.Context, productID uint64) error {
+	db, err := db.GetDbToCtx(ctx)
+	if err != nil {
+		return err
+	}
+	return db.WithContext(ctx).Where("product_id = ?", productID).Delete(&entity.ProductFullReduction{}).Error
+}

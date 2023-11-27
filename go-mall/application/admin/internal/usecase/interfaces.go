@@ -125,6 +125,8 @@ type (
 
 		// CreateWithTX 创建商品
 		CreateWithTX(ctx context.Context, product *entity.Product) error
+		// UpdateWithTX 修改商品
+		UpdateWithTX(ctx context.Context, product *entity.Product) error
 	}
 )
 
@@ -253,6 +255,8 @@ type (
 
 		// BatchCreateWithTX 创建商品会员价格
 		BatchCreateWithTX(ctx context.Context, productID uint64, pmsMemberPrices []*entity.MemberPrice) error
+		// DeleteByProductIDWithTX 根据商品ID删除记录
+		DeleteByProductIDWithTX(ctx context.Context, productID uint64) error
 	}
 )
 
@@ -277,6 +281,8 @@ type (
 
 		// BatchCreateWithTX 创建商品阶梯价格
 		BatchCreateWithTX(ctx context.Context, productID uint64, productLadders []*entity.ProductLadder) error
+		// DeleteByProductIDWithTX 根据商品ID删除记录
+		DeleteByProductIDWithTX(ctx context.Context, productID uint64) error
 	}
 )
 
@@ -301,6 +307,8 @@ type (
 
 		// BatchCreateWithTX 创建产品满减
 		BatchCreateWithTX(ctx context.Context, productID uint64, productFullReductions []*entity.ProductFullReduction) error
+		// DeleteByProductIDWithTX 根据商品ID删除记录
+		DeleteByProductIDWithTX(ctx context.Context, productID uint64) error
 	}
 )
 
@@ -329,11 +337,19 @@ type (
 		GetByID(ctx context.Context, id uint64) (*entity.SkuStock, error)
 		// GetByDBOption 根据动态条件查询sku的库存
 		GetByDBOption(ctx context.Context, pageNum uint32, pageSize uint32, opts ...db.DBOption) ([]*entity.SkuStock, uint32, error)
+		// GetByProductID 根据商品ID查询sku的库存
+		GetByProductID(ctx context.Context, productID uint64) ([]*entity.SkuStock, error)
 
 		// BatchCreateWithTX 创建sku的库存
 		BatchCreateWithTX(ctx context.Context, productID uint64, skuStocks []*entity.SkuStock) error
 		// BatchUpdateOrInsertSkuStock 批量插入或者更新
 		BatchUpdateOrInsertSkuStock(ctx context.Context, stocks []*entity.SkuStock) error
+		// DeleteByProductIDWithTX 根据商品ID删除记录
+		DeleteByProductIDWithTX(ctx context.Context, productID uint64) error
+		// BatchDeleteByIDWithTX 根据ID删除记录
+		BatchDeleteByIDWithTX(ctx context.Context, ids []uint64) error
+		// BatchUpDateByIDWithTX 根据ID修改记录
+		BatchUpDateByIDWithTX(ctx context.Context, skuStocks []*entity.SkuStock) error
 	}
 )
 
@@ -358,6 +374,8 @@ type (
 
 		// BatchCreateWithTX 创建产品参数信息
 		BatchCreateWithTX(ctx context.Context, productID uint64, productAttributeValues []*entity.ProductAttributeValue) error
+		// DeleteByProductIDWithTX 根据商品ID删除记录
+		DeleteByProductIDWithTX(ctx context.Context, productID uint64) error
 	}
 )
 
@@ -382,6 +400,8 @@ type (
 
 		// BatchCreateWithTX 创建专题商品关系
 		BatchCreateWithTX(ctx context.Context, productID uint64, subjectProductRelations []*entity.SubjectProductRelation) error
+		// DeleteByProductIDWithTX 根据商品ID删除记录
+		DeleteByProductIDWithTX(ctx context.Context, productID uint64) error
 	}
 )
 
@@ -406,5 +426,7 @@ type (
 
 		// BatchCreateWithTX 创建优选专区和产品关系
 		BatchCreateWithTX(ctx context.Context, productID uint64, prefrenceAreaProductRelations []*entity.PrefrenceAreaProductRelation) error
+		// DeleteByProductIDWithTX 根据商品ID删除记录
+		DeleteByProductIDWithTX(ctx context.Context, productID uint64) error
 	}
 )

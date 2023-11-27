@@ -109,6 +109,19 @@ func (r SkuStockRepo) GetByDBOption(ctx context.Context, pageNum uint32, pageSiz
 	return res, uint32(pageTotal), nil
 }
 
+// GetByProductID 根据商品ID查询sku的库存
+func (r SkuStockRepo) GetByProductID(ctx context.Context, productID uint64) ([]*entity.SkuStock, error) {
+	var (
+		res = make([]*entity.SkuStock, 0)
+	)
+	if err := r.GenericDao.DB.WithContext(ctx).
+		Where("product_id = ?", productID).
+		Order("id desc").Find(&res).Error; err != nil {
+		return nil, err
+	}
+	return res, nil
+}
+
 // BatchCreateWithTX 创建sku库存
 func (r SkuStockRepo) BatchCreateWithTX(ctx context.Context, productID uint64, skuStocks []*entity.SkuStock) error {
 	for _, skuStock := range skuStocks {
@@ -146,4 +159,37 @@ func (r SkuStockRepo) BatchUpdateOrInsertSkuStock(ctx context.Context, stocks []
 		}
 		return nil
 	})
+}
+
+// DeleteByProductIDWithTX 根据商品ID删除记录
+func (r SkuStockRepo) DeleteByProductIDWithTX(ctx context.Context, productID uint64) error {
+	db, err := db.GetDbToCtx(ctx)
+	if err != nil {
+		return err
+	}
+	return db.WithContext(ctx).Where("product_id = ?", productID).Delete(&entity.SkuStock{}).Error
+}
+
+// BatchDeleteByIDWithTX 根据ID删除记录
+func (r SkuStockRepo) BatchDeleteByIDWithTX(ctx context.Context, ids []uint64) error {
+	db, err := db.GetDbToCtx(ctx)
+	if err != nil {
+		return err
+	}
+	return db.WithContext(ctx).Where("id in ?", ids).Delete(&entity.SkuStock{}).Error
+}
+
+// BatchUpDateByIDWithTX 根据ID修改记录
+func (r SkuStockRepo) BatchUpDateByIDWithTX(ctx context.Context, skuStocks []*entity.SkuStock) error {
+	db, err := db.GetDbToCtx(ctx)
+	if err != nil {
+		return err
+	}
+	for _, skuStock := range skuStocks {
+		// 没有错误直接更新
+		if err := db.Where("id = ?", skuStock.ID).Select(updateSkuStockField).Updates(skuStock).Error; err != nil {
+			return err
+		}
+	}
+	return nil
 }

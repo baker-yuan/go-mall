@@ -109,3 +109,12 @@ func (r ProductAttributeValueRepo) BatchCreateWithTX(ctx context.Context, produc
 	}
 	return db.WithContext(ctx).Create(productAttributeValues).Error
 }
+
+// DeleteByProductIDWithTX 根据商品ID删除记录
+func (r ProductAttributeValueRepo) DeleteByProductIDWithTX(ctx context.Context, productID uint64) error {
+	db, err := db.GetDbToCtx(ctx)
+	if err != nil {
+		return err
+	}
+	return db.WithContext(ctx).Where("product_id = ?", productID).Delete(&entity.ProductAttributeValue{}).Error
+}
