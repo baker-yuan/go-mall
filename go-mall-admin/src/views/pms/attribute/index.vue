@@ -126,7 +126,6 @@ const inputTypeFilter = (value: number) => {
   }
 };
 
-// todo 不对
 // ProTable 实例
 const proTable = ref<ProTableInstance>();
 

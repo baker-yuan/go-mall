@@ -58,9 +58,13 @@
       </el-form-item>
 
       <el-form-item label="属性值可选值列表">
+        <comma-input v-model="drawerProps.row!.inputList"></comma-input>
+      </el-form-item>
+      <!--
+      <el-form-item label="属性值可选值列表">
         <el-input type="textarea" v-model="drawerProps.row!.inputList"></el-input>
       </el-form-item>
-
+      -->
       <el-form-item label="是否支持手动新增">
         <el-radio-group v-model="drawerProps.row!.handAddStatus">
           <el-radio :label="1">是</el-radio>
@@ -84,6 +88,7 @@ import { ref, reactive, onBeforeMount } from "vue";
 import { ElMessage, FormInstance } from "element-plus";
 import { ProductAttribute, ProductAttributeCategory } from "@/api/interface";
 import { getProductAttributeCategoriesApi } from "@/api/modules/productAttributeCategory";
+import CommaInput from "@/components/CommaInput/index.vue";
 
 const rules = reactive({
   name: [{ required: true, message: "请填写属性名称" }]
