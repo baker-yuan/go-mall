@@ -58,6 +58,9 @@ module.exports = {
     "vue/multi-word-component-names": "off", // 要求组件名称始终为 “-” 链接的单词
     "vue/no-setup-props-destructure": "off", // 禁止解构 props 传递给 setup
 
+    // 修复
+    // eslint --fix src/components/CommaInput/index.vue
+
     // 全关
     // "prettier/prettier": "off"
     // 误报

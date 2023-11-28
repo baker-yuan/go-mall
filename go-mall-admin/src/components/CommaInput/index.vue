@@ -17,31 +17,36 @@ export default {
       default: ""
     }
   },
+  // 声明"update:modelValue"事件
+  emits: ["update:modelValue"],
   setup(props, { emit }) {
     const convertValue = (value: string) => {
-      return value.replace(/,/g,"\n");
+      return value.replace(/,/g, "\n");
     };
     const formatValue = (value: string) => {
-      return value.replace(/\n/g,",");
+      return value.replace(/\n/g, ",");
     };
 
     const formattedValue = ref(convertValue(props.modelValue));
 
-    watch(() => props.modelValue, (newValue, oldValue) => {
-      console.log("watch", newValue, oldValue);
-      if (newValue) {
-        formattedValue.value = convertValue(newValue);
+    watch(
+      () => props.modelValue,
+      (newValue, oldValue) => {
+        console.log("watch props.modelValue", newValue, oldValue);
+        if (newValue) {
+          formattedValue.value = convertValue(newValue);
+        }
       }
-    })
+    );
 
     watch(formattedValue, (newValue, oldValue) => {
-      console.log("watch", newValue, oldValue);
-      emit('update:modelValue', formatValue(newValue))
+      console.log("watch formattedValue", newValue, oldValue);
+      emit("update:modelValue", formatValue(newValue));
     });
 
     return {
       formattedValue
-    }
+    };
   }
-}
+};
 </script>
