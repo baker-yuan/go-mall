@@ -32,9 +32,10 @@ message CommonRsp {
 
 // 添加更新产品分类的参数
 message AddOrUpdateProductCategoryParam {
-  uint64 id = 20;               // ID
-
-  uint64 parent_id = 1 [(validate.rules).uint64.gt = 0];             // 父分类的编号
+  // 修改
+  uint64 id = 20;                                                    // ID
+  // 新增修改
+  uint64 parent_id = 1;                                              // 父分类的编号
   string name = 2 [(validate.rules).string.min_len = 1];             // 商品分类名称
   string product_unit = 3;                                           // 分类单位
   uint32 nav_status = 4 [(validate.rules).uint32 = {in: [0, 1]}];    // 是否在导航栏显示

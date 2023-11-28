@@ -5,7 +5,6 @@ import (
 
 	"github.com/baker-yuan/go-mall/application/admin/internal/usecase/assembler"
 	"github.com/baker-yuan/go-mall/application/admin/pkg/db"
-	"github.com/baker-yuan/go-mall/application/admin/pkg/util"
 	pb "github.com/baker-yuan/go-mall/proto/mall"
 )
 
@@ -42,12 +41,12 @@ func (c BrandUseCase) UpdateBrand(ctx context.Context, param *pb.AddOrUpdateBran
 	}
 
 	// 数据转换
-	brand := assembler.AddOrUpdateBrandParamToEntity(param)
-	brand.ID = param.Id
-	brand.CreatedAt = oldBrand.CreatedAt
+	newBrand := assembler.AddOrUpdateBrandParamToEntity(param)
+	newBrand.ID = param.Id
+	newBrand.CreatedAt = oldBrand.CreatedAt
 
 	// 更新商品品牌
-	return c.brandRepo.Update(ctx, brand)
+	return c.brandRepo.Update(ctx, newBrand)
 }
 
 // GetBrands 分页查询商品品牌
@@ -67,8 +66,6 @@ func (c BrandUseCase) GetBrands(ctx context.Context, param *pb.GetBrandsParam) (
 
 	results := make([]*pb.Brand, 0)
 	for _, brand := range brands {
-		brand.BigPic = util.GetFullUrl(brand.BigPic)
-		brand.Logo = util.GetFullUrl(brand.Logo)
 		results = append(results, assembler.BrandEntityToModel(brand))
 	}
 	return results, pageTotal, nil

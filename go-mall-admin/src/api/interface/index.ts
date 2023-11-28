@@ -64,7 +64,7 @@ export namespace Category {
   }
   // 分页查询分类
   export interface ReqCategoryListParams extends ReqPage {
-    parentId: number, // 上级分类的编号：0表示一级分类
+    parentId: number | null, // 上级分类的编号：0表示一级分类
   }
 
 }

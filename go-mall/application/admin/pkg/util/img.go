@@ -10,6 +10,9 @@ func InitBaseUrl(base string) {
 
 // GetFullUrl 获取完整路径
 func GetFullUrl(path string) string {
+	if len(path) == 0 {
+		return ""
+	}
 	return baseUrl + path
 }
 

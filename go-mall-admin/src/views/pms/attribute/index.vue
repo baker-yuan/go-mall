@@ -1,7 +1,6 @@
 <template>
   <div class="main-box">
     <div class="card filter">
-      <h4 class="title sle">商品类型</h4>
       <el-input placeholder="输入关键字进行过滤" clearable />
       <el-scrollbar :style="{ height: `calc(100% - 95px)` }">
         <el-tree

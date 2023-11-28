@@ -2,6 +2,7 @@ package assembler
 
 import (
 	"github.com/baker-yuan/go-mall/application/admin/internal/entity"
+	"github.com/baker-yuan/go-mall/application/admin/pkg/util"
 	pb "github.com/baker-yuan/go-mall/proto/mall"
 )
 
@@ -16,8 +17,8 @@ func BrandEntityToModel(brand *entity.Brand) *pb.Brand {
 		ShowStatus:          uint32(brand.ShowStatus),
 		ProductCount:        brand.ProductCount,
 		ProductCommentCount: brand.ProductCommentCount,
-		Logo:                brand.Logo,
-		BigPic:              brand.BigPic,
+		Logo:                util.GetFullUrl(brand.Logo),
+		BigPic:              util.GetFullUrl(brand.BigPic),
 		BrandStory:          brand.BrandStory,
 	}
 }
@@ -30,8 +31,8 @@ func AddOrUpdateBrandParamToEntity(param *pb.AddOrUpdateBrandParam) *entity.Bran
 		Sort:          param.Sort,
 		FactoryStatus: uint8(param.FactoryStatus),
 		ShowStatus:    uint8(param.ShowStatus),
-		Logo:          param.Logo,
-		BigPic:        param.BigPic,
+		Logo:          util.GetRelativeUrl(param.Logo),
+		BigPic:        util.GetRelativeUrl(param.BigPic),
 		BrandStory:    param.BrandStory,
 	}
 }

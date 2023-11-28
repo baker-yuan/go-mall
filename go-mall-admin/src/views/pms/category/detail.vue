@@ -12,7 +12,7 @@
       <el-form-item label="分类名称" prop="name">
         <el-input v-model="drawerProps.row!.name" placeholder="请填写商品分类名称" clearable></el-input>
       </el-form-item>
-      <el-form-item label="上级分类" prop="parentId">
+      <el-form-item v-if="drawerProps.row && Number(drawerProps.row.parentId) !== 0" label="上级分类" prop="parentId">
         <el-select v-model="drawerProps.row!.parentId" placeholder="请选择分类">
           <el-option v-for="item in selectProductCateList" :key="item.id" :label="item.name" :value="item.id"></el-option>
         </el-select>
@@ -44,6 +44,8 @@
           <template #tip> 只能上传jpg/png文件，且不超过10MB </template>
         </UploadImg>
       </el-form-item>
+      <!-- todo 筛选属性 -->
+
       <el-form-item label="关键字" prop="keywords">
         <el-input v-model="drawerProps.row!.keywords" placeholder="请填写关键字" clearable></el-input>
       </el-form-item>

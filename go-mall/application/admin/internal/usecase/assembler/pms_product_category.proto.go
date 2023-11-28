@@ -2,6 +2,7 @@ package assembler
 
 import (
 	"github.com/baker-yuan/go-mall/application/admin/internal/entity"
+	"github.com/baker-yuan/go-mall/application/admin/pkg/util"
 	pb "github.com/baker-yuan/go-mall/proto/mall"
 )
 
@@ -16,7 +17,7 @@ func ProductCategoryEntityToModel(category *entity.ProductCategory) *pb.ProductC
 		NavStatus:    uint32(category.NavStatus),
 		ShowStatus:   uint32(category.ShowStatus),
 		Sort:         category.Sort,
-		Icon:         category.Icon,
+		Icon:         util.GetFullUrl(category.Icon),
 		Keywords:     category.Keywords,
 		Description:  category.Description,
 	}
@@ -30,7 +31,7 @@ func AddOrUpdateProductCategoryParamToEntity(param *pb.AddOrUpdateProductCategor
 		NavStatus:   uint8(param.NavStatus),
 		ShowStatus:  uint8(param.ShowStatus),
 		Sort:        param.Sort,
-		Icon:        param.Icon,
+		Icon:        util.GetRelativeUrl(param.Icon),
 		Keywords:    param.Keywords,
 		Description: param.Description,
 	}
