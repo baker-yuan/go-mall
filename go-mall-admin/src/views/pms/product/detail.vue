@@ -7,7 +7,14 @@
       <el-step title="选择商品关联"></el-step>
     </el-steps>
     <div style="margin-top: 50px">
-      <el-form :model="drawerProps.row" :rules="rules" ref="ruleFormRef" label-width="120px" class="form-inner-container">
+      <el-form
+        ref="ruleFormRef"
+        :model="drawerProps.row"
+        :rules="rules"
+        label-suffix=" :"
+        label-width="120px"
+        class="form-inner-container"
+      >
         <div v-show="activeStep === 0">
           <el-form-item label="商品分类" prop="productCategoryId">
             <el-cascader v-model="drawerProps.row!.productCategoryId" :options="categoryTreeData"> </el-cascader>
@@ -34,7 +41,7 @@
               </el-select>
             </el-form-item>
           -->
-          <el-form-item label="商品介绍：">
+          <el-form-item label="商品介绍">
             <el-input
               :auto-size="true"
               v-model="drawerProps.row!.description"
@@ -42,22 +49,22 @@
               placeholder="请输入内容"
             ></el-input>
           </el-form-item>
-          <el-form-item label="商品货号：">
+          <el-form-item label="商品货号">
             <el-input v-model="drawerProps.row!.productSn"></el-input>
           </el-form-item>
-          <el-form-item label="商品售价：">
+          <el-form-item label="商品售价">
             <el-input v-model="drawerProps.row!.price"></el-input>
           </el-form-item>
-          <el-form-item label="市场价：">
+          <el-form-item label="市场价">
             <el-input v-model="drawerProps.row!.originalPrice"></el-input>
           </el-form-item>
-          <el-form-item label="商品库存：">
+          <el-form-item label="商品库存">
             <el-input v-model="drawerProps.row!.stock"></el-input>
           </el-form-item>
-          <el-form-item label="计量单位：">
+          <el-form-item label="计量单位">
             <el-input v-model="drawerProps.row!.unit"></el-input>
           </el-form-item>
-          <el-form-item label="商品重量：">
+          <el-form-item label="商品重量">
             <el-input v-model="drawerProps.row!.weight" style="width: 300px"></el-input>
             <span style="margin-left: 20px">克</span>
           </el-form-item>
@@ -71,29 +78,29 @@
           -->
         </div>
         <div v-show="activeStep === 1">
-          <el-form-item label="赠送积分：">
+          <el-form-item label="赠送积分">
             <el-input v-model="drawerProps.row!.giftPoint"></el-input>
           </el-form-item>
-          <el-form-item label="赠送成长值：">
+          <el-form-item label="赠送成长值">
             <el-input v-model="drawerProps.row!.giftGrowth"></el-input>
           </el-form-item>
-          <el-form-item label="积分购买限制：">
+          <el-form-item label="积分购买限制">
             <el-input v-model="drawerProps.row!.usePointLimit"></el-input>
           </el-form-item>
-          <el-form-item label="预告商品：">
+          <el-form-item label="预告商品">
             <el-switch v-model="drawerProps.row!.previewStatus" :active-value="1" :inactive-value="0"></el-switch>
           </el-form-item>
-          <el-form-item label="商品上架：">
+          <el-form-item label="商品上架">
             <el-switch v-model="drawerProps.row!.publishStatus" :active-value="1" :inactive-value="0"></el-switch>
           </el-form-item>
-          <el-form-item label="商品推荐：">
+          <el-form-item label="商品推荐">
             <span style="margin-right: 10px">新品</span>
             <el-switch v-model="drawerProps.row!.newStatus" :active-value="1" :inactive-value="0"></el-switch>
             <span style="margin-left: 10px; margin-right: 10px">推荐</span>
             <el-switch v-model="drawerProps.row!.recommandStatus" :active-value="1" :inactive-value="0"></el-switch>
           </el-form-item>
           <!--
-          <el-form-item label="服务保证：">
+          <el-form-item label="服务保证">
             <el-checkbox-group v-model="selectServiceList">
               <el-checkbox :label="1">无忧退货</el-checkbox>
               <el-checkbox :label="2">快速退款</el-checkbox>
@@ -101,19 +108,19 @@
             </el-checkbox-group>
           </el-form-item>
           -->
-          <el-form-item label="详细页标题：">
+          <el-form-item label="详细页标题">
             <el-input v-model="drawerProps.row!.detailTitle"></el-input>
           </el-form-item>
-          <el-form-item label="详细页描述：">
+          <el-form-item label="详细页描述">
             <el-input v-model="drawerProps.row!.detailDesc"></el-input>
           </el-form-item>
-          <el-form-item label="商品关键字：">
+          <el-form-item label="商品关键字">
             <el-input v-model="drawerProps.row!.keywords"></el-input>
           </el-form-item>
-          <el-form-item label="商品备注：">
+          <el-form-item label="商品备注">
             <el-input v-model="drawerProps.row!.note" type="textarea" :auto-size="true"></el-input>
           </el-form-item>
-          <el-form-item label="选择优惠方式：">
+          <el-form-item label="选择优惠方式">
             <el-radio-group v-model="drawerProps.row!.promotionType" size="small">
               <el-radio-button :label="0">无优惠</el-radio-button>
               <el-radio-button :label="1">特惠促销</el-radio-button>
@@ -217,7 +224,7 @@
         <div v-show="activeStep === 2">
           333
           <!--
-          <el-form-item label="属性类型：">
+          <el-form-item label="属性类型">
             <el-select v-model="drawerProps.row!.productAttributeCategoryId"
                        placeholder="请选择属性类型"
                        @change="handleProductAttrChange">
@@ -229,7 +236,7 @@
               </el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="商品规格：">
+          <el-form-item label="商品规格">
             <el-card shadow="never" class="cardBg">
               <div v-for="(productAttr,idx) in selectProductAttr">
                 {{productAttr.name}}：
@@ -340,7 +347,7 @@
               </div>
             </el-card>
           </el-form-item>
-          <el-form-item label="商品参数：">
+          <el-form-item label="商品参数">
             <el-card shadow="never" class="cardBg">
               <div v-for="(item,index) in selectProductParam" :class="{littleMarginTop:index!==0}">
                 <div class="paramInputLabel">{{item.name}}:</div>
@@ -356,10 +363,10 @@
               </div>
             </el-card>
           </el-form-item>
-          <el-form-item label="商品相册：">
+          <el-form-item label="商品相册">
             <multi-upload v-model="selectProductPics"></multi-upload>
           </el-form-item>
-          <el-form-item label="商品详情：">
+          <el-form-item label="商品详情">
             <el-tabs v-model="activeHtmlName" type="card">
               <el-tab-pane label="电脑端详情" name="pc">
                 <tinymce :width="595" :height="300" v-model="value.detailHtml"></tinymce>
@@ -374,7 +381,7 @@
         <div v-show="activeStep === 3">
           444
           <!--
-          <el-form-item label="关联专题：">
+          <el-form-item label="关联专题">
             <el-transfer
               style="display: inline-block"
               filterable
@@ -385,7 +392,7 @@
               :data="subjectList">
             </el-transfer>
           </el-form-item>
-          <el-form-item label="关联优选：">
+          <el-form-item label="关联优选">
             <el-transfer
               style="display: inline-block"
               filterable
