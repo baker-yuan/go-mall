@@ -18,36 +18,35 @@
     </div>
     <div class="table-box">
       <el-tabs class="card" @tab-click="handleTabClick">
-        <el-tab-pane v-for="(item, index) in tabPane" :key="index" :label="item.label" :name="item.name">
-          <ProTable
-            ref="proTable"
-            :columns="columns"
-            :request-api="getTableList"
-            :init-param="initParam"
-            :data-callback="dataCallback"
-            @darg-sort="sortTable"
-            :border="false"
-          >
-            <!-- 表格 header 按钮 -->
-            <template #tableHeader>
-              <el-button type="primary" :icon="CirclePlus" @click="openDrawer('新增')">新增</el-button>
-            </template>
-            <!-- 属性是否可选 -->
-            <template #selectType="scope">
-              {{ selectTypeFilter(scope.row.selectType) }}
-            </template>
-            <!-- 属性值的录入方式 -->
-            <template #inputType="scope">
-              {{ inputTypeFilter(scope.row.inputType) }}
-            </template>
+        <el-tab-pane v-for="(item, index) in tabPane" :key="index" :label="item.label" :name="item.name"></el-tab-pane>
+        <ProTable
+          ref="proTable"
+          :columns="columns"
+          :request-api="getTableList"
+          :init-param="initParam"
+          :data-callback="dataCallback"
+          @darg-sort="sortTable"
+          :border="false"
+        >
+          <!-- 表格 header 按钮 -->
+          <template #tableHeader>
+            <el-button type="primary" :icon="CirclePlus" @click="openDrawer('新增')">新增</el-button>
+          </template>
+          <!-- 属性是否可选 -->
+          <template #selectType="scope">
+            {{ selectTypeFilter(scope.row.selectType) }}
+          </template>
+          <!-- 属性值的录入方式 -->
+          <template #inputType="scope">
+            {{ inputTypeFilter(scope.row.inputType) }}
+          </template>
 
-            <!-- 表格操作 -->
-            <template #operation="scope">
-              <el-button type="primary" link :icon="EditPen" @click="openDrawer('编辑', scope.row)">编辑</el-button>
-              <el-button type="primary" link :icon="Delete" @click="deleteProductAttribute(scope.row)">删除</el-button>
-            </template>
-          </ProTable>
-        </el-tab-pane>
+          <!-- 表格操作 -->
+          <template #operation="scope">
+            <el-button type="primary" link :icon="EditPen" @click="openDrawer('编辑', scope.row)">编辑</el-button>
+            <el-button type="primary" link :icon="Delete" @click="deleteProductAttribute(scope.row)">删除</el-button>
+          </template>
+        </ProTable>
       </el-tabs>
       <ProductAttributeDrawer ref="drawerRef" />
     </div>
