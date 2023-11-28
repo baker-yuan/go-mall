@@ -52,6 +52,11 @@ export interface CascaderValue {
   children?: CascaderValue[];
 }
 
+export interface OptionValue {
+  value: number;
+  label: string;
+}
+
 // 分类管理模块
 export namespace Category {
   // 分类模型

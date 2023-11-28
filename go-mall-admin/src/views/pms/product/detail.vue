@@ -17,7 +17,7 @@
       >
         <div v-show="activeStep === 0">
           <el-form-item label="商品分类" prop="productCategoryId">
-            <el-cascader v-model="drawerProps.row!.productCategoryId" :options="categoryTreeData"> </el-cascader>
+            <el-cascader v-model="drawerProps.row!.productCategoryId" :options="productCateOptions"> </el-cascader>
           </el-form-item>
           <el-form-item label="商品名称" prop="name">
             <el-input v-model="drawerProps.row!.name"></el-input>
@@ -25,22 +25,11 @@
           <el-form-item label="副标题" prop="subTitle">
             <el-input v-model="drawerProps.row!.subTitle"></el-input>
           </el-form-item>
-
-          <!--
-            <el-form-item label="商品品牌：" prop="brandId">
-              <el-select
-                v-model="drawerProps.row?.brandId"
-                @change="handleBrandChange"
-                placeholder="请选择品牌">
-                <el-option
-                  v-for="item in brandOptions"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value">
-                </el-option>
-              </el-select>
-            </el-form-item>
-          -->
+          <el-form-item label="商品品牌：" prop="brandId">
+            <el-select v-model="drawerProps.row!.brandId" @change="handleBrandChange" placeholder="请选择品牌">
+              <el-option v-for="item in brandOptions" :key="item.value" :label="item.label" :value="item.value"> </el-option>
+            </el-select>
+          </el-form-item>
           <el-form-item label="商品介绍">
             <el-input
               :auto-size="true"
@@ -419,8 +408,9 @@
 <script setup lang="ts" name="ProductDrawer">
 import { onBeforeMount, reactive, ref } from "vue";
 import { ElMessage, FormInstance } from "element-plus";
-import { CascaderValue, Product } from "@/api/interface";
+import { CascaderValue, OptionValue, Product } from "@/api/interface";
 import { categoryTreeApi } from "@/api/modules/category";
+import { getAllBrandsV2Api } from "@/api/modules/brand";
 
 const rules = reactive({
   name: [
@@ -453,7 +443,8 @@ const handlePrev = (formName: string) => {
   activeStep.value = activeStep.value - 1;
 };
 
-const categoryTreeData = ref<CascaderValue[]>([]);
+const productCateOptions = ref<CascaderValue[]>([]);
+const brandOptions = ref<OptionValue[]>([]);
 
 interface DrawerProps {
   title: string; // 标题
@@ -492,7 +483,8 @@ const handleSubmit = async () => {
 };
 
 onBeforeMount(async () => {
-  categoryTreeData.value = await categoryTreeApi();
+  productCateOptions.value = await categoryTreeApi();
+  brandOptions.value = await getAllBrandsV2Api();
 });
 
 defineExpose({

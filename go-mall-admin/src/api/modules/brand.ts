@@ -1,4 +1,4 @@
-import { Brand, ResPage } from "@/api/interface/index";
+import { Brand, OptionValue, ResPage } from "@/api/interface/index";
 import http from "@/api";
 
 // 添加商品品牌
@@ -35,3 +35,24 @@ export const getAllBrandsApi = async (): Promise<ResPage<Brand.BrandModel>> => {
   const res = await getBrands(params);
   return res.data;
 };
+
+// 获取所有商品品牌
+export const getAllBrandsV2Api = async () => {
+  let params = {
+    pageNum: 1,
+    pageSize: 10000
+  };
+  const res = await getBrands(params);
+  return transformData(res.data.data);
+};
+
+// 数据转换函数
+function transformData(data: Brand.BrandModel[]): OptionValue[] {
+  if (!data) {
+    return [];
+  }
+  return data.map(item => ({
+    value: item.id,
+    label: item.name
+  }));
+}
