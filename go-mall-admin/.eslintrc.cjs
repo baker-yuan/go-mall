@@ -59,7 +59,7 @@ module.exports = {
     "vue/no-setup-props-destructure": "off", // 禁止解构 props 传递给 setup
 
     // 修复
-    // eslint --fix src/components/CommaInput/index.vue
+    // nvm use v18.16.1 && eslint --fix src/components/CommaInput/index.vue
 
     // 全关
     // "prettier/prettier": "off"

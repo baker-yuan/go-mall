@@ -1468,7 +1468,7 @@ func RegisterAdminApiHandlerServer(ctx context.Context, mux *runtime.ServeMux, s
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/admin.AdminApi/GetProductCategoriesWithChildren", runtime.WithHTTPPathPattern("/categories/search/withChildren"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/admin.AdminApi/GetProductCategoriesWithChildren", runtime.WithHTTPPathPattern("/categories/search/categoryTree"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2192,7 +2192,7 @@ func RegisterAdminApiHandlerClient(ctx context.Context, mux *runtime.ServeMux, c
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/admin.AdminApi/GetProductCategoriesWithChildren", runtime.WithHTTPPathPattern("/categories/search/withChildren"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/admin.AdminApi/GetProductCategoriesWithChildren", runtime.WithHTTPPathPattern("/categories/search/categoryTree"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2706,7 +2706,7 @@ var (
 
 	pattern_AdminApi_DeleteProductCategory_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1}, []string{"categories", "id"}, ""))
 
-	pattern_AdminApi_GetProductCategoriesWithChildren_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"categories", "search", "withChildren"}, ""))
+	pattern_AdminApi_GetProductCategoriesWithChildren_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"categories", "search", "categoryTree"}, ""))
 
 	pattern_AdminApi_CreateBrand_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"brands"}, ""))
 

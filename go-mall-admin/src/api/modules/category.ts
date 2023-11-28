@@ -1,4 +1,4 @@
-import { Category, ResPage } from "@/api/interface/index";
+import { CascaderValue, Category, ResPage } from "@/api/interface/index";
 import http from "@/api";
 
 // 添加商品分类
@@ -25,3 +25,40 @@ export const getCategory = (id: number) => {
 export const deleteCategoryApi = (id: number) => {
   return http.delete<Category.CategoryModel>(`/categories/${id}`);
 };
+
+// 商品分类
+export const categoryTreeApi = async () => {
+  const response = await http.get<Category.CategoryTree[]>(`/categories/search/categoryTree`);
+  // 检查响应是否有效
+  if (response && response.data) {
+    // 转换数据
+    let res = transformData(response.data);
+    console.log("transformData", JSON.stringify(res));
+    return res;
+  } else {
+    // 如果响应无效，返回一个空数组
+    return [];
+  }
+};
+
+// 数据转换函数
+function transformData(data: Category.CategoryTree[]): CascaderValue[] {
+  if (!data) {
+    return [];
+  }
+  return data.map(item => ({
+    value: item.category.id,
+    label: item.category.name,
+    children: item.children ? transformChildren(item.children) : undefined
+  }));
+}
+
+function transformChildren(children: Category.CategoryModel[]): CascaderValue[] {
+  if (!children) {
+    return [];
+  }
+  return children.map(child => ({
+    value: child.id,
+    label: child.name
+  }));
+}

@@ -162,16 +162,7 @@ func (m *AddOrUpdateProductCategoryParam) validate(all bool) error {
 
 	// no validation rules for Id
 
-	if m.GetParentId() <= 0 {
-		err := AddOrUpdateProductCategoryParamValidationError{
-			field:  "ParentId",
-			reason: "value must be greater than 0",
-		}
-		if !all {
-			return err
-		}
-		errors = append(errors, err)
-	}
+	// no validation rules for ParentId
 
 	if utf8.RuneCountInString(m.GetName()) < 1 {
 		err := AddOrUpdateProductCategoryParamValidationError{
@@ -1258,7 +1249,7 @@ func (m *ProductCategoryTreeItem) validate(all bool) error {
 		}
 	}
 
-	for idx, item := range m.GetChild() {
+	for idx, item := range m.GetChildren() {
 		_, _ = idx, item
 
 		if all {
@@ -1266,7 +1257,7 @@ func (m *ProductCategoryTreeItem) validate(all bool) error {
 			case interface{ ValidateAll() error }:
 				if err := v.ValidateAll(); err != nil {
 					errors = append(errors, ProductCategoryTreeItemValidationError{
-						field:  fmt.Sprintf("Child[%v]", idx),
+						field:  fmt.Sprintf("Children[%v]", idx),
 						reason: "embedded message failed validation",
 						cause:  err,
 					})
@@ -1274,7 +1265,7 @@ func (m *ProductCategoryTreeItem) validate(all bool) error {
 			case interface{ Validate() error }:
 				if err := v.Validate(); err != nil {
 					errors = append(errors, ProductCategoryTreeItemValidationError{
-						field:  fmt.Sprintf("Child[%v]", idx),
+						field:  fmt.Sprintf("Children[%v]", idx),
 						reason: "embedded message failed validation",
 						cause:  err,
 					})
@@ -1283,7 +1274,7 @@ func (m *ProductCategoryTreeItem) validate(all bool) error {
 		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
 			if err := v.Validate(); err != nil {
 				return ProductCategoryTreeItemValidationError{
-					field:  fmt.Sprintf("Child[%v]", idx),
+					field:  fmt.Sprintf("Children[%v]", idx),
 					reason: "embedded message failed validation",
 					cause:  err,
 				}

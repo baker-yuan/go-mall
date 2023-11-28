@@ -99,7 +99,7 @@ message GetProductCategoriesWithChildrenReq {
 // 查询所有一级分类及子分类
 message ProductCategoryTreeItem {
    model.ProductCategory category = 1;
-   repeated model.ProductCategory child = 2;
+   repeated model.ProductCategory children = 2;
 }
 
 // 查询所有一级分类及子分类
@@ -482,7 +482,7 @@ service AdminApi {
   // 查询所有一级分类及子分类
   rpc GetProductCategoriesWithChildren (GetProductCategoriesWithChildrenReq) returns (GetProductCategoriesWithChildrenRsp) {
     option (google.api.http) = {
-      get: "/categories/search/withChildren"
+      get: "/categories/search/categoryTree"
     };
   }
 

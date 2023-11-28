@@ -173,7 +173,7 @@ func (p ProductCategoryUseCase) buildTree(parentID uint64, categoryMap map[uint6
 		for _, category := range categories {
 			item := &pb.ProductCategoryTreeItem{
 				Category: category,
-				Child:    categoryMap[category.Id],
+				Children: categoryMap[category.Id],
 			}
 			tree = append(tree, item)
 		}

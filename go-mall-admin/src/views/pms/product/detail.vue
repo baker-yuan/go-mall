@@ -9,18 +9,13 @@
     <div style="margin-top: 50px">
       <el-form :model="drawerProps.row" :rules="rules" ref="ruleFormRef" label-width="120px" class="form-inner-container">
         <div v-show="activeStep === 0">
-          <!--
-          <el-form-item label="商品分类：" prop="productCategoryId">
-            <el-cascader
-              v-model="selectProductCateValue"
-              :options="productCateOptions">
-            </el-cascader>
+          <el-form-item label="商品分类" prop="productCategoryId">
+            <el-cascader v-model="drawerProps.row!.productCategoryId" :options="categoryTreeData"> </el-cascader>
           </el-form-item>
-          -->
-          <el-form-item label="商品名称：" prop="name">
+          <el-form-item label="商品名称" prop="name">
             <el-input v-model="drawerProps.row!.name"></el-input>
           </el-form-item>
-          <el-form-item label="副标题：" prop="subTitle">
+          <el-form-item label="副标题" prop="subTitle">
             <el-input v-model="drawerProps.row!.subTitle"></el-input>
           </el-form-item>
 
@@ -415,9 +410,10 @@
 </template>
 
 <script setup lang="ts" name="ProductDrawer">
-import { reactive, ref } from "vue";
+import { onBeforeMount, reactive, ref } from "vue";
 import { ElMessage, FormInstance } from "element-plus";
-import { Product } from "@/api/interface";
+import { CascaderValue, Product } from "@/api/interface";
+import { categoryTreeApi } from "@/api/modules/category";
 
 const rules = reactive({
   name: [
@@ -431,10 +427,11 @@ const rules = reactive({
   requiredProp: [{ required: true, message: "该项为必填项", trigger: "blur" }]
 });
 
+// 当前tab
 const activeStep = ref<number>(0);
-
+// 表单引用
 const ruleFormRef = ref<FormInstance>();
-
+// 切换到下一个tab
 const handleNext = (formName: string) => {
   activeStep.value = activeStep.value + 1;
   if (formName === "productInfoForm") {
@@ -443,11 +440,13 @@ const handleNext = (formName: string) => {
     });
   }
 };
-
+// 切换到上一个tab
 const handlePrev = (formName: string) => {
   console.log(formName);
   activeStep.value = activeStep.value - 1;
 };
+
+const categoryTreeData = ref<CascaderValue[]>([]);
 
 interface DrawerProps {
   title: string; // 标题
@@ -484,6 +483,10 @@ const handleSubmit = async () => {
     console.log(error);
   }
 };
+
+onBeforeMount(async () => {
+  categoryTreeData.value = await categoryTreeApi();
+});
 
 defineExpose({
   acceptParams
