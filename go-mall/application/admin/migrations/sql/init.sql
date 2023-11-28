@@ -406,3 +406,9 @@ values  (98, 27, '201808270027001', 2699.00, 86, 0, '', 0, 0.00, -24, '[{"key":"
         (241, 45, '202211080045003', 2299.00, 250, 0, '/mall/images/20221108/oppo_r8_02.jpg', 0, 0.00, 0, '[{"key":"颜色","value":"晴空蓝"},{"key":"容量","value":"128G"}]'),
         (242, 45, '202211080045004', 2499.00, 250, 0, '/mall/images/20221108/oppo_r8_02.jpg', 0, 0.00, 0, '[{"key":"颜色","value":"晴空蓝"},{"key":"容量","value":"256G"}]');
 
+insert into go_mall_admin.pms_product_category_attribute_relation (id, product_category_id, product_attribute_id)
+values  (1, 24, 24),
+        (5, 26, 24),
+        (7, 28, 24),
+        (9, 25, 24),
+        (10, 25, 25);

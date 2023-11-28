@@ -18,18 +18,19 @@ export default {
     }
   },
   setup(props, { emit }) {
-    console.log("setup", props.modelValue);
-
+    const convertValue = (value: string) => {
+      return value.replace(/,/g,"\n");
+    };
     const formatValue = (value: string) => {
       return value.replace(/\n/g,",");
     };
 
-    const formattedValue = ref(props.modelValue.replace(/,/g,"\n"));
+    const formattedValue = ref(convertValue(props.modelValue));
 
     watch(() => props.modelValue, (newValue, oldValue) => {
       console.log("watch", newValue, oldValue);
       if (newValue) {
-        formattedValue.value = newValue.replace(/,/g,"\n");
+        formattedValue.value = convertValue(newValue);
       }
     })
 
