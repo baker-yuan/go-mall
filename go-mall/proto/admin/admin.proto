@@ -18,6 +18,7 @@ import "model/pms_sku_stock.proto";
 import "model/pms_product_attribute_value.proto";
 import "model/cms_prefrence_area_product_relation.proto";
 import "model/cms_subject_product_relation.proto";
+import "model/cms_subject.proto";
 
 option go_package = ".;mall";
 
@@ -441,6 +442,53 @@ message DeleteProductReq {
 
 // END ======================================= 商品管理 ======================================= END
 
+// START ======================================= 专题 ======================================= START
+// 添加或更新专题表参数
+message AddOrUpdateSubjectParam {
+  uint64 id = 1; // 主键
+}
+
+// 分页查询专题表
+message GetSubjectsParam {
+
+  uint32 page_num = 10 [(validate.rules).uint32.gte = 0];   // 页面大小
+  uint32 page_size = 11 [(validate.rules).uint32.gte = 0];  // 页码
+}
+
+// 分页查询专题表
+message SubjectsData {
+  repeated model.Subject data = 1;    // 专题表
+  uint32 page_total = 2;                         // 数据总数
+  uint32 page_size = 3;                          // 页码
+  uint32 page_num = 4;                           // 页面大小
+}
+message GetSubjectsRsp {
+  uint32 code = 1;          // 状态码
+  string message = 2;       // 提示信息
+
+  SubjectsData data = 3; //
+}
+
+// 根据id获取专题表
+message GetSubjectReq {
+  uint64 id = 1;
+}
+
+// 根据id获取专题表
+message GetSubjectRsp {
+  uint32 code = 1;          // 状态码
+  string message = 2;       // 提示信息
+
+  model.Subject data = 3;    // 数据
+}
+
+// 删除专题表
+message DeleteSubjectReq {
+  uint64 id = 1;
+}
+
+// END ======================================= 专题 ======================================= END
+
 // 商品分类管理
 service AdminApi {
 
@@ -677,6 +725,46 @@ service AdminApi {
   // END ======================================= sku库存 ======================================= END
 
 
+  // START ======================================= 专题 ======================================= START
+
+  // 添加专题
+  rpc CreateSubject (AddOrUpdateSubjectParam) returns (CommonRsp) {
+    option (google.api.http) = {
+      post: "/subjects"
+      body: "*"
+    };
+  }
+
+  // 修改专题
+  rpc UpdateSubject (AddOrUpdateSubjectParam) returns (CommonRsp) {
+    option (google.api.http) = {
+      put: "/subjects/{id}"
+      body: "*"
+    };
+  }
+
+  // 分页查询专题
+  rpc GetSubjects (GetSubjectsParam) returns (GetSubjectsRsp) {
+    option (google.api.http) = {
+      get: "/subjects"
+    };
+  }
+
+  // 根据id获取专题
+  rpc GetSubject (GetSubjectReq) returns (GetSubjectRsp) {
+    option (google.api.http) = {
+      get: "/subjects/{id}"
+    };
+  }
+
+  // 删除专题
+  rpc DeleteSubject (DeleteSubjectReq) returns (CommonRsp) {
+    option (google.api.http) = {
+      delete: "/subjects/{id}"
+    };
+  }
+
+  // END ======================================= 专题 ======================================= END
 }
 
 

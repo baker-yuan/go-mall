@@ -47,6 +47,11 @@ const (
 	AdminApi_DeleteProduct_FullMethodName                    = "/admin.AdminApi/DeleteProduct"
 	AdminApi_BatchUpdateSkuStock_FullMethodName              = "/admin.AdminApi/BatchUpdateSkuStock"
 	AdminApi_GetSkuStocksByProductId_FullMethodName          = "/admin.AdminApi/GetSkuStocksByProductId"
+	AdminApi_CreateSubject_FullMethodName                    = "/admin.AdminApi/CreateSubject"
+	AdminApi_UpdateSubject_FullMethodName                    = "/admin.AdminApi/UpdateSubject"
+	AdminApi_GetSubjects_FullMethodName                      = "/admin.AdminApi/GetSubjects"
+	AdminApi_GetSubject_FullMethodName                       = "/admin.AdminApi/GetSubject"
+	AdminApi_DeleteSubject_FullMethodName                    = "/admin.AdminApi/DeleteSubject"
 )
 
 // AdminApiClient is the client API for AdminApi service.
@@ -111,6 +116,16 @@ type AdminApiClient interface {
 	BatchUpdateSkuStock(ctx context.Context, in *BatchUpdateSkuStockParam, opts ...grpc.CallOption) (*CommonRsp, error)
 	// 分页查询sku的库存
 	GetSkuStocksByProductId(ctx context.Context, in *GetSkuStocksByProductIdParam, opts ...grpc.CallOption) (*GetSkuStocksByProductIdRsp, error)
+	// 添加专题
+	CreateSubject(ctx context.Context, in *AddOrUpdateSubjectParam, opts ...grpc.CallOption) (*CommonRsp, error)
+	// 修改专题
+	UpdateSubject(ctx context.Context, in *AddOrUpdateSubjectParam, opts ...grpc.CallOption) (*CommonRsp, error)
+	// 分页查询专题
+	GetSubjects(ctx context.Context, in *GetSubjectsParam, opts ...grpc.CallOption) (*GetSubjectsRsp, error)
+	// 根据id获取专题
+	GetSubject(ctx context.Context, in *GetSubjectReq, opts ...grpc.CallOption) (*GetSubjectRsp, error)
+	// 删除专题
+	DeleteSubject(ctx context.Context, in *DeleteSubjectReq, opts ...grpc.CallOption) (*CommonRsp, error)
 }
 
 type adminApiClient struct {
@@ -373,6 +388,51 @@ func (c *adminApiClient) GetSkuStocksByProductId(ctx context.Context, in *GetSku
 	return out, nil
 }
 
+func (c *adminApiClient) CreateSubject(ctx context.Context, in *AddOrUpdateSubjectParam, opts ...grpc.CallOption) (*CommonRsp, error) {
+	out := new(CommonRsp)
+	err := c.cc.Invoke(ctx, AdminApi_CreateSubject_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *adminApiClient) UpdateSubject(ctx context.Context, in *AddOrUpdateSubjectParam, opts ...grpc.CallOption) (*CommonRsp, error) {
+	out := new(CommonRsp)
+	err := c.cc.Invoke(ctx, AdminApi_UpdateSubject_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *adminApiClient) GetSubjects(ctx context.Context, in *GetSubjectsParam, opts ...grpc.CallOption) (*GetSubjectsRsp, error) {
+	out := new(GetSubjectsRsp)
+	err := c.cc.Invoke(ctx, AdminApi_GetSubjects_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *adminApiClient) GetSubject(ctx context.Context, in *GetSubjectReq, opts ...grpc.CallOption) (*GetSubjectRsp, error) {
+	out := new(GetSubjectRsp)
+	err := c.cc.Invoke(ctx, AdminApi_GetSubject_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *adminApiClient) DeleteSubject(ctx context.Context, in *DeleteSubjectReq, opts ...grpc.CallOption) (*CommonRsp, error) {
+	out := new(CommonRsp)
+	err := c.cc.Invoke(ctx, AdminApi_DeleteSubject_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // AdminApiServer is the server API for AdminApi service.
 // All implementations must embed UnimplementedAdminApiServer
 // for forward compatibility
@@ -435,6 +495,16 @@ type AdminApiServer interface {
 	BatchUpdateSkuStock(context.Context, *BatchUpdateSkuStockParam) (*CommonRsp, error)
 	// 分页查询sku的库存
 	GetSkuStocksByProductId(context.Context, *GetSkuStocksByProductIdParam) (*GetSkuStocksByProductIdRsp, error)
+	// 添加专题
+	CreateSubject(context.Context, *AddOrUpdateSubjectParam) (*CommonRsp, error)
+	// 修改专题
+	UpdateSubject(context.Context, *AddOrUpdateSubjectParam) (*CommonRsp, error)
+	// 分页查询专题
+	GetSubjects(context.Context, *GetSubjectsParam) (*GetSubjectsRsp, error)
+	// 根据id获取专题
+	GetSubject(context.Context, *GetSubjectReq) (*GetSubjectRsp, error)
+	// 删除专题
+	DeleteSubject(context.Context, *DeleteSubjectReq) (*CommonRsp, error)
 	mustEmbedUnimplementedAdminApiServer()
 }
 
@@ -525,6 +595,21 @@ func (UnimplementedAdminApiServer) BatchUpdateSkuStock(context.Context, *BatchUp
 }
 func (UnimplementedAdminApiServer) GetSkuStocksByProductId(context.Context, *GetSkuStocksByProductIdParam) (*GetSkuStocksByProductIdRsp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetSkuStocksByProductId not implemented")
+}
+func (UnimplementedAdminApiServer) CreateSubject(context.Context, *AddOrUpdateSubjectParam) (*CommonRsp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateSubject not implemented")
+}
+func (UnimplementedAdminApiServer) UpdateSubject(context.Context, *AddOrUpdateSubjectParam) (*CommonRsp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateSubject not implemented")
+}
+func (UnimplementedAdminApiServer) GetSubjects(context.Context, *GetSubjectsParam) (*GetSubjectsRsp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetSubjects not implemented")
+}
+func (UnimplementedAdminApiServer) GetSubject(context.Context, *GetSubjectReq) (*GetSubjectRsp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetSubject not implemented")
+}
+func (UnimplementedAdminApiServer) DeleteSubject(context.Context, *DeleteSubjectReq) (*CommonRsp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteSubject not implemented")
 }
 func (UnimplementedAdminApiServer) mustEmbedUnimplementedAdminApiServer() {}
 
@@ -1043,6 +1128,96 @@ func _AdminApi_GetSkuStocksByProductId_Handler(srv interface{}, ctx context.Cont
 	return interceptor(ctx, in, info, handler)
 }
 
+func _AdminApi_CreateSubject_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AddOrUpdateSubjectParam)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AdminApiServer).CreateSubject(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AdminApi_CreateSubject_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AdminApiServer).CreateSubject(ctx, req.(*AddOrUpdateSubjectParam))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AdminApi_UpdateSubject_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AddOrUpdateSubjectParam)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AdminApiServer).UpdateSubject(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AdminApi_UpdateSubject_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AdminApiServer).UpdateSubject(ctx, req.(*AddOrUpdateSubjectParam))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AdminApi_GetSubjects_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetSubjectsParam)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AdminApiServer).GetSubjects(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AdminApi_GetSubjects_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AdminApiServer).GetSubjects(ctx, req.(*GetSubjectsParam))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AdminApi_GetSubject_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetSubjectReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AdminApiServer).GetSubject(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AdminApi_GetSubject_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AdminApiServer).GetSubject(ctx, req.(*GetSubjectReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AdminApi_DeleteSubject_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteSubjectReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AdminApiServer).DeleteSubject(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AdminApi_DeleteSubject_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AdminApiServer).DeleteSubject(ctx, req.(*DeleteSubjectReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // AdminApi_ServiceDesc is the grpc.ServiceDesc for AdminApi service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -1161,6 +1336,26 @@ var AdminApi_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetSkuStocksByProductId",
 			Handler:    _AdminApi_GetSkuStocksByProductId_Handler,
+		},
+		{
+			MethodName: "CreateSubject",
+			Handler:    _AdminApi_CreateSubject_Handler,
+		},
+		{
+			MethodName: "UpdateSubject",
+			Handler:    _AdminApi_UpdateSubject_Handler,
+		},
+		{
+			MethodName: "GetSubjects",
+			Handler:    _AdminApi_GetSubjects_Handler,
+		},
+		{
+			MethodName: "GetSubject",
+			Handler:    _AdminApi_GetSubject_Handler,
+		},
+		{
+			MethodName: "DeleteSubject",
+			Handler:    _AdminApi_DeleteSubject_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
