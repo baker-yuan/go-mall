@@ -1,5 +1,11 @@
 <template>
-  <el-drawer v-model="drawerVisible" :destroy-on-close="true" size="900px" :title="`${drawerProps.title}商品表`">
+  <el-drawer
+    v-model="drawerVisible"
+    :destroy-on-close="true"
+    :close-on-click-modal="false"
+    size="900px"
+    :title="`${drawerProps.title}商品表`"
+  >
     <el-steps :active="activeStep" finish-status="success" align-center>
       <el-step title="填写商品信息"></el-step>
       <el-step title="填写商品促销"></el-step>
@@ -25,8 +31,8 @@
           <el-form-item label="副标题" prop="subTitle">
             <el-input v-model="drawerProps.row!.subTitle"></el-input>
           </el-form-item>
-          <el-form-item label="商品品牌：" prop="brandId">
-            <el-select v-model="drawerProps.row!.brandId" @change="handleBrandChange" placeholder="请选择品牌">
+          <el-form-item label="商品品牌" prop="brandId">
+            <el-select v-model="drawerProps.row!.brandId" placeholder="请选择品牌">
               <el-option v-for="item in brandOptions" :key="item.value" :label="item.label" :value="item.value"> </el-option>
             </el-select>
           </el-form-item>
@@ -60,11 +66,6 @@
           <el-form-item label="排序">
             <el-input v-model="drawerProps.row!.sort"></el-input>
           </el-form-item>
-          <!--
-          <el-form-item style="text-align: center">
-            <el-button type="primary" @click="handleNext('productInfoForm')">下一步，填写商品促销</el-button>
-          </el-form-item>
-          -->
         </div>
         <div v-show="activeStep === 1">
           <el-form-item label="赠送积分">
@@ -88,7 +89,6 @@
             <span style="margin-left: 10px; margin-right: 10px">推荐</span>
             <el-switch v-model="drawerProps.row!.recommandStatus" :active-value="1" :inactive-value="0"></el-switch>
           </el-form-item>
-          <!--
           <el-form-item label="服务保证">
             <el-checkbox-group v-model="selectServiceList">
               <el-checkbox :label="1">无忧退货</el-checkbox>
@@ -96,7 +96,6 @@
               <el-checkbox :label="3">免费包邮</el-checkbox>
             </el-checkbox-group>
           </el-form-item>
-          -->
           <el-form-item label="详细页标题">
             <el-input v-model="drawerProps.row!.detailTitle"></el-input>
           </el-form-item>
@@ -118,24 +117,26 @@
               <el-radio-button :label="4">满减价格</el-radio-button>
             </el-radio-group>
           </el-form-item>
-          <!--
-          <el-form-item v-show="drawerProps.row!.promotionType===1">
+          <!-- 特惠促销 -->
+          <el-form-item v-show="drawerProps.row!.promotionType === 1">
             <div>
               开始时间：
               <el-date-picker
-                v-model="drawerProps.row!.promotionStartTime"
+                v-model="promotionStartTime"
                 type="datetime"
-                :picker-options="pickerOptions1"
-                placeholder="选择开始时间">
+                :picker-options="pickerOptions"
+                placeholder="选择开始时间"
+              >
               </el-date-picker>
             </div>
             <div class="littleMargin">
               结束时间：
               <el-date-picker
-                v-model="drawerProps.row!.promotionEndTime"
+                v-model="promotionEndTime"
+                :picker-options="pickerOptions"
                 type="datetime"
-                :picker-options="pickerOptions1"
-                placeholder="选择结束时间">
+                placeholder="选择结束时间"
+              >
               </el-date-picker>
             </div>
             <div class="littleMargin">
@@ -143,73 +144,66 @@
               <el-input style="width: 220px" v-model="drawerProps.row!.promotionPrice" placeholder="输入促销价格"></el-input>
             </div>
           </el-form-item>
-
-          <el-form-item v-show="drawerProps.row!.promotionType===2">
-            <div v-for="(item, index) in drawerProps.row!.memberPriceList" :class="{littleMargin:index!==0}">
-              {{item.memberLevelName}}：
+          <!-- 会员价格 -->
+          <el-form-item v-show="drawerProps.row!.promotionType === 2">
+            <div v-for="(item, index) in drawerProps.row!.memberPriceList" :key="index" :class="{ littleMargin: index !== 0 }">
+              {{ item.memberLevelName }}：
               <el-input v-model="item.memberPrice" style="width: 200px"></el-input>
             </div>
           </el-form-item>
-          <el-form-item v-show="drawerProps.row!.promotionType===3">
-            <el-table :data="drawerProps.row!.productLadderList"
-                      style="width: 80%" border>
-              <el-table-column
-                label="数量"
-                align="center"
-                width="120">
-                <template slot-scope="scope">
+          <!--          
+          <el-form-item v-show="drawerProps.row!.promotionType === 3">
+            <el-table :data="drawerProps.row!.productLadderList" style="width: 80%" border>
+              <el-table-column label="数量" align="center" width="120">
+                <template #default="scope">
                   <el-input v-model="scope.row.count"></el-input>
                 </template>
               </el-table-column>
-              <el-table-column
-                label="折扣"
-                align="center"
-                width="120">
-                <template slot-scope="scope">
+              <el-table-column label="折扣" align="center" width="120">
+                <template #default="scope">
                   <el-input v-model="scope.row.discount"></el-input>
                 </template>
               </el-table-column>
-              <el-table-column
-                align="center"
-                label="操作">
-                <template slot-scope="scope">
+              <el-table-column align="center" label="操作">
+                <template #default="scope">
                   <el-button type="text" @click="handleRemoveProductLadder(scope.$index, scope.row)">删除</el-button>
                   <el-button type="text" @click="handleAddProductLadder(scope.$index, scope.row)">添加</el-button>
                 </template>
               </el-table-column>
             </el-table>
           </el-form-item>
-          <el-form-item v-show="value.promotionType===4">
-            <el-table :data="value.productFullReductionList"
-                      style="width: 80%" border>
-              <el-table-column
-                label="满"
-                align="center"
-                width="120">
-                <template slot-scope="scope">
-                  <el-input v-model="scope.row.fullPrice"></el-input>
-                </template>
-              </el-table-column>
-              <el-table-column
-                label="立减"
-                align="center"
-                width="120">
-                <template slot-scope="scope">
-                  <el-input v-model="scope.row.reducePrice"></el-input>
-                </template>
-              </el-table-column>
-              <el-table-column
-                align="center"
-                label="操作">
-                <template slot-scope="scope">
-                  <el-button type="text" @click="handleRemoveFullReduction(scope.$index, scope.row)">删除</el-button>
-                  <el-button type="text" @click="handleAddFullReduction(scope.$index, scope.row)">添加</el-button>
-                </template>
-              </el-table-column>
-            </el-table>
-          </el-form-item>
           -->
-        </div>
+          <!--
+        <el-form-item v-show="value.promotionType===4">
+          <el-table :data="value.productFullReductionList"
+                    style="width: 80%" border>
+            <el-table-column
+              label="满"
+              align="center"
+              width="120">
+              <template slot-scope="scope">
+                <el-input v-model="scope.row.fullPrice"></el-input>
+              </template>
+            </el-table-column>
+            <el-table-column
+              label="立减"
+              align="center"
+              width="120">
+              <template slot-scope="scope">
+                <el-input v-model="scope.row.reducePrice"></el-input>
+              </template>
+            </el-table-column>
+            <el-table-column
+              align="center"
+              label="操作">
+              <template slot-scope="scope">
+                <el-button type="text" @click="handleRemoveFullReduction(scope.$index, scope.row)">删除</el-button>
+                <el-button type="text" @click="handleAddFullReduction(scope.$index, scope.row)">添加</el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+        </el-form-item>
+        --></div>
         <div v-show="activeStep === 2">
           333
           <!--
@@ -406,11 +400,12 @@
 </template>
 
 <script setup lang="ts" name="ProductDrawer">
-import { onBeforeMount, reactive, ref } from "vue";
+import { computed, onBeforeMount, reactive, ref } from "vue";
 import { ElMessage, FormInstance } from "element-plus";
 import { CascaderValue, OptionValue, Product } from "@/api/interface";
 import { categoryTreeApi } from "@/api/modules/category";
 import { getAllBrandsV2Api } from "@/api/modules/brand";
+import { getProductApi } from "@/api/modules/product";
 
 const rules = reactive({
   name: [
@@ -443,8 +438,12 @@ const handlePrev = (formName: string) => {
   activeStep.value = activeStep.value - 1;
 };
 
+// 树形分类
 const productCateOptions = ref<CascaderValue[]>([]);
+// 所有的品牌
 const brandOptions = ref<OptionValue[]>([]);
+
+const productDetail = ref<Product.AddOrUpdateProductModel | undefined>(undefined);
 
 interface DrawerProps {
   title: string; // 标题
@@ -466,9 +465,75 @@ const drawerProps = ref<DrawerProps>({
 // 接收父组件传过来的参数
 const acceptParams = (params: DrawerProps) => {
   drawerProps.value = params;
+  // 获取详情
+  if (params.row.id && params.row.id !== 0) {
+    getProductApi(params.row.id).then(data => {
+      productDetail.value = data.data;
+    });
+  } else {
+  }
   drawerVisible.value = true;
   activeStep.value = 0;
 };
+
+// 服务保证，存储是逗号分隔，展示是多选框
+const selectServiceList = computed({
+  get() {
+    let value = drawerProps.value.row;
+    let list: number[] = [];
+    if (value.serviceIds === undefined || value.serviceIds == null || value.serviceIds === "") return list;
+    let ids = value.serviceIds.split(",");
+    for (let i = 0; i < ids.length; i++) {
+      list.push(Number(ids[i]));
+    }
+    return list;
+  },
+  set(newValue) {
+    let value = drawerProps.value.row;
+    let serviceIds = "";
+    if (newValue != null && newValue.length > 0) {
+      for (let i = 0; i < newValue.length; i++) {
+        serviceIds += newValue[i] + ",";
+      }
+      // 移除末尾逗号
+      if (serviceIds.endsWith(",")) {
+        serviceIds = serviceIds.slice(0, -1);
+      }
+      value.serviceIds = serviceIds;
+    } else {
+      value.serviceIds = "";
+    }
+  }
+});
+
+// 时间戳和Date相互转换
+const promotionStartTime = computed({
+  get() {
+    return drawerProps.value.row?.promotionStartTime ? new Date(drawerProps.value.row.promotionStartTime * 1000) : new Date();
+  },
+  set(newValue: Date) {
+    if (drawerProps.value.row) {
+      drawerProps.value.row.promotionStartTime = newValue ? Math.floor(newValue.getTime() / 1000) : 0;
+    }
+  }
+});
+const promotionEndTime = computed({
+  get() {
+    return drawerProps.value.row?.promotionEndTime ? new Date(drawerProps.value.row.promotionEndTime * 1000) : new Date();
+  },
+  set(newValue: Date) {
+    if (drawerProps.value.row) {
+      drawerProps.value.row.promotionEndTime = newValue ? Math.floor(newValue.getTime() / 1000) : 0;
+    }
+  }
+});
+
+// 时间选择选项
+const pickerOptions = reactive({
+  disabledDate(time: Date) {
+    return time.getTime() < Date.now();
+  }
+});
 
 // 提交数据（新增/编辑）
 const handleSubmit = async () => {
@@ -498,5 +563,9 @@ defineExpose({
 }
 .form-inner-container {
   width: 800px;
+}
+
+.littleMargin {
+  margin-top: 10px;
 }
 </style>

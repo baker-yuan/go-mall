@@ -60,8 +60,8 @@ func ProductEntityToModel(product *entity.Product, categoryNames map[uint64]stri
 		PromotionPerLimit: product.PromotionPerLimit,
 
 		// 冗余字段
-		BrandName:           product.BrandName,
-		ProductCategoryName: product.ProductCategoryName,
+		BrandName:           brandNames[product.BrandID],
+		ProductCategoryName: categoryNames[product.ProductCategoryID],
 	}
 }
 

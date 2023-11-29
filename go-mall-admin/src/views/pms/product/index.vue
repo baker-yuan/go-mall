@@ -184,8 +184,7 @@ const columns = reactive<ColumnProps<Product.ProductModel>[]>([
     isShow: false,
     label: "商品品牌",
     enum: getAllBrandsApi,
-    search: { el: "select", props: { filterable: true } },
-    fieldNames: { label: "name", value: "id" }
+    search: { el: "select", props: { filterable: true } }
   },
   {
     prop: "productCategoryId",
