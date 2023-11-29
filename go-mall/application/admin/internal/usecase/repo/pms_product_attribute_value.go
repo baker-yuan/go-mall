@@ -118,3 +118,14 @@ func (r ProductAttributeValueRepo) DeleteByProductIDWithTX(ctx context.Context, 
 	}
 	return tdb.WithContext(ctx).Where("product_id = ?", productID).Delete(&entity.ProductAttributeValue{}).Error
 }
+
+// GetByProductID 根据商品ID查询产品参数信息
+func (r ProductAttributeValueRepo) GetByProductID(ctx context.Context, productID uint64) ([]*entity.ProductAttributeValue, error) {
+	res := make([]*entity.ProductAttributeValue, 0)
+	if err := r.GenericDao.DB.WithContext(ctx).
+		Where("product_id = ?", productID).
+		Find(&res).Error; err != nil {
+		return nil, err
+	}
+	return res, nil
+}

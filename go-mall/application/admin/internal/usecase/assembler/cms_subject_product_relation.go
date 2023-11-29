@@ -5,9 +5,22 @@ import (
 	pb "github.com/baker-yuan/go-mall/proto/mall"
 )
 
-// SubjectProductRelationEntityToModel entity转pb
-func SubjectProductRelationEntityToModel(subjectProductRelation *entity.SubjectProductRelation) *pb.SubjectProductRelation {
-	return &pb.SubjectProductRelation{}
+// SubjectProductRelationsToModel entity转pb
+func SubjectProductRelationsToModel(subjectProductRelations []*entity.SubjectProductRelation) []*pb.SubjectProductRelation {
+	res := make([]*pb.SubjectProductRelation, 0)
+	for _, subjectProductRelation := range subjectProductRelations {
+		res = append(res, SubjectProductRelationToModel(subjectProductRelation))
+	}
+	return res
+}
+
+// SubjectProductRelationToModel entity转pb
+func SubjectProductRelationToModel(subjectProductRelation *entity.SubjectProductRelation) *pb.SubjectProductRelation {
+	return &pb.SubjectProductRelation{
+		Id:        subjectProductRelation.ID,
+		SubjectId: subjectProductRelation.SubjectID,
+		ProductId: subjectProductRelation.ProductID,
+	}
 }
 
 // SubjectProductRelationsToEntity pb转entity

@@ -206,6 +206,15 @@ export namespace Product {
     // 冗余字段
     brandName: string; // 品牌名称
     productCategoryName: string; // 商品分类名称
+
+    // 设置
+    productLadders: ProductLadder[]; // 商品阶梯价格设置
+    productFullReductions: ProductFullReduction[]; // 商品满减价格设置
+    memberPrices: MemberPrice[]; // 商品会员价格设置 {"memberLevelId":0,"memberPrice":0,"memberLevelName":""}
+    skuStocks: SkuStock.SkuStockModel[]; // 商品sku库存信息 {"lowStock":0,"pic":"","price":0,"sale":0,"skuCode":"","spData":"","stock":0}
+    productAttributeValues: ProductAttributeValue[]; // 商品属性设置 {"productAttributeId":0,"value":""}
+    subjectProductRelations: SubjectProductRelation[]; // 商品专题设置 {"subjectId":0}
+    prefrenceAreaProductRelations: PrefrenceAreaProductRelation[]; // 商品优选设置 {"prefrenceAreaId":0}
   }
 
   // 商品阶梯价格设置

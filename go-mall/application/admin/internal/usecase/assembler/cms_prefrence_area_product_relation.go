@@ -5,9 +5,22 @@ import (
 	pb "github.com/baker-yuan/go-mall/proto/mall"
 )
 
-// PrefrenceAreaProductRelationEntityToModel entity转pb
-func PrefrenceAreaProductRelationEntityToModel(prefrenceAreaProductRelation *entity.PrefrenceAreaProductRelation) *pb.PrefrenceAreaProductRelation {
-	return &pb.PrefrenceAreaProductRelation{}
+// PrefrenceAreaProductRelationsToModel entity转pb
+func PrefrenceAreaProductRelationsToModel(prefrenceAreaProductRelations []*entity.PrefrenceAreaProductRelation) []*pb.PrefrenceAreaProductRelation {
+	res := make([]*pb.PrefrenceAreaProductRelation, 0)
+	for _, prefrenceAreaProductRelations := range prefrenceAreaProductRelations {
+		res = append(res, PrefrenceAreaProductRelationToModel(prefrenceAreaProductRelations))
+	}
+	return res
+}
+
+// PrefrenceAreaProductRelationToModel entity转pb
+func PrefrenceAreaProductRelationToModel(prefrenceAreaProductRelation *entity.PrefrenceAreaProductRelation) *pb.PrefrenceAreaProductRelation {
+	return &pb.PrefrenceAreaProductRelation{
+		Id:              prefrenceAreaProductRelation.ID,
+		PrefrenceAreaId: prefrenceAreaProductRelation.PrefrenceAreaID,
+		ProductId:       prefrenceAreaProductRelation.ProductID,
+	}
 }
 
 // PrefrenceAreaProductRelationsToEntity pb转entity

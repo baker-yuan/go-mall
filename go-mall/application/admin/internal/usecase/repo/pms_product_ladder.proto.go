@@ -118,3 +118,14 @@ func (r ProductLadderRepo) DeleteByProductIDWithTX(ctx context.Context, productI
 	}
 	return tdb.WithContext(ctx).Where("product_id = ?", productID).Delete(&entity.ProductLadder{}).Error
 }
+
+// GetByProductID 根据商品ID查询商品阶梯价格
+func (r ProductLadderRepo) GetByProductID(ctx context.Context, productID uint64) ([]*entity.ProductLadder, error) {
+	res := make([]*entity.ProductLadder, 0)
+	if err := r.GenericDao.DB.WithContext(ctx).
+		Where("product_id = ?", productID).
+		Find(&res).Error; err != nil {
+		return nil, err
+	}
+	return res, nil
+}

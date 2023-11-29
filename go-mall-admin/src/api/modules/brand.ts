@@ -27,15 +27,15 @@ export const deleteBrandApi = (id: number) => {
 };
 
 // 获取所有商品品牌
-export const getAllBrandsApi = async (): Promise<{ data: OptionValue[] }> => {
-  let data = await getAllBrandsV2Api();
+export const getBrandOptionsV2Api = async (): Promise<{ data: OptionValue[] }> => {
+  let data = await getBrandOptionsApi();
   return {
     data: data
   };
 };
 
 // 获取所有商品品牌
-export const getAllBrandsV2Api = async () => {
+export const getBrandOptionsApi = async () => {
   let params = {
     pageNum: 1,
     pageSize: 10000

@@ -5,9 +5,24 @@ import (
 	pb "github.com/baker-yuan/go-mall/proto/mall"
 )
 
-// ProductLadderEntityToModel entity转pb
-func ProductLadderEntityToModel(productLadder *entity.ProductLadder) *pb.ProductLadder {
-	return &pb.ProductLadder{}
+// ProductLaddersToModel entity转pb
+func ProductLaddersToModel(productLadders []*entity.ProductLadder) []*pb.ProductLadder {
+	res := make([]*pb.ProductLadder, 0)
+	for _, productLadder := range productLadders {
+		res = append(res, ProductLadderToModel(productLadder))
+	}
+	return res
+}
+
+// ProductLadderToModel entity转pb
+func ProductLadderToModel(productLadder *entity.ProductLadder) *pb.ProductLadder {
+	return &pb.ProductLadder{
+		Id:        productLadder.ID,
+		ProductId: productLadder.ProductID,
+		Count:     productLadder.Count,
+		Discount:  productLadder.Discount,
+		Price:     productLadder.Price,
+	}
 }
 
 // ProductLaddersToEntity pb转entity

@@ -257,6 +257,8 @@ type (
 		BatchCreateWithTX(ctx context.Context, productID uint64, pmsMemberPrices []*entity.MemberPrice) error
 		// DeleteByProductIDWithTX 根据商品ID删除记录
 		DeleteByProductIDWithTX(ctx context.Context, productID uint64) error
+		// GetByProductID 根据商品ID查询商品会员价格
+		GetByProductID(ctx context.Context, productID uint64) ([]*entity.MemberPrice, error)
 	}
 )
 
@@ -283,6 +285,8 @@ type (
 		BatchCreateWithTX(ctx context.Context, productID uint64, productLadders []*entity.ProductLadder) error
 		// DeleteByProductIDWithTX 根据商品ID删除记录
 		DeleteByProductIDWithTX(ctx context.Context, productID uint64) error
+		// GetByProductID 根据商品ID查询商品阶梯价格
+		GetByProductID(ctx context.Context, productID uint64) ([]*entity.ProductLadder, error)
 	}
 )
 
@@ -309,6 +313,8 @@ type (
 		BatchCreateWithTX(ctx context.Context, productID uint64, productFullReductions []*entity.ProductFullReduction) error
 		// DeleteByProductIDWithTX 根据商品ID删除记录
 		DeleteByProductIDWithTX(ctx context.Context, productID uint64) error
+		// GetByProductID 根据产品ID查询产品满减
+		GetByProductID(ctx context.Context, productID uint64) ([]*entity.ProductFullReduction, error)
 	}
 )
 
@@ -376,6 +382,8 @@ type (
 		BatchCreateWithTX(ctx context.Context, productID uint64, productAttributeValues []*entity.ProductAttributeValue) error
 		// DeleteByProductIDWithTX 根据商品ID删除记录
 		DeleteByProductIDWithTX(ctx context.Context, productID uint64) error
+		// GetByProductID 根据商品ID查询产品参数信息
+		GetByProductID(ctx context.Context, productID uint64) ([]*entity.ProductAttributeValue, error)
 	}
 )
 
@@ -402,6 +410,8 @@ type (
 		BatchCreateWithTX(ctx context.Context, productID uint64, subjectProductRelations []*entity.SubjectProductRelation) error
 		// DeleteByProductIDWithTX 根据商品ID删除记录
 		DeleteByProductIDWithTX(ctx context.Context, productID uint64) error
+		// GetByProductID 根据商品ID查询专题商品关系
+		GetByProductID(ctx context.Context, productID uint64) ([]*entity.SubjectProductRelation, error)
 	}
 )
 
@@ -428,5 +438,7 @@ type (
 		BatchCreateWithTX(ctx context.Context, productID uint64, prefrenceAreaProductRelations []*entity.PrefrenceAreaProductRelation) error
 		// DeleteByProductIDWithTX 根据商品ID删除记录
 		DeleteByProductIDWithTX(ctx context.Context, productID uint64) error
+		// GetByProductID 根据商品ID查询优选专区和产品关系
+		GetByProductID(ctx context.Context, productID uint64) ([]*entity.PrefrenceAreaProductRelation, error)
 	}
 )

@@ -5,9 +5,24 @@ import (
 	pb "github.com/baker-yuan/go-mall/proto/mall"
 )
 
-// MemberPriceEntityToModel entity转pb
-func MemberPriceEntityToModel(memberPrice *entity.MemberPrice) *pb.MemberPrice {
-	return &pb.MemberPrice{}
+// MemberPricesToModel entity转pb
+func MemberPricesToModel(memberPrices []*entity.MemberPrice) []*pb.MemberPrice {
+	res := make([]*pb.MemberPrice, 0)
+	for _, memberPrice := range memberPrices {
+		res = append(res, MemberPriceToModel(memberPrice))
+	}
+	return res
+}
+
+// MemberPriceToModel entity转pb
+func MemberPriceToModel(memberPrice *entity.MemberPrice) *pb.MemberPrice {
+	return &pb.MemberPrice{
+		Id:              memberPrice.ID,
+		ProductId:       memberPrice.ProductID,
+		MemberLevelId:   memberPrice.MemberLevelID,
+		MemberPrice:     memberPrice.MemberPrice,
+		MemberLevelName: memberPrice.MemberLevelName,
+	}
 }
 
 // MemberPricesToEntity pb转entity

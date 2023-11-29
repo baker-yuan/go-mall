@@ -118,3 +118,12 @@ func (r PrefrenceAreaProductRelationRepo) DeleteByProductIDWithTX(ctx context.Co
 	}
 	return tdb.WithContext(ctx).Where("product_id = ?", productID).Delete(&entity.PrefrenceAreaProductRelation{}).Error
 }
+
+// GetByProductID 根据商品ID查询优选专区和产品关系
+func (r PrefrenceAreaProductRelationRepo) GetByProductID(ctx context.Context, productID uint64) ([]*entity.PrefrenceAreaProductRelation, error) {
+	res := make([]*entity.PrefrenceAreaProductRelation, 0)
+	if err := r.GenericDao.DB.WithContext(ctx).Where("product_id = ?", productID).Find(&res).Error; err != nil {
+		return nil, err
+	}
+	return res, nil
+}

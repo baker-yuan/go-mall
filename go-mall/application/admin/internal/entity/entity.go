@@ -188,6 +188,9 @@ func Init(db *gorm.DB) error {
 		//	TableName: "专题商品关系表",
 		//	StructPtr: &SubjectProductRelation{},
 		//},
+		//	TableName: "专题表",
+		//	StructPtr: &CmsSubject{},
+		//},
 
 	}
 	if err := autoMigrate(db, schemas); err != nil {

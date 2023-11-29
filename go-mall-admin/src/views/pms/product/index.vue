@@ -139,7 +139,7 @@ import { ref, reactive } from "vue";
 import { useHandleData } from "@/hooks/useHandleData";
 import { CirclePlus, Delete, EditPen, Search } from "@element-plus/icons-vue";
 import { createProductApi, deleteProductApi, getProductsApi, updateProductApi } from "@/api/modules/product";
-import { getAllBrandsApi } from "@/api/modules/brand";
+import { getBrandOptionsV2Api } from "@/api/modules/brand";
 import { getProductAttributesApi } from "@/api/modules/attribute";
 import { batchUpdateSkuStockApi, getSkuStocksByProductIdApi } from "@/api/modules/skuStock";
 import { ElMessage, ElMessageBox } from "element-plus";
@@ -183,7 +183,7 @@ const columns = reactive<ColumnProps<Product.ProductModel>[]>([
     prop: "brandId",
     isShow: false,
     label: "商品品牌",
-    enum: getAllBrandsApi,
+    enum: getBrandOptionsV2Api,
     search: { el: "select", props: { filterable: true } }
   },
   {

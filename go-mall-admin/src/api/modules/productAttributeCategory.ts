@@ -1,4 +1,4 @@
-import { ProductAttributeCategory, ResPage } from "@/api/interface/index";
+import { OptionValue, ProductAttributeCategory, ResPage } from "@/api/interface/index";
 import http from "@/api";
 
 // 添加产品属性分类
@@ -25,3 +25,24 @@ export const getProductAttributeCategoryApi = (id: number) => {
 export const deleteProductAttributeCategoryApi = (id: number) => {
   return http.delete<ProductAttributeCategory.ProductAttributeCategoryModel>(`/productAttributeCategories/${id}`);
 };
+
+// 获取商品属性参数表
+export const getProductAttributeCategoryOptionsApi = async () => {
+  let params = {
+    pageNum: 1,
+    pageSize: 10000
+  };
+  let data = await getProductAttributeCategoriesApi(params);
+  return transformProductAttributeCategoryData(data.data.data);
+};
+
+// 数据转换函数
+function transformProductAttributeCategoryData(data: ProductAttributeCategory.ProductAttributeCategoryModel[]): OptionValue[] {
+  if (!data) {
+    return [];
+  }
+  return data.map(item => ({
+    value: item.id,
+    label: item.name
+  }));
+}

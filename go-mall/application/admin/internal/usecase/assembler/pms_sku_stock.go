@@ -5,8 +5,17 @@ import (
 	pb "github.com/baker-yuan/go-mall/proto/mall"
 )
 
-// SkuStockEntityToModel entity转pb
-func SkuStockEntityToModel(skuStockEntity *entity.SkuStock) *pb.SkuStock {
+// SkuStocksToModel entity转pb
+func SkuStocksToModel(skuStocks []*entity.SkuStock) []*pb.SkuStock {
+	res := make([]*pb.SkuStock, 0)
+	for _, skuStock := range skuStocks {
+		res = append(res, SkuStockToModel(skuStock))
+	}
+	return res
+}
+
+// SkuStockToModel entity转pb
+func SkuStockToModel(skuStockEntity *entity.SkuStock) *pb.SkuStock {
 	return &pb.SkuStock{
 		Id:             skuStockEntity.ID,
 		ProductId:      skuStockEntity.ProductID,

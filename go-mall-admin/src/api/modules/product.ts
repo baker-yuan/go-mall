@@ -18,7 +18,13 @@ export const getProductsApi = (params: Product.ReqProductListParams) => {
 
 // 根据id获取商品
 export const getProductApi = (id: number) => {
-  return http.get<Product.AddOrUpdateProductModel>(`/products/${id}`);
+  return http.get<Product.ProductModel>(`/products/${id}`);
+};
+
+// 根据id获取商品
+export const getProductSyncApi = async (id: number) => {
+  let response = await http.get<Product.ProductModel>(`/products/${id}`);
+  return response.data;
 };
 
 // 根据id删除商品

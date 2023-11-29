@@ -2,6 +2,14 @@ syntax = "proto3";
 package model;
 option go_package = ".;mall";
 
+import "model/pms_product_ladder.proto";
+import "model/pms_product_full_reduction.proto";
+import "model/pms_member_price.proto";
+import "model/pms_sku_stock.proto";
+import "model/pms_product_attribute_value.proto";
+import "model/cms_prefrence_area_product_relation.proto";
+import "model/cms_subject_product_relation.proto";
+
 // 商品
 message Product {
   // 基本信息
@@ -57,4 +65,14 @@ message Product {
   // 冗余字段
   string brand_name = 41; // 品牌名称
   string product_category_name = 42; // 商品分类名称
+
+
+  // 设置
+  repeated model.ProductLadder product_ladders = 50; // 商品阶梯价格设置
+  repeated model.ProductFullReduction product_full_reductions = 51; // 商品满减价格设置
+  repeated model.MemberPrice member_prices = 52; // 商品会员价格设置
+  repeated model.SkuStock sku_stocks = 53; // 商品sku库存信息
+  repeated model.ProductAttributeValue product_attribute_values = 54; // 商品参数及自定义规格属性
+  repeated model.SubjectProductRelation subject_product_relations = 55; // 专题和商品关系
+  repeated model.PrefrenceAreaProductRelation prefrence_area_product_relations = 56; // 优选专区和商品的关系
 }

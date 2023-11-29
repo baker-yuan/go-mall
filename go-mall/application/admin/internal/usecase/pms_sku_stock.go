@@ -47,9 +47,5 @@ func (c SkuStockUseCase) GetSkuStocksByProductID(ctx context.Context, param *pb.
 		return nil, err
 	}
 
-	results := make([]*pb.SkuStock, 0)
-	for _, skuStock := range skuStocks {
-		results = append(results, assembler.SkuStockEntityToModel(skuStock))
-	}
-	return results, nil
+	return assembler.SkuStocksToModel(skuStocks), nil
 }

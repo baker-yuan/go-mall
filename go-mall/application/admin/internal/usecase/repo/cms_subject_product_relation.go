@@ -118,3 +118,12 @@ func (r SubjectProductRelationRepo) DeleteByProductIDWithTX(ctx context.Context,
 	}
 	return tdb.WithContext(ctx).Where("product_id = ?", productID).Delete(&entity.SubjectProductRelation{}).Error
 }
+
+// GetByProductID 根据商品ID查询专题商品关系
+func (r SubjectProductRelationRepo) GetByProductID(ctx context.Context, productID uint64) ([]*entity.SubjectProductRelation, error) {
+	res := make([]*entity.SubjectProductRelation, 0)
+	if err := r.GenericDao.DB.WithContext(ctx).Where("product_id = ?", productID).Find(&res).Error; err != nil {
+		return nil, err
+	}
+	return res, nil
+}

@@ -27,7 +27,7 @@ export const deleteCategoryApi = (id: number) => {
 };
 
 // 商品分类
-export const categoryTreeApi = async () => {
+export const getCategoryOptionsApi = async () => {
   const response = await http.get<Category.CategoryTree[]>(`/categories/search/categoryTree`);
   // 检查响应是否有效
   if (response && response.data) {

@@ -118,3 +118,14 @@ func (r MemberPriceRepo) DeleteByProductIDWithTX(ctx context.Context, productID 
 	}
 	return tdb.WithContext(ctx).Where("product_id = ?", productID).Delete(&entity.MemberPrice{}).Error
 }
+
+// GetByProductID 根据商品ID查询商品会员价格
+func (r MemberPriceRepo) GetByProductID(ctx context.Context, productID uint64) ([]*entity.MemberPrice, error) {
+	res := make([]*entity.MemberPrice, 0)
+	if err := r.GenericDao.DB.WithContext(ctx).
+		Where("product_id = ?", productID).
+		Find(&res).Error; err != nil {
+		return nil, err
+	}
+	return res, nil
+}

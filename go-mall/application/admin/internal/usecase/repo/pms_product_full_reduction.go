@@ -118,3 +118,14 @@ func (r ProductFullReductionRepo) DeleteByProductIDWithTX(ctx context.Context, p
 	}
 	return tdb.WithContext(ctx).Where("product_id = ?", productID).Delete(&entity.ProductFullReduction{}).Error
 }
+
+// GetByProductID 根据产品ID查询产品满减
+func (r ProductFullReductionRepo) GetByProductID(ctx context.Context, productID uint64) ([]*entity.ProductFullReduction, error) {
+	res := make([]*entity.ProductFullReduction, 0)
+	if err := r.GenericDao.DB.WithContext(ctx).
+		Where("product_id = ?", productID).
+		Find(&res).Error; err != nil {
+		return nil, err
+	}
+	return res, nil
+}

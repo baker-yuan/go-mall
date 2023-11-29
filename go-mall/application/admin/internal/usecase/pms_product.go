@@ -355,23 +355,88 @@ func (c ProductUseCase) GetProducts(ctx context.Context, param *pb.GetProductsPa
 }
 
 // GetProduct 根据id获取商品
-func (c ProductUseCase) GetProduct(ctx context.Context, id uint64) (*pb.Product, error) {
-	product, err := c.productRepo.GetByID(ctx, id)
+func (c ProductUseCase) GetProduct(ctx context.Context, productID uint64) (*pb.Product, error) {
+	product, err := c.productRepo.GetByID(ctx, productID)
 	if err != nil {
 		return nil, err
 	}
 
-	categories, err := c.productCategoryRepo.GetByIDs(ctx, []uint64{product.ProductCategoryID})
+	var (
+		categories                    entity.ProductCategories
+		brands                        entity.Brands
+		memberPrices                  []*entity.MemberPrice
+		productLadders                []*entity.ProductLadder
+		productFullReductions         []*entity.ProductFullReduction
+		skuStocks                     []*entity.SkuStock
+		productAttributeValues        []*entity.ProductAttributeValue
+		subjectProductRelations       []*entity.SubjectProductRelation
+		prefrenceAreaProductRelations []*entity.PrefrenceAreaProductRelation
+	)
+
+	// 查询商品分类
+	categories, err = c.productCategoryRepo.GetByIDs(ctx, []uint64{product.ProductCategoryID})
 	if err != nil {
 		return nil, err
 	}
 
-	brands, err := c.brandRepo.GetByIDs(ctx, []uint64{product.BrandID})
+	// 查询商品品牌表
+	brands, err = c.brandRepo.GetByIDs(ctx, []uint64{product.BrandID})
 	if err != nil {
 		return nil, err
 	}
 
-	return assembler.ProductEntityToModel(product, categories.NameMap(), brands.NameMap()), nil
+	// 会员价格
+	memberPrices, err = c.memberPriceRepo.GetByProductID(ctx, productID)
+	if err != nil {
+		return nil, err
+	}
+
+	// 阶梯价格
+	productLadders, err = c.productLadderRepo.GetByProductID(ctx, productID)
+	if err != nil {
+		return nil, err
+	}
+
+	// 满减价格
+	productFullReductions, err = c.productFullReductionRepo.GetByProductID(ctx, productID)
+	if err != nil {
+		return nil, err
+	}
+
+	// sku库存信息
+	skuStocks, err = c.skuStockRepo.GetByProductID(ctx, productID)
+	if err != nil {
+		return nil, err
+	}
+
+	// 添加商品参数，添加自定义商品规格
+	productAttributeValues, err = c.productAttributeValueRepo.GetByProductID(ctx, productID)
+	if err != nil {
+		return nil, err
+	}
+
+	// 关联专题
+	subjectProductRelations, err = c.subjectProductRelationRepo.GetByProductID(ctx, productID)
+	if err != nil {
+		return nil, err
+	}
+
+	// 关联优选
+	prefrenceAreaProductRelations, err = c.prefrenceAreaProductRelationRepo.GetByProductID(ctx, productID)
+	if err != nil {
+		return nil, err
+	}
+
+	productPb := assembler.ProductEntityToModel(product, categories.NameMap(), brands.NameMap())
+	productPb.MemberPrices = assembler.MemberPricesToModel(memberPrices)
+	productPb.ProductLadders = assembler.ProductLaddersToModel(productLadders)
+	productPb.ProductFullReductions = assembler.ProductFullReductionsToModel(productFullReductions)
+	productPb.SkuStocks = assembler.SkuStocksToModel(skuStocks)
+	productPb.ProductAttributeValues = assembler.ProductAttributeValuesToModel(productAttributeValues)
+	productPb.SubjectProductRelations = assembler.SubjectProductRelationsToModel(subjectProductRelations)
+	productPb.PrefrenceAreaProductRelations = assembler.PrefrenceAreaProductRelationsToModel(prefrenceAreaProductRelations)
+
+	return productPb, nil
 }
 
 // DeleteProduct 删除商品
