@@ -284,6 +284,7 @@
             <el-button type="primary" style="margin-top: 20px" @click="handleSyncProductSkuPrice">同步价格 </el-button>
             <el-button type="primary" style="margin-top: 20px" @click="handleSyncProductSkuStock">同步库存 </el-button>
           </el-form-item>
+
           <el-form-item label="属性图片：" v-if="hasAttrPic">
             <el-card shadow="never" class="cardBg">
               <div v-for="(item, index) in selectProductAttrPics" :key="index">
@@ -373,6 +374,7 @@ import { getProductSyncApi } from "@/api/modules/product";
 import { getProductAttributeCategoryOptionsApi } from "@/api/modules/productAttributeCategory";
 import { getAllSubjectTransferValueSyncApi } from "@/api/modules/subject";
 import { getAllPrefrenceAreaTransferValueSyncApi } from "@/api/modules/prefrenceArea";
+import { getProductAttributesSyncApi } from "@/api/modules/attribute";
 
 const rules = reactive({
   name: [
@@ -474,6 +476,32 @@ const handlePrev = (formName: string) => {
   activeStep.value = activeStep.value - 1;
 };
 
+export interface SelectProductAttrModel {
+  id: number; // 编号
+  name: string; // 属性名称
+  handAddStatus: number; // 是否支持手动新增；0->不支持；1->支持
+  inputList: string; // 可选值列表，以逗号隔开
+  options: string[];
+  values: any[];
+}
+export interface SelectProductParamModel {
+  id: number; // 编号
+  name: string; // 属性名称
+  value: string;
+  inputType: number; // 属性录入方式：0->手工录入；1->从列表中选取
+  inputList: string; // 可选值列表，以逗号隔开
+}
+// 选中的商品属性
+const selectProductAttr = ref<SelectProductAttrModel[]>([]);
+// 选中的商品参数
+const selectProductParam = ref<SelectProductParamModel[]>([]);
+// 选中的商品属性图片
+const selectProductAttrPics = ref<any[]>([]);
+// 可手动添加的商品属性
+const addProductAttrValue = ref<CascaderValue[]>([]);
+// 商品富文本详情激活类型
+const activeHtmlName = ref<string>("pc");
+
 // 所有分类（树形）
 const categoryOptions = ref<CascaderValue[]>([]);
 // 所有的品牌
@@ -482,6 +510,8 @@ const brandOptions = ref<OptionValue[]>([]);
 const productAttributeCategoryOptions = ref<OptionValue[]>([]);
 // 商品详情
 const productDetail = ref<Product.ProductModel | undefined>(undefined);
+// 是否编辑模式
+const isEdit = ref<boolean>(false);
 
 interface DrawerProps {
   title: string; // 标题
@@ -500,9 +530,156 @@ const drawerProps = ref<DrawerProps>({
   row: {}
 });
 
+const getInputListArr = (inputList: string) => {
+  return inputList.split(",");
+};
+
+// 根据商品属性分类id获取属性和参数
+const handleProductAttrChange = async () => {
+  if (productDetail.value == undefined || productDetail.value.productAttributeCategoryId == 0) {
+    return;
+  }
+  await getProductAttrList(0, productDetail.value.productAttributeCategoryId);
+  await getProductAttrList(1, productDetail.value.productAttributeCategoryId);
+};
+
+// 获取设置的可手动添加属性值
+const getEditAttrOptions = (id: number) => {
+  if (productDetail.value == undefined) {
+    return [];
+  }
+  let options = [];
+  for (let i = 0; i < productDetail.value.productAttributeValues.length; i++) {
+    let attrValue = productDetail.value.productAttributeValues[i];
+    if (attrValue.productAttributeId === id) {
+      let strArr = attrValue.value.split(",");
+      for (let j = 0; j < strArr.length; j++) {
+        options.push(strArr[j]);
+      }
+      break;
+    }
+  }
+  return options;
+};
+
+// 获取选中的属性值
+const getEditAttrValues = (index: number) => {
+  if (productDetail.value == undefined) {
+    return [];
+  }
+  let values = new Set();
+  for (let i = 0; i < productDetail.value.skuStocks.length; i++) {
+    let sku = productDetail.value.skuStocks[i];
+    let spData = JSON.parse(sku.spData);
+    if (spData != null && spData.length > index) {
+      values.add(spData[index].value);
+    }
+  }
+  return Array.from(values);
+};
+
+// 获取商品相关属性的图片
+const getProductSkuPic = (name: string) => {
+  if (productDetail.value == undefined) {
+    return null;
+  }
+  for (let i = 0; i < productDetail.value.skuStocks.length; i++) {
+    let spData = JSON.parse(productDetail.value.skuStocks[i].spData);
+    if (name === spData[0].value) {
+      return productDetail.value.skuStocks[i].pic;
+    }
+  }
+  return null;
+};
+
+// 编辑模式下刷新商品属性图片
+const refreshProductAttrPics = () => {
+  selectProductAttrPics.value = [];
+  if (selectProductAttr.value.length >= 1) {
+    let values = selectProductAttr.value[0].values;
+    for (let i = 0; i < values.length; i++) {
+      let pic = null;
+      if (isEdit.value) {
+        // 编辑状态下获取图片
+        pic = getProductSkuPic(values[i]);
+      }
+      selectProductAttrPics.value.push({ name: values[i], pic: pic });
+    }
+  }
+};
+
+// 获取属性的值
+const getEditParamValue = (id: number) => {
+  if (productDetail.value == undefined) {
+    return "";
+  }
+  for (let i = 0; i < productDetail.value.productAttributeValues.length; i++) {
+    if (id === productDetail.value.productAttributeValues[i].productAttributeId) {
+      return productDetail.value.productAttributeValues[i].value;
+    }
+  }
+  return "";
+};
+
+const getProductAttrList = async (type: number, productAttributeCategoryId: number) => {
+  let productAttributes = await getProductAttributesSyncApi({
+    pageNum: 1,
+    pageSize: 10000,
+    type: type,
+    productAttributeCategoryId: productAttributeCategoryId
+  });
+  let data = productAttributes.data.data;
+  if (type === 0) {
+    for (let i = 0; i < data.length; i++) {
+      let options: string[] = [];
+      let values: any[] = [];
+      if (isEdit.value) {
+        // 编辑状态下获取手动添加编辑属性
+        if (data[i].handAddStatus === 1) {
+          options = getEditAttrOptions(data[i].id);
+        }
+        // 编辑状态下获取选中属性
+        values = getEditAttrValues(i);
+      }
+      selectProductAttr.value.push({
+        id: data[i].id,
+        name: data[i].name,
+        handAddStatus: data[i].handAddStatus,
+        inputList: data[i].inputList,
+        values: values,
+        options: options
+      });
+      if (isEdit.value) {
+        // 编辑模式下刷新商品属性图片
+        refreshProductAttrPics();
+      }
+    }
+  } else {
+    for (let i = 0; i < data.length; i++) {
+      let value: string = "";
+      if (isEdit.value) {
+        // 编辑模式下获取参数属性
+        value = getEditParamValue(data[i].id);
+      }
+      selectProductParam.value.push({
+        id: data[i].id,
+        name: data[i].name,
+        value: value,
+        inputType: data[i].inputType,
+        inputList: data[i].inputList
+      });
+    }
+  }
+};
+
 // 接收父组件传过来的参数
 const acceptParams = async (params: DrawerProps) => {
   // 获取详情
+  if (params.row.id && params.row.id !== 0) {
+    isEdit.value = true;
+  } else {
+    isEdit.value = false;
+  }
   if (params.row.id && params.row.id !== 0) {
     productDetail.value = await getProductSyncApi(params.row.id);
   }

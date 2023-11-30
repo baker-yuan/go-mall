@@ -25,3 +25,8 @@ export const getProductAttributeApi = (id: number) => {
 export const deleteProductAttributeApi = (id: number) => {
   return http.delete(`/productAttributes/${id}`);
 };
+
+// 分页查询商品属性参数表
+export const getProductAttributesSyncApi = async (params: ProductAttribute.ReqProductAttributeListParams) => {
+  return getProductAttributesApi(params);
+};

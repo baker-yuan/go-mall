@@ -149,8 +149,8 @@ export namespace ProductAttribute {
 
   // 分页查询商品属性参数表
   export interface ReqProductAttributeListParams extends ReqPage {
-    type: number; // 属性的类型；0->规格；1->参数
-    productAttributeCategoryId: number; // 产品属性分类表ID
+    type?: number; // 属性的类型；0->规格；1->参数
+    productAttributeCategoryId?: number; // 产品属性分类表ID
   }
 }
 
