@@ -165,8 +165,8 @@
               </el-table-column>
               <el-table-column align="center" label="操作">
                 <template #default="scope">
-                  <el-button type="text" @click="handleRemoveProductLadder(scope.$index, scope.row)">删除</el-button>
-                  <el-button type="text" @click="handleAddProductLadder(scope.$index, scope.row)">添加</el-button>
+                  <el-button type="text" @click="handleAddProductLadder()">添加</el-button>
+                  <el-button type="text" @click="handleRemoveProductLadder(scope.$index)">删除</el-button>
                 </template>
               </el-table-column>
             </el-table>
@@ -186,8 +186,8 @@
               </el-table-column>
               <el-table-column align="center" label="操作">
                 <template #default="scope">
-                  <el-button type="text" @click="handleRemoveFullReduction(scope.$index, scope.row)">删除</el-button>
-                  <el-button type="text" @click="handleAddFullReduction(scope.$index, scope.row)">添加</el-button>
+                  <el-button type="text" @click="handleAddFullReduction()">添加</el-button>
+                  <el-button type="text" @click="handleRemoveFullReduction(scope.$index)">删除</el-button>
                 </template>
               </el-table-column>
             </el-table>
@@ -372,6 +372,7 @@ import { getBrandOptionsApi } from "@/api/modules/brand";
 import { getProductSyncApi } from "@/api/modules/product";
 import { getProductAttributeCategoryOptionsApi } from "@/api/modules/productAttributeCategory";
 import { getAllSubjectTransferValueSyncApi } from "@/api/modules/subject";
+import { getAllPrefrenceAreaTransferValueSyncApi } from "@/api/modules/prefrenceArea";
 
 const rules = reactive({
   name: [
@@ -570,6 +571,61 @@ const pickerOptions = reactive({
   }
 });
 
+// 删除阶梯价格
+const handleRemoveProductLadder = (index: number) => {
+  let productLadders = productDetail.value!.productLadders;
+  if (productLadders.length === 1) {
+    productLadders.pop();
+    productLadders.push({
+      count: 0,
+      discount: 0,
+      price: 0
+    });
+  } else {
+    productLadders.splice(index, 1);
+  }
+};
+// 添加阶梯价格
+const handleAddProductLadder = () => {
+  let productLadders = productDetail.value!.productLadders;
+  if (productLadders.length < 3) {
+    productLadders.push({
+      count: 0,
+      discount: 0,
+      price: 0
+    });
+  } else {
+    ElMessage.warning("最多只能添加三条");
+  }
+};
+
+// 添加满减价格
+const handleAddFullReduction = () => {
+  let productFullReductions = productDetail.value!.productFullReductions;
+  if (productFullReductions.length < 3) {
+    productFullReductions.push({
+      fullPrice: 0,
+      reducePrice: 0
+    });
+  } else {
+    ElMessage.warning("最多只能添加三条");
+  }
+};
+
+// 删除满减价格
+const handleRemoveFullReduction = (index: number) => {
+  let productFullReductions = productDetail.value!.productFullReductions;
+  if (productFullReductions.length === 1) {
+    productFullReductions.pop();
+    productFullReductions.push({
+      fullPrice: 0,
+      reducePrice: 0
+    });
+  } else {
+    productFullReductions.splice(index, 1);
+  }
+};
+
 // 提交数据（新增/编辑）
 const handleSubmit = async () => {
   try {
@@ -587,7 +643,7 @@ onBeforeMount(async () => {
   brandOptions.value = await getBrandOptionsApi();
   productAttributeCategoryOptions.value = await getProductAttributeCategoryOptionsApi();
   subjectList.value = await getAllSubjectTransferValueSyncApi();
-  // prefrenceAreaList.value = await getAllSubjectTransferValueSyncApi();
+  prefrenceAreaList.value = await getAllPrefrenceAreaTransferValueSyncApi();
 });
 
 defineExpose({
@@ -605,5 +661,28 @@ defineExpose({
 
 .littleMargin {
   margin-top: 10px;
+}
+
+.littleMarginLeft {
+  margin-left: 10px;
+}
+
+.littleMarginTop {
+  margin-top: 10px;
+}
+
+.paramInput {
+  width: 250px;
+}
+
+.paramInputLabel {
+  display: inline-block;
+  width: 100px;
+  text-align: right;
+  padding-right: 10px;
+}
+
+.cardBg {
+  background: #f8f9fc;
 }
 </style>

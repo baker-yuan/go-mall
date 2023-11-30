@@ -1,4 +1,4 @@
-import { ResPage, PrefrenceArea } from "@/api/interface/index";
+import { ResPage, PrefrenceArea, TransferValue } from "@/api/interface/index";
 import http from "@/api";
 
 // 添加优选专区
@@ -13,7 +13,7 @@ export const updatePrefrenceAreaApi = (prefrenceArea: PrefrenceArea.PrefrenceAre
 
 // 分页查询优选专区
 export const getPrefrenceAreasApi = (params: PrefrenceArea.ReqPrefrenceAreaListParams) => {
-  return http.get<ResPage<PrefrenceArea.PrefrenceAreaModel[]>>(`/prefrenceAreas`, params);
+  return http.get<ResPage<PrefrenceArea.PrefrenceAreaModel>>(`/prefrenceAreas`, params);
 };
 
 // 根据id获取优选专区
@@ -25,3 +25,24 @@ export const getPrefrenceAreaApi = (id: number) => {
 export const deletePrefrenceAreaApi = (id: number) => {
   return http.delete(`/prefrenceAreas/${id}`);
 };
+
+// 查询所有优选专区
+export const getAllPrefrenceAreaTransferValueSyncApi = async () => {
+  let params = {
+    pageNum: 1,
+    pageSize: 10000
+  };
+  let data = await getPrefrenceAreasApi(params);
+  return transformPrefrenceAreaToTransferValue(data.data.data);
+};
+
+// 数据转换函数
+function transformPrefrenceAreaToTransferValue(data: PrefrenceArea.PrefrenceAreaModel[]): TransferValue[] {
+  if (!data) {
+    return [];
+  }
+  return data.map(item => ({
+    key: item.id,
+    label: item.name
+  }));
+}
