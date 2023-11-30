@@ -10,8 +10,8 @@
       :border="false"
     >
       <!-- 表格 header 按钮 -->
-      <template #tableHeader="scope">
-        <el-button type="primary" :icon="CirclePlus" @click="openDrawer('新增')">新增专题表</el-button>
+      <template #tableHeader>
+        <el-button type="primary" :icon="CirclePlus" @click="openDrawer('新增')">新增专题</el-button>
       </template>
 
       <!-- 表格操作 -->
@@ -30,7 +30,7 @@ import ProTable from "@/components/ProTable/index.vue";
 import { Subject } from "@/api/interface";
 import { ref, reactive } from "vue";
 import { useHandleData } from "@/hooks/useHandleData";
-import SubjectDrawer from "@/views/pms/brand/detail.vue";
+import SubjectDrawer from "@/views/pms/subject/detail.vue";
 import { CirclePlus, Delete, EditPen } from "@element-plus/icons-vue";
 import { createSubjectApi, updateSubjectApi, deleteSubjectApi, getSubjectsApi } from "@/api/modules/subject.ts";
 
@@ -40,6 +40,10 @@ const proTable = ref<ProTableInstance>();
 // 表格配置项
 const columns = reactive<ColumnProps<Subject.SubjectModel>[]>([
   { type: "selection", fixed: "left", width: 70 },
+  { prop: "id", label: "id" },
+  { prop: "title", label: "标题" },
+  { prop: "description", label: "描述" },
+  { prop: "pic", label: "主图" },
   { prop: "operation", label: "操作", fixed: "right", width: 170 }
 ]);
 

@@ -85,6 +85,34 @@
             "isAffix": false,
             "isKeepAlive": false
           }
+        },
+        {
+          "path": "/pms/subject",
+          "name": "subject",
+          "component": "/pms/subject/index",
+          "meta": {
+            "icon": "Notebook",
+            "title": "专题管理",
+            "isLink": "",
+            "isHide": false,
+            "isFull": false,
+            "isAffix": false,
+            "isKeepAlive": false
+          }
+        },
+        {
+          "path": "/pms/prefrenceArea",
+          "name": "prefrenceArea",
+          "component": "/pms/prefrenceArea/index",
+          "meta": {
+            "icon": "Present",
+            "title": "优选管理",
+            "isLink": "",
+            "isHide": false,
+            "isFull": false,
+            "isAffix": false,
+            "isKeepAlive": false
+          }
         }
       ]
     },

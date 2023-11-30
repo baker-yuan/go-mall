@@ -424,10 +424,10 @@ values  (1, 1, 'polo衬衫的也时尚', '', 0, 0, UNIX_TIMESTAMP('2018-11-11 13
 
 
 insert into go_mall_admin.cms_prefrence_area (id, name, sub_title, pic, sort, show_status)
-values  (1, '让音质更出众', '音质不打折 完美现场感', 0x00, 0, 1),
-        (2, '让音质更出众22', '让音质更出众22', 0x00, 0, 0),
-        (3, '让音质更出众33', '', 0x00, 0, 0),
-        (4, '让音质更出众44', '', 0x00, 0, 0);
+values  (1, '让音质更出众', '音质不打折 完美现场感', '', 0, 1),
+        (2, '让音质更出众22', '让音质更出众22', '', 0, 0),
+        (3, '让音质更出众33', '', '', 0, 0),
+        (4, '让音质更出众44', '', '', 0, 0);
 
 
 insert into go_mall_admin.cms_prefrence_area_product_relation (id, prefrence_area_id, product_id)

@@ -12,18 +12,19 @@ func SubjectEntityToModel(subject *entity.Subject) *pb.Subject {
 		CategoryId:      subject.CategoryID,
 		Title:           subject.Title,
 		Pic:             subject.Pic,
-		ProductCount:    subject.ProductCount,
-		RecommendStatus: uint32(subject.RecommendStatus),
-		CreateTime:      subject.CreateTime,
-		CollectCount:    subject.CollectCount,
-		ReadCount:       subject.ReadCount,
-		CommentCount:    subject.CommentCount,
 		AlbumPics:       subject.AlbumPics,
 		Description:     subject.Description,
-		ShowStatus:      uint32(subject.ShowStatus),
 		Content:         subject.Content,
-		ForwardCount:    subject.ForwardCount,
-		CategoryName:    subject.CategoryName,
+		ShowStatus:      uint32(subject.ShowStatus),
+		RecommendStatus: uint32(subject.RecommendStatus),
+		CreateTime:      subject.CreateTime,
+		// 冗余字段
+		CategoryName: subject.CategoryName,
+		ForwardCount: subject.ForwardCount,
+		CollectCount: subject.CollectCount,
+		ReadCount:    subject.ReadCount,
+		CommentCount: subject.CommentCount,
+		ProductCount: subject.ProductCount,
 	}
 }
 
