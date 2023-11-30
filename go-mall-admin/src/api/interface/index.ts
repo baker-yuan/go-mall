@@ -341,3 +341,19 @@ export namespace Subject {
   // 分页查询专题表
   export interface ReqSubjectListParams extends ReqPage {}
 }
+
+// 优选专区管理模块
+export namespace PrefrenceArea {
+  // 优选专区模型
+  export interface PrefrenceAreaModel {
+    id: number; // 主键
+    name: string; // 名称
+    subTitle: string; // 子标题
+    pic: string; // 展示图片
+    sort: number; // 排序
+    showStatus: number; // 显示状态
+  }
+
+  // 分页查询优选专区
+  export interface ReqPrefrenceAreaListParams extends ReqPage {}
+}

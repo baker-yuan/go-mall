@@ -70,6 +70,7 @@ func Run(cfg *config.Config) {
 		subjectProductRelationRepo           = repo.NewSubjectProductRelationRepo(conn)
 		prefrenceAreaProductRelationRepo     = repo.NewPrefrenceAreaProductRelationRepo(conn)
 		subjectRepo                          = repo.NewSubjectRepo(conn)
+		prefrenceAreaRepo                    = repo.NewPrefrenceAreaRepo(conn)
 	)
 
 	// 业务逻辑
@@ -104,6 +105,8 @@ func Run(cfg *config.Config) {
 	)
 	subjectUseCase := usecase.NewSubject(subjectRepo)
 
+	prefrenceAreaUseCase := usecase.NewPrefrenceArea(prefrenceAreaRepo)
+
 	// grpc服务
 	grpcSrvImpl := grpcsrv.New(
 		categoryUseCase,
@@ -113,6 +116,7 @@ func Run(cfg *config.Config) {
 		productUseCase,
 		skuStockUseCase,
 		subjectUseCase,
+		prefrenceAreaUseCase,
 	)
 	grpcServer, err := configGrpc(customLog, grpcSrvImpl, cfg.HTTP.IP, cfg.HTTP.Port)
 	if err != nil {

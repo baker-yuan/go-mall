@@ -105,7 +105,7 @@
           "name": "prefrenceArea",
           "component": "/pms/prefrenceArea/index",
           "meta": {
-            "icon": "Present",
+            "icon": "Pointer",
             "title": "优选管理",
             "isLink": "",
             "isHide": false,

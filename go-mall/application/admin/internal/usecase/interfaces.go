@@ -473,3 +473,34 @@ type (
 		GetByDBOption(ctx context.Context, pageNum uint32, pageSize uint32, opts ...db.DBOption) ([]*entity.Subject, uint32, error)
 	}
 )
+
+// PrefrenceArea 优选专区
+type (
+	// IPrefrenceAreaUseCase 业务逻辑
+	IPrefrenceAreaUseCase interface {
+		// CreatePrefrenceArea 添加优选专区
+		CreatePrefrenceArea(ctx context.Context, param *pb.AddOrUpdatePrefrenceAreaParam) error
+		// UpdatePrefrenceArea 修改优选专区
+		UpdatePrefrenceArea(ctx context.Context, param *pb.AddOrUpdatePrefrenceAreaParam) error
+		// GetPrefrenceAreas 分页查询优选专区
+		GetPrefrenceAreas(ctx context.Context, param *pb.GetPrefrenceAreasParam) ([]*pb.PrefrenceArea, uint32, error)
+		// GetPrefrenceArea 根据id获取优选专区
+		GetPrefrenceArea(ctx context.Context, id uint64) (*pb.PrefrenceArea, error)
+		// DeletePrefrenceArea 删除优选专区
+		DeletePrefrenceArea(ctx context.Context, id uint64) error
+	}
+
+	// IPrefrenceAreaRepo 数据存储操作
+	IPrefrenceAreaRepo interface {
+		// Create 创建优选专区
+		Create(ctx context.Context, prefrenceArea *entity.PrefrenceArea) error
+		// DeleteByID 根据主键ID删除优选专区
+		DeleteByID(ctx context.Context, id uint64) error
+		// Update 修改优选专区
+		Update(ctx context.Context, prefrenceArea *entity.PrefrenceArea) error
+		// GetByID 根据主键ID查询优选专区
+		GetByID(ctx context.Context, id uint64) (*entity.PrefrenceArea, error)
+		// GetByDBOption 根据动态条件查询优选专区
+		GetByDBOption(ctx context.Context, pageNum uint32, pageSize uint32, opts ...db.DBOption) ([]*entity.PrefrenceArea, uint32, error)
+	}
+)

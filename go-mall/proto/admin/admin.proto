@@ -19,6 +19,7 @@ import "model/pms_product_attribute_value.proto";
 import "model/cms_prefrence_area_product_relation.proto";
 import "model/cms_subject_product_relation.proto";
 import "model/cms_subject.proto";
+import "model/cms_prefrence_area.proto";
 
 option go_package = ".;mall";
 
@@ -261,6 +262,54 @@ message GetSkuStocksByProductIdRsp {
 }
 
 // END ======================================= sku库存 ======================================= END
+
+
+
+// START ======================================= 优选专区 ======================================= START
+// 添加或更新优选专区参数
+message AddOrUpdatePrefrenceAreaParam {
+  uint64 id = 1; // 主键
+}
+
+// 分页查询优选专区
+message GetPrefrenceAreasParam {
+
+  uint32 page_num = 10 [(validate.rules).uint32.gte = 0];   // 页面大小
+  uint32 page_size = 11 [(validate.rules).uint32.gte = 0];  // 页码
+}
+
+// 分页查询优选专区
+message PrefrenceAreasData {
+  repeated model.PrefrenceArea data = 1;    // 优选专区
+  uint32 page_total = 2;                         // 数据总数
+  uint32 page_size = 3;                          // 页码
+  uint32 page_num = 4;                           // 页面大小
+}
+message GetPrefrenceAreasRsp {
+  uint32 code = 1;          // 状态码
+  string message = 2;       // 提示信息
+
+  PrefrenceAreasData data = 3; //
+}
+
+// 根据id获取优选专区
+message GetPrefrenceAreaReq {
+  uint64 id = 1;
+}
+
+// 根据id获取优选专区
+message GetPrefrenceAreaRsp {
+  uint32 code = 1;          // 状态码
+  string message = 2;       // 提示信息
+
+  model.PrefrenceArea data = 3;    // 数据
+}
+
+// 删除优选专区
+message DeletePrefrenceAreaReq {
+  uint64 id = 1;
+}
+// END ======================================= 优选专区 ======================================= END
 
 // 添加或更新商品属性参数
 message AddOrUpdateProductAttributeParam {
@@ -765,6 +814,46 @@ service AdminApi {
   }
 
   // END ======================================= 专题 ======================================= END
+
+
+  // START ======================================= 优选专区 ======================================= START
+  // 添加优选专区
+  rpc CreatePrefrenceArea (AddOrUpdatePrefrenceAreaParam) returns (CommonRsp) {
+    option (google.api.http) = {
+      post: "/prefrenceAreas"
+      body: "*"
+    };
+  }
+
+  // 修改优选专区
+  rpc UpdatePrefrenceArea (AddOrUpdatePrefrenceAreaParam) returns (CommonRsp) {
+    option (google.api.http) = {
+      put: "/prefrenceAreas/{id}"
+      body: "*"
+    };
+  }
+
+  // 分页查询优选专区
+  rpc GetPrefrenceAreas (GetPrefrenceAreasParam) returns (GetPrefrenceAreasRsp) {
+    option (google.api.http) = {
+      get: "/prefrenceAreas"
+    };
+  }
+
+  // 根据id获取优选专区
+  rpc GetPrefrenceArea (GetPrefrenceAreaReq) returns (GetPrefrenceAreaRsp) {
+    option (google.api.http) = {
+      get: "/prefrenceAreas/{id}"
+    };
+  }
+
+  // 删除优选专区
+  rpc DeletePrefrenceArea (DeletePrefrenceAreaReq) returns (CommonRsp) {
+    option (google.api.http) = {
+      delete: "/prefrenceAreas/{id}"
+    };
+  }
+  // END ======================================= 优选专区 ======================================= END
 }
 
 

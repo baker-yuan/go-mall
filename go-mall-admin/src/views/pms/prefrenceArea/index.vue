@@ -11,40 +11,45 @@
     >
       <!-- 表格 header 按钮 -->
       <template #tableHeader>
-        <el-button type="primary" :icon="CirclePlus" @click="openDrawer('新增')">新增专题</el-button>
+        <el-button type="primary" :icon="CirclePlus" @click="openDrawer('新增')">新增优选专区</el-button>
       </template>
 
       <!-- 表格操作 -->
       <template #operation="scope">
         <el-button type="primary" link :icon="EditPen" @click="openDrawer('编辑', scope.row)">编辑</el-button>
-        <el-button type="primary" link :icon="Delete" @click="deleteSubject(scope.row)">删除</el-button>
+        <el-button type="primary" link :icon="Delete" @click="deletePrefrenceArea(scope.row)">删除</el-button>
       </template>
     </ProTable>
-    <SubjectDrawer ref="drawerRef" />
+    <PrefrenceAreaDrawer ref="drawerRef" />
   </div>
 </template>
 
-<script setup lang="ts" name="SubjectManage">
+<script setup lang="ts" name="PrefrenceAreaManage">
 import { ProTableInstance, ColumnProps } from "@/components/ProTable/interface";
 import ProTable from "@/components/ProTable/index.vue";
-import { Subject } from "@/api/interface";
+import { PrefrenceArea } from "@/api/interface";
 import { ref, reactive } from "vue";
 import { useHandleData } from "@/hooks/useHandleData";
-import SubjectDrawer from "@/views/pms/subject/detail.vue";
+import PrefrenceAreaDrawer from "@/views/pms/prefrenceArea/detail.vue";
 import { CirclePlus, Delete, EditPen } from "@element-plus/icons-vue";
-import { createSubjectApi, updateSubjectApi, deleteSubjectApi, getSubjectsApi } from "@/api/modules/subject.ts";
+import {
+  createPrefrenceAreaApi,
+  updatePrefrenceAreaApi,
+  deletePrefrenceAreaApi,
+  getPrefrenceAreasApi
+} from "@/api/modules/prefrenceArea";
 
 // ProTable 实例
 const proTable = ref<ProTableInstance>();
 
 // 表格配置项
-const columns = reactive<ColumnProps<Subject.SubjectModel>[]>([
+const columns = reactive<ColumnProps<PrefrenceArea.PrefrenceAreaModel>[]>([
   { type: "selection", fixed: "left", width: 70 },
   { prop: "id", label: "id" },
-  { prop: "title", label: "标题" },
-  { prop: "description", label: "描述" },
-  { prop: "content", label: "内容" },
-  { prop: "pic", label: "主图" },
+  { prop: "name", label: "名称" },
+  { prop: "subTitle", label: "子标题" },
+  { prop: "pic", label: "展示图片" },
+  { prop: "sort", label: "排序" },
   { prop: "operation", label: "操作", fixed: "right", width: 170 }
 ]);
 
@@ -68,7 +73,7 @@ const dataCallback = (data: any) => {
 const getTableList = (params: any) => {
   let newParams = JSON.parse(JSON.stringify(params));
   console.log("getTableList", newParams);
-  return getSubjectsApi(newParams);
+  return getPrefrenceAreasApi(newParams);
 };
 
 // 表格拖拽排序
@@ -76,20 +81,20 @@ const sortTable = ({ newIndex, oldIndex }: { newIndex?: number; oldIndex?: numbe
   console.log(newIndex, oldIndex);
 };
 
-// 删除专题表
-const deleteSubject = async (row: Subject.SubjectModel) => {
-  await useHandleData(deleteSubjectApi, row.id, `删除【${row.name}】专题表`);
+// 删除优选专区
+const deletePrefrenceArea = async (row: PrefrenceArea.PrefrenceAreaModel) => {
+  await useHandleData(deletePrefrenceAreaApi, row.id, `删除【${row.name}】优选专区`);
   proTable.value?.getTableList();
 };
 
 // 打开 drawer(新增、查看、编辑)
-const drawerRef = ref<InstanceType<typeof SubjectDrawer> | null>(null);
-const openDrawer = (title: string, row: Partial<Subject.SubjectModel> = {}) => {
+const drawerRef = ref<InstanceType<typeof PrefrenceAreaDrawer> | null>(null);
+const openDrawer = (title: string, row: Partial<PrefrenceArea.PrefrenceAreaModel> = {}) => {
   const params = {
     title,
     isView: title === "查看",
     row: { ...row },
-    api: title === "新增" ? createSubjectApi : title === "编辑" ? updateSubjectApi : undefined,
+    api: title === "新增" ? createPrefrenceAreaApi : title === "编辑" ? updatePrefrenceAreaApi : undefined,
     getTableList: proTable.value?.getTableList
   };
   drawerRef.value?.acceptParams(params);

@@ -52,6 +52,11 @@ const (
 	AdminApi_GetSubjects_FullMethodName                      = "/admin.AdminApi/GetSubjects"
 	AdminApi_GetSubject_FullMethodName                       = "/admin.AdminApi/GetSubject"
 	AdminApi_DeleteSubject_FullMethodName                    = "/admin.AdminApi/DeleteSubject"
+	AdminApi_CreatePrefrenceArea_FullMethodName              = "/admin.AdminApi/CreatePrefrenceArea"
+	AdminApi_UpdatePrefrenceArea_FullMethodName              = "/admin.AdminApi/UpdatePrefrenceArea"
+	AdminApi_GetPrefrenceAreas_FullMethodName                = "/admin.AdminApi/GetPrefrenceAreas"
+	AdminApi_GetPrefrenceArea_FullMethodName                 = "/admin.AdminApi/GetPrefrenceArea"
+	AdminApi_DeletePrefrenceArea_FullMethodName              = "/admin.AdminApi/DeletePrefrenceArea"
 )
 
 // AdminApiClient is the client API for AdminApi service.
@@ -126,6 +131,17 @@ type AdminApiClient interface {
 	GetSubject(ctx context.Context, in *GetSubjectReq, opts ...grpc.CallOption) (*GetSubjectRsp, error)
 	// 删除专题
 	DeleteSubject(ctx context.Context, in *DeleteSubjectReq, opts ...grpc.CallOption) (*CommonRsp, error)
+	// START ======================================= 优选专区 ======================================= START
+	// 添加优选专区
+	CreatePrefrenceArea(ctx context.Context, in *AddOrUpdatePrefrenceAreaParam, opts ...grpc.CallOption) (*CommonRsp, error)
+	// 修改优选专区
+	UpdatePrefrenceArea(ctx context.Context, in *AddOrUpdatePrefrenceAreaParam, opts ...grpc.CallOption) (*CommonRsp, error)
+	// 分页查询优选专区
+	GetPrefrenceAreas(ctx context.Context, in *GetPrefrenceAreasParam, opts ...grpc.CallOption) (*GetPrefrenceAreasRsp, error)
+	// 根据id获取优选专区
+	GetPrefrenceArea(ctx context.Context, in *GetPrefrenceAreaReq, opts ...grpc.CallOption) (*GetPrefrenceAreaRsp, error)
+	// 删除优选专区
+	DeletePrefrenceArea(ctx context.Context, in *DeletePrefrenceAreaReq, opts ...grpc.CallOption) (*CommonRsp, error)
 }
 
 type adminApiClient struct {
@@ -433,6 +449,51 @@ func (c *adminApiClient) DeleteSubject(ctx context.Context, in *DeleteSubjectReq
 	return out, nil
 }
 
+func (c *adminApiClient) CreatePrefrenceArea(ctx context.Context, in *AddOrUpdatePrefrenceAreaParam, opts ...grpc.CallOption) (*CommonRsp, error) {
+	out := new(CommonRsp)
+	err := c.cc.Invoke(ctx, AdminApi_CreatePrefrenceArea_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *adminApiClient) UpdatePrefrenceArea(ctx context.Context, in *AddOrUpdatePrefrenceAreaParam, opts ...grpc.CallOption) (*CommonRsp, error) {
+	out := new(CommonRsp)
+	err := c.cc.Invoke(ctx, AdminApi_UpdatePrefrenceArea_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *adminApiClient) GetPrefrenceAreas(ctx context.Context, in *GetPrefrenceAreasParam, opts ...grpc.CallOption) (*GetPrefrenceAreasRsp, error) {
+	out := new(GetPrefrenceAreasRsp)
+	err := c.cc.Invoke(ctx, AdminApi_GetPrefrenceAreas_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *adminApiClient) GetPrefrenceArea(ctx context.Context, in *GetPrefrenceAreaReq, opts ...grpc.CallOption) (*GetPrefrenceAreaRsp, error) {
+	out := new(GetPrefrenceAreaRsp)
+	err := c.cc.Invoke(ctx, AdminApi_GetPrefrenceArea_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *adminApiClient) DeletePrefrenceArea(ctx context.Context, in *DeletePrefrenceAreaReq, opts ...grpc.CallOption) (*CommonRsp, error) {
+	out := new(CommonRsp)
+	err := c.cc.Invoke(ctx, AdminApi_DeletePrefrenceArea_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // AdminApiServer is the server API for AdminApi service.
 // All implementations must embed UnimplementedAdminApiServer
 // for forward compatibility
@@ -505,6 +566,17 @@ type AdminApiServer interface {
 	GetSubject(context.Context, *GetSubjectReq) (*GetSubjectRsp, error)
 	// 删除专题
 	DeleteSubject(context.Context, *DeleteSubjectReq) (*CommonRsp, error)
+	// START ======================================= 优选专区 ======================================= START
+	// 添加优选专区
+	CreatePrefrenceArea(context.Context, *AddOrUpdatePrefrenceAreaParam) (*CommonRsp, error)
+	// 修改优选专区
+	UpdatePrefrenceArea(context.Context, *AddOrUpdatePrefrenceAreaParam) (*CommonRsp, error)
+	// 分页查询优选专区
+	GetPrefrenceAreas(context.Context, *GetPrefrenceAreasParam) (*GetPrefrenceAreasRsp, error)
+	// 根据id获取优选专区
+	GetPrefrenceArea(context.Context, *GetPrefrenceAreaReq) (*GetPrefrenceAreaRsp, error)
+	// 删除优选专区
+	DeletePrefrenceArea(context.Context, *DeletePrefrenceAreaReq) (*CommonRsp, error)
 	mustEmbedUnimplementedAdminApiServer()
 }
 
@@ -610,6 +682,21 @@ func (UnimplementedAdminApiServer) GetSubject(context.Context, *GetSubjectReq) (
 }
 func (UnimplementedAdminApiServer) DeleteSubject(context.Context, *DeleteSubjectReq) (*CommonRsp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteSubject not implemented")
+}
+func (UnimplementedAdminApiServer) CreatePrefrenceArea(context.Context, *AddOrUpdatePrefrenceAreaParam) (*CommonRsp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreatePrefrenceArea not implemented")
+}
+func (UnimplementedAdminApiServer) UpdatePrefrenceArea(context.Context, *AddOrUpdatePrefrenceAreaParam) (*CommonRsp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdatePrefrenceArea not implemented")
+}
+func (UnimplementedAdminApiServer) GetPrefrenceAreas(context.Context, *GetPrefrenceAreasParam) (*GetPrefrenceAreasRsp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetPrefrenceAreas not implemented")
+}
+func (UnimplementedAdminApiServer) GetPrefrenceArea(context.Context, *GetPrefrenceAreaReq) (*GetPrefrenceAreaRsp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetPrefrenceArea not implemented")
+}
+func (UnimplementedAdminApiServer) DeletePrefrenceArea(context.Context, *DeletePrefrenceAreaReq) (*CommonRsp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeletePrefrenceArea not implemented")
 }
 func (UnimplementedAdminApiServer) mustEmbedUnimplementedAdminApiServer() {}
 
@@ -1218,6 +1305,96 @@ func _AdminApi_DeleteSubject_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
+func _AdminApi_CreatePrefrenceArea_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AddOrUpdatePrefrenceAreaParam)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AdminApiServer).CreatePrefrenceArea(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AdminApi_CreatePrefrenceArea_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AdminApiServer).CreatePrefrenceArea(ctx, req.(*AddOrUpdatePrefrenceAreaParam))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AdminApi_UpdatePrefrenceArea_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AddOrUpdatePrefrenceAreaParam)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AdminApiServer).UpdatePrefrenceArea(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AdminApi_UpdatePrefrenceArea_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AdminApiServer).UpdatePrefrenceArea(ctx, req.(*AddOrUpdatePrefrenceAreaParam))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AdminApi_GetPrefrenceAreas_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetPrefrenceAreasParam)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AdminApiServer).GetPrefrenceAreas(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AdminApi_GetPrefrenceAreas_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AdminApiServer).GetPrefrenceAreas(ctx, req.(*GetPrefrenceAreasParam))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AdminApi_GetPrefrenceArea_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetPrefrenceAreaReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AdminApiServer).GetPrefrenceArea(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AdminApi_GetPrefrenceArea_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AdminApiServer).GetPrefrenceArea(ctx, req.(*GetPrefrenceAreaReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AdminApi_DeletePrefrenceArea_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeletePrefrenceAreaReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AdminApiServer).DeletePrefrenceArea(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AdminApi_DeletePrefrenceArea_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AdminApiServer).DeletePrefrenceArea(ctx, req.(*DeletePrefrenceAreaReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // AdminApi_ServiceDesc is the grpc.ServiceDesc for AdminApi service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -1356,6 +1533,26 @@ var AdminApi_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DeleteSubject",
 			Handler:    _AdminApi_DeleteSubject_Handler,
+		},
+		{
+			MethodName: "CreatePrefrenceArea",
+			Handler:    _AdminApi_CreatePrefrenceArea_Handler,
+		},
+		{
+			MethodName: "UpdatePrefrenceArea",
+			Handler:    _AdminApi_UpdatePrefrenceArea_Handler,
+		},
+		{
+			MethodName: "GetPrefrenceAreas",
+			Handler:    _AdminApi_GetPrefrenceAreas_Handler,
+		},
+		{
+			MethodName: "GetPrefrenceArea",
+			Handler:    _AdminApi_GetPrefrenceArea_Handler,
+		},
+		{
+			MethodName: "DeletePrefrenceArea",
+			Handler:    _AdminApi_DeletePrefrenceArea_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

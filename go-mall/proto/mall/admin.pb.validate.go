@@ -3832,6 +3832,855 @@ var _ interface {
 	ErrorName() string
 } = GetSkuStocksByProductIdRspValidationError{}
 
+// Validate checks the field values on AddOrUpdatePrefrenceAreaParam with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *AddOrUpdatePrefrenceAreaParam) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on AddOrUpdatePrefrenceAreaParam with
+// the rules defined in the proto definition for this message. If any rules
+// are violated, the result is a list of violation errors wrapped in
+// AddOrUpdatePrefrenceAreaParamMultiError, or nil if none found.
+func (m *AddOrUpdatePrefrenceAreaParam) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *AddOrUpdatePrefrenceAreaParam) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Id
+
+	if len(errors) > 0 {
+		return AddOrUpdatePrefrenceAreaParamMultiError(errors)
+	}
+
+	return nil
+}
+
+// AddOrUpdatePrefrenceAreaParamMultiError is an error wrapping multiple
+// validation errors returned by AddOrUpdatePrefrenceAreaParam.ValidateAll()
+// if the designated constraints aren't met.
+type AddOrUpdatePrefrenceAreaParamMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m AddOrUpdatePrefrenceAreaParamMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m AddOrUpdatePrefrenceAreaParamMultiError) AllErrors() []error { return m }
+
+// AddOrUpdatePrefrenceAreaParamValidationError is the validation error
+// returned by AddOrUpdatePrefrenceAreaParam.Validate if the designated
+// constraints aren't met.
+type AddOrUpdatePrefrenceAreaParamValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e AddOrUpdatePrefrenceAreaParamValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e AddOrUpdatePrefrenceAreaParamValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e AddOrUpdatePrefrenceAreaParamValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e AddOrUpdatePrefrenceAreaParamValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e AddOrUpdatePrefrenceAreaParamValidationError) ErrorName() string {
+	return "AddOrUpdatePrefrenceAreaParamValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e AddOrUpdatePrefrenceAreaParamValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sAddOrUpdatePrefrenceAreaParam.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = AddOrUpdatePrefrenceAreaParamValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = AddOrUpdatePrefrenceAreaParamValidationError{}
+
+// Validate checks the field values on GetPrefrenceAreasParam with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *GetPrefrenceAreasParam) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on GetPrefrenceAreasParam with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// GetPrefrenceAreasParamMultiError, or nil if none found.
+func (m *GetPrefrenceAreasParam) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *GetPrefrenceAreasParam) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if m.GetPageNum() < 0 {
+		err := GetPrefrenceAreasParamValidationError{
+			field:  "PageNum",
+			reason: "value must be greater than or equal to 0",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if m.GetPageSize() < 0 {
+		err := GetPrefrenceAreasParamValidationError{
+			field:  "PageSize",
+			reason: "value must be greater than or equal to 0",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if len(errors) > 0 {
+		return GetPrefrenceAreasParamMultiError(errors)
+	}
+
+	return nil
+}
+
+// GetPrefrenceAreasParamMultiError is an error wrapping multiple validation
+// errors returned by GetPrefrenceAreasParam.ValidateAll() if the designated
+// constraints aren't met.
+type GetPrefrenceAreasParamMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m GetPrefrenceAreasParamMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m GetPrefrenceAreasParamMultiError) AllErrors() []error { return m }
+
+// GetPrefrenceAreasParamValidationError is the validation error returned by
+// GetPrefrenceAreasParam.Validate if the designated constraints aren't met.
+type GetPrefrenceAreasParamValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e GetPrefrenceAreasParamValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e GetPrefrenceAreasParamValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e GetPrefrenceAreasParamValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e GetPrefrenceAreasParamValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e GetPrefrenceAreasParamValidationError) ErrorName() string {
+	return "GetPrefrenceAreasParamValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e GetPrefrenceAreasParamValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sGetPrefrenceAreasParam.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = GetPrefrenceAreasParamValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = GetPrefrenceAreasParamValidationError{}
+
+// Validate checks the field values on PrefrenceAreasData with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *PrefrenceAreasData) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on PrefrenceAreasData with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// PrefrenceAreasDataMultiError, or nil if none found.
+func (m *PrefrenceAreasData) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *PrefrenceAreasData) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	for idx, item := range m.GetData() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, PrefrenceAreasDataValidationError{
+						field:  fmt.Sprintf("Data[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, PrefrenceAreasDataValidationError{
+						field:  fmt.Sprintf("Data[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return PrefrenceAreasDataValidationError{
+					field:  fmt.Sprintf("Data[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	// no validation rules for PageTotal
+
+	// no validation rules for PageSize
+
+	// no validation rules for PageNum
+
+	if len(errors) > 0 {
+		return PrefrenceAreasDataMultiError(errors)
+	}
+
+	return nil
+}
+
+// PrefrenceAreasDataMultiError is an error wrapping multiple validation errors
+// returned by PrefrenceAreasData.ValidateAll() if the designated constraints
+// aren't met.
+type PrefrenceAreasDataMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m PrefrenceAreasDataMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m PrefrenceAreasDataMultiError) AllErrors() []error { return m }
+
+// PrefrenceAreasDataValidationError is the validation error returned by
+// PrefrenceAreasData.Validate if the designated constraints aren't met.
+type PrefrenceAreasDataValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e PrefrenceAreasDataValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e PrefrenceAreasDataValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e PrefrenceAreasDataValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e PrefrenceAreasDataValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e PrefrenceAreasDataValidationError) ErrorName() string {
+	return "PrefrenceAreasDataValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e PrefrenceAreasDataValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sPrefrenceAreasData.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = PrefrenceAreasDataValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = PrefrenceAreasDataValidationError{}
+
+// Validate checks the field values on GetPrefrenceAreasRsp with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *GetPrefrenceAreasRsp) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on GetPrefrenceAreasRsp with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// GetPrefrenceAreasRspMultiError, or nil if none found.
+func (m *GetPrefrenceAreasRsp) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *GetPrefrenceAreasRsp) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Code
+
+	// no validation rules for Message
+
+	if all {
+		switch v := interface{}(m.GetData()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, GetPrefrenceAreasRspValidationError{
+					field:  "Data",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, GetPrefrenceAreasRspValidationError{
+					field:  "Data",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetData()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return GetPrefrenceAreasRspValidationError{
+				field:  "Data",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if len(errors) > 0 {
+		return GetPrefrenceAreasRspMultiError(errors)
+	}
+
+	return nil
+}
+
+// GetPrefrenceAreasRspMultiError is an error wrapping multiple validation
+// errors returned by GetPrefrenceAreasRsp.ValidateAll() if the designated
+// constraints aren't met.
+type GetPrefrenceAreasRspMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m GetPrefrenceAreasRspMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m GetPrefrenceAreasRspMultiError) AllErrors() []error { return m }
+
+// GetPrefrenceAreasRspValidationError is the validation error returned by
+// GetPrefrenceAreasRsp.Validate if the designated constraints aren't met.
+type GetPrefrenceAreasRspValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e GetPrefrenceAreasRspValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e GetPrefrenceAreasRspValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e GetPrefrenceAreasRspValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e GetPrefrenceAreasRspValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e GetPrefrenceAreasRspValidationError) ErrorName() string {
+	return "GetPrefrenceAreasRspValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e GetPrefrenceAreasRspValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sGetPrefrenceAreasRsp.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = GetPrefrenceAreasRspValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = GetPrefrenceAreasRspValidationError{}
+
+// Validate checks the field values on GetPrefrenceAreaReq with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *GetPrefrenceAreaReq) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on GetPrefrenceAreaReq with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// GetPrefrenceAreaReqMultiError, or nil if none found.
+func (m *GetPrefrenceAreaReq) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *GetPrefrenceAreaReq) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Id
+
+	if len(errors) > 0 {
+		return GetPrefrenceAreaReqMultiError(errors)
+	}
+
+	return nil
+}
+
+// GetPrefrenceAreaReqMultiError is an error wrapping multiple validation
+// errors returned by GetPrefrenceAreaReq.ValidateAll() if the designated
+// constraints aren't met.
+type GetPrefrenceAreaReqMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m GetPrefrenceAreaReqMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m GetPrefrenceAreaReqMultiError) AllErrors() []error { return m }
+
+// GetPrefrenceAreaReqValidationError is the validation error returned by
+// GetPrefrenceAreaReq.Validate if the designated constraints aren't met.
+type GetPrefrenceAreaReqValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e GetPrefrenceAreaReqValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e GetPrefrenceAreaReqValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e GetPrefrenceAreaReqValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e GetPrefrenceAreaReqValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e GetPrefrenceAreaReqValidationError) ErrorName() string {
+	return "GetPrefrenceAreaReqValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e GetPrefrenceAreaReqValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sGetPrefrenceAreaReq.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = GetPrefrenceAreaReqValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = GetPrefrenceAreaReqValidationError{}
+
+// Validate checks the field values on GetPrefrenceAreaRsp with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *GetPrefrenceAreaRsp) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on GetPrefrenceAreaRsp with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// GetPrefrenceAreaRspMultiError, or nil if none found.
+func (m *GetPrefrenceAreaRsp) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *GetPrefrenceAreaRsp) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Code
+
+	// no validation rules for Message
+
+	if all {
+		switch v := interface{}(m.GetData()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, GetPrefrenceAreaRspValidationError{
+					field:  "Data",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, GetPrefrenceAreaRspValidationError{
+					field:  "Data",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetData()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return GetPrefrenceAreaRspValidationError{
+				field:  "Data",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if len(errors) > 0 {
+		return GetPrefrenceAreaRspMultiError(errors)
+	}
+
+	return nil
+}
+
+// GetPrefrenceAreaRspMultiError is an error wrapping multiple validation
+// errors returned by GetPrefrenceAreaRsp.ValidateAll() if the designated
+// constraints aren't met.
+type GetPrefrenceAreaRspMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m GetPrefrenceAreaRspMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m GetPrefrenceAreaRspMultiError) AllErrors() []error { return m }
+
+// GetPrefrenceAreaRspValidationError is the validation error returned by
+// GetPrefrenceAreaRsp.Validate if the designated constraints aren't met.
+type GetPrefrenceAreaRspValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e GetPrefrenceAreaRspValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e GetPrefrenceAreaRspValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e GetPrefrenceAreaRspValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e GetPrefrenceAreaRspValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e GetPrefrenceAreaRspValidationError) ErrorName() string {
+	return "GetPrefrenceAreaRspValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e GetPrefrenceAreaRspValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sGetPrefrenceAreaRsp.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = GetPrefrenceAreaRspValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = GetPrefrenceAreaRspValidationError{}
+
+// Validate checks the field values on DeletePrefrenceAreaReq with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *DeletePrefrenceAreaReq) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on DeletePrefrenceAreaReq with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// DeletePrefrenceAreaReqMultiError, or nil if none found.
+func (m *DeletePrefrenceAreaReq) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *DeletePrefrenceAreaReq) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Id
+
+	if len(errors) > 0 {
+		return DeletePrefrenceAreaReqMultiError(errors)
+	}
+
+	return nil
+}
+
+// DeletePrefrenceAreaReqMultiError is an error wrapping multiple validation
+// errors returned by DeletePrefrenceAreaReq.ValidateAll() if the designated
+// constraints aren't met.
+type DeletePrefrenceAreaReqMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m DeletePrefrenceAreaReqMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m DeletePrefrenceAreaReqMultiError) AllErrors() []error { return m }
+
+// DeletePrefrenceAreaReqValidationError is the validation error returned by
+// DeletePrefrenceAreaReq.Validate if the designated constraints aren't met.
+type DeletePrefrenceAreaReqValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e DeletePrefrenceAreaReqValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e DeletePrefrenceAreaReqValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e DeletePrefrenceAreaReqValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e DeletePrefrenceAreaReqValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e DeletePrefrenceAreaReqValidationError) ErrorName() string {
+	return "DeletePrefrenceAreaReqValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e DeletePrefrenceAreaReqValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sDeletePrefrenceAreaReq.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = DeletePrefrenceAreaReqValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = DeletePrefrenceAreaReqValidationError{}
+
 // Validate checks the field values on AddOrUpdateProductAttributeParam with
 // the rules defined in the proto definition for this message. If any rules
 // are violated, the first error encountered is returned, or nil if there are

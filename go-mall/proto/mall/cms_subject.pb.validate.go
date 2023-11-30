@@ -64,11 +64,19 @@ func (m *Subject) validate(all bool) error {
 
 	// no validation rules for Pic
 
-	// no validation rules for ProductCount
+	// no validation rules for AlbumPics
+
+	// no validation rules for Description
+
+	// no validation rules for Content
+
+	// no validation rules for ShowStatus
 
 	// no validation rules for RecommendStatus
 
 	// no validation rules for CreateTime
+
+	// no validation rules for ForwardCount
 
 	// no validation rules for CollectCount
 
@@ -76,15 +84,7 @@ func (m *Subject) validate(all bool) error {
 
 	// no validation rules for CommentCount
 
-	// no validation rules for AlbumPics
-
-	// no validation rules for Description
-
-	// no validation rules for ShowStatus
-
-	// no validation rules for Content
-
-	// no validation rules for ForwardCount
+	// no validation rules for ProductCount
 
 	// no validation rules for CategoryName
 

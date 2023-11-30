@@ -616,5 +616,5 @@ values  (1, 1, 12),
         (70, 6, 26);
 
 insert into go_mall_admin.pms_product_vertify_record (id, product_id, create_time, vertify_man, status, detail)
-values  (1, 1, '2018-04-27 16:36:41', 'test', 1, '验证通过'),
-        (2, 2, '2018-04-27 16:36:41', 'test', 1, '验证通过');
+values  (1, 1, UNIX_TIMESTAMP('2018-04-27 16:36:41'), 'test', 1, '验证通过'),
+        (2, 2, UNIX_TIMESTAMP('2018-04-27 16:36:41'), 'test', 1, '验证通过');
