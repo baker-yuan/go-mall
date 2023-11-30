@@ -1,7 +1,7 @@
 package entity
 
-// CmsSubject 专题表
-type CmsSubject struct {
+// Subject 专题表
+type Subject struct {
 	ID              uint64 `gorm:"column:id;type:bigint;primary_key;auto_increment;comment:主键"`
 	CategoryID      uint64 `gorm:"column:category_id;type:bigint;unsigned;not null;default:0;comment:分类id"` //
 	Title           string `gorm:"column:title;type:varchar(100);not null;default:'';comment:标题"`
@@ -22,6 +22,6 @@ type CmsSubject struct {
 	BaseTime
 }
 
-func (c CmsSubject) TableName() string {
+func (c Subject) TableName() string {
 	return "cms_subject"
 }

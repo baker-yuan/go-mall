@@ -63,7 +63,7 @@ func (c $!{tableInfo.name}UseCase) Update$!{tableInfo.name}(ctx context.Context,
 	new$!{tableInfo.name} .CreatedAt = old$!{tableInfo.name}.CreatedAt
 
 	// 更新$!{tableInfo.comment}
-	return c.$!tool.firstLowerCase($!{tableInfo.name})Repo .Update(ctx, $!tool.firstLowerCase($!{tableInfo.name}))
+	return c.$!tool.firstLowerCase($!{tableInfo.name})Repo .Update(ctx, new$!{tableInfo.name})
 }
 
 // Get$!{tableInfo.name}s 分页查询$!{tableInfo.comment}

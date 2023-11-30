@@ -31,10 +31,6 @@ func (bt *BaseTime) BeforeUpdate(tx *gorm.DB) (err error) {
 	return
 }
 
-func RegisterTableSchema() {
-
-}
-
 func Init(db *gorm.DB) error {
 	schemas := []tableSchema{
 		{
@@ -49,7 +45,6 @@ func Init(db *gorm.DB) error {
 			TableName: "商品品牌表",
 			StructPtr: &Brand{},
 		},
-
 		{
 			TableName: "商品属性分类表",
 			StructPtr: &ProductAttributeCategory{},
@@ -62,7 +57,6 @@ func Init(db *gorm.DB) error {
 			TableName: "商品属性值表",
 			StructPtr: &ProductAttributeValue{},
 		},
-
 		{
 			TableName: "商品表",
 			StructPtr: &Product{},
@@ -71,37 +65,51 @@ func Init(db *gorm.DB) error {
 			TableName: "商品SKU表",
 			StructPtr: &SkuStock{},
 		},
-		//{
-		//	TableName: "商品阶梯价格表",
-		//	StructPtr: &ProductLadder{},
-		//},
-		//{
-		//	TableName: "商品满减表",
-		//	StructPtr: &ProductFullReduction{},
-		//},
-		//{
-		//	TableName: "商品会员价格表",
-		//	StructPtr: &MemberPrice{},
-		//},
-		//
-		//{
-		//	TableName: "商品评价表",
-		//	StructPtr: &Comment{},
-		//},
-		//{
-		//	TableName: "商品评价回复表",
-		//	StructPtr: &CommentReplay{},
-		//},
-		//
-		//{
-		//	TableName: "商品审核记录表",
-		//	StructPtr: &ProductVertifyRecord{},
-		//},
-		//{
-		//	TableName: "商品操作记录表",
-		//	StructPtr: &ProductOperateLog{},
-		//},
-		//
+		{
+			TableName: "商品阶梯价格表",
+			StructPtr: &ProductLadder{},
+		},
+		{
+			TableName: "商品满减表",
+			StructPtr: &ProductFullReduction{},
+		},
+		{
+			TableName: "商品会员价格表",
+			StructPtr: &MemberPrice{},
+		},
+		{
+			TableName: "优选专区",
+			StructPtr: &PrefrenceArea{},
+		},
+		{
+			TableName: "优选专区和产品关系表",
+			StructPtr: &PrefrenceAreaProductRelation{},
+		},
+		{
+			TableName: "专题表",
+			StructPtr: &Subject{},
+		},
+		{
+			TableName: "专题商品关系表",
+			StructPtr: &SubjectProductRelation{},
+		},
+		{
+			TableName: "商品评价表",
+			StructPtr: &Comment{},
+		},
+		{
+			TableName: "商品评价回复表",
+			StructPtr: &CommentReplay{},
+		},
+		{
+			TableName: "商品审核记录表",
+			StructPtr: &ProductVertifyRecord{},
+		},
+		{
+			TableName: "商品操作记录表",
+			StructPtr: &ProductOperateLog{},
+		},
+
 		//{
 		//	TableName: "订单表",
 		//	StructPtr: &Order{},
@@ -179,19 +187,6 @@ func Init(db *gorm.DB) error {
 		//	TableName: "会员收货地址表",
 		//	StructPtr: &MemberReceiveAddress{},
 		//},
-
-		//{
-		//	TableName: "优选专区和产品关系表",
-		//	StructPtr: &PrefrenceAreaProductRelation{},
-		//},
-		//{
-		//	TableName: "专题商品关系表",
-		//	StructPtr: &SubjectProductRelation{},
-		//},
-		//	TableName: "专题表",
-		//	StructPtr: &CmsSubject{},
-		//},
-
 	}
 	if err := autoMigrate(db, schemas); err != nil {
 		return err

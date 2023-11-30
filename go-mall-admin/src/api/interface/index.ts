@@ -57,6 +57,11 @@ export interface OptionValue {
   label: string;
 }
 
+export interface TransferValue {
+  key: number;
+  label: string;
+}
+
 // 分类管理模块
 export namespace Category {
   // 分类模型
@@ -190,8 +195,8 @@ export namespace Product {
     productAttributeCategoryId: number; // 品牌属性分类id
     pic: string; // 图片
     albumPics: string; // 画册图片，连产品图片限制为5张，以逗号分割
-    detailHTML: string; // 电脑端详情
-    detailMobileHTML: string; // 移动端详情
+    detailHtml: string; // 电脑端详情
+    detailMobileHtml: string; // 移动端详情
 
     // 状态
     verifyStatus: number; // 审核状态：0->未审核；1->审核通过
@@ -253,16 +258,16 @@ export namespace Product {
 
   // 商品专题设置
   export interface SubjectProductRelation {
-    id: number; // 主键
+    id?: number; // 主键
     subjectId: number; // 专题ID
-    productId: number; // 产品ID
+    productId?: number; // 产品ID
   }
 
   // 商品优选设置
   export interface PrefrenceAreaProductRelation {
     id?: number; // 主键
     prefrenceAreaId: number; // 优选专区ID
-    productId: number; // 产品ID
+    productId?: number; // 产品ID
   }
 
   // 添加修改商品
@@ -309,4 +314,30 @@ export namespace SkuStock {
     productId: number; // 产品ID
     skuStocks: SkuStockModel[]; // 商品SKU
   }
+}
+
+// 专题表管理模块
+export namespace Subject {
+  // 专题表模型
+  export interface SubjectModel {
+    id: number; // 主键
+    categoryId: number; // 分类id
+    title: string; // 标题
+    pic: string; // 专题主图
+    productCount: number; // 关联产品数量
+    recommendStatus: number; // 推荐状态
+    createTime: number; // 创建时间
+    collectCount: number; // 收藏数量
+    readCount: number; // 阅读数量
+    commentCount: number; // 评论数量
+    albumPics: string; // 画册图片，用逗号分割
+    description: string; // 描述
+    showStatus: number; // 显示状态：0->不显示；1->显示
+    content: string; // 内容
+    forwardCount: number; // 转发数
+    categoryName: string; // 专题分类名称
+  }
+
+  // 分页查询专题表
+  export interface ReqSubjectListParams extends ReqPage {}
 }

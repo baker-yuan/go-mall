@@ -442,3 +442,34 @@ type (
 		GetByProductID(ctx context.Context, productID uint64) ([]*entity.PrefrenceAreaProductRelation, error)
 	}
 )
+
+// Subject 专题
+type (
+	// ISubjectUseCase 业务逻辑
+	ISubjectUseCase interface {
+		// CreateSubject 添加专题
+		CreateSubject(ctx context.Context, param *pb.AddOrUpdateSubjectParam) error
+		// UpdateSubject 修改专题
+		UpdateSubject(ctx context.Context, param *pb.AddOrUpdateSubjectParam) error
+		// GetSubjects 分页查询专题
+		GetSubjects(ctx context.Context, param *pb.GetSubjectsParam) ([]*pb.Subject, uint32, error)
+		// GetSubject 根据id获取专题
+		GetSubject(ctx context.Context, id uint64) (*pb.Subject, error)
+		// DeleteSubject 删除专题
+		DeleteSubject(ctx context.Context, id uint64) error
+	}
+
+	// ISubjectRepo 数据存储操作
+	ISubjectRepo interface {
+		// Create 创建专题
+		Create(ctx context.Context, subject *entity.Subject) error
+		// DeleteByID 根据主键ID删除专题
+		DeleteByID(ctx context.Context, id uint64) error
+		// Update 修改专题
+		Update(ctx context.Context, subject *entity.Subject) error
+		// GetByID 根据主键ID查询专题
+		GetByID(ctx context.Context, id uint64) (*entity.Subject, error)
+		// GetByDBOption 根据动态条件查询专题
+		GetByDBOption(ctx context.Context, pageNum uint32, pageSize uint32, opts ...db.DBOption) ([]*entity.Subject, uint32, error)
+	}
+)
