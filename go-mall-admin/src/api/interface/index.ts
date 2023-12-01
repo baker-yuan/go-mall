@@ -289,17 +289,17 @@ export namespace Product {
 export namespace SkuStock {
   // sku的库存模型
   export interface SkuStockModel {
-    id: number; // 主键
-    productId: number; // 产品ID
-    skuCode: string; // sku编码
-    price: number; // 价格
-    stock: number; // 库存
-    lowStock: number; // 预警库存
-    pic: string; // 展示图片
-    sale: number; // 销量
-    promotionPrice: number; // 单品促销价格
-    lockStock: number; // 锁定库存
-    spData: string; // 商品销售属性，json格式
+    id?: number; // 主键
+    productId?: number; // 产品ID
+    skuCode?: string; // sku编码
+    price?: number; // 价格
+    stock?: number; // 库存
+    lowStock?: number; // 预警库存
+    pic?: string; // 展示图片
+    sale?: number; // 销量
+    promotionPrice?: number; // 单品促销价格
+    lockStock?: number; // 锁定库存
+    spData?: string; // 商品销售属性，json格式
   }
 
   // 分页查询sku的库存
