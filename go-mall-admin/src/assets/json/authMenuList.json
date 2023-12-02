@@ -118,9 +118,9 @@
     {
       "path": "/oms",
       "name": "oms",
-      "redirect": "/oms/returnReason",
+      "redirect": "/oms/order",
       "meta": {
-        "icon": "Goods",
+        "icon": "Tickets",
         "title": "订单",
         "isLink": "",
         "isHide": false,
@@ -130,12 +130,56 @@
       },
       "children": [
         {
+          "path": "/pms/order",
+          "name": "order",
+          "component": "/oms/order/index",
+          "meta": {
+            "icon": "Postcard",
+            "title": "订单列表",
+            "isLink": "",
+            "isHide": false,
+            "isFull": false,
+            "isAffix": false,
+            "isKeepAlive": false
+          }
+        },
+        {
           "path": "/pms/returnReason",
-          "name": "product",
+          "name": "returnReason",
           "component": "/oms/returnReason/index",
           "meta": {
-            "icon": "Present",
+            "icon": "Tools",
             "title": "退货原因设置",
+            "isLink": "",
+            "isHide": false,
+            "isFull": false,
+            "isAffix": false,
+            "isKeepAlive": false
+          }
+        }
+      ]
+    },
+    {
+      "path": "/sms",
+      "name": "sms",
+      "redirect": "/sms/flash",
+      "meta": {
+        "icon": "PieChart",
+        "title": "营销",
+        "isLink": "",
+        "isHide": false,
+        "isFull": false,
+        "isAffix": false,
+        "isKeepAlive": true
+      },
+      "children": [
+        {
+          "path": "/sms/flash",
+          "name": "flash",
+          "component": "/sms/flash/index",
+          "meta": {
+            "icon": "AlarmClock",
+            "title": "秒杀活动列表",
             "isLink": "",
             "isHide": false,
             "isFull": false,

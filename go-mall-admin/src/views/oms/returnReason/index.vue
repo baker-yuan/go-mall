@@ -49,7 +49,6 @@ const proTable = ref<ProTableInstance>();
 
 // 表格配置项
 const columns = reactive<ColumnProps<OrderReturnReason.OrderReturnReasonModel>[]>([
-  { type: "selection", fixed: "left", width: 70 },
   {
     prop: "id",
     label: "编号",

@@ -5,16 +5,16 @@ import (
 	pb "github.com/baker-yuan/go-mall/proto/mall"
 )
 
-var _ pb.AdminApiServer = &AdminApiImpl{}
+var _ pb.CmsAdminApiServer = &AdminApiImpl{}
 var _ pb.OmsAdminApiServer = &AdminApiImpl{}
 
 type AdminApi interface {
-	pb.AdminApiServer
+	pb.CmsAdminApiServer
 	pb.OmsAdminApiServer
 }
 
 type AdminApiImpl struct {
-	pb.UnimplementedAdminApiServer
+	pb.UnimplementedCmsAdminApiServer
 	pb.UnimplementedOmsAdminApiServer
 
 	category                 usecase.IProductCategoryUseCase

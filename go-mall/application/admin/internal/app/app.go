@@ -183,13 +183,13 @@ func configGrpc(customLog *logger.Logger, grpcSrvImpl grpcsrv.AdminApi, ip strin
 	)
 
 	// 注册grpc服务
-	pb.RegisterAdminApiServer(grpcServer, grpcSrvImpl)
+	pb.RegisterCmsAdminApiServer(grpcServer, grpcSrvImpl)
 	pb.RegisterOmsAdminApiServer(grpcServer, grpcSrvImpl)
 
 	// gRPC-Gateway mux
 	gwmux := runtime.NewServeMux()
 	dops := []grpc.DialOption{grpc.WithTransportCredentials(insecure.NewCredentials())}
-	if err := pb.RegisterAdminApiHandlerFromEndpoint(context.Background(), gwmux, addr, dops); err != nil {
+	if err := pb.RegisterCmsAdminApiHandlerFromEndpoint(context.Background(), gwmux, addr, dops); err != nil {
 		return nil, err
 	}
 	if err := pb.RegisterOmsAdminApiHandlerFromEndpoint(context.Background(), gwmux, addr, dops); err != nil {
