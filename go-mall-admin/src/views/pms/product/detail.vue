@@ -25,68 +25,68 @@
         <!-- 填写商品信息 -->
         <div v-show="activeStep === 0">
           <el-form-item label="商品分类" prop="productCategoryId">
-            <el-cascader v-model="productDetail!.productCategoryId" :options="categoryOptions"> </el-cascader>
+            <el-cascader v-model="productDetail.productCategoryId" :options="categoryOptions"> </el-cascader>
           </el-form-item>
           <el-form-item label="商品名称" prop="name">
-            <el-input v-model="productDetail!.name"></el-input>
+            <el-input v-model="productDetail.name"></el-input>
           </el-form-item>
           <el-form-item label="副标题" prop="subTitle">
-            <el-input v-model="productDetail!.subTitle"></el-input>
+            <el-input v-model="productDetail.subTitle"></el-input>
           </el-form-item>
           <el-form-item label="商品品牌" prop="brandId">
-            <el-select v-model="productDetail!.brandId" placeholder="请选择品牌">
+            <el-select v-model="productDetail.brandId" placeholder="请选择品牌">
               <el-option v-for="item in brandOptions" :key="item.value" :label="item.label" :value="item.value"> </el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="商品介绍">
-            <el-input :auto-size="true" v-model="productDetail!.description" type="textarea" placeholder="请输入内容"></el-input>
+            <el-input :auto-size="true" v-model="productDetail.description" type="textarea" placeholder="请输入内容"></el-input>
           </el-form-item>
           <el-form-item label="商品货号">
-            <el-input v-model="productDetail!.productSn"></el-input>
+            <el-input v-model="productDetail.productSn"></el-input>
           </el-form-item>
           <el-form-item label="商品售价">
-            <el-input v-model="productDetail!.price"></el-input>
+            <el-input v-model="productDetail.price"></el-input>
           </el-form-item>
           <el-form-item label="市场价">
-            <el-input v-model="productDetail!.originalPrice"></el-input>
+            <el-input v-model="productDetail.originalPrice"></el-input>
           </el-form-item>
           <el-form-item label="商品库存">
-            <el-input v-model="productDetail!.stock"></el-input>
+            <el-input v-model="productDetail.stock"></el-input>
           </el-form-item>
           <el-form-item label="计量单位">
-            <el-input v-model="productDetail!.unit"></el-input>
+            <el-input v-model="productDetail.unit"></el-input>
           </el-form-item>
           <el-form-item label="商品重量">
-            <el-input v-model="productDetail!.weight" style="width: 300px"></el-input>
+            <el-input v-model="productDetail.weight" style="width: 300px"></el-input>
             <span style="margin-left: 20px">克</span>
           </el-form-item>
           <el-form-item label="排序">
-            <el-input v-model="productDetail!.sort"></el-input>
+            <el-input v-model="productDetail.sort"></el-input>
           </el-form-item>
         </div>
 
         <!-- 填写商品促销 -->
         <div v-show="activeStep === 1">
           <el-form-item label="赠送积分">
-            <el-input v-model="productDetail!.giftPoint"></el-input>
+            <el-input v-model="productDetail.giftPoint"></el-input>
           </el-form-item>
           <el-form-item label="赠送成长值">
-            <el-input v-model="productDetail!.giftGrowth"></el-input>
+            <el-input v-model="productDetail.giftGrowth"></el-input>
           </el-form-item>
           <el-form-item label="积分购买限制">
-            <el-input v-model="productDetail!.usePointLimit"></el-input>
+            <el-input v-model="productDetail.usePointLimit"></el-input>
           </el-form-item>
           <el-form-item label="预告商品">
-            <el-switch v-model="productDetail!.previewStatus" :active-value="1" :inactive-value="0"></el-switch>
+            <el-switch v-model="productDetail.previewStatus" :active-value="1" :inactive-value="0"></el-switch>
           </el-form-item>
           <el-form-item label="商品上架">
-            <el-switch v-model="productDetail!.publishStatus" :active-value="1" :inactive-value="0"></el-switch>
+            <el-switch v-model="productDetail.publishStatus" :active-value="1" :inactive-value="0"></el-switch>
           </el-form-item>
           <el-form-item label="商品推荐">
             <span style="margin-right: 10px">新品</span>
-            <el-switch v-model="productDetail!.newStatus" :active-value="1" :inactive-value="0"></el-switch>
+            <el-switch v-model="productDetail.newStatus" :active-value="1" :inactive-value="0"></el-switch>
             <span style="margin-left: 10px; margin-right: 10px">推荐</span>
-            <el-switch v-model="productDetail!.recommandStatus" :active-value="1" :inactive-value="0"></el-switch>
+            <el-switch v-model="productDetail.recommandStatus" :active-value="1" :inactive-value="0"></el-switch>
           </el-form-item>
           <el-form-item label="服务保证">
             <el-checkbox-group v-model="selectServiceList">
@@ -96,19 +96,19 @@
             </el-checkbox-group>
           </el-form-item>
           <el-form-item label="详细页标题">
-            <el-input v-model="productDetail!.detailTitle"></el-input>
+            <el-input v-model="productDetail.detailTitle"></el-input>
           </el-form-item>
           <el-form-item label="详细页描述">
-            <el-input v-model="productDetail!.detailDesc"></el-input>
+            <el-input v-model="productDetail.detailDesc"></el-input>
           </el-form-item>
           <el-form-item label="商品关键字">
-            <el-input v-model="productDetail!.keywords"></el-input>
+            <el-input v-model="productDetail.keywords"></el-input>
           </el-form-item>
           <el-form-item label="商品备注">
-            <el-input v-model="productDetail!.note" type="textarea" :auto-size="true"></el-input>
+            <el-input v-model="productDetail.note" type="textarea" :auto-size="true"></el-input>
           </el-form-item>
           <el-form-item label="选择优惠方式">
-            <el-radio-group v-model="productDetail!.promotionType" size="small">
+            <el-radio-group v-model="productDetail.promotionType" size="small">
               <el-radio-button :label="0">无优惠</el-radio-button>
               <el-radio-button :label="1">特惠促销</el-radio-button>
               <el-radio-button :label="2">会员价格</el-radio-button>
@@ -117,7 +117,7 @@
             </el-radio-group>
           </el-form-item>
           <!-- 特惠促销 -->
-          <el-form-item v-show="productDetail!.promotionType === 1">
+          <el-form-item v-show="productDetail.promotionType === 1">
             <el-row direction="column">
               <el-col :span="24">
                 <div>
@@ -146,17 +146,17 @@
               <el-col :span="24">
                 <div class="littleMargin">
                   促销价格：
-                  <el-input style="width: 220px" v-model="productDetail!.promotionPrice" placeholder="输入促销价格"></el-input>
+                  <el-input style="width: 220px" v-model="productDetail.promotionPrice" placeholder="输入促销价格"></el-input>
                 </div>
               </el-col>
             </el-row>
           </el-form-item>
           <!-- 会员价格 -->
-          <el-form-item v-show="productDetail!.promotionType === 2">
+          <el-form-item v-show="productDetail.promotionType === 2">
             <el-row direction="column">
               <el-col
                 :span="24"
-                v-for="(item, index) in productDetail!.memberPrices"
+                v-for="(item, index) in productDetail.memberPrices"
                 :key="index"
                 :class="{ littleMargin: index !== 0 }"
               >
@@ -168,8 +168,8 @@
             </el-row>
           </el-form-item>
           <!-- 使用阶梯价格 -->
-          <el-form-item v-show="productDetail!.promotionType === 3">
-            <el-table :data="productDetail!.productLadders" style="width: 80%" border>
+          <el-form-item v-show="productDetail.promotionType === 3">
+            <el-table :data="productDetail.productLadders" style="width: 80%" border>
               <el-table-column label="数量" align="center" width="120">
                 <template #default="scope">
                   <el-input v-model="scope.row.count"></el-input>
@@ -189,8 +189,8 @@
             </el-table>
           </el-form-item>
           <!-- 使用满减价格 -->
-          <el-form-item v-show="productDetail!.promotionType === 4">
-            <el-table :data="productDetail!.productFullReductions" style="width: 80%" border>
+          <el-form-item v-show="productDetail.promotionType === 4">
+            <el-table :data="productDetail.productFullReductions" style="width: 80%" border>
               <el-table-column label="满" align="center" width="120">
                 <template #default="scope">
                   <el-input v-model="scope.row.fullPrice"></el-input>
@@ -215,7 +215,7 @@
         <div v-show="activeStep === 2">
           <el-form-item label="属性类型">
             <el-select
-              v-model="productDetail!.productAttributeCategoryId"
+              v-model="productDetail.productAttributeCategoryId"
               placeholder="请选择属性类型"
               @change="handleProductAttrChange"
             >
@@ -251,10 +251,12 @@
                           style="display: inline-block"
                           class="littleMarginLeft"
                         >
-                          <el-checkbox :label="item" :key="item"></el-checkbox>
-                          <el-button type="text" class="littleMarginLeft" @click="handleRemoveProductAttrValue(idx, index)">
-                            删除
-                          </el-button>
+                          <div style="display: flex; align-items: center">
+                            <el-checkbox :label="item" :key="item"></el-checkbox>
+                            <el-button type="text" class="littleMarginLeft" @click="handleRemoveProductAttrValue(idx, index)">
+                              删除
+                            </el-button>
+                          </div>
                         </div>
                       </el-checkbox-group>
                       <el-input v-model="addProductAttrValue" style="width: 160px; margin-left: 10px" clearable></el-input>
@@ -264,7 +266,7 @@
                 </el-card>
               </el-col>
               <el-col :span="24">
-                <el-table style="width: 100%; margin-top: 20px" :data="productDetail!.skuStocks" border>
+                <el-table style="width: 100%; margin-top: 20px" :data="productDetail.skuStocks" border>
                   <el-table-column v-for="(item, index) in selectProductAttr" :label="item.name" :key="item.id" align="center">
                     <template #default="scope">
                       {{ getProductSkuSp(scope.row, index) }}
@@ -308,7 +310,6 @@
             <el-button type="primary" style="margin-top: 20px" @click="handleSyncProductSkuStock">同步库存 </el-button>
           </el-form-item>
 
-          <!--
           <el-form-item label="属性图片：" v-if="hasAttrPic">
             <el-card shadow="never" class="cardBg">
               <div v-for="(item, index) in selectProductAttrPics" :key="index">
@@ -317,32 +318,30 @@
               </div>
             </el-card>
           </el-form-item>
-          -->
-          <!--
+
           <el-form-item label="商品参数">
             <el-card shadow="never" class="cardBg">
-              <div v-for="(item, index) in selectProductParam" :key="index" :class="{ littleMarginTop: index !== 0 }">
-                <div class="paramInputLabel">{{ item.name }}:</div>
-                <el-select v-if="item.inputType === 1" class="paramInput" v-model="selectProductParam[index].value">
-                  <el-option v-for="item in getParamInputList(item.inputList)" :key="item" :label="item" :value="item">
+              <div v-for="(productParam, index) in selectProductParam" :key="index" :class="{ littleMarginTop: index !== 0 }">
+                <div class="paramInputLabel">{{ productParam.name }}:</div>
+                <el-select v-if="productParam.inputType === 1" class="paramInput" v-model="selectProductParam[index].value">
+                  <el-option v-for="item in getParamInputList(productParam.inputList)" :key="item" :label="item" :value="item">
                   </el-option>
                 </el-select>
                 <el-input v-else class="paramInput" v-model="selectProductParam[index].value"></el-input>
               </div>
             </el-card>
           </el-form-item>
-          -->
-          <!--
           <el-form-item label="商品相册">
             <multi-upload v-model="selectProductPics"></multi-upload>
           </el-form-item>
+          <!--
           <el-form-item label="商品详情">
             <el-tabs v-model="activeHtmlName" type="card">
               <el-tab-pane label="电脑端详情" name="pc">
-                <tinymce :width="595" :height="300" v-model="productDetail!.detailHtml"></tinymce>
+                <tinymce :width="595" :height="300" v-model="productDetail.detailHtml"></tinymce>
               </el-tab-pane>
               <el-tab-pane label="移动端详情" name="mobile">
-                <tinymce :width="595" :height="300" v-model="productDetail!.detailMobileHtml"></tinymce>
+                <tinymce :width="595" :height="300" v-model="productDetail.detailMobileHtml"></tinymce>
               </el-tab-pane>
             </el-tabs>
           </el-form-item>
@@ -391,7 +390,7 @@
 </template>
 
 <script setup lang="ts" name="ProductDrawer">
-import { computed, onBeforeMount, reactive, ref } from "vue";
+import { computed, onBeforeMount, reactive, ref, watch } from "vue";
 import { ElMessage, ElMessageBox, FormInstance } from "element-plus";
 import { CascaderValue, OptionValue, Product, SkuStock, TransferValue } from "@/api/interface";
 import { getCategoryOptionsApi } from "@/api/modules/category";
@@ -401,6 +400,8 @@ import { getProductAttributeCategoryOptionsApi } from "@/api/modules/productAttr
 import { getAllSubjectTransferValueSyncApi } from "@/api/modules/subject";
 import { getAllPrefrenceAreaTransferValueSyncApi } from "@/api/modules/prefrenceArea";
 import { getProductAttributesSyncApi } from "@/api/modules/attribute";
+import SingleUpload from "@/components/UploadV2/singleUpload.vue";
+import MultiUpload from "@/components/UploadV2/multiUpload.vue";
 
 const rules = reactive({
   name: [
@@ -523,10 +524,73 @@ const selectProductAttr = ref<SelectProductAttrModel[]>([]);
 const selectProductParam = ref<SelectProductParamModel[]>([]);
 // 选中的商品属性图片
 const selectProductAttrPics = ref<any[]>([]);
+// 是否有商品属性图片
+const hasAttrPic = computed(() => selectProductAttrPics.value.length > 0);
 // 可手动添加的商品属性
 const addProductAttrValue = ref<string>("");
 // 商品富文本详情激活类型
 // const activeHtmlName = ref<string>("pc");
+
+const defaultProductDetail: Product.ProductModel = {
+  // 基本信息
+  id: 0,
+  productCategoryId: 0,
+  name: "",
+  subTitle: "",
+  brandId: 0,
+  description: "",
+  productSn: "",
+  price: 0,
+  originalPrice: 0,
+  stock: 0,
+  unit: "",
+  weight: 0,
+  sort: 0,
+
+  // 促销信息
+  giftPoint: 0,
+  giftGrowth: 0,
+  usePointLimit: 0,
+  previewStatus: 0,
+  publishStatus: 0,
+  newStatus: 0,
+  recommandStatus: 0,
+  serviceIds: "",
+  detailTitle: "",
+  detailDesc: "",
+  keywords: "",
+  note: "",
+  promotionType: 0,
+  promotionPrice: 0,
+  promotionStartTime: 0,
+  promotionEndTime: 0,
+
+  // 属性信息
+  productAttributeCategoryId: 0,
+  pic: "",
+  albumPics: "",
+  detailHtml: "",
+  detailMobileHtml: "",
+  verifyStatus: 0,
+  deleteStatus: 0,
+
+  // 其他
+  feightTemplateId: 0,
+  sale: 0,
+  lowStock: 0,
+  promotionPerLimit: 0,
+  brandName: "",
+  productCategoryName: "",
+
+  // 设置
+  productLadders: [],
+  productFullReductions: [],
+  memberPrices: [],
+  skuStocks: [],
+  productAttributeValues: [],
+  subjectProductRelations: [],
+  prefrenceAreaProductRelations: []
+};
 
 // 所有分类（树形）
 const categoryOptions = ref<CascaderValue[]>([]);
@@ -535,11 +599,35 @@ const brandOptions = ref<OptionValue[]>([]);
 // 所有商品属性分类
 const productAttributeCategoryOptions = ref<OptionValue[]>([]);
 // 商品详情
-const productDetail = ref<Product.ProductModel | undefined>(undefined);
+const productDetail = ref<Product.ProductModel>(defaultProductDetail);
 // 是否编辑模式
 const isEdit = ref<boolean>(false);
 // 编辑模式时是否初始化成功
 const hasEditCreated = ref<boolean>(false);
+// 商品的主图和画册图片
+const selectProductPics = computed({
+  get: () => {
+    let pics: string[] = [];
+    // if (productDetail.value.pic) {
+    //   pics.push(value.value.pic);
+    // }
+    // if (productDetail.value.albumPics) {
+    //   let albumPics = productDetail.value.albumPics.split(",");
+    //   pics = [...pics, ...albumPics];
+    // }
+    return pics;
+  },
+  set: newValue => {
+    console.log("newValue", newValue);
+    // if (!newValue || newValue.length === 0) {
+    //   productDetail.value.pic = "";
+    //   productDetail.value.albumPics = "";
+    // } else {
+    //   productDetail.value.pic = newValue[0];
+    //   productDetail.value.albumPics = newValue.slice(1).join(",");
+    // }
+  }
+});
 
 interface DrawerProps {
   title: string; // 标题
@@ -558,14 +646,13 @@ const drawerProps = ref<DrawerProps>({
   row: {}
 });
 
-// let productId = computed(() => productDetail.value!.id);
-//
-// watch(productId, newValue => {
-//   if (!isEdit.value) return;
-//   if (hasEditCreated.value) return;
-//   if (newValue === undefined || newValue == null || newValue === 0) return;
-//   handleEditCreated();
-// });
+let productId = computed(() => productDetail.value.id);
+watch(productId, newValue => {
+  if (!isEdit.value) return;
+  if (hasEditCreated.value) return;
+  if (newValue === undefined || newValue == null || newValue === 0) return;
+  handleEditCreated();
+});
 
 const handleRemoveProductAttrValue = (idx: number, index: number) => {
   selectProductAttr.value[idx].options.splice(index, 1);
@@ -595,7 +682,7 @@ const getProductSkuSp = (row: any, index: number) => {
 };
 
 const handleRemoveProductSku = (index: number) => {
-  let list = productDetail.value!.skuStocks;
+  let list = productDetail.value.skuStocks;
   if (list.length === 1) {
     list.pop();
   } else {
@@ -615,9 +702,6 @@ const handleRefreshProductSkuList = () => {
 };
 
 const refreshProductSkuList = () => {
-  if (productDetail.value == undefined) {
-    return;
-  }
   productDetail.value.skuStocks = [];
   let skuList = productDetail.value.skuStocks;
   //只有一个属性时
@@ -688,9 +772,6 @@ const handleSyncProductSkuPrice = () => {
     cancelButtonText: "取消",
     type: "warning"
   }).then(async () => {
-    if (productDetail.value == undefined) {
-      return;
-    }
     if (productDetail.value.skuStocks !== null && productDetail.value.skuStocks.length > 0) {
       let tempSkuList: SkuStock.SkuStockModel[] = [];
       tempSkuList = tempSkuList.concat(tempSkuList, productDetail.value.skuStocks);
@@ -710,9 +791,6 @@ const handleSyncProductSkuStock = () => {
     cancelButtonText: "取消",
     type: "warning"
   }).then(async () => {
-    if (productDetail.value == undefined) {
-      return;
-    }
     if (productDetail.value.skuStocks !== null && productDetail.value.skuStocks.length > 0) {
       let tempSkuList: SkuStock.SkuStockModel[] = [];
       tempSkuList = tempSkuList.concat(tempSkuList, productDetail.value.skuStocks);
@@ -723,9 +801,13 @@ const handleSyncProductSkuStock = () => {
         tempSkuList[i].lowStock = lowStock;
       }
       productDetail.value.skuStocks = [];
-      productDetail.value.skuStocks = productDetail.value.skuStocks.concat(productDetail.value.skuStockList, tempSkuList);
+      productDetail.value.skuStocks = productDetail.value.skuStocks.concat(productDetail.value.skuStocks, tempSkuList);
     }
   });
+};
+
+const getParamInputList = inputList => {
+  return inputList.split(",");
 };
 
 const getInputListArr = (inputList: string) => {
@@ -748,9 +830,6 @@ const handleProductAttrChange = async (productAttributeCategoryId: number) => {
 
 // 获取设置的可手动添加属性值
 const getEditAttrOptions = (id: number) => {
-  if (productDetail.value == undefined) {
-    return [];
-  }
   let options = [];
   for (let i = 0; i < productDetail.value.productAttributeValues.length; i++) {
     let attrValue = productDetail.value.productAttributeValues[i];
@@ -767,9 +846,6 @@ const getEditAttrOptions = (id: number) => {
 
 // 获取选中的属性值
 const getEditAttrValues = (index: number) => {
-  if (productDetail.value == undefined) {
-    return [];
-  }
   let values = new Set();
   for (let i = 0; i < productDetail.value.skuStocks.length; i++) {
     let sku = productDetail.value.skuStocks[i];
@@ -783,11 +859,8 @@ const getEditAttrValues = (index: number) => {
 
 // 获取商品相关属性的图片
 const getProductSkuPic = (name: string) => {
-  if (productDetail.value == undefined) {
-    return null;
-  }
   for (let i = 0; i < productDetail.value.skuStocks.length; i++) {
-    let spData = JSON.parse(productDetail.value!.skuStocks[i].spData);
+    let spData = JSON.parse(productDetail.value.skuStocks[i].spData);
     if (name === spData[0].value) {
       return productDetail.value.skuStocks[i].pic;
     }
@@ -813,9 +886,6 @@ const refreshProductAttrPics = () => {
 
 // 获取属性的值
 const getEditParamValue = (id: number) => {
-  if (productDetail.value == undefined) {
-    return "";
-  }
   for (let i = 0; i < productDetail.value.productAttributeValues.length; i++) {
     if (id === productDetail.value.productAttributeValues[i].productAttributeId) {
       return productDetail.value.productAttributeValues[i].value;
@@ -892,7 +962,7 @@ const acceptParams = async (params: DrawerProps) => {
     productDetail.value = await getProductSyncApi(params.row.id);
   }
   // todo
-  handleEditCreated();
+  // handleEditCreated();
 
   drawerProps.value = params;
   drawerVisible.value = true;
@@ -961,7 +1031,7 @@ const pickerOptions = reactive({
 
 // 删除阶梯价格
 const handleRemoveProductLadder = (index: number) => {
-  let productLadders = productDetail.value!.productLadders;
+  let productLadders = productDetail.value.productLadders;
   if (productLadders.length === 1) {
     productLadders.pop();
     productLadders.push({
@@ -975,7 +1045,7 @@ const handleRemoveProductLadder = (index: number) => {
 };
 // 添加阶梯价格
 const handleAddProductLadder = () => {
-  let productLadders = productDetail.value!.productLadders;
+  let productLadders = productDetail.value.productLadders;
   if (productLadders.length < 3) {
     productLadders.push({
       count: 0,
@@ -989,7 +1059,7 @@ const handleAddProductLadder = () => {
 
 // 添加满减价格
 const handleAddFullReduction = () => {
-  let productFullReductions = productDetail.value!.productFullReductions;
+  let productFullReductions = productDetail.value.productFullReductions;
   if (productFullReductions.length < 3) {
     productFullReductions.push({
       fullPrice: 0,
@@ -1002,7 +1072,7 @@ const handleAddFullReduction = () => {
 
 // 删除满减价格
 const handleRemoveFullReduction = (index: number) => {
-  let productFullReductions = productDetail.value!.productFullReductions;
+  let productFullReductions = productDetail.value.productFullReductions;
   if (productFullReductions.length === 1) {
     productFullReductions.pop();
     productFullReductions.push({
@@ -1017,7 +1087,7 @@ const handleRemoveFullReduction = (index: number) => {
 // 提交数据（新增/编辑）
 const handleSubmit = async () => {
   try {
-    await drawerProps.value.api!(drawerProps.value.row);
+    await drawerProps.value.api!(productDetail.value);
     ElMessage.success({ message: `${drawerProps.value.title}商品表成功！` });
     drawerProps.value.getTableList!();
     drawerVisible.value = false;

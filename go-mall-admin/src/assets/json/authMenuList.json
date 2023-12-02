@@ -1,7 +1,6 @@
 {
   "code": 200,
   "data": [
-
     {
       "path": "/home/index",
       "name": "home",
@@ -107,6 +106,36 @@
           "meta": {
             "icon": "Pointer",
             "title": "优选管理",
+            "isLink": "",
+            "isHide": false,
+            "isFull": false,
+            "isAffix": false,
+            "isKeepAlive": false
+          }
+        }
+      ]
+    },
+    {
+      "path": "/oms",
+      "name": "oms",
+      "redirect": "/oms/returnReason",
+      "meta": {
+        "icon": "Goods",
+        "title": "订单",
+        "isLink": "",
+        "isHide": false,
+        "isFull": false,
+        "isAffix": false,
+        "isKeepAlive": true
+      },
+      "children": [
+        {
+          "path": "/pms/returnReason",
+          "name": "product",
+          "component": "/oms/returnReason/index",
+          "meta": {
+            "icon": "Present",
+            "title": "退货原因设置",
             "isLink": "",
             "isHide": false,
             "isFull": false,

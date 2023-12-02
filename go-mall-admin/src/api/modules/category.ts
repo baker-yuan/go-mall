@@ -33,7 +33,7 @@ export const getCategoryOptionsApi = async () => {
   if (response && response.data) {
     // 转换数据
     let res = transformData(response.data);
-    console.log("transformData", JSON.stringify(res));
+    // console.log("transformData", JSON.stringify(res));
     return res;
   } else {
     // 如果响应无效，返回一个空数组

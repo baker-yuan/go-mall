@@ -299,7 +299,7 @@ export namespace SkuStock {
     sale?: number; // 销量
     promotionPrice?: number; // 单品促销价格
     lockStock?: number; // 锁定库存
-    spData?: string; // 商品销售属性，json格式
+    spData: string; // 商品销售属性，json格式
   }
 
   // 分页查询sku的库存
@@ -356,4 +356,19 @@ export namespace PrefrenceArea {
 
   // 分页查询优选专区
   export interface ReqPrefrenceAreaListParams extends ReqPage {}
+}
+
+// 退货原因管理模块
+export namespace OrderReturnReason {
+  // 退货原因模型
+  export interface OrderReturnReasonModel {
+    id: number; // 主键
+    name: string; // 退货类型
+    sort: number; // 排序
+    status: number; // 状态：0->不启用；1->启用
+    createTime: number; // 添加时间
+  }
+
+  // 分页查询退货原因
+  export interface ReqOrderReturnReasonListParams extends ReqPage {}
 }

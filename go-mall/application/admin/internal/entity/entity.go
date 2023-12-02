@@ -33,6 +33,7 @@ func (bt *BaseTime) BeforeUpdate(tx *gorm.DB) (err error) {
 
 func Init(db *gorm.DB) error {
 	schemas := []tableSchema{
+		// cms
 		{
 			TableName: "商品分类表",
 			StructPtr: &ProductCategory{},
@@ -110,23 +111,29 @@ func Init(db *gorm.DB) error {
 			StructPtr: &ProductOperateLog{},
 		},
 
-		//{
-		//	TableName: "订单表",
-		//	StructPtr: &Order{},
-		//},
-		//{
-		//	TableName: "订单商品信息表",
-		//	StructPtr: &OrderItem{},
-		//},
-		//{
-		//	TableName: "订单商品信息表",
-		//	StructPtr: &OrderOperateHistory{},
-		//},
-		//{
-		//	TableName: "订单设置表",
-		//	StructPtr: &OrderSetting{},
-		//},
-		//
+		// oms
+		{
+			TableName: "订单表",
+			StructPtr: &Order{},
+		},
+		{
+			TableName: "订单商品信息表",
+			StructPtr: &OrderItem{},
+		},
+		{
+			TableName: "订单操作历史记录表",
+			StructPtr: &OrderOperateHistory{},
+		},
+		{
+			TableName: "订单设置表",
+			StructPtr: &OrderSetting{},
+		},
+		{
+			TableName: "退货原因表",
+			StructPtr: &OrderReturnReason{},
+		},
+
+		// sms
 		//{
 		//	TableName: "限时购表",
 		//	StructPtr: &FlashPromotion{},

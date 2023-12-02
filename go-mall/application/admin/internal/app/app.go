@@ -71,6 +71,8 @@ func Run(cfg *config.Config) {
 		prefrenceAreaProductRelationRepo     = repo.NewPrefrenceAreaProductRelationRepo(conn)
 		subjectRepo                          = repo.NewSubjectRepo(conn)
 		prefrenceAreaRepo                    = repo.NewPrefrenceAreaRepo(conn)
+		//
+		orderReturnReasonRepo = repo.NewOrderReturnReasonRepo(conn)
 	)
 
 	// 业务逻辑
@@ -107,6 +109,8 @@ func Run(cfg *config.Config) {
 
 	prefrenceAreaUseCase := usecase.NewPrefrenceArea(prefrenceAreaRepo)
 
+	orderReturnReason := usecase.NewOrderReturnReason(orderReturnReasonRepo)
+
 	// grpc服务
 	grpcSrvImpl := grpcsrv.New(
 		categoryUseCase,
@@ -117,6 +121,8 @@ func Run(cfg *config.Config) {
 		skuStockUseCase,
 		subjectUseCase,
 		prefrenceAreaUseCase,
+		//
+		orderReturnReason,
 	)
 	grpcServer, err := configGrpc(customLog, grpcSrvImpl, cfg.HTTP.IP, cfg.HTTP.Port)
 	if err != nil {
@@ -167,7 +173,7 @@ func gracefulStopWithTimeout(customLog *logger.Logger, grpcServer *grpc.Server, 
 	}
 }
 
-func configGrpc(customLog *logger.Logger, grpcSrvImpl pb.AdminApiServer, ip string, port uint32) (*grpc.Server, error) {
+func configGrpc(customLog *logger.Logger, grpcSrvImpl grpcsrv.AdminApi, ip string, port uint32) (*grpc.Server, error) {
 	var (
 		addr = fmt.Sprintf("%s:%d", ip, port)
 	)
@@ -178,11 +184,15 @@ func configGrpc(customLog *logger.Logger, grpcSrvImpl pb.AdminApiServer, ip stri
 
 	// 注册grpc服务
 	pb.RegisterAdminApiServer(grpcServer, grpcSrvImpl)
+	pb.RegisterOmsAdminApiServer(grpcServer, grpcSrvImpl)
 
 	// gRPC-Gateway mux
 	gwmux := runtime.NewServeMux()
 	dops := []grpc.DialOption{grpc.WithTransportCredentials(insecure.NewCredentials())}
 	if err := pb.RegisterAdminApiHandlerFromEndpoint(context.Background(), gwmux, addr, dops); err != nil {
+		return nil, err
+	}
+	if err := pb.RegisterOmsAdminApiHandlerFromEndpoint(context.Background(), gwmux, addr, dops); err != nil {
 		return nil, err
 	}
 	mux := http.NewServeMux()

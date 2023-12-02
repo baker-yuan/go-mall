@@ -6,9 +6,16 @@ import (
 )
 
 var _ pb.AdminApiServer = &AdminApiImpl{}
+var _ pb.OmsAdminApiServer = &AdminApiImpl{}
+
+type AdminApi interface {
+	pb.AdminApiServer
+	pb.OmsAdminApiServer
+}
 
 type AdminApiImpl struct {
 	pb.UnimplementedAdminApiServer
+	pb.UnimplementedOmsAdminApiServer
 
 	category                 usecase.IProductCategoryUseCase
 	brand                    usecase.IBrandUseCase
@@ -18,6 +25,8 @@ type AdminApiImpl struct {
 	skuStock                 usecase.ISkuStockUseCase
 	subject                  usecase.ISubjectUseCase
 	prefrenceArea            usecase.IPrefrenceAreaUseCase
+	//
+	orderReturnReason usecase.IOrderReturnReasonUseCase
 }
 
 func New(category usecase.IProductCategoryUseCase,
@@ -28,7 +37,9 @@ func New(category usecase.IProductCategoryUseCase,
 	skuStock usecase.ISkuStockUseCase,
 	subject usecase.ISubjectUseCase,
 	prefrenceArea usecase.IPrefrenceAreaUseCase,
-) pb.AdminApiServer {
+	//
+	orderReturnReason usecase.IOrderReturnReasonUseCase,
+) AdminApi {
 	return &AdminApiImpl{
 		category:                 category,
 		brand:                    brand,
@@ -38,6 +49,7 @@ func New(category usecase.IProductCategoryUseCase,
 		skuStock:                 skuStock,
 		subject:                  subject,
 		prefrenceArea:            prefrenceArea,
+		orderReturnReason:        orderReturnReason,
 	}
 
 }

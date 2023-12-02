@@ -504,3 +504,36 @@ type (
 		GetByDBOption(ctx context.Context, pageNum uint32, pageSize uint32, opts ...db.DBOption) ([]*entity.PrefrenceArea, uint32, error)
 	}
 )
+
+// OrderReturnReason 退货原因
+type (
+	// IOrderReturnReasonUseCase 业务逻辑
+	IOrderReturnReasonUseCase interface {
+		// CreateOrderReturnReason 添加退货原因
+		CreateOrderReturnReason(ctx context.Context, param *pb.AddOrUpdateOrderReturnReasonParam) error
+		// UpdateOrderReturnReason 修改退货原因
+		UpdateOrderReturnReason(ctx context.Context, param *pb.AddOrUpdateOrderReturnReasonParam) error
+		// GetOrderReturnReasons 分页查询退货原因
+		GetOrderReturnReasons(ctx context.Context, param *pb.GetOrderReturnReasonsParam) ([]*pb.OrderReturnReason, uint32, error)
+		// GetOrderReturnReason 根据id获取退货原因
+		GetOrderReturnReason(ctx context.Context, id uint64) (*pb.OrderReturnReason, error)
+		// DeleteOrderReturnReason 删除退货原因
+		DeleteOrderReturnReason(ctx context.Context, id uint64) error
+	}
+
+	// IOrderReturnReasonRepo 数据存储操作
+	IOrderReturnReasonRepo interface {
+		WithByID(id uint64) db.DBOption
+
+		// Create 创建退货原因
+		Create(ctx context.Context, orderReturnReason *entity.OrderReturnReason) error
+		// DeleteByID 根据主键ID删除退货原因
+		DeleteByID(ctx context.Context, id uint64) error
+		// Update 修改退货原因
+		Update(ctx context.Context, orderReturnReason *entity.OrderReturnReason) error
+		// GetByID 根据主键ID查询退货原因
+		GetByID(ctx context.Context, id uint64) (*entity.OrderReturnReason, error)
+		// GetByDBOption 根据动态条件查询退货原因
+		GetByDBOption(ctx context.Context, pageNum uint32, pageSize uint32, opts ...db.DBOption) ([]*entity.OrderReturnReason, uint32, error)
+	}
+)

@@ -1,0 +1,99 @@
+syntax = "proto3";
+package admin;
+option go_package = ".;mall";
+
+import "validate/validate.proto";
+import "google/api/annotations.proto";
+import "google/protobuf/wrappers.proto";
+
+import "admin/admin.proto";
+import "model/oms_order_return_reason.proto";
+
+// 添加或更新退货原因参数
+message AddOrUpdateOrderReturnReasonParam {
+  uint64 id = 1; // 主键
+  string name = 2 [(validate.rules).string.min_len = 1]; // 退货类型
+  uint32 sort = 3 [(validate.rules).uint32.gte = 0]; // 排序
+  uint32 status = 4; // 状态：0->不启用；1->启用
+  uint32 create_time = 5; // 添加时间
+}
+
+// 分页查询退货原因
+message GetOrderReturnReasonsParam {
+  google.protobuf.UInt64Value id = 1; // 主键
+
+  uint32 page_num = 10 [(validate.rules).uint32.gte = 0];   // 页面大小
+  uint32 page_size = 11 [(validate.rules).uint32.gte = 0];  // 页码
+}
+
+// 分页查询退货原因
+message OrderReturnReasonsData {
+  repeated model.OrderReturnReason data = 1;    // 退货原因
+  uint32 page_total = 2;                         // 数据总数
+  uint32 page_size = 3;                          // 页码
+  uint32 page_num = 4;                           // 页面大小
+}
+message GetOrderReturnReasonsRsp {
+  uint32 code = 1;          // 状态码
+  string message = 2;       // 提示信息
+
+  OrderReturnReasonsData data = 3; //
+}
+
+// 根据id获取退货原因
+message GetOrderReturnReasonReq {
+  uint64 id = 1;
+}
+
+// 根据id获取退货原因
+message GetOrderReturnReasonRsp {
+  uint32 code = 1;          // 状态码
+  string message = 2;       // 提示信息
+
+  model.OrderReturnReason data = 3;    // 数据
+}
+
+// 删除退货原因
+message DeleteOrderReturnReasonReq {
+  uint64 id = 1;
+}
+
+// oms
+service OmsAdminApi {
+  // 添加退货原因
+  rpc CreateOrderReturnReason (AddOrUpdateOrderReturnReasonParam) returns (CommonRsp) {
+    option (google.api.http) = {
+      post: "/orderReturnReasons"
+      body: "*"
+    };
+  }
+
+  // 修改退货原因
+  rpc UpdateOrderReturnReason (AddOrUpdateOrderReturnReasonParam) returns (CommonRsp) {
+    option (google.api.http) = {
+      put: "/orderReturnReasons/{id}"
+      body: "*"
+    };
+  }
+
+  // 分页查询退货原因
+  rpc GetOrderReturnReasons (GetOrderReturnReasonsParam) returns (GetOrderReturnReasonsRsp) {
+    option (google.api.http) = {
+      get: "/orderReturnReasons"
+    };
+  }
+
+  // 根据id获取退货原因
+  rpc GetOrderReturnReason (GetOrderReturnReasonReq) returns (GetOrderReturnReasonRsp) {
+    option (google.api.http) = {
+      get: "/orderReturnReasons/{id}"
+    };
+  }
+
+  // 删除退货原因
+  rpc DeleteOrderReturnReason (DeleteOrderReturnReasonReq) returns (CommonRsp) {
+    option (google.api.http) = {
+      delete: "/orderReturnReasons/{id}"
+    };
+  }
+}
