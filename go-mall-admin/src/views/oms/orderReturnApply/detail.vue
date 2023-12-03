@@ -221,12 +221,12 @@
 </template>
 
 <script setup lang="ts" name="OrderReturnApplyDrawer">
-import { computed, ref } from "vue";
+import { computed, ref, watch } from "vue";
 import { CompanyAddress, OptionValue, OrderReturnApply } from "@/api/interface";
 import { getOrderReturnAppliesSyncApi } from "@/api/modules/orderReturnApply";
 import { formatRegion, formatStatus } from "@/views/oms/orderReturnApply/orderReturnApply";
 import { formatTimestamp } from "../../../utils/time";
-import { getCompanyAddressOptionsApi } from "@/api/modules/companyAddress";
+import { getCompanyAddressesSyncApi, getCompanyAddressOptionsApi } from "@/api/modules/companyAddress";
 
 // 订单退货申请详情
 const returnApplyDetail = ref<OrderReturnApply.OrderReturnApplyModel | null>(null);
@@ -262,6 +262,17 @@ const updateStatusParam = ref<UpdateStatusParamReq>({
   returnAmount: 0
 });
 
+let companyAddressId = computed(() => updateStatusParam.value.companyAddressId);
+watch(companyAddressId, newValue => {
+  if (newValue === 0) {
+    return;
+  }
+  const fetchCompanyAddress = async () => {
+    companyAddress.value = await getCompanyAddressesSyncApi(newValue);
+  };
+  fetchCompanyAddress();
+});
+
 // 总价
 const totalAmount = computed(() => {
   if (returnApplyDetail.value != null) {
@@ -292,7 +303,9 @@ const acceptParams = async (params: DrawerProps) => {
   if (params.row.id && params.row.id !== 0) {
     returnApplyDetail.value = await getOrderReturnAppliesSyncApi(params.row.id);
     returnApplies.value.push(returnApplyDetail.value);
-    companyAddress.value = returnApplyDetail.value.companyAddress;
+    if (returnApplyDetail.value.companyAddress) {
+      companyAddress.value = returnApplyDetail.value.companyAddress;
+    }
     companyAddressOptions.value = await getCompanyAddressOptionsApi();
   }
 };

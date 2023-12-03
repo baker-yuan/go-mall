@@ -28,6 +28,12 @@ export const deleteCompanyAddressApi = (id: number) => {
 };
 
 // 分页查询公司收发货地址
+export const getCompanyAddressesSyncApi = async (id: number) => {
+  let response = await getCompanyAddressApi(id);
+  return response.data;
+};
+
+// 分页查询公司收发货地址
 export const getCompanyAddressOptionsApi = async () => {
   let params = {
     pageNum: 1,
