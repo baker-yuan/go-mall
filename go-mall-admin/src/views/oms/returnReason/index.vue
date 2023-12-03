@@ -46,8 +46,8 @@ import {
   updateOrderReturnReasonApi,
   deleteOrderReturnReasonApi,
   getOrderReturnReasonsApi
-} from "@/api/modules/returnReason.ts";
-import { formatTimestamp } from "@/utils/time.ts";
+} from "@/api/modules/returnReason";
+import { formatTimestamp } from "@/utils/time";
 
 // ProTable 实例
 const proTable = ref<ProTableInstance>();

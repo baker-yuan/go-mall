@@ -28,6 +28,7 @@ type AdminApiImpl struct {
 	//
 	orderReturnReason usecase.IOrderReturnReasonUseCase
 	order             usecase.IOrderUseCase
+	orderReturnApply  usecase.IOrderReturnApplyUseCase
 }
 
 func New(category usecase.IProductCategoryUseCase,
@@ -41,6 +42,7 @@ func New(category usecase.IProductCategoryUseCase,
 	//
 	orderReturnReason usecase.IOrderReturnReasonUseCase,
 	order usecase.IOrderUseCase,
+	orderReturnApply usecase.IOrderReturnApplyUseCase,
 ) AdminApi {
 	return &AdminApiImpl{
 		category:                 category,
@@ -54,6 +56,7 @@ func New(category usecase.IProductCategoryUseCase,
 		//
 		orderReturnReason: orderReturnReason,
 		order:             order,
+		orderReturnApply:  orderReturnApply,
 	}
 
 }

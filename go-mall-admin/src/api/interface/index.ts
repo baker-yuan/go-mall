@@ -433,3 +433,45 @@ export namespace Order {
   // 分页查询订单
   export interface ReqOrderListParams extends ReqPage {}
 }
+
+// 订单退货申请管理模块
+export namespace OrderReturnApply {
+  // 订单退货申请模型
+  export interface OrderReturnApplyModel {
+    id: number; // 主键
+    orderId: number; // 订单id
+    // 商品信息
+    productPic: string; // 商品图片
+    productName: string; // 商品名称
+    productBrand: string; // 商品品牌
+    productId: number; // 退货商品id
+    productRealPrice: number; // 商品实际支付单价
+    productAttr: string; // 商品销售属性：颜色：红色；尺码：xl;
+    productCount: number; // 退货数量
+    productPrice: number; // 商品单价
+    //
+    status: number; // 申请状态：0->待处理；1->退货中；2->已完成；3->已拒绝
+    orderSn: string; // 订单编号
+    createTime: number; // 申请时间
+    memberUsername: string; // 会员用户名
+    returnName: string; // 退货人姓名
+    returnPhone: string; // 退货人电话
+    reason: string; // 原因
+    description: string; // 描述
+    proofPics: string; // 凭证图片，以逗号隔开
+    //
+    returnAmount: number; // 退款金额
+    companyAddressId: number; // 收货地址表id
+    // 商家-处理人
+    handleMan: string; // 处理人员
+    handleTime: number; // 处理时间
+    handleNote: string; // 处理备注
+    // 商家-收货人
+    receiveMan: string; // 收货人
+    receiveTime: number; // 收货时间
+    receiveNote: string; // 收货备注
+  }
+
+  // 分页查询订单退货申请
+  export interface ReqOrderReturnApplyListParams extends ReqPage {}
+}

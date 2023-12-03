@@ -9,6 +9,7 @@ import "google/protobuf/wrappers.proto";
 import "admin/admin.proto";
 import "model/oms_order_return_reason.proto";
 import "model/oms_order.proto";
+import "model/oms_order_return_apply.proto";
 
 // START ======================================= 退货原因 ======================================= START
 // 添加或更新退货原因参数
@@ -101,6 +102,42 @@ message DeleteOrderReq {
   uint64 id = 1;
 }
 
+// START ======================================= 订单退货 ======================================= START
+
+// 分页查询订单退货申请
+message GetOrderReturnAppliesParam {
+
+  uint32 page_num = 10 [(validate.rules).uint32.gte = 0];   // 页面大小
+  uint32 page_size = 11 [(validate.rules).uint32.gte = 0];  // 页码
+}
+
+// 分页查询订单退货申请
+message OrderReturnAppliesData {
+  repeated model.OrderReturnApply data = 1;    // 订单退货申请
+  uint32 page_total = 2;                         // 数据总数
+  uint32 page_size = 3;                          // 页码
+  uint32 page_num = 4;                           // 页面大小
+}
+message GetOrderReturnAppliesRsp {
+  uint32 code = 1;          // 状态码
+  string message = 2;       // 提示信息
+
+  OrderReturnAppliesData data = 3; //
+}
+
+// 根据id获取订单退货申请
+message GetOrderReturnApplyReq {
+  uint64 id = 1;
+}
+
+// 根据id获取订单退货申请
+message GetOrderReturnApplyRsp {
+  uint32 code = 1;          // 状态码
+  string message = 2;       // 提示信息
+
+  model.OrderReturnApply data = 3;    // 数据
+}
+
 // oms
 service OmsAdminApi {
   // START ======================================= 退货原因 ======================================= START
@@ -160,6 +197,21 @@ service OmsAdminApi {
   rpc DeleteOrder (DeleteOrderReq) returns (CommonRsp) {
     option (google.api.http) = {
       delete: "/orders/{id}"
+    };
+  }
+
+  // START ======================================= 订单退货 ======================================= START
+  // 分页查询订单退货申请
+  rpc GetOrderReturnApplies (GetOrderReturnAppliesParam) returns (GetOrderReturnAppliesRsp) {
+    option (google.api.http) = {
+      get: "/orderReturnApplies"
+    };
+  }
+
+  // 根据id获取订单退货申请
+  rpc GetOrderReturnApply (GetOrderReturnApplyReq) returns (GetOrderReturnApplyRsp) {
+    option (google.api.http) = {
+      get: "/orderReturnApplies/{id}"
     };
   }
 }

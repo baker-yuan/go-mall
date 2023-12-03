@@ -132,6 +132,14 @@ func Init(db *gorm.DB) error {
 			TableName: "退货原因表",
 			StructPtr: &OrderReturnReason{},
 		},
+		{
+			TableName: "订单退货申请表",
+			StructPtr: &OrderReturnApply{},
+		},
+		{
+			TableName: "公司收发货地址表",
+			StructPtr: &CompanyAddress{},
+		},
 
 		// sms
 		//{

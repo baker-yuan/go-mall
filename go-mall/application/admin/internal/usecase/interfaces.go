@@ -614,3 +614,30 @@ type (
 		GetByOrderID(ctx context.Context, orderID uint64) (entity.OrderOperateHistories, error)
 	}
 )
+
+// OrderReturnApply 订单退货申请
+type (
+	// IOrderReturnApplyUseCase 业务逻辑
+	IOrderReturnApplyUseCase interface {
+		// GetOrderReturnApplies 分页查询订单退货申请
+		GetOrderReturnApplies(ctx context.Context, param *pb.GetOrderReturnAppliesParam) ([]*pb.OrderReturnApply, uint32, error)
+		// GetOrderReturnApply 根据id获取订单退货申请
+		GetOrderReturnApply(ctx context.Context, id uint64) (*pb.OrderReturnApply, error)
+		// DeleteOrderReturnApply 删除订单退货申请
+		DeleteOrderReturnApply(ctx context.Context, id uint64) error
+	}
+
+	// IOrderReturnApplyRepo 数据存储操作
+	IOrderReturnApplyRepo interface {
+		// Create 创建订单退货申请
+		Create(ctx context.Context, orderReturnApply *entity.OrderReturnApply) error
+		// DeleteByID 根据主键ID删除订单退货申请
+		DeleteByID(ctx context.Context, id uint64) error
+		// Update 修改订单退货申请
+		Update(ctx context.Context, orderReturnApply *entity.OrderReturnApply) error
+		// GetByID 根据主键ID查询订单退货申请
+		GetByID(ctx context.Context, id uint64) (*entity.OrderReturnApply, error)
+		// GetByDBOption 根据动态条件查询订单退货申请
+		GetByDBOption(ctx context.Context, pageNum uint32, pageSize uint32, opts ...db.DBOption) ([]*entity.OrderReturnApply, uint32, error)
+	}
+)

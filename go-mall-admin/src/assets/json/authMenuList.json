@@ -144,6 +144,20 @@
           }
         },
         {
+          "path": "/pms/orderReturnApply",
+          "name": "orderReturnApply",
+          "component": "/oms/orderReturnApply/index",
+          "meta": {
+            "icon": "Tools",
+            "title": "退货申请处理",
+            "isLink": "",
+            "isHide": false,
+            "isFull": false,
+            "isAffix": false,
+            "isKeepAlive": false
+          }
+        },
+        {
           "path": "/pms/returnReason",
           "name": "returnReason",
           "component": "/oms/returnReason/index",
