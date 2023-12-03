@@ -537,3 +537,30 @@ type (
 		GetByDBOption(ctx context.Context, pageNum uint32, pageSize uint32, opts ...db.DBOption) ([]*entity.OrderReturnReason, uint32, error)
 	}
 )
+
+// Order 订单
+type (
+	// IOrderUseCase 业务逻辑
+	IOrderUseCase interface {
+		// GetOrders 分页查询订单
+		GetOrders(ctx context.Context, param *pb.GetOrdersParam) ([]*pb.Order, uint32, error)
+		// GetOrder 根据id获取订单
+		GetOrder(ctx context.Context, id uint64) (*pb.Order, error)
+		// DeleteOrder 删除订单
+		DeleteOrder(ctx context.Context, id uint64) error
+	}
+
+	// IOrderRepo 数据存储操作
+	IOrderRepo interface {
+		// Create 创建订单
+		Create(ctx context.Context, order *entity.Order) error
+		// DeleteByID 根据主键ID删除订单
+		DeleteByID(ctx context.Context, id uint64) error
+		// Update 修改订单
+		Update(ctx context.Context, order *entity.Order) error
+		// GetByID 根据主键ID查询订单
+		GetByID(ctx context.Context, id uint64) (*entity.Order, error)
+		// GetByDBOption 根据动态条件查询订单
+		GetByDBOption(ctx context.Context, pageNum uint32, pageSize uint32, opts ...db.DBOption) ([]*entity.Order, uint32, error)
+	}
+)

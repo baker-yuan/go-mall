@@ -372,3 +372,64 @@ export namespace OrderReturnReason {
   // 分页查询退货原因
   export interface ReqOrderReturnReasonListParams extends ReqPage {}
 }
+
+// 订单管理模块
+export namespace Order {
+  // 订单模型
+  export interface OrderModel {
+    // 基本信息
+    id: number; // 订单id
+    orderSN: string; // 订单编号
+    memberID: number; // 会员id
+    payType: number; // 支付方式：0->未支付；1->支付宝；2->微信
+    sourceType: number; // 订单来源：0->PC订单；1->app订单
+    orderType: number; // 订单类型：0->正常订单；1->秒杀订单
+    deliveryCompany: string; // 物流公司(配送方式)
+    deliverySN: string; // 物流单号
+    autoConfirmDay: number; // 自动确认时间（天）
+    receiveTime: number; // 确认收货时间
+    integration: number; // 可以获得的积分
+    growth: number; // 可以活动的成长值
+    promotionInfo: string; // 活动信息
+    note: string; // 订单备注
+    // 收货人信息
+    receiverName: string; // 收货人姓名
+    receiverPhone: string; // 收货人电话
+    receiverPostCode: string; // 收货人邮编
+    receiverProvince: string; // 省份/直辖市
+    receiverCity: string; // 城市
+    receiverRegion: string; // 区
+    receiverDetailAddress: string; // 详细地址
+    // 费用信息
+    totalAmount: number; // 订单总金额
+    freightAmount: number; // 运费金额
+    couponID: number; // 优惠券id
+    couponAmount: number; // 优惠券抵扣金额
+    useIntegration: number; // 下单时使用的积分
+    integrationAmount: number; // 积分抵扣金额
+    promotionAmount: number; // 促销优化金额（促销价、满减、阶梯价）
+    discountAmount: number; // 管理员后台调整订单使用的折扣金额
+    payAmount: number; // 应付金额（实际支付金额）
+    // 发票信息
+    billType: number; // 发票类型：0->不开发票；1->电子发票；2->纸质发票
+    billHeader: string; // 发票抬头
+    billContent: string; // 发票内容
+    billReceiverPhone: string; // 收票人电话
+    billReceiverEmail: string; // 收票人邮箱
+    // 状态
+    status: number; // 订单状态：0->待付款；1->待发货；2->已发货；3->已完成；4->已关闭；5->无效订单
+    confirmStatus: number; // 确认收货状态：0->未确认；1->已确认
+    deleteStatus: number; // 删除状态：0->未删除；1->已删除
+    // 时间
+    paymentTime: number; // 支付时间
+    deliveryTime: number; // 发货时间
+    commentTime: number; // 评价时间
+    createTime: number; // 提交时间
+    modifyTime: number; // 修改时间
+    // 冗余字段
+    memberUsername: string; // 用户帐号
+  }
+
+  // 分页查询订单
+  export interface ReqOrderListParams extends ReqPage {}
+}

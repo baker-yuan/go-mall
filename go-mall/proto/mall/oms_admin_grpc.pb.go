@@ -24,12 +24,16 @@ const (
 	OmsAdminApi_GetOrderReturnReasons_FullMethodName   = "/admin.OmsAdminApi/GetOrderReturnReasons"
 	OmsAdminApi_GetOrderReturnReason_FullMethodName    = "/admin.OmsAdminApi/GetOrderReturnReason"
 	OmsAdminApi_DeleteOrderReturnReason_FullMethodName = "/admin.OmsAdminApi/DeleteOrderReturnReason"
+	OmsAdminApi_GetOrders_FullMethodName               = "/admin.OmsAdminApi/GetOrders"
+	OmsAdminApi_GetOrder_FullMethodName                = "/admin.OmsAdminApi/GetOrder"
+	OmsAdminApi_DeleteOrder_FullMethodName             = "/admin.OmsAdminApi/DeleteOrder"
 )
 
 // OmsAdminApiClient is the client API for OmsAdminApi service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type OmsAdminApiClient interface {
+	// START ======================================= 退货原因 ======================================= START
 	// 添加退货原因
 	CreateOrderReturnReason(ctx context.Context, in *AddOrUpdateOrderReturnReasonParam, opts ...grpc.CallOption) (*CommonRsp, error)
 	// 修改退货原因
@@ -40,6 +44,13 @@ type OmsAdminApiClient interface {
 	GetOrderReturnReason(ctx context.Context, in *GetOrderReturnReasonReq, opts ...grpc.CallOption) (*GetOrderReturnReasonRsp, error)
 	// 删除退货原因
 	DeleteOrderReturnReason(ctx context.Context, in *DeleteOrderReturnReasonReq, opts ...grpc.CallOption) (*CommonRsp, error)
+	// START ======================================= 订单 ======================================= START
+	// 分页查询订单
+	GetOrders(ctx context.Context, in *GetOrdersParam, opts ...grpc.CallOption) (*GetOrdersRsp, error)
+	// 根据id获取订单
+	GetOrder(ctx context.Context, in *GetOrderReq, opts ...grpc.CallOption) (*GetOrderRsp, error)
+	// 删除订单
+	DeleteOrder(ctx context.Context, in *DeleteOrderReq, opts ...grpc.CallOption) (*CommonRsp, error)
 }
 
 type omsAdminApiClient struct {
@@ -95,10 +106,38 @@ func (c *omsAdminApiClient) DeleteOrderReturnReason(ctx context.Context, in *Del
 	return out, nil
 }
 
+func (c *omsAdminApiClient) GetOrders(ctx context.Context, in *GetOrdersParam, opts ...grpc.CallOption) (*GetOrdersRsp, error) {
+	out := new(GetOrdersRsp)
+	err := c.cc.Invoke(ctx, OmsAdminApi_GetOrders_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *omsAdminApiClient) GetOrder(ctx context.Context, in *GetOrderReq, opts ...grpc.CallOption) (*GetOrderRsp, error) {
+	out := new(GetOrderRsp)
+	err := c.cc.Invoke(ctx, OmsAdminApi_GetOrder_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *omsAdminApiClient) DeleteOrder(ctx context.Context, in *DeleteOrderReq, opts ...grpc.CallOption) (*CommonRsp, error) {
+	out := new(CommonRsp)
+	err := c.cc.Invoke(ctx, OmsAdminApi_DeleteOrder_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // OmsAdminApiServer is the server API for OmsAdminApi service.
 // All implementations must embed UnimplementedOmsAdminApiServer
 // for forward compatibility
 type OmsAdminApiServer interface {
+	// START ======================================= 退货原因 ======================================= START
 	// 添加退货原因
 	CreateOrderReturnReason(context.Context, *AddOrUpdateOrderReturnReasonParam) (*CommonRsp, error)
 	// 修改退货原因
@@ -109,6 +148,13 @@ type OmsAdminApiServer interface {
 	GetOrderReturnReason(context.Context, *GetOrderReturnReasonReq) (*GetOrderReturnReasonRsp, error)
 	// 删除退货原因
 	DeleteOrderReturnReason(context.Context, *DeleteOrderReturnReasonReq) (*CommonRsp, error)
+	// START ======================================= 订单 ======================================= START
+	// 分页查询订单
+	GetOrders(context.Context, *GetOrdersParam) (*GetOrdersRsp, error)
+	// 根据id获取订单
+	GetOrder(context.Context, *GetOrderReq) (*GetOrderRsp, error)
+	// 删除订单
+	DeleteOrder(context.Context, *DeleteOrderReq) (*CommonRsp, error)
 	mustEmbedUnimplementedOmsAdminApiServer()
 }
 
@@ -130,6 +176,15 @@ func (UnimplementedOmsAdminApiServer) GetOrderReturnReason(context.Context, *Get
 }
 func (UnimplementedOmsAdminApiServer) DeleteOrderReturnReason(context.Context, *DeleteOrderReturnReasonReq) (*CommonRsp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteOrderReturnReason not implemented")
+}
+func (UnimplementedOmsAdminApiServer) GetOrders(context.Context, *GetOrdersParam) (*GetOrdersRsp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetOrders not implemented")
+}
+func (UnimplementedOmsAdminApiServer) GetOrder(context.Context, *GetOrderReq) (*GetOrderRsp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetOrder not implemented")
+}
+func (UnimplementedOmsAdminApiServer) DeleteOrder(context.Context, *DeleteOrderReq) (*CommonRsp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteOrder not implemented")
 }
 func (UnimplementedOmsAdminApiServer) mustEmbedUnimplementedOmsAdminApiServer() {}
 
@@ -234,6 +289,60 @@ func _OmsAdminApi_DeleteOrderReturnReason_Handler(srv interface{}, ctx context.C
 	return interceptor(ctx, in, info, handler)
 }
 
+func _OmsAdminApi_GetOrders_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetOrdersParam)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OmsAdminApiServer).GetOrders(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: OmsAdminApi_GetOrders_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OmsAdminApiServer).GetOrders(ctx, req.(*GetOrdersParam))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _OmsAdminApi_GetOrder_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetOrderReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OmsAdminApiServer).GetOrder(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: OmsAdminApi_GetOrder_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OmsAdminApiServer).GetOrder(ctx, req.(*GetOrderReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _OmsAdminApi_DeleteOrder_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteOrderReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OmsAdminApiServer).DeleteOrder(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: OmsAdminApi_DeleteOrder_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OmsAdminApiServer).DeleteOrder(ctx, req.(*DeleteOrderReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // OmsAdminApi_ServiceDesc is the grpc.ServiceDesc for OmsAdminApi service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -260,6 +369,18 @@ var OmsAdminApi_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DeleteOrderReturnReason",
 			Handler:    _OmsAdminApi_DeleteOrderReturnReason_Handler,
+		},
+		{
+			MethodName: "GetOrders",
+			Handler:    _OmsAdminApi_GetOrders_Handler,
+		},
+		{
+			MethodName: "GetOrder",
+			Handler:    _OmsAdminApi_GetOrder_Handler,
+		},
+		{
+			MethodName: "DeleteOrder",
+			Handler:    _OmsAdminApi_DeleteOrder_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

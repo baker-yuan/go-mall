@@ -18,6 +18,10 @@
         <el-switch @change="handleStatusChange(scope.row)" :active-value="1" :inactive-value="0" v-model="scope.row.status">
         </el-switch>
       </template>
+      <!-- 添加时间 -->
+      <template #createTime="scope">
+        <div>{{ formatTimestamp(scope.row.createTime) }}</div>
+      </template>
 
       <!-- 表格操作 -->
       <template #operation="scope">
@@ -43,6 +47,7 @@ import {
   deleteOrderReturnReasonApi,
   getOrderReturnReasonsApi
 } from "@/api/modules/returnReason.ts";
+import { formatTimestamp } from "@/utils/time.ts";
 
 // ProTable 实例
 const proTable = ref<ProTableInstance>();

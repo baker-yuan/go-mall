@@ -8,7 +8,9 @@ import "google/protobuf/wrappers.proto";
 
 import "admin/admin.proto";
 import "model/oms_order_return_reason.proto";
+import "model/oms_order.proto";
 
+// START ======================================= 退货原因 ======================================= START
 // 添加或更新退货原因参数
 message AddOrUpdateOrderReturnReasonParam {
   uint64 id = 1; // 主键
@@ -58,8 +60,49 @@ message DeleteOrderReturnReasonReq {
   uint64 id = 1;
 }
 
+// START ======================================= 订单 ======================================= START
+// 分页查询订单
+message GetOrdersParam {
+
+  uint32 page_num = 10 [(validate.rules).uint32.gte = 0];   // 页面大小
+  uint32 page_size = 11 [(validate.rules).uint32.gte = 0];  // 页码
+}
+
+// 分页查询订单
+message OrdersData {
+  repeated model.Order data = 1;    // 订单
+  uint32 page_total = 2;                         // 数据总数
+  uint32 page_size = 3;                          // 页码
+  uint32 page_num = 4;                           // 页面大小
+}
+message GetOrdersRsp {
+  uint32 code = 1;          // 状态码
+  string message = 2;       // 提示信息
+
+  OrdersData data = 3; //
+}
+
+// 根据id获取订单
+message GetOrderReq {
+  uint64 id = 1;
+}
+
+// 根据id获取订单
+message GetOrderRsp {
+  uint32 code = 1;          // 状态码
+  string message = 2;       // 提示信息
+
+  model.Order data = 3;    // 数据
+}
+
+// 删除订单
+message DeleteOrderReq {
+  uint64 id = 1;
+}
+
 // oms
 service OmsAdminApi {
+  // START ======================================= 退货原因 ======================================= START
   // 添加退货原因
   rpc CreateOrderReturnReason (AddOrUpdateOrderReturnReasonParam) returns (CommonRsp) {
     option (google.api.http) = {
@@ -94,6 +137,28 @@ service OmsAdminApi {
   rpc DeleteOrderReturnReason (DeleteOrderReturnReasonReq) returns (CommonRsp) {
     option (google.api.http) = {
       delete: "/orderReturnReasons/{id}"
+    };
+  }
+
+  // START ======================================= 订单 ======================================= START
+  // 分页查询订单
+  rpc GetOrders (GetOrdersParam) returns (GetOrdersRsp) {
+    option (google.api.http) = {
+      get: "/orders"
+    };
+  }
+
+  // 根据id获取订单
+  rpc GetOrder (GetOrderReq) returns (GetOrderRsp) {
+    option (google.api.http) = {
+      get: "/orders/{id}"
+    };
+  }
+
+  // 删除订单
+  rpc DeleteOrder (DeleteOrderReq) returns (CommonRsp) {
+    option (google.api.http) = {
+      delete: "/orders/{id}"
     };
   }
 }
