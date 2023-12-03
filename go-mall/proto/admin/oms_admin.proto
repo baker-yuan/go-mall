@@ -10,6 +10,7 @@ import "admin/admin.proto";
 import "model/oms_order_return_reason.proto";
 import "model/oms_order.proto";
 import "model/oms_order_return_apply.proto";
+import "model/oms_company_address.proto";
 
 // START ======================================= 退货原因 ======================================= START
 // 添加或更新退货原因参数
@@ -106,6 +107,8 @@ message DeleteOrderReq {
 
 // 分页查询订单退货申请
 message GetOrderReturnAppliesParam {
+  google.protobuf.UInt64Value id = 1; // 主键
+  google.protobuf.UInt32Value status = 2; // 申请状态：0->待处理；1->退货中；2->已完成；3->已拒绝
 
   uint32 page_num = 10 [(validate.rules).uint32.gte = 0];   // 页面大小
   uint32 page_size = 11 [(validate.rules).uint32.gte = 0];  // 页码
@@ -136,6 +139,51 @@ message GetOrderReturnApplyRsp {
   string message = 2;       // 提示信息
 
   model.OrderReturnApply data = 3;    // 数据
+}
+
+// START ======================================= 公司收发货地址 ======================================= START
+// 添加或更新公司收发货地址参数
+message AddOrUpdateCompanyAddressParam {
+  uint64 id = 1; // 主键
+}
+
+// 分页查询公司收发货地址
+message GetCompanyAddressesParam {
+
+  uint32 page_num = 10 [(validate.rules).uint32.gte = 0];   // 页面大小
+  uint32 page_size = 11 [(validate.rules).uint32.gte = 0];  // 页码
+}
+
+// 分页查询公司收发货地址
+message CompanyAddressesData {
+  repeated model.CompanyAddress data = 1;    // 公司收发货地址
+  uint32 page_total = 2;                         // 数据总数
+  uint32 page_size = 3;                          // 页码
+  uint32 page_num = 4;                           // 页面大小
+}
+message GetCompanyAddressesRsp {
+  uint32 code = 1;          // 状态码
+  string message = 2;       // 提示信息
+
+  CompanyAddressesData data = 3; //
+}
+
+// 根据id获取公司收发货地址
+message GetCompanyAddressReq {
+  uint64 id = 1;
+}
+
+// 根据id获取公司收发货地址
+message GetCompanyAddressRsp {
+  uint32 code = 1;          // 状态码
+  string message = 2;       // 提示信息
+
+  model.CompanyAddress data = 3;    // 数据
+}
+
+// 删除公司收发货地址
+message DeleteCompanyAddressReq {
+  uint64 id = 1;
 }
 
 // oms
@@ -212,6 +260,44 @@ service OmsAdminApi {
   rpc GetOrderReturnApply (GetOrderReturnApplyReq) returns (GetOrderReturnApplyRsp) {
     option (google.api.http) = {
       get: "/orderReturnApplies/{id}"
+    };
+  }
+
+  // START ======================================= 公司收发货地址 ======================================= START
+  // 添加公司收发货地址
+  rpc CreateCompanyAddress (AddOrUpdateCompanyAddressParam) returns (CommonRsp) {
+    option (google.api.http) = {
+      post: "/companyAddresses"
+      body: "*"
+    };
+  }
+
+  // 修改公司收发货地址
+  rpc UpdateCompanyAddress (AddOrUpdateCompanyAddressParam) returns (CommonRsp) {
+    option (google.api.http) = {
+      put: "/companyAddresses/{id}"
+      body: "*"
+    };
+  }
+
+  // 分页查询公司收发货地址
+  rpc GetCompanyAddresses (GetCompanyAddressesParam) returns (GetCompanyAddressesRsp) {
+    option (google.api.http) = {
+      get: "/companyAddresses"
+    };
+  }
+
+  // 根据id获取公司收发货地址
+  rpc GetCompanyAddress (GetCompanyAddressReq) returns (GetCompanyAddressRsp) {
+    option (google.api.http) = {
+      get: "/companyAddresses/{id}"
+    };
+  }
+
+  // 删除公司收发货地址
+  rpc DeleteCompanyAddress (DeleteCompanyAddressReq) returns (CommonRsp) {
+    option (google.api.http) = {
+      delete: "/companyAddresses/{id}"
     };
   }
 }

@@ -12,8 +12,12 @@ type CompanyAddress struct {
 	City          string `gorm:"column:city;type:varchar(64);not null;default:'';comment:市"`
 	Region        string `gorm:"column:region;type:varchar(64);not null;default:'';comment:区"`
 	DetailAddress string `gorm:"column:detail_address;type:varchar(200);not null;default:'';comment:详细地址"`
+	// 公共字段
+	BaseTime
 }
 
 func (o CompanyAddress) TableName() string {
 	return "oms_company_address"
 }
+
+type CompanyAddresses []*CompanyAddress

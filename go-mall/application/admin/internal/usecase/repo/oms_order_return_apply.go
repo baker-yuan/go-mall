@@ -50,6 +50,17 @@ func initOrderReturnApplyField(db *gorm.DB) error {
 	return nil
 }
 
+func (r OrderReturnApplyRepo) WithByID(id uint64) db.DBOption {
+	return func(db *gorm.DB) *gorm.DB {
+		return db.Where("id = ?", id)
+	}
+}
+func (r OrderReturnApplyRepo) WithByStatus(status uint8) db.DBOption {
+	return func(db *gorm.DB) *gorm.DB {
+		return db.Where("status = ?", status)
+	}
+}
+
 // Create 创建订单退货申请
 func (r OrderReturnApplyRepo) Create(ctx context.Context, orderReturnApply *entity.OrderReturnApply) error {
 	if orderReturnApply.ID > 0 {

@@ -29,6 +29,11 @@ const (
 	OmsAdminApi_DeleteOrder_FullMethodName             = "/admin.OmsAdminApi/DeleteOrder"
 	OmsAdminApi_GetOrderReturnApplies_FullMethodName   = "/admin.OmsAdminApi/GetOrderReturnApplies"
 	OmsAdminApi_GetOrderReturnApply_FullMethodName     = "/admin.OmsAdminApi/GetOrderReturnApply"
+	OmsAdminApi_CreateCompanyAddress_FullMethodName    = "/admin.OmsAdminApi/CreateCompanyAddress"
+	OmsAdminApi_UpdateCompanyAddress_FullMethodName    = "/admin.OmsAdminApi/UpdateCompanyAddress"
+	OmsAdminApi_GetCompanyAddresses_FullMethodName     = "/admin.OmsAdminApi/GetCompanyAddresses"
+	OmsAdminApi_GetCompanyAddress_FullMethodName       = "/admin.OmsAdminApi/GetCompanyAddress"
+	OmsAdminApi_DeleteCompanyAddress_FullMethodName    = "/admin.OmsAdminApi/DeleteCompanyAddress"
 )
 
 // OmsAdminApiClient is the client API for OmsAdminApi service.
@@ -58,6 +63,17 @@ type OmsAdminApiClient interface {
 	GetOrderReturnApplies(ctx context.Context, in *GetOrderReturnAppliesParam, opts ...grpc.CallOption) (*GetOrderReturnAppliesRsp, error)
 	// 根据id获取订单退货申请
 	GetOrderReturnApply(ctx context.Context, in *GetOrderReturnApplyReq, opts ...grpc.CallOption) (*GetOrderReturnApplyRsp, error)
+	// START ======================================= 公司收发货地址 ======================================= START
+	// 添加公司收发货地址
+	CreateCompanyAddress(ctx context.Context, in *AddOrUpdateCompanyAddressParam, opts ...grpc.CallOption) (*CommonRsp, error)
+	// 修改公司收发货地址
+	UpdateCompanyAddress(ctx context.Context, in *AddOrUpdateCompanyAddressParam, opts ...grpc.CallOption) (*CommonRsp, error)
+	// 分页查询公司收发货地址
+	GetCompanyAddresses(ctx context.Context, in *GetCompanyAddressesParam, opts ...grpc.CallOption) (*GetCompanyAddressesRsp, error)
+	// 根据id获取公司收发货地址
+	GetCompanyAddress(ctx context.Context, in *GetCompanyAddressReq, opts ...grpc.CallOption) (*GetCompanyAddressRsp, error)
+	// 删除公司收发货地址
+	DeleteCompanyAddress(ctx context.Context, in *DeleteCompanyAddressReq, opts ...grpc.CallOption) (*CommonRsp, error)
 }
 
 type omsAdminApiClient struct {
@@ -158,6 +174,51 @@ func (c *omsAdminApiClient) GetOrderReturnApply(ctx context.Context, in *GetOrde
 	return out, nil
 }
 
+func (c *omsAdminApiClient) CreateCompanyAddress(ctx context.Context, in *AddOrUpdateCompanyAddressParam, opts ...grpc.CallOption) (*CommonRsp, error) {
+	out := new(CommonRsp)
+	err := c.cc.Invoke(ctx, OmsAdminApi_CreateCompanyAddress_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *omsAdminApiClient) UpdateCompanyAddress(ctx context.Context, in *AddOrUpdateCompanyAddressParam, opts ...grpc.CallOption) (*CommonRsp, error) {
+	out := new(CommonRsp)
+	err := c.cc.Invoke(ctx, OmsAdminApi_UpdateCompanyAddress_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *omsAdminApiClient) GetCompanyAddresses(ctx context.Context, in *GetCompanyAddressesParam, opts ...grpc.CallOption) (*GetCompanyAddressesRsp, error) {
+	out := new(GetCompanyAddressesRsp)
+	err := c.cc.Invoke(ctx, OmsAdminApi_GetCompanyAddresses_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *omsAdminApiClient) GetCompanyAddress(ctx context.Context, in *GetCompanyAddressReq, opts ...grpc.CallOption) (*GetCompanyAddressRsp, error) {
+	out := new(GetCompanyAddressRsp)
+	err := c.cc.Invoke(ctx, OmsAdminApi_GetCompanyAddress_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *omsAdminApiClient) DeleteCompanyAddress(ctx context.Context, in *DeleteCompanyAddressReq, opts ...grpc.CallOption) (*CommonRsp, error) {
+	out := new(CommonRsp)
+	err := c.cc.Invoke(ctx, OmsAdminApi_DeleteCompanyAddress_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // OmsAdminApiServer is the server API for OmsAdminApi service.
 // All implementations must embed UnimplementedOmsAdminApiServer
 // for forward compatibility
@@ -185,6 +246,17 @@ type OmsAdminApiServer interface {
 	GetOrderReturnApplies(context.Context, *GetOrderReturnAppliesParam) (*GetOrderReturnAppliesRsp, error)
 	// 根据id获取订单退货申请
 	GetOrderReturnApply(context.Context, *GetOrderReturnApplyReq) (*GetOrderReturnApplyRsp, error)
+	// START ======================================= 公司收发货地址 ======================================= START
+	// 添加公司收发货地址
+	CreateCompanyAddress(context.Context, *AddOrUpdateCompanyAddressParam) (*CommonRsp, error)
+	// 修改公司收发货地址
+	UpdateCompanyAddress(context.Context, *AddOrUpdateCompanyAddressParam) (*CommonRsp, error)
+	// 分页查询公司收发货地址
+	GetCompanyAddresses(context.Context, *GetCompanyAddressesParam) (*GetCompanyAddressesRsp, error)
+	// 根据id获取公司收发货地址
+	GetCompanyAddress(context.Context, *GetCompanyAddressReq) (*GetCompanyAddressRsp, error)
+	// 删除公司收发货地址
+	DeleteCompanyAddress(context.Context, *DeleteCompanyAddressReq) (*CommonRsp, error)
 	mustEmbedUnimplementedOmsAdminApiServer()
 }
 
@@ -221,6 +293,21 @@ func (UnimplementedOmsAdminApiServer) GetOrderReturnApplies(context.Context, *Ge
 }
 func (UnimplementedOmsAdminApiServer) GetOrderReturnApply(context.Context, *GetOrderReturnApplyReq) (*GetOrderReturnApplyRsp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetOrderReturnApply not implemented")
+}
+func (UnimplementedOmsAdminApiServer) CreateCompanyAddress(context.Context, *AddOrUpdateCompanyAddressParam) (*CommonRsp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateCompanyAddress not implemented")
+}
+func (UnimplementedOmsAdminApiServer) UpdateCompanyAddress(context.Context, *AddOrUpdateCompanyAddressParam) (*CommonRsp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateCompanyAddress not implemented")
+}
+func (UnimplementedOmsAdminApiServer) GetCompanyAddresses(context.Context, *GetCompanyAddressesParam) (*GetCompanyAddressesRsp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetCompanyAddresses not implemented")
+}
+func (UnimplementedOmsAdminApiServer) GetCompanyAddress(context.Context, *GetCompanyAddressReq) (*GetCompanyAddressRsp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetCompanyAddress not implemented")
+}
+func (UnimplementedOmsAdminApiServer) DeleteCompanyAddress(context.Context, *DeleteCompanyAddressReq) (*CommonRsp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteCompanyAddress not implemented")
 }
 func (UnimplementedOmsAdminApiServer) mustEmbedUnimplementedOmsAdminApiServer() {}
 
@@ -415,6 +502,96 @@ func _OmsAdminApi_GetOrderReturnApply_Handler(srv interface{}, ctx context.Conte
 	return interceptor(ctx, in, info, handler)
 }
 
+func _OmsAdminApi_CreateCompanyAddress_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AddOrUpdateCompanyAddressParam)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OmsAdminApiServer).CreateCompanyAddress(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: OmsAdminApi_CreateCompanyAddress_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OmsAdminApiServer).CreateCompanyAddress(ctx, req.(*AddOrUpdateCompanyAddressParam))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _OmsAdminApi_UpdateCompanyAddress_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AddOrUpdateCompanyAddressParam)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OmsAdminApiServer).UpdateCompanyAddress(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: OmsAdminApi_UpdateCompanyAddress_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OmsAdminApiServer).UpdateCompanyAddress(ctx, req.(*AddOrUpdateCompanyAddressParam))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _OmsAdminApi_GetCompanyAddresses_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetCompanyAddressesParam)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OmsAdminApiServer).GetCompanyAddresses(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: OmsAdminApi_GetCompanyAddresses_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OmsAdminApiServer).GetCompanyAddresses(ctx, req.(*GetCompanyAddressesParam))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _OmsAdminApi_GetCompanyAddress_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetCompanyAddressReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OmsAdminApiServer).GetCompanyAddress(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: OmsAdminApi_GetCompanyAddress_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OmsAdminApiServer).GetCompanyAddress(ctx, req.(*GetCompanyAddressReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _OmsAdminApi_DeleteCompanyAddress_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteCompanyAddressReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OmsAdminApiServer).DeleteCompanyAddress(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: OmsAdminApi_DeleteCompanyAddress_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OmsAdminApiServer).DeleteCompanyAddress(ctx, req.(*DeleteCompanyAddressReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // OmsAdminApi_ServiceDesc is the grpc.ServiceDesc for OmsAdminApi service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -461,6 +638,26 @@ var OmsAdminApi_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetOrderReturnApply",
 			Handler:    _OmsAdminApi_GetOrderReturnApply_Handler,
+		},
+		{
+			MethodName: "CreateCompanyAddress",
+			Handler:    _OmsAdminApi_CreateCompanyAddress_Handler,
+		},
+		{
+			MethodName: "UpdateCompanyAddress",
+			Handler:    _OmsAdminApi_UpdateCompanyAddress_Handler,
+		},
+		{
+			MethodName: "GetCompanyAddresses",
+			Handler:    _OmsAdminApi_GetCompanyAddresses_Handler,
+		},
+		{
+			MethodName: "GetCompanyAddress",
+			Handler:    _OmsAdminApi_GetCompanyAddress_Handler,
+		},
+		{
+			MethodName: "DeleteCompanyAddress",
+			Handler:    _OmsAdminApi_DeleteCompanyAddress_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -2,6 +2,7 @@ package assembler
 
 import (
 	"github.com/baker-yuan/go-mall/application/admin/internal/entity"
+	"github.com/baker-yuan/go-mall/application/admin/pkg/util"
 	pb "github.com/baker-yuan/go-mall/proto/mall"
 )
 
@@ -11,7 +12,7 @@ func OrderReturnApplyEntityToModel(orderReturnApply *entity.OrderReturnApply) *p
 		Id:      orderReturnApply.ID,
 		OrderId: orderReturnApply.OrderID,
 		// 商品信息
-		ProductPic:       orderReturnApply.ProductPic,
+		ProductPic:       util.GetFullUrl(orderReturnApply.ProductPic),
 		ProductName:      orderReturnApply.ProductName,
 		ProductBrand:     orderReturnApply.ProductBrand,
 		ProductId:        orderReturnApply.ProductID,

@@ -77,6 +77,7 @@ func Run(cfg *config.Config) {
 		orderItemRepo           = repo.NewOrderItemRepo(conn)
 		orderOperateHistoryRepo = repo.NewOrderOperateHistoryRepo(conn)
 		orderReturnApplyRepo    = repo.NewOrderReturnApplyRepo(conn)
+		companyAddressRepo      = repo.NewCompanyAddressRepo(conn)
 	)
 
 	// 业务逻辑
@@ -114,7 +115,8 @@ func Run(cfg *config.Config) {
 
 	orderReturnReasonUseCase := usecase.NewOrderReturnReason(orderReturnReasonRepo)
 	orderUseCase := usecase.NewOrder(orderRepo, orderItemRepo, orderOperateHistoryRepo)
-	orderReturnApplyUseCase := usecase.NewOrderReturnApply(orderReturnApplyRepo)
+	orderReturnApplyUseCase := usecase.NewOrderReturnApply(orderReturnApplyRepo, companyAddressRepo)
+	companyAddressUseCase := usecase.NewCompanyAddress(companyAddressRepo)
 
 	// grpc服务
 	grpcSrvImpl := grpcsrv.New(
@@ -130,6 +132,7 @@ func Run(cfg *config.Config) {
 		orderReturnReasonUseCase,
 		orderUseCase,
 		orderReturnApplyUseCase,
+		companyAddressUseCase,
 	)
 	grpcServer, err := configGrpc(customLog, grpcSrvImpl, cfg.HTTP.IP, cfg.HTTP.Port)
 	if err != nil {

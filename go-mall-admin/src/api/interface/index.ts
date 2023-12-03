@@ -434,6 +434,26 @@ export namespace Order {
   export interface ReqOrderListParams extends ReqPage {}
 }
 
+// 公司收发货地址管理模块
+export namespace CompanyAddress {
+  // 公司收发货地址模型
+  export interface CompanyAddressModel {
+    id: number; // 主键
+    addressName: string; // 地址名称
+    sendStatus: number; // 默认发货地址：0->否；1->是
+    receiveStatus: number; // 是否默认收货地址：0->否；1->是
+    name: string; // 收发货人姓名
+    phone: string; // 收货人电话
+    province: string; // 省/直辖市
+    city: string; // 市
+    region: string; // 区
+    detailAddress: string; // 详细地址
+  }
+
+  // 分页查询公司收发货地址
+  export interface ReqCompanyAddressListParams extends ReqPage {}
+}
+
 // 订单退货申请管理模块
 export namespace OrderReturnApply {
   // 订单退货申请模型
@@ -470,6 +490,9 @@ export namespace OrderReturnApply {
     receiveMan: string; // 收货人
     receiveTime: number; // 收货时间
     receiveNote: string; // 收货备注
+
+    //
+    companyAddress?: CompanyAddress.CompanyAddressModel;
   }
 
   // 分页查询订单退货申请

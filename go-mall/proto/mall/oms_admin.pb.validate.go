@@ -1720,6 +1720,64 @@ func (m *GetOrderReturnAppliesParam) validate(all bool) error {
 
 	var errors []error
 
+	if all {
+		switch v := interface{}(m.GetId()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, GetOrderReturnAppliesParamValidationError{
+					field:  "Id",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, GetOrderReturnAppliesParamValidationError{
+					field:  "Id",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetId()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return GetOrderReturnAppliesParamValidationError{
+				field:  "Id",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if all {
+		switch v := interface{}(m.GetStatus()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, GetOrderReturnAppliesParamValidationError{
+					field:  "Status",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, GetOrderReturnAppliesParamValidationError{
+					field:  "Status",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetStatus()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return GetOrderReturnAppliesParamValidationError{
+				field:  "Status",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
 	if m.GetPageNum() < 0 {
 		err := GetOrderReturnAppliesParamValidationError{
 			field:  "PageNum",
@@ -2337,3 +2395,852 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = GetOrderReturnApplyRspValidationError{}
+
+// Validate checks the field values on AddOrUpdateCompanyAddressParam with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *AddOrUpdateCompanyAddressParam) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on AddOrUpdateCompanyAddressParam with
+// the rules defined in the proto definition for this message. If any rules
+// are violated, the result is a list of violation errors wrapped in
+// AddOrUpdateCompanyAddressParamMultiError, or nil if none found.
+func (m *AddOrUpdateCompanyAddressParam) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *AddOrUpdateCompanyAddressParam) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Id
+
+	if len(errors) > 0 {
+		return AddOrUpdateCompanyAddressParamMultiError(errors)
+	}
+
+	return nil
+}
+
+// AddOrUpdateCompanyAddressParamMultiError is an error wrapping multiple
+// validation errors returned by AddOrUpdateCompanyAddressParam.ValidateAll()
+// if the designated constraints aren't met.
+type AddOrUpdateCompanyAddressParamMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m AddOrUpdateCompanyAddressParamMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m AddOrUpdateCompanyAddressParamMultiError) AllErrors() []error { return m }
+
+// AddOrUpdateCompanyAddressParamValidationError is the validation error
+// returned by AddOrUpdateCompanyAddressParam.Validate if the designated
+// constraints aren't met.
+type AddOrUpdateCompanyAddressParamValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e AddOrUpdateCompanyAddressParamValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e AddOrUpdateCompanyAddressParamValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e AddOrUpdateCompanyAddressParamValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e AddOrUpdateCompanyAddressParamValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e AddOrUpdateCompanyAddressParamValidationError) ErrorName() string {
+	return "AddOrUpdateCompanyAddressParamValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e AddOrUpdateCompanyAddressParamValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sAddOrUpdateCompanyAddressParam.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = AddOrUpdateCompanyAddressParamValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = AddOrUpdateCompanyAddressParamValidationError{}
+
+// Validate checks the field values on GetCompanyAddressesParam with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *GetCompanyAddressesParam) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on GetCompanyAddressesParam with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// GetCompanyAddressesParamMultiError, or nil if none found.
+func (m *GetCompanyAddressesParam) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *GetCompanyAddressesParam) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if m.GetPageNum() < 0 {
+		err := GetCompanyAddressesParamValidationError{
+			field:  "PageNum",
+			reason: "value must be greater than or equal to 0",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if m.GetPageSize() < 0 {
+		err := GetCompanyAddressesParamValidationError{
+			field:  "PageSize",
+			reason: "value must be greater than or equal to 0",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if len(errors) > 0 {
+		return GetCompanyAddressesParamMultiError(errors)
+	}
+
+	return nil
+}
+
+// GetCompanyAddressesParamMultiError is an error wrapping multiple validation
+// errors returned by GetCompanyAddressesParam.ValidateAll() if the designated
+// constraints aren't met.
+type GetCompanyAddressesParamMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m GetCompanyAddressesParamMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m GetCompanyAddressesParamMultiError) AllErrors() []error { return m }
+
+// GetCompanyAddressesParamValidationError is the validation error returned by
+// GetCompanyAddressesParam.Validate if the designated constraints aren't met.
+type GetCompanyAddressesParamValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e GetCompanyAddressesParamValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e GetCompanyAddressesParamValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e GetCompanyAddressesParamValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e GetCompanyAddressesParamValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e GetCompanyAddressesParamValidationError) ErrorName() string {
+	return "GetCompanyAddressesParamValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e GetCompanyAddressesParamValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sGetCompanyAddressesParam.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = GetCompanyAddressesParamValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = GetCompanyAddressesParamValidationError{}
+
+// Validate checks the field values on CompanyAddressesData with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *CompanyAddressesData) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on CompanyAddressesData with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// CompanyAddressesDataMultiError, or nil if none found.
+func (m *CompanyAddressesData) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *CompanyAddressesData) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	for idx, item := range m.GetData() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, CompanyAddressesDataValidationError{
+						field:  fmt.Sprintf("Data[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, CompanyAddressesDataValidationError{
+						field:  fmt.Sprintf("Data[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return CompanyAddressesDataValidationError{
+					field:  fmt.Sprintf("Data[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	// no validation rules for PageTotal
+
+	// no validation rules for PageSize
+
+	// no validation rules for PageNum
+
+	if len(errors) > 0 {
+		return CompanyAddressesDataMultiError(errors)
+	}
+
+	return nil
+}
+
+// CompanyAddressesDataMultiError is an error wrapping multiple validation
+// errors returned by CompanyAddressesData.ValidateAll() if the designated
+// constraints aren't met.
+type CompanyAddressesDataMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m CompanyAddressesDataMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m CompanyAddressesDataMultiError) AllErrors() []error { return m }
+
+// CompanyAddressesDataValidationError is the validation error returned by
+// CompanyAddressesData.Validate if the designated constraints aren't met.
+type CompanyAddressesDataValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e CompanyAddressesDataValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e CompanyAddressesDataValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e CompanyAddressesDataValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e CompanyAddressesDataValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e CompanyAddressesDataValidationError) ErrorName() string {
+	return "CompanyAddressesDataValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e CompanyAddressesDataValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sCompanyAddressesData.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = CompanyAddressesDataValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = CompanyAddressesDataValidationError{}
+
+// Validate checks the field values on GetCompanyAddressesRsp with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *GetCompanyAddressesRsp) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on GetCompanyAddressesRsp with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// GetCompanyAddressesRspMultiError, or nil if none found.
+func (m *GetCompanyAddressesRsp) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *GetCompanyAddressesRsp) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Code
+
+	// no validation rules for Message
+
+	if all {
+		switch v := interface{}(m.GetData()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, GetCompanyAddressesRspValidationError{
+					field:  "Data",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, GetCompanyAddressesRspValidationError{
+					field:  "Data",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetData()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return GetCompanyAddressesRspValidationError{
+				field:  "Data",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if len(errors) > 0 {
+		return GetCompanyAddressesRspMultiError(errors)
+	}
+
+	return nil
+}
+
+// GetCompanyAddressesRspMultiError is an error wrapping multiple validation
+// errors returned by GetCompanyAddressesRsp.ValidateAll() if the designated
+// constraints aren't met.
+type GetCompanyAddressesRspMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m GetCompanyAddressesRspMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m GetCompanyAddressesRspMultiError) AllErrors() []error { return m }
+
+// GetCompanyAddressesRspValidationError is the validation error returned by
+// GetCompanyAddressesRsp.Validate if the designated constraints aren't met.
+type GetCompanyAddressesRspValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e GetCompanyAddressesRspValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e GetCompanyAddressesRspValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e GetCompanyAddressesRspValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e GetCompanyAddressesRspValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e GetCompanyAddressesRspValidationError) ErrorName() string {
+	return "GetCompanyAddressesRspValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e GetCompanyAddressesRspValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sGetCompanyAddressesRsp.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = GetCompanyAddressesRspValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = GetCompanyAddressesRspValidationError{}
+
+// Validate checks the field values on GetCompanyAddressReq with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *GetCompanyAddressReq) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on GetCompanyAddressReq with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// GetCompanyAddressReqMultiError, or nil if none found.
+func (m *GetCompanyAddressReq) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *GetCompanyAddressReq) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Id
+
+	if len(errors) > 0 {
+		return GetCompanyAddressReqMultiError(errors)
+	}
+
+	return nil
+}
+
+// GetCompanyAddressReqMultiError is an error wrapping multiple validation
+// errors returned by GetCompanyAddressReq.ValidateAll() if the designated
+// constraints aren't met.
+type GetCompanyAddressReqMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m GetCompanyAddressReqMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m GetCompanyAddressReqMultiError) AllErrors() []error { return m }
+
+// GetCompanyAddressReqValidationError is the validation error returned by
+// GetCompanyAddressReq.Validate if the designated constraints aren't met.
+type GetCompanyAddressReqValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e GetCompanyAddressReqValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e GetCompanyAddressReqValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e GetCompanyAddressReqValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e GetCompanyAddressReqValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e GetCompanyAddressReqValidationError) ErrorName() string {
+	return "GetCompanyAddressReqValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e GetCompanyAddressReqValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sGetCompanyAddressReq.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = GetCompanyAddressReqValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = GetCompanyAddressReqValidationError{}
+
+// Validate checks the field values on GetCompanyAddressRsp with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *GetCompanyAddressRsp) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on GetCompanyAddressRsp with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// GetCompanyAddressRspMultiError, or nil if none found.
+func (m *GetCompanyAddressRsp) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *GetCompanyAddressRsp) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Code
+
+	// no validation rules for Message
+
+	if all {
+		switch v := interface{}(m.GetData()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, GetCompanyAddressRspValidationError{
+					field:  "Data",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, GetCompanyAddressRspValidationError{
+					field:  "Data",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetData()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return GetCompanyAddressRspValidationError{
+				field:  "Data",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if len(errors) > 0 {
+		return GetCompanyAddressRspMultiError(errors)
+	}
+
+	return nil
+}
+
+// GetCompanyAddressRspMultiError is an error wrapping multiple validation
+// errors returned by GetCompanyAddressRsp.ValidateAll() if the designated
+// constraints aren't met.
+type GetCompanyAddressRspMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m GetCompanyAddressRspMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m GetCompanyAddressRspMultiError) AllErrors() []error { return m }
+
+// GetCompanyAddressRspValidationError is the validation error returned by
+// GetCompanyAddressRsp.Validate if the designated constraints aren't met.
+type GetCompanyAddressRspValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e GetCompanyAddressRspValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e GetCompanyAddressRspValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e GetCompanyAddressRspValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e GetCompanyAddressRspValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e GetCompanyAddressRspValidationError) ErrorName() string {
+	return "GetCompanyAddressRspValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e GetCompanyAddressRspValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sGetCompanyAddressRsp.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = GetCompanyAddressRspValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = GetCompanyAddressRspValidationError{}
+
+// Validate checks the field values on DeleteCompanyAddressReq with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *DeleteCompanyAddressReq) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on DeleteCompanyAddressReq with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// DeleteCompanyAddressReqMultiError, or nil if none found.
+func (m *DeleteCompanyAddressReq) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *DeleteCompanyAddressReq) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Id
+
+	if len(errors) > 0 {
+		return DeleteCompanyAddressReqMultiError(errors)
+	}
+
+	return nil
+}
+
+// DeleteCompanyAddressReqMultiError is an error wrapping multiple validation
+// errors returned by DeleteCompanyAddressReq.ValidateAll() if the designated
+// constraints aren't met.
+type DeleteCompanyAddressReqMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m DeleteCompanyAddressReqMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m DeleteCompanyAddressReqMultiError) AllErrors() []error { return m }
+
+// DeleteCompanyAddressReqValidationError is the validation error returned by
+// DeleteCompanyAddressReq.Validate if the designated constraints aren't met.
+type DeleteCompanyAddressReqValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e DeleteCompanyAddressReqValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e DeleteCompanyAddressReqValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e DeleteCompanyAddressReqValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e DeleteCompanyAddressReqValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e DeleteCompanyAddressReqValidationError) ErrorName() string {
+	return "DeleteCompanyAddressReqValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e DeleteCompanyAddressReqValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sDeleteCompanyAddressReq.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = DeleteCompanyAddressReqValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = DeleteCompanyAddressReqValidationError{}

@@ -25,7 +25,7 @@ type OrderReturnApply struct {
 	ProofPics      string `gorm:"column:proof_pics;type:varchar(1000);not null;default:'';comment:凭证图片，以逗号隔开"`
 	//
 	ReturnAmount     float64 `gorm:"column:return_amount;type:decimal(10,2);not null;default:0.00;comment:退款金额"`
-	CompanyAddressID uint64  `gorm:"column:company_address_id;type:bigint;unsigned;not null;default:0;comment:收货地址表id"`
+	CompanyAddressID uint64  `gorm:"column:company_address_id;type:bigint;unsigned;not null;default:0;comment:收货地址表id"` // oms_company_address#id
 	// 商家-处理人
 	HandleMan  string `gorm:"column:handle_man;type:varchar(100);not null;default:'';comment:处理人员"`
 	HandleTime uint32 `gorm:"column:handle_time;type:int(10);unsigned;not null;default:0;comment:处理时间"`

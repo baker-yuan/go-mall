@@ -10,3 +10,9 @@ export const getOrderReturnAppliesApi = (params: OrderReturnApply.ReqOrderReturn
 export const getOrderReturnApplyApi = (id: number) => {
   return http.get<OrderReturnApply.OrderReturnApplyModel>(`/orderReturnApplies/${id}`);
 };
+
+// 分页查询订单退货申请
+export const getOrderReturnAppliesSyncApi = async (id: number) => {
+  let response = await getOrderReturnApplyApi(id);
+  return response.data;
+};

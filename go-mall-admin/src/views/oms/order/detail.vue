@@ -285,11 +285,11 @@ const drawerProps = ref<DrawerProps>({
 });
 
 // 接收父组件传过来的参数
-const acceptParams = async (params: OrderProps) => {
+const acceptParams = async (params: DrawerProps) => {
   drawerProps.value = params;
   drawerVisible.value = true;
   if (params.row.id && params.row.id !== 0) {
-    orderDetail.value = await getOrderSyncApi(drawerProps.value.row.id);
+    orderDetail.value = await getOrderSyncApi(params.row.id);
   }
 };
 

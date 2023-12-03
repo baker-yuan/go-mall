@@ -43,7 +43,7 @@ import OrderReturnApplyDrawer from "@/views/oms/orderReturnApply/detail.vue";
 import { EditPen } from "@element-plus/icons-vue";
 import { getOrderReturnAppliesApi } from "@/api/modules/orderReturnApply";
 import { formatTimestamp } from "@/utils/time";
-import { formatStatus } from "@/views/oms/orderReturnApply/orderReturnApply";
+import { defaultStatusOptions, formatStatus } from "@/views/oms/orderReturnApply/orderReturnApply";
 
 // ProTable 实例
 const proTable = ref<ProTableInstance>();
@@ -70,7 +70,9 @@ const columns = reactive<ColumnProps<OrderReturnApply.OrderReturnApplyModel>[]>(
   },
   {
     prop: "status",
-    label: "申请状态"
+    label: "申请状态",
+    enum: defaultStatusOptions,
+    search: { el: "select", props: { filterable: true } }
   },
   {
     prop: "handleTime",

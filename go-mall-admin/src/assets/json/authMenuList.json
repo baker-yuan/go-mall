@@ -148,7 +148,7 @@
           "name": "orderReturnApply",
           "component": "/oms/orderReturnApply/index",
           "meta": {
-            "icon": "Tools",
+            "icon": "Mouse",
             "title": "退货申请处理",
             "isLink": "",
             "isHide": false,

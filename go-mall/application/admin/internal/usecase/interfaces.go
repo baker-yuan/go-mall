@@ -629,6 +629,9 @@ type (
 
 	// IOrderReturnApplyRepo 数据存储操作
 	IOrderReturnApplyRepo interface {
+		WithByID(id uint64) db.DBOption
+		WithByStatus(status uint8) db.DBOption
+
 		// Create 创建订单退货申请
 		Create(ctx context.Context, orderReturnApply *entity.OrderReturnApply) error
 		// DeleteByID 根据主键ID删除订单退货申请
@@ -639,5 +642,38 @@ type (
 		GetByID(ctx context.Context, id uint64) (*entity.OrderReturnApply, error)
 		// GetByDBOption 根据动态条件查询订单退货申请
 		GetByDBOption(ctx context.Context, pageNum uint32, pageSize uint32, opts ...db.DBOption) ([]*entity.OrderReturnApply, uint32, error)
+	}
+)
+
+// CompanyAddress 公司收发货地址
+type (
+	// ICompanyAddressUseCase 业务逻辑
+	ICompanyAddressUseCase interface {
+		// CreateCompanyAddress 添加公司收发货地址
+		CreateCompanyAddress(ctx context.Context, param *pb.AddOrUpdateCompanyAddressParam) error
+		// UpdateCompanyAddress 修改公司收发货地址
+		UpdateCompanyAddress(ctx context.Context, param *pb.AddOrUpdateCompanyAddressParam) error
+		// GetCompanyAddresses 分页查询公司收发货地址
+		GetCompanyAddresses(ctx context.Context, param *pb.GetCompanyAddressesParam) ([]*pb.CompanyAddress, uint32, error)
+		// GetCompanyAddress 根据id获取公司收发货地址
+		GetCompanyAddress(ctx context.Context, id uint64) (*pb.CompanyAddress, error)
+		// DeleteCompanyAddress 删除公司收发货地址
+		DeleteCompanyAddress(ctx context.Context, id uint64) error
+	}
+
+	// ICompanyAddressRepo 数据存储操作
+	ICompanyAddressRepo interface {
+		// Create 创建公司收发货地址
+		Create(ctx context.Context, companyAddress *entity.CompanyAddress) error
+		// DeleteByID 根据主键ID删除公司收发货地址
+		DeleteByID(ctx context.Context, id uint64) error
+		// Update 修改公司收发货地址
+		Update(ctx context.Context, companyAddress *entity.CompanyAddress) error
+		// GetByID 根据主键ID查询公司收发货地址
+		GetByID(ctx context.Context, id uint64) (*entity.CompanyAddress, error)
+		// GetByIDs 根据主键ID查询公司收发货地址
+		GetByIDs(ctx context.Context, ids []uint64) (entity.CompanyAddresses, error)
+		// GetByDBOption 根据动态条件查询公司收发货地址
+		GetByDBOption(ctx context.Context, pageNum uint32, pageSize uint32, opts ...db.DBOption) ([]*entity.CompanyAddress, uint32, error)
 	}
 )
