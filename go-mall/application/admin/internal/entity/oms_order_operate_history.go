@@ -16,3 +16,5 @@ type OrderOperateHistory struct {
 func (o OrderOperateHistory) TableName() string {
 	return "oms_order_operate_history"
 }
+
+type OrderOperateHistories []*OrderOperateHistory

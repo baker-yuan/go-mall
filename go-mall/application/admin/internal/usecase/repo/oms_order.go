@@ -50,6 +50,12 @@ func initOrderField(db *gorm.DB) error {
 	return nil
 }
 
+func (r OrderRepo) WithByID(id uint64) db.DBOption {
+	return func(db *gorm.DB) *gorm.DB {
+		return db.Where("id = ?", id)
+	}
+}
+
 // Create 创建订单
 func (r OrderRepo) Create(ctx context.Context, order *entity.Order) error {
 	if order.ID > 0 {

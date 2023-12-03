@@ -63,6 +63,7 @@ message DeleteOrderReturnReasonReq {
 // START ======================================= 订单 ======================================= START
 // 分页查询订单
 message GetOrdersParam {
+  google.protobuf.UInt64Value id = 1; // 主键
 
   uint32 page_num = 10 [(validate.rules).uint32.gte = 0];   // 页面大小
   uint32 page_size = 11 [(validate.rules).uint32.gte = 0];  // 页码

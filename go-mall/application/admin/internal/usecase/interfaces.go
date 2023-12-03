@@ -552,6 +552,8 @@ type (
 
 	// IOrderRepo 数据存储操作
 	IOrderRepo interface {
+		WithByID(id uint64) db.DBOption
+
 		// Create 创建订单
 		Create(ctx context.Context, order *entity.Order) error
 		// DeleteByID 根据主键ID删除订单
@@ -562,5 +564,53 @@ type (
 		GetByID(ctx context.Context, id uint64) (*entity.Order, error)
 		// GetByDBOption 根据动态条件查询订单
 		GetByDBOption(ctx context.Context, pageNum uint32, pageSize uint32, opts ...db.DBOption) ([]*entity.Order, uint32, error)
+	}
+)
+
+// OrderItem 订单商品信息
+type (
+	// IOrderItemUseCase 业务逻辑
+	IOrderItemUseCase interface {
+	}
+
+	// IOrderItemRepo 数据存储操作
+	IOrderItemRepo interface {
+		// Create 创建订单商品信息
+		Create(ctx context.Context, orderItem *entity.OrderItem) error
+		// DeleteByID 根据主键ID删除订单商品信息
+		DeleteByID(ctx context.Context, id uint64) error
+		// Update 修改订单商品信息
+		Update(ctx context.Context, orderItem *entity.OrderItem) error
+		// GetByID 根据主键ID查询订单商品信息
+		GetByID(ctx context.Context, id uint64) (*entity.OrderItem, error)
+		// GetByDBOption 根据动态条件查询订单商品信息
+		GetByDBOption(ctx context.Context, pageNum uint32, pageSize uint32, opts ...db.DBOption) ([]*entity.OrderItem, uint32, error)
+
+		// GetByOrderID 根据订单ID查询订单商品信息
+		GetByOrderID(ctx context.Context, orderID uint64) (entity.OrderItems, error)
+	}
+)
+
+// OrderOperateHistory 订单商品信息
+type (
+	// IOrderOperateHistoryUseCase 业务逻辑
+	IOrderOperateHistoryUseCase interface {
+	}
+
+	// IOrderOperateHistoryRepo 数据存储操作
+	IOrderOperateHistoryRepo interface {
+		// Create 创建订单操作历史记录
+		Create(ctx context.Context, orderOperateHistory *entity.OrderOperateHistory) error
+		// DeleteByID 根据主键ID删除订单操作历史记录
+		DeleteByID(ctx context.Context, id uint64) error
+		// Update 修改订单操作历史记录
+		Update(ctx context.Context, orderOperateHistory *entity.OrderOperateHistory) error
+		// GetByID 根据主键ID查询订单操作历史记录
+		GetByID(ctx context.Context, id uint64) (*entity.OrderOperateHistory, error)
+		// GetByDBOption 根据动态条件查询订单操作历史记录
+		GetByDBOption(ctx context.Context, pageNum uint32, pageSize uint32, opts ...db.DBOption) ([]*entity.OrderOperateHistory, uint32, error)
+
+		// GetByOrderID 根据订单ID查询操作历史记录
+		GetByOrderID(ctx context.Context, orderID uint64) (entity.OrderOperateHistories, error)
 	}
 )

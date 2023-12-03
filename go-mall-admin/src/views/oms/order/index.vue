@@ -75,7 +75,8 @@ const columns = reactive<ColumnProps<Order.OrderModel>[]>([
   { type: "selection", fixed: "left", width: 70 },
   {
     prop: "id",
-    label: "订单编号"
+    label: "编号",
+    search: { el: "input" }
   },
   {
     prop: "orderSn",

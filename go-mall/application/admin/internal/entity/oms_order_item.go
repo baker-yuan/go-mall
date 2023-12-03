@@ -16,9 +16,9 @@ type OrderItem struct {
 	ProductAttr     string  `gorm:"column:product_attr;type:varchar(500);not null;default:'';comment:商品销售属性:[{\"key\":\"颜色\",\"value\":\"颜色\"},{\"key\":\"容量\",\"value\":\"4G\"}]"`
 	ProductQuantity uint32  `gorm:"column:product_quantity;type:int(10);unsigned;not null;default:0;comment:购买数量"`
 	//
+	ProductCategoryID uint64  `gorm:"column:product_category_id;type:bigint;unsigned;not null;default:0;comment:商品分类id"`
 	ProductSkuID      uint64  `gorm:"column:product_sku_id;type:bigint;unsigned;not null;default:0;comment:商品sku编号"`
 	ProductSkuCode    string  `gorm:"column:product_sku_code;type:varchar(50);not null;default:'';comment:商品sku条码"`
-	ProductCategoryID uint64  `gorm:"column:product_category_id;type:bigint;unsigned;not null;default:0;comment:商品分类id"`
 	PromotionName     string  `gorm:"column:promotion_name;type:varchar(200);not null;default:'';comment:商品促销名称"`
 	PromotionAmount   float64 `gorm:"column:promotion_amount;type:decimal(10,2);not null;default:0.00;comment:商品促销分解金额"`
 	CouponAmount      float64 `gorm:"column:coupon_amount;type:decimal(10,2);not null;default:0.00;comment:优惠券优惠分解金额"`
@@ -33,3 +33,5 @@ type OrderItem struct {
 func (o OrderItem) TableName() string {
 	return "oms_order_item"
 }
+
+type OrderItems []*OrderItem

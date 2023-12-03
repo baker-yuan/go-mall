@@ -72,8 +72,10 @@ func Run(cfg *config.Config) {
 		subjectRepo                          = repo.NewSubjectRepo(conn)
 		prefrenceAreaRepo                    = repo.NewPrefrenceAreaRepo(conn)
 		//
-		orderReturnReasonRepo = repo.NewOrderReturnReasonRepo(conn)
-		orderRepo             = repo.NewOrderRepo(conn)
+		orderReturnReasonRepo   = repo.NewOrderReturnReasonRepo(conn)
+		orderRepo               = repo.NewOrderRepo(conn)
+		orderItemRepo           = repo.NewOrderItemRepo(conn)
+		orderOperateHistoryRepo = repo.NewOrderOperateHistoryRepo(conn)
 	)
 
 	// 业务逻辑
@@ -110,7 +112,7 @@ func Run(cfg *config.Config) {
 	prefrenceAreaUseCase := usecase.NewPrefrenceArea(prefrenceAreaRepo)
 
 	orderReturnReasonUseCase := usecase.NewOrderReturnReason(orderReturnReasonRepo)
-	orderUseCase := usecase.NewOrder(orderRepo)
+	orderUseCase := usecase.NewOrder(orderRepo, orderItemRepo, orderOperateHistoryRepo)
 
 	// grpc服务
 	grpcSrvImpl := grpcsrv.New(

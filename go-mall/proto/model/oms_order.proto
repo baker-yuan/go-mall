@@ -2,6 +2,9 @@ syntax = "proto3";
 package model;
 option go_package = ".;mall";
 
+import "model/oms_order_item.proto";
+import "model/oms_order_operate_history.proto";
+
 // 订单
 message Order {
   // 基本信息
@@ -55,4 +58,8 @@ message Order {
   uint32 modify_time = 43; // 修改时间
   // 冗余字段
   string member_username = 44; // 用户帐号
+
+  // 关联
+  repeated model.OrderItem order_items = 100; // 订单商品列表
+  repeated model.OrderOperateHistory order_operate_histories = 101; // 订单操作记录列表
 }

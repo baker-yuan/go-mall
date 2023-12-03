@@ -379,13 +379,13 @@ export namespace Order {
   export interface OrderModel {
     // 基本信息
     id: number; // 订单id
-    orderSN: string; // 订单编号
-    memberID: number; // 会员id
+    orderSn: string; // 订单编号
+    memberId: number; // 会员id
     payType: number; // 支付方式：0->未支付；1->支付宝；2->微信
     sourceType: number; // 订单来源：0->PC订单；1->app订单
     orderType: number; // 订单类型：0->正常订单；1->秒杀订单
     deliveryCompany: string; // 物流公司(配送方式)
-    deliverySN: string; // 物流单号
+    deliverySn: string; // 物流单号
     autoConfirmDay: number; // 自动确认时间（天）
     receiveTime: number; // 确认收货时间
     integration: number; // 可以获得的积分
@@ -403,7 +403,7 @@ export namespace Order {
     // 费用信息
     totalAmount: number; // 订单总金额
     freightAmount: number; // 运费金额
-    couponID: number; // 优惠券id
+    couponId: number; // 优惠券id
     couponAmount: number; // 优惠券抵扣金额
     useIntegration: number; // 下单时使用的积分
     integrationAmount: number; // 积分抵扣金额

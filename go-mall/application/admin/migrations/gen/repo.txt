@@ -5,6 +5,18 @@ $!{define.vm}
 #save("/gencode", "repo.go")
 
 
+package repo
+
+import (
+	"context"
+	"errors"
+
+	"github.com/baker-yuan/go-mall/application/admin/internal/entity"
+	"github.com/baker-yuan/go-mall/application/admin/pkg/db"
+	"github.com/baker-yuan/go-mall/application/admin/pkg/util"
+	"gorm.io/gorm"
+)
+
 // $!{tableInfo.name}Repo $!{tableInfo.comment}
 type $!{tableInfo.name}Repo struct {
 	*db.GenericDao[entity.$!{tableInfo.name}, uint64]
