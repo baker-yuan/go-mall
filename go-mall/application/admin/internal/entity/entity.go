@@ -79,6 +79,23 @@ func Init(db *gorm.DB) error {
 			StructPtr: &MemberPrice{},
 		},
 		{
+			TableName: "商品评价表",
+			StructPtr: &Comment{},
+		},
+		{
+			TableName: "商品评价回复表",
+			StructPtr: &CommentReplay{},
+		},
+		{
+			TableName: "商品审核记录表",
+			StructPtr: &ProductVertifyRecord{},
+		},
+		{
+			TableName: "商品操作记录表",
+			StructPtr: &ProductOperateLog{},
+		},
+		// cms
+		{
 			TableName: "优选专区",
 			StructPtr: &PrefrenceArea{},
 		},
@@ -94,21 +111,18 @@ func Init(db *gorm.DB) error {
 			TableName: "专题商品关系表",
 			StructPtr: &SubjectProductRelation{},
 		},
+
 		{
-			TableName: "商品评价表",
-			StructPtr: &Comment{},
+			TableName: "相册表",
+			StructPtr: &Album{},
 		},
 		{
-			TableName: "商品评价回复表",
-			StructPtr: &CommentReplay{},
+			TableName: "画册图片表",
+			StructPtr: &AlbumPic{},
 		},
 		{
-			TableName: "商品审核记录表",
-			StructPtr: &ProductVertifyRecord{},
-		},
-		{
-			TableName: "商品操作记录表",
-			StructPtr: &ProductOperateLog{},
+			TableName: "运费模版",
+			StructPtr: &FeightTemplate{},
 		},
 
 		// oms

@@ -170,61 +170,13 @@ CREATE TABLE `cms_topic_comment`  (
 
 
 
--- ----------------------------
--- Table structure for pms_album
--- ----------------------------
-DROP TABLE IF EXISTS `pms_album`;
-CREATE TABLE `pms_album`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `name` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `cover_pic` varchar(1000) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `pic_count` int(11) NULL DEFAULT NULL,
-  `sort` int(11) NULL DEFAULT NULL,
-  `description` varchar(1000) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '相册表' ROW_FORMAT = DYNAMIC;
-
--- ----------------------------
--- Records of pms_album
--- ----------------------------
-
--- ----------------------------
--- Table structure for pms_album_pic
--- ----------------------------
-DROP TABLE IF EXISTS `pms_album_pic`;
-CREATE TABLE `pms_album_pic`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `album_id` bigint(20) NULL DEFAULT NULL,
-  `pic` varchar(1000) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '画册图片表' ROW_FORMAT = DYNAMIC;
-
--- ----------------------------
--- Records of pms_album_pic
--- ----------------------------
 
 
 
 
--- ----------------------------
--- Table structure for pms_feight_template
--- ----------------------------
-DROP TABLE IF EXISTS `pms_feight_template`;
-CREATE TABLE `pms_feight_template`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `name` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `charge_type` int(1) NULL DEFAULT NULL COMMENT '计费类型:0->按重量；1->按件数',
-  `first_weight` decimal(10, 2) NULL DEFAULT NULL COMMENT '首重kg',
-  `first_fee` decimal(10, 2) NULL DEFAULT NULL COMMENT '首费（元）',
-  `continue_weight` decimal(10, 2) NULL DEFAULT NULL,
-  `continme_fee` decimal(10, 2) NULL DEFAULT NULL,
-  `dest` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '目的地（省、市）',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '运费模版' ROW_FORMAT = DYNAMIC;
 
--- ----------------------------
--- Records of pms_feight_template
--- ----------------------------
+
+
 
 
 
