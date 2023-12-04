@@ -140,6 +140,10 @@ func Init(db *gorm.DB) error {
 			TableName: "公司收发货地址表",
 			StructPtr: &CompanyAddress{},
 		},
+		{
+			TableName: "购物车表",
+			StructPtr: &CartItem{},
+		},
 
 		// sms
 		//{
