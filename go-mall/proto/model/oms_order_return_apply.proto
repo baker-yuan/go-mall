@@ -26,7 +26,7 @@ message OrderReturnApply {
   string return_phone = 16; // 退货人电话
   string reason = 17; // 原因
   string description = 18; // 描述
-  string proof_pics = 19; // 凭证图片，以逗号隔开
+  repeated string proof_pics = 19; // 凭证图片，json字符串数组
   //
   double return_amount = 20; // 退款金额
   uint64 company_address_id = 21; // 收货地址表id

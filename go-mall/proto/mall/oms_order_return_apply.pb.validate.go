@@ -93,8 +93,6 @@ func (m *OrderReturnApply) validate(all bool) error {
 
 	// no validation rules for Description
 
-	// no validation rules for ProofPics
-
 	// no validation rules for ReturnAmount
 
 	// no validation rules for CompanyAddressId

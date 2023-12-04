@@ -8,6 +8,15 @@ func InitBaseUrl(base string) {
 	baseUrl = base
 }
 
+// GetFullUrls 获取完整路径
+func GetFullUrls(paths []string) []string {
+	res := make([]string, 0)
+	for _, path := range paths {
+		res = append(res, GetFullUrl(path))
+	}
+	return res
+}
+
 // GetFullUrl 获取完整路径
 func GetFullUrl(path string) string {
 	if len(path) == 0 {

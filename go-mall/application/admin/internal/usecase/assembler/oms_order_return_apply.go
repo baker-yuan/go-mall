@@ -29,7 +29,7 @@ func OrderReturnApplyEntityToModel(orderReturnApply *entity.OrderReturnApply) *p
 		ReturnPhone:    orderReturnApply.ReturnPhone,
 		Reason:         orderReturnApply.Reason,
 		Description:    orderReturnApply.Description,
-		ProofPics:      orderReturnApply.ProofPics,
+		ProofPics:      util.GetFullUrls(orderReturnApply.ProofPics),
 		//
 		ReturnAmount:     orderReturnApply.ReturnAmount,
 		CompanyAddressId: orderReturnApply.CompanyAddressID,

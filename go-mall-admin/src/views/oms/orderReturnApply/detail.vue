@@ -89,13 +89,7 @@
               凭证图片
             </el-col>
             <el-col class="form-border font-small" :span="18" style="height: 100px">
-              <img
-                v-for="item in returnApplyDetail.proofPics.split(',')"
-                :key="item"
-                style="width: 80px; height: 80px"
-                :src="item"
-                alt=""
-              />
+              <img v-for="item in returnApplyDetail.proofPics" :key="item" style="width: 80px; height: 80px" :src="item" alt="" />
             </el-col>
           </el-row>
         </div>

@@ -37,15 +37,15 @@ type OrderReturnApply struct {
 	ProductAttr      string  `protobuf:"bytes,8,opt,name=product_attr,json=productAttr,proto3" json:"product_attr,omitempty"`                    // 商品销售属性：颜色：红色；尺码：xl;
 	ProductCount     uint32  `protobuf:"varint,9,opt,name=product_count,json=productCount,proto3" json:"product_count,omitempty"`                // 退货数量
 	ProductPrice     float64 `protobuf:"fixed64,10,opt,name=product_price,json=productPrice,proto3" json:"product_price,omitempty"`              // 商品单价
-	Status         uint32 `protobuf:"varint,11,opt,name=status,proto3" json:"status,omitempty"`                                      // 申请状态：0->待处理；1->退货中；2->已完成；3->已拒绝
-	OrderSn        string `protobuf:"bytes,12,opt,name=order_sn,json=orderSn,proto3" json:"order_sn,omitempty"`                      // 订单编号
-	CreateTime     uint32 `protobuf:"varint,13,opt,name=create_time,json=createTime,proto3" json:"create_time,omitempty"`            // 申请时间
-	MemberUsername string `protobuf:"bytes,14,opt,name=member_username,json=memberUsername,proto3" json:"member_username,omitempty"` // 会员用户名
-	ReturnName     string `protobuf:"bytes,15,opt,name=return_name,json=returnName,proto3" json:"return_name,omitempty"`             // 退货人姓名
-	ReturnPhone    string `protobuf:"bytes,16,opt,name=return_phone,json=returnPhone,proto3" json:"return_phone,omitempty"`          // 退货人电话
-	Reason         string `protobuf:"bytes,17,opt,name=reason,proto3" json:"reason,omitempty"`                                       // 原因
-	Description    string `protobuf:"bytes,18,opt,name=description,proto3" json:"description,omitempty"`                             // 描述
-	ProofPics      string `protobuf:"bytes,19,opt,name=proof_pics,json=proofPics,proto3" json:"proof_pics,omitempty"`                // 凭证图片，以逗号隔开
+	Status         uint32   `protobuf:"varint,11,opt,name=status,proto3" json:"status,omitempty"`                                      // 申请状态：0->待处理；1->退货中；2->已完成；3->已拒绝
+	OrderSn        string   `protobuf:"bytes,12,opt,name=order_sn,json=orderSn,proto3" json:"order_sn,omitempty"`                      // 订单编号
+	CreateTime     uint32   `protobuf:"varint,13,opt,name=create_time,json=createTime,proto3" json:"create_time,omitempty"`            // 申请时间
+	MemberUsername string   `protobuf:"bytes,14,opt,name=member_username,json=memberUsername,proto3" json:"member_username,omitempty"` // 会员用户名
+	ReturnName     string   `protobuf:"bytes,15,opt,name=return_name,json=returnName,proto3" json:"return_name,omitempty"`             // 退货人姓名
+	ReturnPhone    string   `protobuf:"bytes,16,opt,name=return_phone,json=returnPhone,proto3" json:"return_phone,omitempty"`          // 退货人电话
+	Reason         string   `protobuf:"bytes,17,opt,name=reason,proto3" json:"reason,omitempty"`                                       // 原因
+	Description    string   `protobuf:"bytes,18,opt,name=description,proto3" json:"description,omitempty"`                             // 描述
+	ProofPics      []string `protobuf:"bytes,19,rep,name=proof_pics,json=proofPics,proto3" json:"proof_pics,omitempty"`                // 凭证图片，以逗号隔开
 	ReturnAmount     float64 `protobuf:"fixed64,20,opt,name=return_amount,json=returnAmount,proto3" json:"return_amount,omitempty"`              // 退款金额
 	CompanyAddressId uint64  `protobuf:"varint,21,opt,name=company_address_id,json=companyAddressId,proto3" json:"company_address_id,omitempty"` // 收货地址表id
 	// 商家-处理人
@@ -217,11 +217,11 @@ func (x *OrderReturnApply) GetDescription() string {
 	return ""
 }
 
-func (x *OrderReturnApply) GetProofPics() string {
+func (x *OrderReturnApply) GetProofPics() []string {
 	if x != nil {
 		return x.ProofPics
 	}
-	return ""
+	return nil
 }
 
 func (x *OrderReturnApply) GetReturnAmount() float64 {
@@ -333,7 +333,7 @@ var file_model_oms_order_return_apply_proto_rawDesc = []byte{
 	0x52, 0x06, 0x72, 0x65, 0x61, 0x73, 0x6f, 0x6e, 0x12, 0x20, 0x0a, 0x0b, 0x64, 0x65, 0x73, 0x63,
 	0x72, 0x69, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x18, 0x12, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0b, 0x64,
 	0x65, 0x73, 0x63, 0x72, 0x69, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x1d, 0x0a, 0x0a, 0x70, 0x72,
-	0x6f, 0x6f, 0x66, 0x5f, 0x70, 0x69, 0x63, 0x73, 0x18, 0x13, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09,
+	0x6f, 0x6f, 0x66, 0x5f, 0x70, 0x69, 0x63, 0x73, 0x18, 0x13, 0x20, 0x03, 0x28, 0x09, 0x52, 0x09,
 	0x70, 0x72, 0x6f, 0x6f, 0x66, 0x50, 0x69, 0x63, 0x73, 0x12, 0x23, 0x0a, 0x0d, 0x72, 0x65, 0x74,
 	0x75, 0x72, 0x6e, 0x5f, 0x61, 0x6d, 0x6f, 0x75, 0x6e, 0x74, 0x18, 0x14, 0x20, 0x01, 0x28, 0x01,
 	0x52, 0x0c, 0x72, 0x65, 0x74, 0x75, 0x72, 0x6e, 0x41, 0x6d, 0x6f, 0x75, 0x6e, 0x74, 0x12, 0x2c,

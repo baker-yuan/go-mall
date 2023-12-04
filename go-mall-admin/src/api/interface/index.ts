@@ -478,7 +478,7 @@ export namespace OrderReturnApply {
     returnPhone: string; // 退货人电话
     reason: string; // 原因
     description: string; // 描述
-    proofPics: string; // 凭证图片，以逗号隔开
+    proofPics: string[]; // 凭证图片，json字符串数组
     //
     returnAmount: number; // 退款金额
     companyAddressId: number; // 收货地址表id
