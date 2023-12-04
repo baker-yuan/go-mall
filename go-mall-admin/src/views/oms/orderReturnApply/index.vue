@@ -27,7 +27,7 @@
       </template>
       <!-- 表格操作 -->
       <template #operation="scope">
-        <el-button type="primary" link :icon="EditPen" @click="openDrawer('查看', scope.row)">查看</el-button>
+        <el-button type="primary" link :icon="EditPen" @click="openDrawer(scope.row)">查看</el-button>
       </template>
     </ProTable>
     <OrderReturnApplyDrawer ref="drawerRef" />
@@ -116,10 +116,8 @@ const sortTable = ({ newIndex, oldIndex }: { newIndex?: number; oldIndex?: numbe
 
 // 打开 drawer(新增、查看、编辑)
 const drawerRef = ref<InstanceType<typeof OrderReturnApplyDrawer> | null>(null);
-const openDrawer = (title: string, row: Partial<OrderReturnApply.OrderReturnApplyModel> = {}) => {
+const openDrawer = (row: Partial<OrderReturnApply.OrderReturnApplyModel> = {}) => {
   const params = {
-    title,
-    isView: title === "查看",
     row: { ...row }
   };
   drawerRef.value?.acceptParams(params);

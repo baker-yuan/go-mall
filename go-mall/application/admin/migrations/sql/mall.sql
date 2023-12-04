@@ -225,24 +225,6 @@ INSERT INTO `sms_coupon_product_relation` VALUES (19, 29, 29, 'Apple iPhone 8 Pl
 INSERT INTO `sms_coupon_product_relation` VALUES (21, 30, 41, 'Redmi K50 天玑8100 2K柔性直屏 OIS光学防抖 67W快充 5500mAh大电量 墨羽 12GB+256GB 5G智能手机 小米 红米', '100035246702');
 INSERT INTO `sms_coupon_product_relation` VALUES (22, 30, 40, '小米12 Pro 天玑版 天玑9000+处理器 5000万疾速影像 2K超视感屏 120Hz高刷 67W快充 12GB+256GB 黑色 5G手机', '100027789721');
 
--- ----------------------------
--- Table structure for sms_flash_promotion
--- ----------------------------
-DROP TABLE IF EXISTS `sms_flash_promotion`;
-CREATE TABLE `sms_flash_promotion`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `title` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '秒杀时间段名称',
-  `start_date` date NULL DEFAULT NULL COMMENT '开始日期',
-  `end_date` date NULL DEFAULT NULL COMMENT '结束日期',
-  `status` int(1) NULL DEFAULT NULL COMMENT '上下线状态',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 15 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '限时购表' ROW_FORMAT = DYNAMIC;
-
--- ----------------------------
--- Records of sms_flash_promotion
--- ----------------------------
-INSERT INTO `sms_flash_promotion` VALUES (14, '双11特卖活动', '2022-11-09', '2023-12-31', 1, '2022-11-09 14:56:48');
 
 -- ----------------------------
 -- Table structure for sms_flash_promotion_log

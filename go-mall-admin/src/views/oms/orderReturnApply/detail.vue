@@ -1,5 +1,5 @@
 <template>
-  <el-drawer v-model="drawerVisible" :destroy-on-close="true" size="60%" :title="`${drawerProps.title}订单退货申请`">
+  <el-drawer v-model="drawerVisible" :destroy-on-close="true" size="60%" :title="`订单退货申请`">
     <div v-if="returnApplyDetail != null" class="detail-container">
       <!-- 退货商品 -->
       <el-card shadow="never">
@@ -277,7 +277,6 @@ const totalAmount = computed(() => {
 });
 
 interface DrawerProps {
-  title: string; // 标题
   row: Partial<OrderReturnApply.OrderReturnApplyModel>; // 数据
 }
 
@@ -285,7 +284,6 @@ interface DrawerProps {
 const drawerVisible = ref(false);
 // 参数
 const drawerProps = ref<DrawerProps>({
-  title: "",
   row: {}
 });
 

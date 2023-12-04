@@ -160,10 +160,10 @@ func Init(db *gorm.DB) error {
 		},
 
 		// sms
-		//{
-		//	TableName: "限时购表",
-		//	StructPtr: &FlashPromotion{},
-		//},
+		{
+			TableName: "限时购表",
+			StructPtr: &FlashPromotion{},
+		},
 		//{
 		//	TableName: "限时购场次表",
 		//	StructPtr: &FlashPromotionSession{},

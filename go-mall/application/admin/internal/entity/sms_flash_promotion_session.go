@@ -5,9 +5,9 @@ package entity
 type FlashPromotionSession struct {
 	ID         uint64 `gorm:"column:id;type:bigint;primary_key;auto_increment;comment:编号"`
 	Name       string `gorm:"column:name;type:varchar(200);not null;default:'';comment:场次名称"`
+	Status     uint8  `gorm:"column:status;type:tinyint(4);unsigned;not null;default:0;comment:启用状态：0->不启用；1->启用"`
 	StartTime  uint32 `gorm:"column:start_time;type:int(10);unsigned;not null;default:0;comment:每日开始时间"`
 	EndTime    uint32 `gorm:"column:end_time;type:int(10);unsigned;not null;default:0;comment:每日结束时间"`
-	Status     uint8  `gorm:"column:status;type:tinyint(4);unsigned;not null;default:0;comment:启用状态：0->不启用；1->启用"`
 	CreateTime uint32 `gorm:"column:create_time;type:int(10);unsigned;not null;default:0;comment:创建时间"`
 	// 公共字段
 	BaseTime
