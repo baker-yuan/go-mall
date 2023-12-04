@@ -176,14 +176,14 @@ func Init(db *gorm.DB) error {
 		//	TableName: "限时购通知记录表",
 		//	StructPtr: &FlashPromotionLog{},
 		//},
-		//{
-		//	TableName: "优惠券表",
-		//	StructPtr: &Coupon{},
-		//},
-		//{
-		//	TableName: "优惠券使用历史表",
-		//	StructPtr: &CouponHistory{},
-		//},
+		{
+			TableName: "优惠券表",
+			StructPtr: &Coupon{},
+		},
+		{
+			TableName: "优惠券使用、领取历史表",
+			StructPtr: &CouponHistory{},
+		},
 		//{
 		//	TableName: "优惠券和商品的关系表",
 		//	StructPtr: &SmsCouponProductRelation{},
