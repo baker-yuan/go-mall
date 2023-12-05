@@ -1016,3 +1016,67 @@ values  (14, '双11特卖活动', UNIX_TIMESTAMP('2022-11-09'), UNIX_TIMESTAMP('
 --         (5, '16:00', '16:00:00', '18:00:00', 1, UNIX_TIMESTAMP( '2018-11-16 13:22:45')),
 --         (6, '18:00', '18:00:00', '20:00:00', 1, UNIX_TIMESTAMP('2018-11-16 13:21:34')),
 --         (7, '20:00', '20:00:00', '22:00:00', 1, UNIX_TIMESTAMP('2018-11-16 13:22:55'));
+
+
+
+insert into go_mall_admin.sms_coupon_product_relation (id, coupon_id, product_id, product_name, product_sn)
+values  (18, 29, 37, 'Apple iPhone 14 (A2884) 128GB 支持移动联通电信5G 双卡双待手机', '100038005189'),
+        (19, 29, 29, 'Apple iPhone 8 Plus 64GB 红色特别版 移动联通电信4G手机', '7437799'),
+        (21, 30, 41, 'Redmi K50 天玑8100 2K柔性直屏 OIS光学防抖 67W快充 5500mAh大电量 墨羽 12GB+256GB 5G智能手机 小米 红米', '100035246702'),
+        (22, 30, 40, '小米12 Pro 天玑版 天玑9000+处理器 5000万疾速影像 2K超视感屏 120Hz高刷 67W快充 12GB+256GB 黑色 5G手机', '100027789721');
+
+insert into go_mall_admin.sms_coupon_product_category_relation (id, coupon_id, product_category_id, product_category_name, parent_category_name)
+values  (11, 28, 19, '手机通讯', '手机数码');
+
+insert into go_mall_admin.sms_home_brand (id, brand_id, brand_name, recommend_status, sort)
+values  (6, 6, '小米', 1, 300),
+        (32, 50, '海澜之家', 1, 198),
+        (33, 51, '苹果', 1, 199),
+        (34, 2, '三星', 1, 195),
+        (35, 3, '华为', 1, 200),
+        (39, 21, 'OPPO', 1, 197),
+        (45, 1, '万和', 1, 0),
+        (46, 5, '方太', 1, 0),
+        (47, 4, '格力', 1, 0);
+
+insert into go_mall_admin.sms_home_new_product (id, product_id, product_name, recommend_status, sort)
+values  (19, 37, 'Apple iPhone 14 (A2884) 128GB 支持移动联通电信5G 双卡双待手机', 1, 197),
+        (20, 38, 'Apple iPad 10.9英寸平板电脑 2022年款（64GB WLAN版/A14芯片/1200万像素/iPadOS MPQ03CH/A ）', 1, 0),
+        (21, 39, '小米 Xiaomi Book Pro 14 2022 锐龙版 2.8K超清大师屏 高端轻薄笔记本电脑(新R5-6600H标压 16G 512G win11)', 1, 198),
+        (22, 40, '小米12 Pro 天玑版 天玑9000+处理器 5000万疾速影像 2K超视感屏 120Hz高刷 67W快充 12GB+256GB 黑色 5G手机', 1, 200),
+        (23, 41, 'Redmi K50 天玑8100 2K柔性直屏 OIS光学防抖 67W快充 5500mAh大电量 墨羽 12GB+256GB 5G智能手机 小米 红米', 1, 199),
+        (24, 42, 'HUAWEI Mate 50 直屏旗舰 超光变XMAGE影像 北斗卫星消息 低电量应急模式 128GB曜金黑华为鸿蒙手机', 1, 0),
+        (25, 44, '三星（SAMSUNG）500GB SSD固态硬盘 M.2接口(NVMe协议) 980（MZ-V8V500BW）', 1, 0),
+        (26, 45, 'OPPO Reno8 8GB+128GB 鸢尾紫 新配色上市 80W超级闪充 5000万水光人像三摄 3200万前置索尼镜头 5G手机', 1, 0),
+        (27, 43, '万和（Vanward)燃气热水器天然气家用四重防冻直流变频节能全新升级增压水伺服恒温高抗风 JSQ30-565W16【16升】【恒温旗舰款】', 1, 0);
+
+
+insert into go_mall_admin.sms_home_recommend_product (id, product_id, product_name, recommend_status, sort)
+values  (10, 38, 'Apple iPad 10.9英寸平板电脑 2022年款（64GB WLAN版/A14芯片/1200万像素/iPadOS MPQ03CH/A ）', 1, 0),
+        (11, 39, '小米 Xiaomi Book Pro 14 2022 锐龙版 2.8K超清大师屏 高端轻薄笔记本电脑(新R5-6600H标压 16G 512G win11)', 1, 0),
+        (12, 44, '三星（SAMSUNG）500GB SSD固态硬盘 M.2接口(NVMe协议) 980（MZ-V8V500BW）', 1, 0),
+        (13, 43, '万和（Vanward)燃气热水器天然气家用四重防冻直流变频节能全新升级增压水伺服恒温高抗风 JSQ30-565W16【16升】【恒温旗舰款】', 1, 0),
+        (14, 45, 'OPPO Reno8 8GB+128GB 鸢尾紫 新配色上市 80W超级闪充 5000万水光人像三摄 3200万前置索尼镜头 5G手机', 1, 0);
+
+insert into go_mall_admin.sms_home_recommend_subject (id, subject_id, subject_name, recommend_status, sort)
+values  (14, 1, 'polo衬衫的也时尚', 1, 0),
+        (15, 2, '大牌手机低价秒', 1, 0),
+        (16, 3, '晓龙845新品上市', 1, 0),
+        (17, 4, '夏天应该穿什么', 1, 0),
+        (18, 5, '夏季精选', 1, 100),
+        (19, 6, '品牌手机降价', 1, 0);
+
+insert into go_mall_admin.sms_home_advertise (id, name, type, pic, status, click_count, order_count, url, note, sort, start_time, end_time)
+values  (2, '夏季大热促销', 1, '/mall/images/20190525/ad1.jpg', 0, 0, 0, '', '夏季大热促销', 0, 1541052097, 1542261697),
+        (3, '夏季大热促销1', 1, '/mall/images/20190525/ad1.jpg', 0, 0, 0, '', '夏季大热促销1', 0, 1542088897, 1542088897),
+        (4, '夏季大热促销2', 1, '/mall/images/20190525/ad2.jpg', 0, 0, 0, '', '夏季大热促销2', 0, 1542088897, 1542088897),
+        (9, '电影推荐广告', 1, '/mall/images/20181113/movie_ad.jpg', 0, 0, 0, 'www.baidu.com', '电影推荐广告', 100, 1541001600, 1542988800),
+        (10, '汽车促销广告', 1, '/mall/images/20181113/car_ad.jpg', 0, 0, 0, 'xxx', '', 99, 1542038400, 1542988800),
+        (11, '汽车推荐广告', 1, '/mall/images/20181113/car_ad2.jpg', 0, 0, 0, 'xxx', '', 98, 1542038400, 1543507200),
+        (12, '小米推荐广告', 1, '/mall/images/20221108/xiaomi_banner_01.png', 1, 0, 0, '/pages/brand/brandDetail?id=6', '', 0, 1667898243, 1699434245),
+        (13, '华为推荐广告', 1, '/mall/images/20221108/huawei_banner_01.png', 1, 0, 0, '/pages/brand/brandDetail?id=3', '', 0, 1667898627, 1699434628),
+        (14, '苹果推荐广告', 1, '/mall/images/20221108/apple_banner_01.png', 1, 0, 0, '/pages/brand/brandDetail?id=51', '', 0, 1667898774, 1699434775),
+        (15, '三星推荐广告', 1, '/mall/images/20221108/sanxing_banner_01.png', 1, 0, 0, '/pages/brand/brandDetail?id=2', '', 0, 1667898938, 1699434939),
+        (16, 'OPPO推荐广告', 1, '/mall/images/20221108/oppo_banner_01.png', 1, 0, 0, '/pages/brand/brandDetail?id=21', '', 0, 1667899210, 1699435211);
+
+

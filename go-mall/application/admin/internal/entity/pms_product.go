@@ -6,7 +6,7 @@ type Product struct {
 	// 基本信息
 	ID                uint64  `gorm:"column:id;type:bigint;primary_key;auto_increment;comment:主键"`
 	ProductCategoryID uint64  `gorm:"column:product_category_id;type:bigint;unsigned;not null;default:0;comment:商品分类id"` // pms_product_category#id
-	Name              string  `gorm:"column:name;type:varchar(64);not null;default:'';comment:商品名称"`
+	Name              string  `gorm:"column:name;type:varchar(200);not null;default:'';comment:商品名称"`
 	SubTitle          string  `gorm:"column:sub_title;type:varchar(255);not null;default:'';comment:副标题"`
 	BrandID           uint64  `gorm:"column:brand_id;type:bigint;unsigned;not null;default:0;comment:品牌id"` // pms_brand#id
 	Description       string  `gorm:"column:description;type:text;not null;comment:商品描述"`

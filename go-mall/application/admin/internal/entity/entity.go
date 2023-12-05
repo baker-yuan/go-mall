@@ -181,37 +181,38 @@ func Init(db *gorm.DB) error {
 			StructPtr: &Coupon{},
 		},
 		{
+			TableName: "优惠券和商品的关系表",
+			StructPtr: &SmsCouponProductRelation{},
+		},
+		{
+			TableName: "优惠券和商品分类关系表",
+			StructPtr: &CouponProductCategoryRelation{},
+		},
+		{
 			TableName: "优惠券使用、领取历史表",
 			StructPtr: &CouponHistory{},
 		},
-		//{
-		//	TableName: "优惠券和商品的关系表",
-		//	StructPtr: &SmsCouponProductRelation{},
-		//},
-		//{
-		//	TableName: "优惠券和商品分类关系表",
-		//	StructPtr: &CouponProductCategoryRelation{},
-		//},
-		//{
-		//	TableName: "首页品牌推荐表",
-		//	StructPtr: &HomeBrand{},
-		//},
-		//{
-		//	TableName: "新品推荐商品表",
-		//	StructPtr: &HomeNewProduct{},
-		//},
-		//{
-		//	TableName: "人气推荐商品表",
-		//	StructPtr: &HomeRecommendProduct{},
-		//},
-		//{
-		//	TableName: "首页专题推荐表",
-		//	StructPtr: &HomeRecommendSubject{},
-		//},
-		//{
-		//	TableName: "首页轮播广告表",
-		//	StructPtr: &HomeAdvertise{},
-		//},
+
+		{
+			TableName: "首页品牌推荐表",
+			StructPtr: &HomeBrand{},
+		},
+		{
+			TableName: "新品推荐商品表",
+			StructPtr: &HomeNewProduct{},
+		},
+		{
+			TableName: "人气推荐商品表",
+			StructPtr: &HomeRecommendProduct{},
+		},
+		{
+			TableName: "首页专题推荐表",
+			StructPtr: &HomeRecommendSubject{},
+		},
+		{
+			TableName: "首页轮播广告表",
+			StructPtr: &HomeAdvertise{},
+		},
 		//{
 		//	TableName: "会员表",
 		//	StructPtr: &Member{},
