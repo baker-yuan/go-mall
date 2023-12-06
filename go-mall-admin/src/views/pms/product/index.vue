@@ -20,12 +20,6 @@
         <img style="height: 80px" :src="scope.row.pic">
       </template>
 
-      <!-- 商品名称 -->
-      <template #nameAndBrand="scope">
-        <p>{{ scope.row.name }}</p>
-        <p>品牌：{{ scope.row.brandName }}</p>
-      </template>
-
       <!-- 价格/货号 -->
       <template #priceAndSn="scope">
         <p>价格：￥{{ scope.row.price }}</p>
@@ -153,7 +147,7 @@ const columns = reactive<ColumnProps<Product.ProductModel>[]>([
   { type: "selection", width: 60, fixed: "left" },
   {
     prop: "id",
-    width: 100,
+    width: 90,
     label: "编号",
     search: { el: "input" }
   },
@@ -163,28 +157,24 @@ const columns = reactive<ColumnProps<Product.ProductModel>[]>([
     label: "商品图片"
   },
   {
-    prop: "nameAndBrand",
-    minWidth: 200,
-    label: "名称&分类"
+    prop: "name",
+    width: 200,
+    showOverflowTooltip: false,
+    label: "名称",
+    search: { el: "input" }
   },
   {
-    prop: "name",
-    isShow: false,
-    label: "商品名称",
-    search: { el: "input" }
+    prop: "brandId",
+    minWidth: 100,
+    label: "品牌",
+    enum: getBrandOptionsV2Api,
+    search: { el: "select", props: { filterable: true } }
   },
   {
     prop: "productSn",
     isShow: false,
     label: "商品货号",
     search: { el: "input" }
-  },
-  {
-    prop: "brandId",
-    isShow: false,
-    label: "商品品牌",
-    enum: getBrandOptionsV2Api,
-    search: { el: "select", props: { filterable: true } }
   },
   {
     prop: "productCategoryId",
@@ -236,7 +226,7 @@ const columns = reactive<ColumnProps<Product.ProductModel>[]>([
   },
   {
     prop: "sort",
-    width: 100,
+    width: 90,
     label: "排序"
   },
   {
@@ -417,3 +407,5 @@ const openDrawer = (title: string, row: Partial<Product.ProductModel> = {}) => {
   drawerRef.value?.acceptParams(params);
 };
 </script>
+
+<style scoped lang="scss"></style>
