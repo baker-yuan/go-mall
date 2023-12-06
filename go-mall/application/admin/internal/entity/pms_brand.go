@@ -6,11 +6,11 @@ type Brand struct {
 	Name          string `gorm:"column:name;type:varchar(64);not null;default:'';comment:名称"`
 	FirstLetter   string `gorm:"column:first_letter;type:varchar(8);not null;default:'';comment:首字母"`
 	Sort          uint32 `gorm:"column:sort;type:int(10);unsigned;not null;default:0;comment:排序"`
-	FactoryStatus uint8  `gorm:"column:factory_status;type:tinyint(4);unsigned;not null;default:0;comment:是否为品牌制造商：0->不是；1->是"`
-	ShowStatus    uint8  `gorm:"column:show_status;type:tinyint(4);unsigned;not null;default:0;comment:是否显示"`
 	Logo          string `gorm:"column:logo;type:varchar(255);not null;default:'';comment:品牌logo"`
 	BigPic        string `gorm:"column:big_pic;type:varchar(255);not null;default:'';comment:专区大图"`
 	BrandStory    string `gorm:"column:brand_story;type:text;not null;comment:品牌故事"`
+	FactoryStatus uint8  `gorm:"column:factory_status;type:tinyint(4);unsigned;not null;default:0;comment:是否为品牌制造商：0->不是；1->是"`
+	ShowStatus    uint8  `gorm:"column:show_status;type:tinyint(4);unsigned;not null;default:0;comment:是否显示"`
 	// 冗余字段
 	ProductCount        uint32 `gorm:"column:product_count;type:int(10);unsigned;not null;default:0;comment:产品数量"`
 	ProductCommentCount uint32 `gorm:"column:product_comment_count;type:int(10);unsigned;not null;default:0;comment:产品评论数量"`

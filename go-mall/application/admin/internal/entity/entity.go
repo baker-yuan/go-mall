@@ -32,20 +32,20 @@ func (bt *BaseTime) BeforeUpdate(tx *gorm.DB) (err error) {
 }
 
 func Init(db *gorm.DB) error {
-	schemas := []tableSchema{
-		// cms
+	pmsSchemas := []tableSchema{
 		{
 			TableName: "商品分类表",
 			StructPtr: &ProductCategory{},
 		},
-		{
-			TableName: "商品分类和属性的关系表",
-			StructPtr: &ProductCategoryAttributeRelation{},
-		},
+		//{
+		//	TableName: "商品分类和属性的关系表",
+		//	StructPtr: &ProductCategoryAttributeRelation{},
+		//},
 		{
 			TableName: "商品品牌表",
 			StructPtr: &Brand{},
 		},
+		// 商品属性维护
 		{
 			TableName: "商品属性分类表",
 			StructPtr: &ProductAttributeCategory{},
@@ -58,6 +58,7 @@ func Init(db *gorm.DB) error {
 			TableName: "商品属性值表",
 			StructPtr: &ProductAttributeValue{},
 		},
+		//
 		{
 			TableName: "商品表",
 			StructPtr: &Product{},
@@ -66,6 +67,7 @@ func Init(db *gorm.DB) error {
 			TableName: "商品SKU表",
 			StructPtr: &SkuStock{},
 		},
+		// 优惠
 		{
 			TableName: "商品阶梯价格表",
 			StructPtr: &ProductLadder{},
@@ -78,6 +80,7 @@ func Init(db *gorm.DB) error {
 			TableName: "商品会员价格表",
 			StructPtr: &MemberPrice{},
 		},
+		// 评价回复
 		{
 			TableName: "商品评价表",
 			StructPtr: &Comment{},
@@ -86,6 +89,7 @@ func Init(db *gorm.DB) error {
 			TableName: "商品评价回复表",
 			StructPtr: &CommentReplay{},
 		},
+		// 审计
 		{
 			TableName: "商品审核记录表",
 			StructPtr: &ProductVertifyRecord{},
@@ -94,6 +98,9 @@ func Init(db *gorm.DB) error {
 			TableName: "商品操作记录表",
 			StructPtr: &ProductOperateLog{},
 		},
+	}
+
+	cmsSchemas := []tableSchema{
 		// cms
 		{
 			TableName: "优选专区",
@@ -124,7 +131,9 @@ func Init(db *gorm.DB) error {
 			TableName: "运费模版",
 			StructPtr: &FeightTemplate{},
 		},
+	}
 
+	omsSchemas := []tableSchema{
 		// oms
 		{
 			TableName: "订单表",
@@ -158,7 +167,9 @@ func Init(db *gorm.DB) error {
 			TableName: "购物车表",
 			StructPtr: &CartItem{},
 		},
+	}
 
+	smsSchemas := []tableSchema{
 		// sms
 		{
 			TableName: "限时购表",
@@ -222,6 +233,12 @@ func Init(db *gorm.DB) error {
 		//	StructPtr: &MemberReceiveAddress{},
 		//},
 	}
+
+	schemas := make([]tableSchema, 0)
+	schemas = append(schemas, pmsSchemas...)
+	schemas = append(schemas, cmsSchemas...)
+	schemas = append(schemas, omsSchemas...)
+	schemas = append(schemas, smsSchemas...)
 	if err := autoMigrate(db, schemas); err != nil {
 		return err
 	}
