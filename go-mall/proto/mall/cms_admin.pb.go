@@ -2752,11 +2752,11 @@ type AddOrUpdateProductParam struct {
 	PromotionStartTime uint32  `protobuf:"varint,28,opt,name=promotion_start_time,json=promotionStartTime,proto3" json:"promotion_start_time,omitempty"` // 促销开始时间
 	PromotionEndTime   uint32  `protobuf:"varint,29,opt,name=promotion_end_time,json=promotionEndTime,proto3" json:"promotion_end_time,omitempty"`       // 促销结束时间
 	// 属性信息
-	ProductAttributeCategoryId uint64 `protobuf:"varint,30,opt,name=product_attribute_category_id,json=productAttributeCategoryId,proto3" json:"product_attribute_category_id,omitempty"` // 品牌属性分类id
-	Pic                        string `protobuf:"bytes,31,opt,name=pic,proto3" json:"pic,omitempty"`                                                                                      // 图片
-	AlbumPics                  string `protobuf:"bytes,32,opt,name=album_pics,json=albumPics,proto3" json:"album_pics,omitempty"`                                                         // 画册图片，连产品图片限制为5张，以逗号分割
-	DetailHtml                 string `protobuf:"bytes,33,opt,name=detail_html,json=detailHtml,proto3" json:"detail_html,omitempty"`                                                      // 电脑端详情
-	DetailMobileHtml           string `protobuf:"bytes,34,opt,name=detail_mobile_html,json=detailMobileHtml,proto3" json:"detail_mobile_html,omitempty"`                                  // 移动端详情
+	ProductAttributeCategoryId uint64   `protobuf:"varint,30,opt,name=product_attribute_category_id,json=productAttributeCategoryId,proto3" json:"product_attribute_category_id,omitempty"` // 品牌属性分类id
+	Pic                        string   `protobuf:"bytes,31,opt,name=pic,proto3" json:"pic,omitempty"`                                                                                      // 图片
+	AlbumPics                  []string `protobuf:"bytes,32,rep,name=album_pics,json=albumPics,proto3" json:"album_pics,omitempty"`                                                         // 画册图片，连产品图片限制为5张，以逗号分割
+	DetailHtml                 string   `protobuf:"bytes,33,opt,name=detail_html,json=detailHtml,proto3" json:"detail_html,omitempty"`                                                      // 电脑端详情
+	DetailMobileHtml           string   `protobuf:"bytes,34,opt,name=detail_mobile_html,json=detailMobileHtml,proto3" json:"detail_mobile_html,omitempty"`                                  // 移动端详情
 	// 状态
 	VerifyStatus int32 `protobuf:"varint,35,opt,name=verify_status,json=verifyStatus,proto3" json:"verify_status,omitempty"` // 审核状态：0->未审核；1->审核通过
 	DeleteStatus int32 `protobuf:"varint,36,opt,name=delete_status,json=deleteStatus,proto3" json:"delete_status,omitempty"` // 删除状态：0->未删除；1->已删除
@@ -3027,11 +3027,11 @@ func (x *AddOrUpdateProductParam) GetPic() string {
 	return ""
 }
 
-func (x *AddOrUpdateProductParam) GetAlbumPics() string {
+func (x *AddOrUpdateProductParam) GetAlbumPics() []string {
 	if x != nil {
 		return x.AlbumPics
 	}
-	return ""
+	return nil
 }
 
 func (x *AddOrUpdateProductParam) GetDetailHtml() string {
@@ -4399,7 +4399,7 @@ var file_admin_cms_admin_proto_rawDesc = []byte{
 	0x74, 0x74, 0x72, 0x69, 0x62, 0x75, 0x74, 0x65, 0x43, 0x61, 0x74, 0x65, 0x67, 0x6f, 0x72, 0x79,
 	0x49, 0x64, 0x12, 0x10, 0x0a, 0x03, 0x70, 0x69, 0x63, 0x18, 0x1f, 0x20, 0x01, 0x28, 0x09, 0x52,
 	0x03, 0x70, 0x69, 0x63, 0x12, 0x1d, 0x0a, 0x0a, 0x61, 0x6c, 0x62, 0x75, 0x6d, 0x5f, 0x70, 0x69,
-	0x63, 0x73, 0x18, 0x20, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x61, 0x6c, 0x62, 0x75, 0x6d, 0x50,
+	0x63, 0x73, 0x18, 0x20, 0x20, 0x03, 0x28, 0x09, 0x52, 0x09, 0x61, 0x6c, 0x62, 0x75, 0x6d, 0x50,
 	0x69, 0x63, 0x73, 0x12, 0x1f, 0x0a, 0x0b, 0x64, 0x65, 0x74, 0x61, 0x69, 0x6c, 0x5f, 0x68, 0x74,
 	0x6d, 0x6c, 0x18, 0x21, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0a, 0x64, 0x65, 0x74, 0x61, 0x69, 0x6c,
 	0x48, 0x74, 0x6d, 0x6c, 0x12, 0x2c, 0x0a, 0x12, 0x64, 0x65, 0x74, 0x61, 0x69, 0x6c, 0x5f, 0x6d,

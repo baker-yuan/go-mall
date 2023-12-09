@@ -37,11 +37,11 @@ type Product struct {
 	PromotionEndTime   uint32  `gorm:"column:promotion_end_time;type:int(10);unsigned;not null;default:0;comment:促销结束时间"`
 
 	// 属性信息
-	ProductAttributeCategoryID uint64 `gorm:"column:product_attribute_category_id;type:bigint;unsigned;not null;default:0;comment:品牌属性分类id"`
-	Pic                        string `gorm:"column:pic;type:varchar(255);not null;default:'';comment:图片"`
-	AlbumPics                  string `gorm:"column:album_pics;type:varchar(255);not null;default:'';comment:画册图片，连产品图片限制为5张，以逗号分割"`
-	DetailHTML                 string `gorm:"column:detail_html;type:text;not null;comment:电脑端详情"`
-	DetailMobileHTML           string `gorm:"column:detail_mobile_html;type:text;not null;comment:移动端详情"`
+	ProductAttributeCategoryID uint64   `gorm:"column:product_attribute_category_id;type:bigint;unsigned;not null;default:0;comment:品牌属性分类id"`
+	Pic                        string   `gorm:"column:pic;type:varchar(255);not null;default:'';comment:图片"`
+	AlbumPics                  []string `gorm:"column:album_pics;type:varchar(255);not null;default:'';serializer:json;comment:画册图片，连产品图片限制为5张，以逗号分割"`
+	DetailHTML                 string   `gorm:"column:detail_html;type:text;not null;comment:电脑端详情"`
+	DetailMobileHTML           string   `gorm:"column:detail_mobile_html;type:text;not null;comment:移动端详情"`
 
 	// 状态
 	VerifyStatus uint8 `gorm:"column:verify_status;type:tinyint(4);unsigned;not null;default:0;comment:审核状态：0->未审核；1->审核通过"`

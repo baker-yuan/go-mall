@@ -5713,8 +5713,6 @@ func (m *AddOrUpdateProductParam) validate(all bool) error {
 
 	// no validation rules for Pic
 
-	// no validation rules for AlbumPics
-
 	// no validation rules for DetailHtml
 
 	// no validation rules for DetailMobileHtml

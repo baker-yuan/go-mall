@@ -413,7 +413,7 @@ message AddOrUpdateProductParam {
   // 属性信息
   uint64 product_attribute_category_id = 30; // 品牌属性分类id
   string pic = 31; // 图片
-  string album_pics = 32; // 画册图片，连产品图片限制为5张，以逗号分割
+  repeated string album_pics = 32; // 画册图片，连产品图片限制为5张，以逗号分割
   string detail_html = 33; // 电脑端详情
   string detail_mobile_html = 34; // 移动端详情
 

@@ -19,7 +19,6 @@
       <div class="upload-empty">
         <slot name="empty">
           <el-icon><Plus /></el-icon>
-          <!-- <span>请上传图片</span> -->
         </slot>
       </div>
       <template #file="{ file }">
@@ -51,7 +50,7 @@ import type { UploadProps, UploadFile, UploadUserFile, UploadRequestOptions } fr
 import { ElNotification, formContextKey, formItemContextKey } from "element-plus";
 
 interface UploadFileProps {
-  fileList: UploadUserFile[];
+  fileUrls: string[];
   api?: (params: any) => Promise<any>; // 上传图片的 api 方法，一般项目上传都是同一个 api 方法，在组件里直接引入即可 ==> 非必传
   drag?: boolean; // 是否支持拖拽上传 ==> 非必传（默认为 true）
   disabled?: boolean; // 是否禁用上传组件 ==> 非必传（默认为 false）
@@ -64,7 +63,7 @@ interface UploadFileProps {
 }
 
 const props = withDefaults(defineProps<UploadFileProps>(), {
-  fileList: () => [],
+  fileUrls: () => [],
   drag: true,
   disabled: false,
   limit: 5,
@@ -84,13 +83,26 @@ const self_disabled = computed(() => {
   return props.disabled || formContext?.disabled;
 });
 
-const _fileList = ref<UploadUserFile[]>(props.fileList);
+// el-upload 用到到完整文件信息数组
+const _fileList = ref<UploadUserFile[]>(
+  props.fileUrls.map(url => ({
+    name: "",
+    url: url
+  }))
+);
+// 最终给上层组件用到string数组
+const fileUrls = ref<string[]>(props.fileUrls);
 
-// 监听 props.fileList 列表默认值改变
+// 监听 props.fileUrls 的改变
 watch(
-  () => props.fileList,
-  (n: UploadUserFile[]) => {
-    _fileList.value = n;
+  () => props.fileUrls,
+  (n: string[]) => {
+    fileUrls.value = n;
+
+    _fileList.value = props.fileUrls.map(url => ({
+      name: "",
+      url: url
+    }));
   }
 );
 
@@ -134,18 +146,22 @@ const handleHttpUpload = async (options: UploadRequestOptions) => {
   }
 };
 
+const emit = defineEmits<{
+  "update:fileUrls": [value: string[]];
+}>();
+
 /**
  * @description 图片上传成功
  * @param response 上传响应结果
  * @param uploadFile 上传的文件
  * */
-const emit = defineEmits<{
-  "update:fileList": [value: UploadUserFile[]];
-}>();
 const uploadSuccess = (response: { fileUrl: string } | undefined, uploadFile: UploadFile) => {
   if (!response) return;
   uploadFile.url = response.fileUrl;
-  emit("update:fileList", _fileList.value);
+
+  fileUrls.value.push(response.fileUrl);
+  emit("update:fileUrls", fileUrls.value);
+
   // 调用 el-form 内部的校验方法（可自动校验）
   formItemContext?.prop && formContext?.validateField([formItemContext.prop as string]);
   ElNotification({
@@ -161,7 +177,8 @@ const uploadSuccess = (response: { fileUrl: string } | undefined, uploadFile: Up
  * */
 const handleRemove = (file: UploadFile) => {
   _fileList.value = _fileList.value.filter(item => item.url !== file.url || item.name !== file.name);
-  emit("update:fileList", _fileList.value);
+  fileUrls.value = fileUrls.value.filter(url => url !== file.url);
+  emit("update:fileUrls", fileUrls.value);
 };
 
 /**

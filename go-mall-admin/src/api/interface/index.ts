@@ -194,7 +194,7 @@ export namespace Product {
     // 属性信息
     productAttributeCategoryId: number; // 品牌属性分类id
     pic: string; // 图片
-    albumPics: string; // 画册图片，连产品图片限制为5张，以逗号分割
+    albumPics: string[]; // 画册图片，连产品图片限制为5张，以逗号分割
     detailHtml: string; // 电脑端详情
     detailMobileHtml: string; // 移动端详情
 

@@ -332,7 +332,7 @@
             </el-card>
           </el-form-item>
           <el-form-item label="商品相册">
-            <multi-upload v-model="selectProductPics"></multi-upload>
+            <UploadImgs v-model:file-urls="selectProductPics"></UploadImgs>
           </el-form-item>
           <!--
           <el-form-item label="商品详情">
@@ -401,7 +401,7 @@ import { getAllSubjectTransferValueSyncApi } from "@/api/modules/subject";
 import { getAllPrefrenceAreaTransferValueSyncApi } from "@/api/modules/prefrenceArea";
 import { getProductAttributesSyncApi } from "@/api/modules/attribute";
 import SingleUpload from "@/components/UploadV2/singleUpload.vue";
-import MultiUpload from "@/components/UploadV2/multiUpload.vue";
+import UploadImgs from "@/components/Upload/Imgs.vue";
 
 const rules = reactive({
   name: [
@@ -568,7 +568,7 @@ const defaultProductDetail: Product.ProductModel = {
   // 属性信息
   productAttributeCategoryId: 0,
   pic: "",
-  albumPics: "",
+  albumPics: [],
   detailHtml: "",
   detailMobileHtml: "",
   verifyStatus: 0,
@@ -608,24 +608,24 @@ const hasEditCreated = ref<boolean>(false);
 const selectProductPics = computed({
   get: () => {
     let pics: string[] = [];
-    // if (productDetail.value.pic) {
-    //   pics.push(value.value.pic);
-    // }
-    // if (productDetail.value.albumPics) {
-    //   let albumPics = productDetail.value.albumPics.split(",");
-    //   pics = [...pics, ...albumPics];
-    // }
+    if (productDetail.value.pic) {
+      pics.push(productDetail.value.pic);
+    }
+    if (productDetail.value.albumPics) {
+      let albumPics = productDetail.value.albumPics;
+      pics = [...pics, ...albumPics];
+    }
     return pics;
   },
   set: newValue => {
-    console.log("newValue", newValue);
-    // if (!newValue || newValue.length === 0) {
-    //   productDetail.value.pic = "";
-    //   productDetail.value.albumPics = "";
-    // } else {
-    //   productDetail.value.pic = newValue[0];
-    //   productDetail.value.albumPics = newValue.slice(1).join(",");
-    // }
+    if (!newValue || newValue.length === 0) {
+      productDetail.value.pic = "";
+      productDetail.value.albumPics = [];
+    } else {
+      // 第一张作为主图，剩下的是画册
+      productDetail.value.pic = newValue[0];
+      productDetail.value.albumPics = newValue.slice(1);
+    }
   }
 });
 

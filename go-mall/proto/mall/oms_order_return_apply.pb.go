@@ -45,7 +45,7 @@ type OrderReturnApply struct {
 	ReturnPhone    string   `protobuf:"bytes,16,opt,name=return_phone,json=returnPhone,proto3" json:"return_phone,omitempty"`          // 退货人电话
 	Reason         string   `protobuf:"bytes,17,opt,name=reason,proto3" json:"reason,omitempty"`                                       // 原因
 	Description    string   `protobuf:"bytes,18,opt,name=description,proto3" json:"description,omitempty"`                             // 描述
-	ProofPics      []string `protobuf:"bytes,19,rep,name=proof_pics,json=proofPics,proto3" json:"proof_pics,omitempty"`                // 凭证图片，以逗号隔开
+	ProofPics      []string `protobuf:"bytes,19,rep,name=proof_pics,json=proofPics,proto3" json:"proof_pics,omitempty"`                // 凭证图片，json字符串数组
 	ReturnAmount     float64 `protobuf:"fixed64,20,opt,name=return_amount,json=returnAmount,proto3" json:"return_amount,omitempty"`              // 退款金额
 	CompanyAddressId uint64  `protobuf:"varint,21,opt,name=company_address_id,json=companyAddressId,proto3" json:"company_address_id,omitempty"` // 收货地址表id
 	// 商家-处理人

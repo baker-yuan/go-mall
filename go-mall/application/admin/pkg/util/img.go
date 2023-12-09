@@ -32,3 +32,12 @@ func GetRelativeUrl(url string) string {
 	}
 	return url
 }
+
+// GetRelativeUrls 获取相对路径
+func GetRelativeUrls(urls []string) []string {
+	res := make([]string, 0)
+	for _, url := range urls {
+		res = append(res, GetRelativeUrl(url))
+	}
+	return res
+}
