@@ -19,14 +19,15 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	PortalApi_ProductCateList_FullMethodName = "/admin.PortalApi/ProductCateList"
+	PortalApi_ProductCategoryList_FullMethodName = "/admin.PortalApi/ProductCategoryList"
 )
 
 // PortalApiClient is the client API for PortalApi service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type PortalApiClient interface {
-	ProductCateList(ctx context.Context, in *ProductCateListReq, opts ...grpc.CallOption) (*PortalCommonRsp, error)
+	// 获取首页商品分类
+	ProductCategoryList(ctx context.Context, in *ProductCategoryListReq, opts ...grpc.CallOption) (*ProductCategoryListRsp, error)
 }
 
 type portalApiClient struct {
@@ -37,9 +38,9 @@ func NewPortalApiClient(cc grpc.ClientConnInterface) PortalApiClient {
 	return &portalApiClient{cc}
 }
 
-func (c *portalApiClient) ProductCateList(ctx context.Context, in *ProductCateListReq, opts ...grpc.CallOption) (*PortalCommonRsp, error) {
-	out := new(PortalCommonRsp)
-	err := c.cc.Invoke(ctx, PortalApi_ProductCateList_FullMethodName, in, out, opts...)
+func (c *portalApiClient) ProductCategoryList(ctx context.Context, in *ProductCategoryListReq, opts ...grpc.CallOption) (*ProductCategoryListRsp, error) {
+	out := new(ProductCategoryListRsp)
+	err := c.cc.Invoke(ctx, PortalApi_ProductCategoryList_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -50,7 +51,8 @@ func (c *portalApiClient) ProductCateList(ctx context.Context, in *ProductCateLi
 // All implementations must embed UnimplementedPortalApiServer
 // for forward compatibility
 type PortalApiServer interface {
-	ProductCateList(context.Context, *ProductCateListReq) (*PortalCommonRsp, error)
+	// 获取首页商品分类
+	ProductCategoryList(context.Context, *ProductCategoryListReq) (*ProductCategoryListRsp, error)
 	mustEmbedUnimplementedPortalApiServer()
 }
 
@@ -58,8 +60,8 @@ type PortalApiServer interface {
 type UnimplementedPortalApiServer struct {
 }
 
-func (UnimplementedPortalApiServer) ProductCateList(context.Context, *ProductCateListReq) (*PortalCommonRsp, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ProductCateList not implemented")
+func (UnimplementedPortalApiServer) ProductCategoryList(context.Context, *ProductCategoryListReq) (*ProductCategoryListRsp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ProductCategoryList not implemented")
 }
 func (UnimplementedPortalApiServer) mustEmbedUnimplementedPortalApiServer() {}
 
@@ -74,20 +76,20 @@ func RegisterPortalApiServer(s grpc.ServiceRegistrar, srv PortalApiServer) {
 	s.RegisterService(&PortalApi_ServiceDesc, srv)
 }
 
-func _PortalApi_ProductCateList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ProductCateListReq)
+func _PortalApi_ProductCategoryList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ProductCategoryListReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(PortalApiServer).ProductCateList(ctx, in)
+		return srv.(PortalApiServer).ProductCategoryList(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: PortalApi_ProductCateList_FullMethodName,
+		FullMethod: PortalApi_ProductCategoryList_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(PortalApiServer).ProductCateList(ctx, req.(*ProductCateListReq))
+		return srv.(PortalApiServer).ProductCategoryList(ctx, req.(*ProductCategoryListReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -100,8 +102,8 @@ var PortalApi_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*PortalApiServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "ProductCateList",
-			Handler:    _PortalApi_ProductCateList_Handler,
+			MethodName: "ProductCategoryList",
+			Handler:    _PortalApi_ProductCategoryList_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

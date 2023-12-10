@@ -13,14 +13,17 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/baker-yuan/go-mall/application/portal/config"
+	"github.com/baker-yuan/go-mall/application/portal/internal/controller/grpcsrv"
+	"github.com/baker-yuan/go-mall/application/portal/internal/usecase"
+	"github.com/baker-yuan/go-mall/application/portal/internal/usecase/repo"
 	"github.com/baker-yuan/go-mall/common/db"
 	"github.com/baker-yuan/go-mall/common/interceptor"
 	"github.com/baker-yuan/go-mall/common/logger"
 	"github.com/baker-yuan/go-mall/common/util"
 	pb "github.com/baker-yuan/go-mall/proto/mall"
-	"github.com/evrone/go-clean-template/config"
-	"github.com/evrone/go-clean-template/internal/controller/grpcsrv"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
+	"github.com/rs/cors"
 	"golang.org/x/net/http2"
 	"golang.org/x/net/http2/h2c"
 	"google.golang.org/grpc"
@@ -43,8 +46,13 @@ func Run(cfg *config.Config) {
 	// oss url 前缀
 	util.InitBaseUrl(cfg.Oss.BaseUrl)
 
+	var (
+		productCategoryRepo = repo.NewProductCategoryRepo(conn)
+	)
+	homeUsecase := usecase.NewHome(productCategoryRepo)
+
 	// grpc服务
-	grpcSrvImpl := grpcsrv.New()
+	grpcSrvImpl := grpcsrv.New(homeUsecase)
 	grpcServer, err := configGrpc(customLog, grpcSrvImpl, cfg.HTTP.IP, cfg.HTTP.Port)
 	if err != nil {
 		log.Fatal(fmt.Errorf("app - Run - configGrpc: %w", err))
@@ -100,7 +108,11 @@ func configGrpc(customLog *logger.Logger, grpcSrvImpl grpcsrv.PortalApi, ip stri
 	)
 	// 创建一个gRPC server对象
 	grpcServer := grpc.NewServer(
-		grpc.UnaryInterceptor(interceptor.ValidationInterceptor),
+		grpc.UnaryInterceptor(interceptor.ChainUnaryServerInterceptors(
+			interceptor.ValidationInterceptor,
+			//interceptor.CorsInterceptor()
+		),
+		),
 	)
 
 	// 注册grpc服务
@@ -116,10 +128,13 @@ func configGrpc(customLog *logger.Logger, grpcSrvImpl grpcsrv.PortalApi, ip stri
 	mux := http.NewServeMux()
 	mux.Handle("/", gwmux)
 
+	// 创建 CORS 处理器
+	corsWrapper := cors.AllowAll().Handler(mux)
+
 	// 定义HTTP server配置
 	gwServer := &http.Server{
 		Addr:    addr,
-		Handler: grpcHandlerFunc(grpcServer, mux), // 请求的统一入口
+		Handler: grpcHandlerFunc(grpcServer, corsWrapper), // 请求的统一入口
 	}
 
 	// tpc监听

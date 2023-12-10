@@ -1,13 +1,14 @@
-module github.com/evrone/go-clean-template
+module github.com/baker-yuan/go-mall/application/portal
 
-go 1.17
+go 1.20
 
 require (
 	github.com/Conight/go-googletrans v0.0.0-20200929083318-176776d061cb
 	github.com/Eun/go-hit v0.5.23
 	github.com/Masterminds/squirrel v1.5.2
-	github.com/baker-yuan/go-mall/common v0.0.0-incompatible
-	github.com/baker-yuan/go-mall/proto v0.0.0-incompatible
+	github.com/baker-yuan/go-mall/common v0.0.0-00010101000000-000000000000
+	github.com/baker-yuan/go-mall/proto v0.0.0-00010101000000-000000000000
+	github.com/evrone/go-clean-template v1.4.2
 	github.com/gin-gonic/gin v1.7.7
 	github.com/golang-migrate/migrate/v4 v4.15.1
 	github.com/golang/mock v1.6.0
@@ -16,7 +17,8 @@ require (
 	github.com/ilyakaznacheev/cleanenv v1.2.5
 	github.com/jackc/pgx/v4 v4.14.1
 	github.com/prometheus/client_golang v1.11.0
-	github.com/rs/zerolog v1.26.0
+	github.com/rs/cors v1.10.1
+	github.com/rs/zerolog v1.31.0
 	github.com/streadway/amqp v1.0.0
 	github.com/stretchr/testify v1.7.0
 	github.com/swaggo/files v0.0.0-20210815190702-a29dd2bc99b2
@@ -24,6 +26,7 @@ require (
 	github.com/swaggo/swag v1.7.6
 	golang.org/x/net v0.17.0
 	google.golang.org/grpc v1.59.0
+	gorm.io/gorm v1.25.5
 )
 
 require (
@@ -74,8 +77,8 @@ require (
 	github.com/lib/pq v1.10.2 // indirect
 	github.com/lunixbochs/vtclean v1.0.0 // indirect
 	github.com/mailru/easyjson v0.7.7 // indirect
-	github.com/mattn/go-colorable v0.1.10 // indirect
-	github.com/mattn/go-isatty v0.0.14 // indirect
+	github.com/mattn/go-colorable v0.1.13 // indirect
+	github.com/mattn/go-isatty v0.0.19 // indirect
 	github.com/matttproud/golang_protobuf_extensions v1.0.2-0.20181231171920-c182affec369 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
@@ -98,7 +101,6 @@ require (
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	gorm.io/driver/mysql v1.5.2 // indirect
-	gorm.io/gorm v1.25.5 // indirect
 	olympos.io/encoding/edn v0.0.0-20201019073823-d3554ca0b0a3 // indirect
 )
 

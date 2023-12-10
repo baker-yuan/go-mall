@@ -31,8 +31,8 @@ var _ = runtime.String
 var _ = utilities.NewDoubleArray
 var _ = metadata.Join
 
-func request_PortalApi_ProductCateList_0(ctx context.Context, marshaler runtime.Marshaler, client PortalApiClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq ProductCateListReq
+func request_PortalApi_ProductCategoryList_0(ctx context.Context, marshaler runtime.Marshaler, client PortalApiClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ProductCategoryListReq
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -52,13 +52,13 @@ func request_PortalApi_ProductCateList_0(ctx context.Context, marshaler runtime.
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "parentId", err)
 	}
 
-	msg, err := client.ProductCateList(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	msg, err := client.ProductCategoryList(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 
 }
 
-func local_request_PortalApi_ProductCateList_0(ctx context.Context, marshaler runtime.Marshaler, server PortalApiServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq ProductCateListReq
+func local_request_PortalApi_ProductCategoryList_0(ctx context.Context, marshaler runtime.Marshaler, server PortalApiServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ProductCategoryListReq
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -78,7 +78,7 @@ func local_request_PortalApi_ProductCateList_0(ctx context.Context, marshaler ru
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "parentId", err)
 	}
 
-	msg, err := server.ProductCateList(ctx, &protoReq)
+	msg, err := server.ProductCategoryList(ctx, &protoReq)
 	return msg, metadata, err
 
 }
@@ -89,7 +89,7 @@ func local_request_PortalApi_ProductCateList_0(ctx context.Context, marshaler ru
 // Note that using this registration option will cause many gRPC library features to stop working. Consider using RegisterPortalApiHandlerFromEndpoint instead.
 func RegisterPortalApiHandlerServer(ctx context.Context, mux *runtime.ServeMux, server PortalApiServer) error {
 
-	mux.Handle("GET", pattern_PortalApi_ProductCateList_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_PortalApi_ProductCategoryList_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -97,12 +97,12 @@ func RegisterPortalApiHandlerServer(ctx context.Context, mux *runtime.ServeMux, 
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/admin.PortalApi/ProductCateList", runtime.WithHTTPPathPattern("/home/productCateList/{parentId}"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/admin.PortalApi/ProductCategoryList", runtime.WithHTTPPathPattern("/home/productCateList/{parentId}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_PortalApi_ProductCateList_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_PortalApi_ProductCategoryList_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
@@ -110,7 +110,7 @@ func RegisterPortalApiHandlerServer(ctx context.Context, mux *runtime.ServeMux, 
 			return
 		}
 
-		forward_PortalApi_ProductCateList_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_PortalApi_ProductCategoryList_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -155,25 +155,25 @@ func RegisterPortalApiHandler(ctx context.Context, mux *runtime.ServeMux, conn *
 // "PortalApiClient" to call the correct interceptors.
 func RegisterPortalApiHandlerClient(ctx context.Context, mux *runtime.ServeMux, client PortalApiClient) error {
 
-	mux.Handle("GET", pattern_PortalApi_ProductCateList_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_PortalApi_ProductCategoryList_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/admin.PortalApi/ProductCateList", runtime.WithHTTPPathPattern("/home/productCateList/{parentId}"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/admin.PortalApi/ProductCategoryList", runtime.WithHTTPPathPattern("/home/productCateList/{parentId}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_PortalApi_ProductCateList_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_PortalApi_ProductCategoryList_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_PortalApi_ProductCateList_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_PortalApi_ProductCategoryList_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -181,9 +181,9 @@ func RegisterPortalApiHandlerClient(ctx context.Context, mux *runtime.ServeMux, 
 }
 
 var (
-	pattern_PortalApi_ProductCateList_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"home", "productCateList", "parentId"}, ""))
+	pattern_PortalApi_ProductCategoryList_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"home", "productCateList", "parentId"}, ""))
 )
 
 var (
-	forward_PortalApi_ProductCateList_0 = runtime.ForwardResponseMessage
+	forward_PortalApi_ProductCategoryList_0 = runtime.ForwardResponseMessage
 )

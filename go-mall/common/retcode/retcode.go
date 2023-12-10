@@ -1,8 +1,8 @@
 package retcode
 
 const (
-	RetSuccess       = 0
-	RetInternalError = 2
+	RetSuccess       = 200
+	RetInternalError = 500
 )
 
 var (

@@ -1,15 +1,15 @@
 app:
-  name: 'go-clean-template'
+  name: 'portal'
   version: '1.0.0'
 
 http:
   ip: 127.0.0.1
-  port: 8848
+  port: 8085
 
 
 logger:
   log_level: 'debug'
-  rollbar_env: 'go-clean-template'
+  rollbar_env: 'portal'
 
 
 db:

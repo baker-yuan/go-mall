@@ -3,7 +3,7 @@ package grpcsrv
 import (
 	"context"
 
-	"github.com/baker-yuan/go-mall/application/admin/pkg/retcode"
+	"github.com/baker-yuan/go-mall/common/retcode"
 	pb "github.com/baker-yuan/go-mall/proto/mall"
 )
 
