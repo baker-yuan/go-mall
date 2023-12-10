@@ -24,7 +24,8 @@ type (
 
 	// HTTP http配置
 	HTTP struct {
-		Port string `env-required:"true" yaml:"port" env:"HTTP_PORT"`
+		IP   string `env-required:"true" yaml:"ip" env:"HTTP_IP"`
+		Port uint32 `env-required:"true" yaml:"port" env:"HTTP_PORT"`
 	}
 
 	// Log 日志配置

@@ -4,9 +4,9 @@ import (
 	"context"
 	"errors"
 
-	"github.com/baker-yuan/go-mall/application/admin/pkg/util"
 	db2 "github.com/baker-yuan/go-mall/common/db"
 	"github.com/baker-yuan/go-mall/common/entity"
+	"github.com/baker-yuan/go-mall/common/util"
 	"gorm.io/gorm"
 )
 

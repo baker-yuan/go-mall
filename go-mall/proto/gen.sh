@@ -14,6 +14,16 @@ protoc \
 admin/*.proto model/*.proto
 
 
+protoc \
+-I ${OUT} \
+-I model/*.proto \
+--go_out=":./mall/"  \
+--go-grpc_out=":./mall/"  \
+--grpc-gateway_out=":./mall/" \
+--validate_out="lang=go:./mall/" \
+portal/*.proto
+
+
 # model
 
 #protoc \

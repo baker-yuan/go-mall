@@ -1,8 +1,8 @@
 package assembler
 
 import (
-	"github.com/baker-yuan/go-mall/application/admin/pkg/util"
 	"github.com/baker-yuan/go-mall/common/entity"
+	"github.com/baker-yuan/go-mall/common/util"
 	pb "github.com/baker-yuan/go-mall/proto/mall"
 )
 
