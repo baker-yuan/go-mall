@@ -13,6 +13,21 @@ message ProductItem {
   uint64 id = 1; // 主键
   uint64 product_category_id = 2; // 商品分类id
   string name = 3; // 商品名称
+  string sub_title = 4; // 副标题
+  double price = 8; // 价格
+  // 促销信息
+
+  // 属性信息
+  string pic = 31; // 图片
+
+  // 状态
+
+  // 其他
+  uint32 sale = 38; // 销量
+
+  // 冗余字段
+
+  // 设置
 }
 
 message SearchProductReq {
@@ -42,6 +57,21 @@ message SearchProductRsp {
   ProductRspItem data = 3;
 }
 
+message CategoryTreeItem {
+
+}
+
+message CategoryTreeListReq {
+
+}
+
+message CategoryTreeListRsp {
+  uint32 code = 1;      // 状态码
+  string message = 2;   // 提示信息
+
+  repeated CategoryTreeItem data = 3;
+}
+
 // 客户端接口
 service PortalProductApi {
   // 综合搜索商品
@@ -50,4 +80,13 @@ service PortalProductApi {
       get: "/product/search"
     };
   }
+  // 以树形结构获取所有商品分类
+  rpc CategoryTreeList (CategoryTreeListReq) returns (CategoryTreeListRsp) {
+    option (google.api.http) = {
+      get: "/product/categoryTreeList"
+    };
+  }
+
+  // 获取前台商品详情
+
 }

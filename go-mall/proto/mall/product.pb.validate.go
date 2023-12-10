@@ -63,6 +63,14 @@ func (m *ProductItem) validate(all bool) error {
 
 	// no validation rules for Name
 
+	// no validation rules for SubTitle
+
+	// no validation rules for Price
+
+	// no validation rules for Pic
+
+	// no validation rules for Sale
+
 	if len(errors) > 0 {
 		return ProductItemMultiError(errors)
 	}
@@ -597,3 +605,345 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = SearchProductRspValidationError{}
+
+// Validate checks the field values on CategoryTreeItem with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// first error encountered is returned, or nil if there are no violations.
+func (m *CategoryTreeItem) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on CategoryTreeItem with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// CategoryTreeItemMultiError, or nil if none found.
+func (m *CategoryTreeItem) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *CategoryTreeItem) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if len(errors) > 0 {
+		return CategoryTreeItemMultiError(errors)
+	}
+
+	return nil
+}
+
+// CategoryTreeItemMultiError is an error wrapping multiple validation errors
+// returned by CategoryTreeItem.ValidateAll() if the designated constraints
+// aren't met.
+type CategoryTreeItemMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m CategoryTreeItemMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m CategoryTreeItemMultiError) AllErrors() []error { return m }
+
+// CategoryTreeItemValidationError is the validation error returned by
+// CategoryTreeItem.Validate if the designated constraints aren't met.
+type CategoryTreeItemValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e CategoryTreeItemValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e CategoryTreeItemValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e CategoryTreeItemValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e CategoryTreeItemValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e CategoryTreeItemValidationError) ErrorName() string { return "CategoryTreeItemValidationError" }
+
+// Error satisfies the builtin error interface
+func (e CategoryTreeItemValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sCategoryTreeItem.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = CategoryTreeItemValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = CategoryTreeItemValidationError{}
+
+// Validate checks the field values on CategoryTreeListReq with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *CategoryTreeListReq) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on CategoryTreeListReq with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// CategoryTreeListReqMultiError, or nil if none found.
+func (m *CategoryTreeListReq) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *CategoryTreeListReq) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if len(errors) > 0 {
+		return CategoryTreeListReqMultiError(errors)
+	}
+
+	return nil
+}
+
+// CategoryTreeListReqMultiError is an error wrapping multiple validation
+// errors returned by CategoryTreeListReq.ValidateAll() if the designated
+// constraints aren't met.
+type CategoryTreeListReqMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m CategoryTreeListReqMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m CategoryTreeListReqMultiError) AllErrors() []error { return m }
+
+// CategoryTreeListReqValidationError is the validation error returned by
+// CategoryTreeListReq.Validate if the designated constraints aren't met.
+type CategoryTreeListReqValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e CategoryTreeListReqValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e CategoryTreeListReqValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e CategoryTreeListReqValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e CategoryTreeListReqValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e CategoryTreeListReqValidationError) ErrorName() string {
+	return "CategoryTreeListReqValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e CategoryTreeListReqValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sCategoryTreeListReq.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = CategoryTreeListReqValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = CategoryTreeListReqValidationError{}
+
+// Validate checks the field values on CategoryTreeListRsp with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *CategoryTreeListRsp) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on CategoryTreeListRsp with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// CategoryTreeListRspMultiError, or nil if none found.
+func (m *CategoryTreeListRsp) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *CategoryTreeListRsp) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Code
+
+	// no validation rules for Message
+
+	for idx, item := range m.GetData() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, CategoryTreeListRspValidationError{
+						field:  fmt.Sprintf("Data[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, CategoryTreeListRspValidationError{
+						field:  fmt.Sprintf("Data[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return CategoryTreeListRspValidationError{
+					field:  fmt.Sprintf("Data[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	if len(errors) > 0 {
+		return CategoryTreeListRspMultiError(errors)
+	}
+
+	return nil
+}
+
+// CategoryTreeListRspMultiError is an error wrapping multiple validation
+// errors returned by CategoryTreeListRsp.ValidateAll() if the designated
+// constraints aren't met.
+type CategoryTreeListRspMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m CategoryTreeListRspMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m CategoryTreeListRspMultiError) AllErrors() []error { return m }
+
+// CategoryTreeListRspValidationError is the validation error returned by
+// CategoryTreeListRsp.Validate if the designated constraints aren't met.
+type CategoryTreeListRspValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e CategoryTreeListRspValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e CategoryTreeListRspValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e CategoryTreeListRspValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e CategoryTreeListRspValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e CategoryTreeListRspValidationError) ErrorName() string {
+	return "CategoryTreeListRspValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e CategoryTreeListRspValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sCategoryTreeListRsp.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = CategoryTreeListRspValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = CategoryTreeListRspValidationError{}

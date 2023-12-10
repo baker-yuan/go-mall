@@ -1,5 +1,6 @@
 <template>
 	<view class="content">
+		<!-- 顶部搜索条件 -->
 		<view class="navbar" :style="{position:headerPosition,top:headerTop}">
 			<view class="nav-item" :class="{current: filterIndex === 0}" @click="tabClick(0)">
 				综合排序
@@ -16,6 +17,7 @@
 			</view>
 			<text class="cate-item yticon icon-fenlei1" @click="toggleCateMask('show')"></text>
 		</view>
+		<!-- 商品列表 -->
 		<view class="goods-list">
 			<view v-for="(item, index) in productList" :key="index" class="goods-item" @click="navToDetailPage(item)">
 				<view class="image-wrapper">
@@ -29,8 +31,10 @@
 				</view>
 			</view>
 		</view>
+		<!--  -->
 		<uni-load-more :status="loadingType"></uni-load-more>
 
+		<!--  -->
 		<view class="cate-mask" :class="cateMaskState===0 ? 'none' : cateMaskState===1 ? 'show' : ''" @click="toggleCateMask">
 			<view class="cate-content" @click.stop.prevent="stopPrevent" @touchmove.stop.prevent="stopPrevent">
 				<scroll-view scroll-y class="cate-list">
@@ -140,12 +144,12 @@
 				}
 				searchProductList(this.searchParam).then(response => {
 					let productList = response.data.data;
-					if (response.data.list.length === 0) {
+					if (response.data.data.length === 0) {
 						//没有更多了
 						this.loadingType = 'nomore';
 						this.searchParam.pageNum--;
 					} else {
-						if (response.data.list.length < this.searchParam.pageSize) {
+						if (response.data.data.length < this.searchParam.pageSize) {
 							this.loadingType = 'nomore';
 							this.searchParam.pageNum--;
 						} else {

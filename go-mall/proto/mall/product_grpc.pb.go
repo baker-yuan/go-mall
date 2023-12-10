@@ -19,7 +19,8 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	PortalProductApi_SearchProduct_FullMethodName = "/admin.PortalProductApi/SearchProduct"
+	PortalProductApi_SearchProduct_FullMethodName    = "/admin.PortalProductApi/SearchProduct"
+	PortalProductApi_CategoryTreeList_FullMethodName = "/admin.PortalProductApi/CategoryTreeList"
 )
 
 // PortalProductApiClient is the client API for PortalProductApi service.
@@ -28,6 +29,8 @@ const (
 type PortalProductApiClient interface {
 	// 综合搜索商品
 	SearchProduct(ctx context.Context, in *SearchProductReq, opts ...grpc.CallOption) (*SearchProductRsp, error)
+	// 以树形结构获取所有商品分类
+	CategoryTreeList(ctx context.Context, in *CategoryTreeListReq, opts ...grpc.CallOption) (*CategoryTreeListRsp, error)
 }
 
 type portalProductApiClient struct {
@@ -47,12 +50,23 @@ func (c *portalProductApiClient) SearchProduct(ctx context.Context, in *SearchPr
 	return out, nil
 }
 
+func (c *portalProductApiClient) CategoryTreeList(ctx context.Context, in *CategoryTreeListReq, opts ...grpc.CallOption) (*CategoryTreeListRsp, error) {
+	out := new(CategoryTreeListRsp)
+	err := c.cc.Invoke(ctx, PortalProductApi_CategoryTreeList_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // PortalProductApiServer is the server API for PortalProductApi service.
 // All implementations must embed UnimplementedPortalProductApiServer
 // for forward compatibility
 type PortalProductApiServer interface {
 	// 综合搜索商品
 	SearchProduct(context.Context, *SearchProductReq) (*SearchProductRsp, error)
+	// 以树形结构获取所有商品分类
+	CategoryTreeList(context.Context, *CategoryTreeListReq) (*CategoryTreeListRsp, error)
 	mustEmbedUnimplementedPortalProductApiServer()
 }
 
@@ -62,6 +76,9 @@ type UnimplementedPortalProductApiServer struct {
 
 func (UnimplementedPortalProductApiServer) SearchProduct(context.Context, *SearchProductReq) (*SearchProductRsp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SearchProduct not implemented")
+}
+func (UnimplementedPortalProductApiServer) CategoryTreeList(context.Context, *CategoryTreeListReq) (*CategoryTreeListRsp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CategoryTreeList not implemented")
 }
 func (UnimplementedPortalProductApiServer) mustEmbedUnimplementedPortalProductApiServer() {}
 
@@ -94,6 +111,24 @@ func _PortalProductApi_SearchProduct_Handler(srv interface{}, ctx context.Contex
 	return interceptor(ctx, in, info, handler)
 }
 
+func _PortalProductApi_CategoryTreeList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CategoryTreeListReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PortalProductApiServer).CategoryTreeList(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PortalProductApi_CategoryTreeList_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PortalProductApiServer).CategoryTreeList(ctx, req.(*CategoryTreeListReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // PortalProductApi_ServiceDesc is the grpc.ServiceDesc for PortalProductApi service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -104,6 +139,10 @@ var PortalProductApi_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SearchProduct",
 			Handler:    _PortalProductApi_SearchProduct_Handler,
+		},
+		{
+			MethodName: "CategoryTreeList",
+			Handler:    _PortalProductApi_CategoryTreeList_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

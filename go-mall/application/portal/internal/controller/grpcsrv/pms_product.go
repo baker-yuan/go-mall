@@ -23,3 +23,11 @@ func (s PortalApiImpl) SearchProduct(ctx context.Context, req *pb.SearchProductR
 	res.Code, res.Message = retcode.GetRetCodeMsg(retcode.RetSuccess)
 	return res, nil
 }
+
+// CategoryTreeList 以树形结构获取所有商品分类
+func (s PortalApiImpl) CategoryTreeList(context.Context, *pb.CategoryTreeListReq) (*pb.CategoryTreeListRsp, error) {
+	var (
+		res = &pb.CategoryTreeListRsp{}
+	)
+	return res, nil
+}
