@@ -6,25 +6,20 @@ import (
 	pb "github.com/baker-yuan/go-mall/proto/mall"
 )
 
-func ProductEntityToModel(product *entity.Product) *pb.ProductItem {
-	return &pb.ProductItem{
-		// 基本信息
-		Id:                product.ID,
-		ProductCategoryId: product.ProductCategoryID,
-		Name:              product.Name,
-		SubTitle:          product.SubTitle,
-		Price:             product.Price,
-		// 促销信息
+func ProductEntityToProductListItem(product *entity.Product) *pb.ProductList_Product {
+	return &pb.ProductList_Product{
+		Id:       product.ID,
+		Pic:      util.GetFullUrl(product.Pic),
+		Name:     product.Name,
+		SubTitle: product.SubTitle,
+		Price:    product.Price,
+		Sale:     product.Sale,
+	}
+}
 
-		// 属性信息
-		Pic: util.GetFullUrl(product.Pic),
-		// 状态
-
-		// 其他
-		Sale: product.Sale,
-
-		// 冗余字段
-
-		// 设置
+func ProductEntityToDetail(product *entity.Product) *pb.ProductAggregation_Product {
+	return &pb.ProductAggregation_Product{
+		AlbumPics: util.GetFullUrls(product.AlbumPics),
+		Pic:       util.GetFullUrl(product.Pic),
 	}
 }

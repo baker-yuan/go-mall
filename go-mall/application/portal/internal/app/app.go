@@ -49,9 +49,10 @@ func Run(cfg *config.Config) {
 	var (
 		productCategoryRepo = repo.NewProductCategoryRepo(conn)
 		productRepo         = repo.NewProductRepo(conn)
+		brandRepo           = repo.NewBrandRepo(conn)
 	)
 	homeUsecase := usecase.NewHome(productCategoryRepo)
-	productUsecase := usecase.NewProduct(productRepo)
+	productUsecase := usecase.NewProduct(productRepo, brandRepo)
 
 	// grpc服务
 	grpcSrvImpl := grpcsrv.New(homeUsecase, productUsecase)

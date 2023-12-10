@@ -17,7 +17,6 @@
 				<text class="price-tip">¥</text>
 				<text class="price">{{product.price}}</text>
 				<text class="m-price">¥{{product.originalPrice}}</text>
-				<!-- <text class="coupon-tip">7折</text> -->
 			</view>
 			<view class="bot-row">
 				<text>销量: {{product.sale}}</text>
@@ -463,7 +462,7 @@
 			stopPrevent() {},
 			//设置头图信息
 			initImgList() {
-				let tempPics = this.product.albumPics.split(',');
+				let tempPics = this.product.albumPics;
 				tempPics.unshift(this.product.pic);
 				for (let item of tempPics) {
 					if (item != null && item != '') {

@@ -60,7 +60,7 @@ type Product struct {
 	// 属性信息
 	ProductAttributeCategoryId uint64   `protobuf:"varint,30,opt,name=product_attribute_category_id,json=productAttributeCategoryId,proto3" json:"product_attribute_category_id,omitempty"` // 品牌属性分类id
 	Pic                        string   `protobuf:"bytes,31,opt,name=pic,proto3" json:"pic,omitempty"`                                                                                      // 图片
-	AlbumPics                  []string `protobuf:"bytes,32,rep,name=album_pics,json=albumPics,proto3" json:"album_pics,omitempty"`                                                         // 画册图片，连产品图片限制为5张，以逗号分割
+	AlbumPics                  []string `protobuf:"bytes,32,rep,name=album_pics,json=albumPics,proto3" json:"album_pics,omitempty"`                                                         // 画册图片，连产品图片限制为5张
 	DetailHtml                 string   `protobuf:"bytes,33,opt,name=detail_html,json=detailHtml,proto3" json:"detail_html,omitempty"`                                                      // 电脑端详情
 	DetailMobileHtml           string   `protobuf:"bytes,34,opt,name=detail_mobile_html,json=detailMobileHtml,proto3" json:"detail_mobile_html,omitempty"`                                  // 移动端详情
 	// 状态

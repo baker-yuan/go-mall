@@ -35,119 +35,6 @@ var (
 	_ = sort.Sort
 )
 
-// Validate checks the field values on ProductItem with the rules defined in
-// the proto definition for this message. If any rules are violated, the first
-// error encountered is returned, or nil if there are no violations.
-func (m *ProductItem) Validate() error {
-	return m.validate(false)
-}
-
-// ValidateAll checks the field values on ProductItem with the rules defined in
-// the proto definition for this message. If any rules are violated, the
-// result is a list of violation errors wrapped in ProductItemMultiError, or
-// nil if none found.
-func (m *ProductItem) ValidateAll() error {
-	return m.validate(true)
-}
-
-func (m *ProductItem) validate(all bool) error {
-	if m == nil {
-		return nil
-	}
-
-	var errors []error
-
-	// no validation rules for Id
-
-	// no validation rules for ProductCategoryId
-
-	// no validation rules for Name
-
-	// no validation rules for SubTitle
-
-	// no validation rules for Price
-
-	// no validation rules for Pic
-
-	// no validation rules for Sale
-
-	if len(errors) > 0 {
-		return ProductItemMultiError(errors)
-	}
-
-	return nil
-}
-
-// ProductItemMultiError is an error wrapping multiple validation errors
-// returned by ProductItem.ValidateAll() if the designated constraints aren't met.
-type ProductItemMultiError []error
-
-// Error returns a concatenation of all the error messages it wraps.
-func (m ProductItemMultiError) Error() string {
-	var msgs []string
-	for _, err := range m {
-		msgs = append(msgs, err.Error())
-	}
-	return strings.Join(msgs, "; ")
-}
-
-// AllErrors returns a list of validation violation errors.
-func (m ProductItemMultiError) AllErrors() []error { return m }
-
-// ProductItemValidationError is the validation error returned by
-// ProductItem.Validate if the designated constraints aren't met.
-type ProductItemValidationError struct {
-	field  string
-	reason string
-	cause  error
-	key    bool
-}
-
-// Field function returns field value.
-func (e ProductItemValidationError) Field() string { return e.field }
-
-// Reason function returns reason value.
-func (e ProductItemValidationError) Reason() string { return e.reason }
-
-// Cause function returns cause value.
-func (e ProductItemValidationError) Cause() error { return e.cause }
-
-// Key function returns key value.
-func (e ProductItemValidationError) Key() bool { return e.key }
-
-// ErrorName returns error name.
-func (e ProductItemValidationError) ErrorName() string { return "ProductItemValidationError" }
-
-// Error satisfies the builtin error interface
-func (e ProductItemValidationError) Error() string {
-	cause := ""
-	if e.cause != nil {
-		cause = fmt.Sprintf(" | caused by: %v", e.cause)
-	}
-
-	key := ""
-	if e.key {
-		key = "key for "
-	}
-
-	return fmt.Sprintf(
-		"invalid %sProductItem.%s: %s%s",
-		key,
-		e.field,
-		e.reason,
-		cause)
-}
-
-var _ error = ProductItemValidationError{}
-
-var _ interface {
-	Field() string
-	Reason() string
-	Key() bool
-	Cause() error
-	ErrorName() string
-} = ProductItemValidationError{}
-
 // Validate checks the field values on SearchProductReq with the rules defined
 // in the proto definition for this message. If any rules are violated, the
 // first error encountered is returned, or nil if there are no violations.
@@ -331,22 +218,22 @@ var _SearchProductReq_Sort_InLookup = map[uint32]struct{}{
 	4: {},
 }
 
-// Validate checks the field values on ProductRspItem with the rules defined in
+// Validate checks the field values on ProductList with the rules defined in
 // the proto definition for this message. If any rules are violated, the first
 // error encountered is returned, or nil if there are no violations.
-func (m *ProductRspItem) Validate() error {
+func (m *ProductList) Validate() error {
 	return m.validate(false)
 }
 
-// ValidateAll checks the field values on ProductRspItem with the rules defined
-// in the proto definition for this message. If any rules are violated, the
-// result is a list of violation errors wrapped in ProductRspItemMultiError,
-// or nil if none found.
-func (m *ProductRspItem) ValidateAll() error {
+// ValidateAll checks the field values on ProductList with the rules defined in
+// the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in ProductListMultiError, or
+// nil if none found.
+func (m *ProductList) ValidateAll() error {
 	return m.validate(true)
 }
 
-func (m *ProductRspItem) validate(all bool) error {
+func (m *ProductList) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
@@ -360,7 +247,7 @@ func (m *ProductRspItem) validate(all bool) error {
 			switch v := interface{}(item).(type) {
 			case interface{ ValidateAll() error }:
 				if err := v.ValidateAll(); err != nil {
-					errors = append(errors, ProductRspItemValidationError{
+					errors = append(errors, ProductListValidationError{
 						field:  fmt.Sprintf("Data[%v]", idx),
 						reason: "embedded message failed validation",
 						cause:  err,
@@ -368,7 +255,7 @@ func (m *ProductRspItem) validate(all bool) error {
 				}
 			case interface{ Validate() error }:
 				if err := v.Validate(); err != nil {
-					errors = append(errors, ProductRspItemValidationError{
+					errors = append(errors, ProductListValidationError{
 						field:  fmt.Sprintf("Data[%v]", idx),
 						reason: "embedded message failed validation",
 						cause:  err,
@@ -377,7 +264,7 @@ func (m *ProductRspItem) validate(all bool) error {
 			}
 		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
 			if err := v.Validate(); err != nil {
-				return ProductRspItemValidationError{
+				return ProductListValidationError{
 					field:  fmt.Sprintf("Data[%v]", idx),
 					reason: "embedded message failed validation",
 					cause:  err,
@@ -396,19 +283,18 @@ func (m *ProductRspItem) validate(all bool) error {
 	// no validation rules for PageNum
 
 	if len(errors) > 0 {
-		return ProductRspItemMultiError(errors)
+		return ProductListMultiError(errors)
 	}
 
 	return nil
 }
 
-// ProductRspItemMultiError is an error wrapping multiple validation errors
-// returned by ProductRspItem.ValidateAll() if the designated constraints
-// aren't met.
-type ProductRspItemMultiError []error
+// ProductListMultiError is an error wrapping multiple validation errors
+// returned by ProductList.ValidateAll() if the designated constraints aren't met.
+type ProductListMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
-func (m ProductRspItemMultiError) Error() string {
+func (m ProductListMultiError) Error() string {
 	var msgs []string
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
@@ -417,11 +303,11 @@ func (m ProductRspItemMultiError) Error() string {
 }
 
 // AllErrors returns a list of validation violation errors.
-func (m ProductRspItemMultiError) AllErrors() []error { return m }
+func (m ProductListMultiError) AllErrors() []error { return m }
 
-// ProductRspItemValidationError is the validation error returned by
-// ProductRspItem.Validate if the designated constraints aren't met.
-type ProductRspItemValidationError struct {
+// ProductListValidationError is the validation error returned by
+// ProductList.Validate if the designated constraints aren't met.
+type ProductListValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -429,22 +315,22 @@ type ProductRspItemValidationError struct {
 }
 
 // Field function returns field value.
-func (e ProductRspItemValidationError) Field() string { return e.field }
+func (e ProductListValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e ProductRspItemValidationError) Reason() string { return e.reason }
+func (e ProductListValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e ProductRspItemValidationError) Cause() error { return e.cause }
+func (e ProductListValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e ProductRspItemValidationError) Key() bool { return e.key }
+func (e ProductListValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e ProductRspItemValidationError) ErrorName() string { return "ProductRspItemValidationError" }
+func (e ProductListValidationError) ErrorName() string { return "ProductListValidationError" }
 
 // Error satisfies the builtin error interface
-func (e ProductRspItemValidationError) Error() string {
+func (e ProductListValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -456,14 +342,14 @@ func (e ProductRspItemValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sProductRspItem.%s: %s%s",
+		"invalid %sProductList.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = ProductRspItemValidationError{}
+var _ error = ProductListValidationError{}
 
 var _ interface {
 	Field() string
@@ -471,7 +357,7 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = ProductRspItemValidationError{}
+} = ProductListValidationError{}
 
 // Validate checks the field values on SearchProductRsp with the rules defined
 // in the proto definition for this message. If any rules are violated, the
@@ -947,3 +833,1574 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = CategoryTreeListRspValidationError{}
+
+// Validate checks the field values on ProductDetailReq with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// first error encountered is returned, or nil if there are no violations.
+func (m *ProductDetailReq) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ProductDetailReq with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// ProductDetailReqMultiError, or nil if none found.
+func (m *ProductDetailReq) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ProductDetailReq) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if m.GetId() < 0 {
+		err := ProductDetailReqValidationError{
+			field:  "Id",
+			reason: "value must be greater than or equal to 0",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if len(errors) > 0 {
+		return ProductDetailReqMultiError(errors)
+	}
+
+	return nil
+}
+
+// ProductDetailReqMultiError is an error wrapping multiple validation errors
+// returned by ProductDetailReq.ValidateAll() if the designated constraints
+// aren't met.
+type ProductDetailReqMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ProductDetailReqMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ProductDetailReqMultiError) AllErrors() []error { return m }
+
+// ProductDetailReqValidationError is the validation error returned by
+// ProductDetailReq.Validate if the designated constraints aren't met.
+type ProductDetailReqValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ProductDetailReqValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ProductDetailReqValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ProductDetailReqValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ProductDetailReqValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ProductDetailReqValidationError) ErrorName() string { return "ProductDetailReqValidationError" }
+
+// Error satisfies the builtin error interface
+func (e ProductDetailReqValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sProductDetailReq.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ProductDetailReqValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ProductDetailReqValidationError{}
+
+// Validate checks the field values on ProductAggregation with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *ProductAggregation) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ProductAggregation with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// ProductAggregationMultiError, or nil if none found.
+func (m *ProductAggregation) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ProductAggregation) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if all {
+		switch v := interface{}(m.GetProduct()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, ProductAggregationValidationError{
+					field:  "Product",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, ProductAggregationValidationError{
+					field:  "Product",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetProduct()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return ProductAggregationValidationError{
+				field:  "Product",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if all {
+		switch v := interface{}(m.GetBrand()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, ProductAggregationValidationError{
+					field:  "Brand",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, ProductAggregationValidationError{
+					field:  "Brand",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetBrand()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return ProductAggregationValidationError{
+				field:  "Brand",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	for idx, item := range m.GetProductAttributes() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, ProductAggregationValidationError{
+						field:  fmt.Sprintf("ProductAttributes[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, ProductAggregationValidationError{
+						field:  fmt.Sprintf("ProductAttributes[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return ProductAggregationValidationError{
+					field:  fmt.Sprintf("ProductAttributes[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	for idx, item := range m.GetProductAttributeValues() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, ProductAggregationValidationError{
+						field:  fmt.Sprintf("ProductAttributeValues[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, ProductAggregationValidationError{
+						field:  fmt.Sprintf("ProductAttributeValues[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return ProductAggregationValidationError{
+					field:  fmt.Sprintf("ProductAttributeValues[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	for idx, item := range m.GetSkuStocks() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, ProductAggregationValidationError{
+						field:  fmt.Sprintf("SkuStocks[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, ProductAggregationValidationError{
+						field:  fmt.Sprintf("SkuStocks[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return ProductAggregationValidationError{
+					field:  fmt.Sprintf("SkuStocks[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	for idx, item := range m.GetProductLadders() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, ProductAggregationValidationError{
+						field:  fmt.Sprintf("ProductLadders[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, ProductAggregationValidationError{
+						field:  fmt.Sprintf("ProductLadders[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return ProductAggregationValidationError{
+					field:  fmt.Sprintf("ProductLadders[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	for idx, item := range m.GetProductFullReductions() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, ProductAggregationValidationError{
+						field:  fmt.Sprintf("ProductFullReductions[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, ProductAggregationValidationError{
+						field:  fmt.Sprintf("ProductFullReductions[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return ProductAggregationValidationError{
+					field:  fmt.Sprintf("ProductFullReductions[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	for idx, item := range m.GetCoupons() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, ProductAggregationValidationError{
+						field:  fmt.Sprintf("Coupons[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, ProductAggregationValidationError{
+						field:  fmt.Sprintf("Coupons[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return ProductAggregationValidationError{
+					field:  fmt.Sprintf("Coupons[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	if len(errors) > 0 {
+		return ProductAggregationMultiError(errors)
+	}
+
+	return nil
+}
+
+// ProductAggregationMultiError is an error wrapping multiple validation errors
+// returned by ProductAggregation.ValidateAll() if the designated constraints
+// aren't met.
+type ProductAggregationMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ProductAggregationMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ProductAggregationMultiError) AllErrors() []error { return m }
+
+// ProductAggregationValidationError is the validation error returned by
+// ProductAggregation.Validate if the designated constraints aren't met.
+type ProductAggregationValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ProductAggregationValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ProductAggregationValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ProductAggregationValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ProductAggregationValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ProductAggregationValidationError) ErrorName() string {
+	return "ProductAggregationValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ProductAggregationValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sProductAggregation.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ProductAggregationValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ProductAggregationValidationError{}
+
+// Validate checks the field values on ProductDetailRsp with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// first error encountered is returned, or nil if there are no violations.
+func (m *ProductDetailRsp) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ProductDetailRsp with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// ProductDetailRspMultiError, or nil if none found.
+func (m *ProductDetailRsp) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ProductDetailRsp) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Code
+
+	// no validation rules for Message
+
+	if all {
+		switch v := interface{}(m.GetData()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, ProductDetailRspValidationError{
+					field:  "Data",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, ProductDetailRspValidationError{
+					field:  "Data",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetData()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return ProductDetailRspValidationError{
+				field:  "Data",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if len(errors) > 0 {
+		return ProductDetailRspMultiError(errors)
+	}
+
+	return nil
+}
+
+// ProductDetailRspMultiError is an error wrapping multiple validation errors
+// returned by ProductDetailRsp.ValidateAll() if the designated constraints
+// aren't met.
+type ProductDetailRspMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ProductDetailRspMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ProductDetailRspMultiError) AllErrors() []error { return m }
+
+// ProductDetailRspValidationError is the validation error returned by
+// ProductDetailRsp.Validate if the designated constraints aren't met.
+type ProductDetailRspValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ProductDetailRspValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ProductDetailRspValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ProductDetailRspValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ProductDetailRspValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ProductDetailRspValidationError) ErrorName() string { return "ProductDetailRspValidationError" }
+
+// Error satisfies the builtin error interface
+func (e ProductDetailRspValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sProductDetailRsp.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ProductDetailRspValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ProductDetailRspValidationError{}
+
+// Validate checks the field values on ProductList_Product with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *ProductList_Product) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ProductList_Product with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// ProductList_ProductMultiError, or nil if none found.
+func (m *ProductList_Product) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ProductList_Product) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Id
+
+	// no validation rules for Pic
+
+	// no validation rules for Name
+
+	// no validation rules for SubTitle
+
+	// no validation rules for Price
+
+	// no validation rules for Sale
+
+	if len(errors) > 0 {
+		return ProductList_ProductMultiError(errors)
+	}
+
+	return nil
+}
+
+// ProductList_ProductMultiError is an error wrapping multiple validation
+// errors returned by ProductList_Product.ValidateAll() if the designated
+// constraints aren't met.
+type ProductList_ProductMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ProductList_ProductMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ProductList_ProductMultiError) AllErrors() []error { return m }
+
+// ProductList_ProductValidationError is the validation error returned by
+// ProductList_Product.Validate if the designated constraints aren't met.
+type ProductList_ProductValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ProductList_ProductValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ProductList_ProductValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ProductList_ProductValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ProductList_ProductValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ProductList_ProductValidationError) ErrorName() string {
+	return "ProductList_ProductValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ProductList_ProductValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sProductList_Product.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ProductList_ProductValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ProductList_ProductValidationError{}
+
+// Validate checks the field values on ProductAggregation_Product with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *ProductAggregation_Product) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ProductAggregation_Product with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// ProductAggregation_ProductMultiError, or nil if none found.
+func (m *ProductAggregation_Product) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ProductAggregation_Product) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Pic
+
+	// no validation rules for Name
+
+	// no validation rules for SubTitle
+
+	// no validation rules for Price
+
+	// no validation rules for OriginalPrice
+
+	// no validation rules for Sale
+
+	if len(errors) > 0 {
+		return ProductAggregation_ProductMultiError(errors)
+	}
+
+	return nil
+}
+
+// ProductAggregation_ProductMultiError is an error wrapping multiple
+// validation errors returned by ProductAggregation_Product.ValidateAll() if
+// the designated constraints aren't met.
+type ProductAggregation_ProductMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ProductAggregation_ProductMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ProductAggregation_ProductMultiError) AllErrors() []error { return m }
+
+// ProductAggregation_ProductValidationError is the validation error returned
+// by ProductAggregation_Product.Validate if the designated constraints aren't met.
+type ProductAggregation_ProductValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ProductAggregation_ProductValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ProductAggregation_ProductValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ProductAggregation_ProductValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ProductAggregation_ProductValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ProductAggregation_ProductValidationError) ErrorName() string {
+	return "ProductAggregation_ProductValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ProductAggregation_ProductValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sProductAggregation_Product.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ProductAggregation_ProductValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ProductAggregation_ProductValidationError{}
+
+// Validate checks the field values on ProductAggregation_Brand with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *ProductAggregation_Brand) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ProductAggregation_Brand with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// ProductAggregation_BrandMultiError, or nil if none found.
+func (m *ProductAggregation_Brand) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ProductAggregation_Brand) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Name
+
+	// no validation rules for FirstLetter
+
+	// no validation rules for Logo
+
+	if len(errors) > 0 {
+		return ProductAggregation_BrandMultiError(errors)
+	}
+
+	return nil
+}
+
+// ProductAggregation_BrandMultiError is an error wrapping multiple validation
+// errors returned by ProductAggregation_Brand.ValidateAll() if the designated
+// constraints aren't met.
+type ProductAggregation_BrandMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ProductAggregation_BrandMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ProductAggregation_BrandMultiError) AllErrors() []error { return m }
+
+// ProductAggregation_BrandValidationError is the validation error returned by
+// ProductAggregation_Brand.Validate if the designated constraints aren't met.
+type ProductAggregation_BrandValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ProductAggregation_BrandValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ProductAggregation_BrandValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ProductAggregation_BrandValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ProductAggregation_BrandValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ProductAggregation_BrandValidationError) ErrorName() string {
+	return "ProductAggregation_BrandValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ProductAggregation_BrandValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sProductAggregation_Brand.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ProductAggregation_BrandValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ProductAggregation_BrandValidationError{}
+
+// Validate checks the field values on ProductAggregation_ProductAttribute with
+// the rules defined in the proto definition for this message. If any rules
+// are violated, the first error encountered is returned, or nil if there are
+// no violations.
+func (m *ProductAggregation_ProductAttribute) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ProductAggregation_ProductAttribute
+// with the rules defined in the proto definition for this message. If any
+// rules are violated, the result is a list of violation errors wrapped in
+// ProductAggregation_ProductAttributeMultiError, or nil if none found.
+func (m *ProductAggregation_ProductAttribute) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ProductAggregation_ProductAttribute) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if len(errors) > 0 {
+		return ProductAggregation_ProductAttributeMultiError(errors)
+	}
+
+	return nil
+}
+
+// ProductAggregation_ProductAttributeMultiError is an error wrapping multiple
+// validation errors returned by
+// ProductAggregation_ProductAttribute.ValidateAll() if the designated
+// constraints aren't met.
+type ProductAggregation_ProductAttributeMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ProductAggregation_ProductAttributeMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ProductAggregation_ProductAttributeMultiError) AllErrors() []error { return m }
+
+// ProductAggregation_ProductAttributeValidationError is the validation error
+// returned by ProductAggregation_ProductAttribute.Validate if the designated
+// constraints aren't met.
+type ProductAggregation_ProductAttributeValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ProductAggregation_ProductAttributeValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ProductAggregation_ProductAttributeValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ProductAggregation_ProductAttributeValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ProductAggregation_ProductAttributeValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ProductAggregation_ProductAttributeValidationError) ErrorName() string {
+	return "ProductAggregation_ProductAttributeValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ProductAggregation_ProductAttributeValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sProductAggregation_ProductAttribute.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ProductAggregation_ProductAttributeValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ProductAggregation_ProductAttributeValidationError{}
+
+// Validate checks the field values on ProductAggregation_ProductAttributeValue
+// with the rules defined in the proto definition for this message. If any
+// rules are violated, the first error encountered is returned, or nil if
+// there are no violations.
+func (m *ProductAggregation_ProductAttributeValue) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on
+// ProductAggregation_ProductAttributeValue with the rules defined in the
+// proto definition for this message. If any rules are violated, the result is
+// a list of violation errors wrapped in
+// ProductAggregation_ProductAttributeValueMultiError, or nil if none found.
+func (m *ProductAggregation_ProductAttributeValue) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ProductAggregation_ProductAttributeValue) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if len(errors) > 0 {
+		return ProductAggregation_ProductAttributeValueMultiError(errors)
+	}
+
+	return nil
+}
+
+// ProductAggregation_ProductAttributeValueMultiError is an error wrapping
+// multiple validation errors returned by
+// ProductAggregation_ProductAttributeValue.ValidateAll() if the designated
+// constraints aren't met.
+type ProductAggregation_ProductAttributeValueMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ProductAggregation_ProductAttributeValueMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ProductAggregation_ProductAttributeValueMultiError) AllErrors() []error { return m }
+
+// ProductAggregation_ProductAttributeValueValidationError is the validation
+// error returned by ProductAggregation_ProductAttributeValue.Validate if the
+// designated constraints aren't met.
+type ProductAggregation_ProductAttributeValueValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ProductAggregation_ProductAttributeValueValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ProductAggregation_ProductAttributeValueValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ProductAggregation_ProductAttributeValueValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ProductAggregation_ProductAttributeValueValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ProductAggregation_ProductAttributeValueValidationError) ErrorName() string {
+	return "ProductAggregation_ProductAttributeValueValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ProductAggregation_ProductAttributeValueValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sProductAggregation_ProductAttributeValue.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ProductAggregation_ProductAttributeValueValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ProductAggregation_ProductAttributeValueValidationError{}
+
+// Validate checks the field values on ProductAggregation_SkuStock with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *ProductAggregation_SkuStock) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ProductAggregation_SkuStock with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// ProductAggregation_SkuStockMultiError, or nil if none found.
+func (m *ProductAggregation_SkuStock) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ProductAggregation_SkuStock) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if len(errors) > 0 {
+		return ProductAggregation_SkuStockMultiError(errors)
+	}
+
+	return nil
+}
+
+// ProductAggregation_SkuStockMultiError is an error wrapping multiple
+// validation errors returned by ProductAggregation_SkuStock.ValidateAll() if
+// the designated constraints aren't met.
+type ProductAggregation_SkuStockMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ProductAggregation_SkuStockMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ProductAggregation_SkuStockMultiError) AllErrors() []error { return m }
+
+// ProductAggregation_SkuStockValidationError is the validation error returned
+// by ProductAggregation_SkuStock.Validate if the designated constraints
+// aren't met.
+type ProductAggregation_SkuStockValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ProductAggregation_SkuStockValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ProductAggregation_SkuStockValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ProductAggregation_SkuStockValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ProductAggregation_SkuStockValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ProductAggregation_SkuStockValidationError) ErrorName() string {
+	return "ProductAggregation_SkuStockValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ProductAggregation_SkuStockValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sProductAggregation_SkuStock.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ProductAggregation_SkuStockValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ProductAggregation_SkuStockValidationError{}
+
+// Validate checks the field values on ProductAggregation_ProductLadder with
+// the rules defined in the proto definition for this message. If any rules
+// are violated, the first error encountered is returned, or nil if there are
+// no violations.
+func (m *ProductAggregation_ProductLadder) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ProductAggregation_ProductLadder with
+// the rules defined in the proto definition for this message. If any rules
+// are violated, the result is a list of violation errors wrapped in
+// ProductAggregation_ProductLadderMultiError, or nil if none found.
+func (m *ProductAggregation_ProductLadder) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ProductAggregation_ProductLadder) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if len(errors) > 0 {
+		return ProductAggregation_ProductLadderMultiError(errors)
+	}
+
+	return nil
+}
+
+// ProductAggregation_ProductLadderMultiError is an error wrapping multiple
+// validation errors returned by
+// ProductAggregation_ProductLadder.ValidateAll() if the designated
+// constraints aren't met.
+type ProductAggregation_ProductLadderMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ProductAggregation_ProductLadderMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ProductAggregation_ProductLadderMultiError) AllErrors() []error { return m }
+
+// ProductAggregation_ProductLadderValidationError is the validation error
+// returned by ProductAggregation_ProductLadder.Validate if the designated
+// constraints aren't met.
+type ProductAggregation_ProductLadderValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ProductAggregation_ProductLadderValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ProductAggregation_ProductLadderValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ProductAggregation_ProductLadderValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ProductAggregation_ProductLadderValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ProductAggregation_ProductLadderValidationError) ErrorName() string {
+	return "ProductAggregation_ProductLadderValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ProductAggregation_ProductLadderValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sProductAggregation_ProductLadder.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ProductAggregation_ProductLadderValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ProductAggregation_ProductLadderValidationError{}
+
+// Validate checks the field values on ProductAggregation_ProductFullReduction
+// with the rules defined in the proto definition for this message. If any
+// rules are violated, the first error encountered is returned, or nil if
+// there are no violations.
+func (m *ProductAggregation_ProductFullReduction) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on
+// ProductAggregation_ProductFullReduction with the rules defined in the proto
+// definition for this message. If any rules are violated, the result is a
+// list of violation errors wrapped in
+// ProductAggregation_ProductFullReductionMultiError, or nil if none found.
+func (m *ProductAggregation_ProductFullReduction) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ProductAggregation_ProductFullReduction) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if len(errors) > 0 {
+		return ProductAggregation_ProductFullReductionMultiError(errors)
+	}
+
+	return nil
+}
+
+// ProductAggregation_ProductFullReductionMultiError is an error wrapping
+// multiple validation errors returned by
+// ProductAggregation_ProductFullReduction.ValidateAll() if the designated
+// constraints aren't met.
+type ProductAggregation_ProductFullReductionMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ProductAggregation_ProductFullReductionMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ProductAggregation_ProductFullReductionMultiError) AllErrors() []error { return m }
+
+// ProductAggregation_ProductFullReductionValidationError is the validation
+// error returned by ProductAggregation_ProductFullReduction.Validate if the
+// designated constraints aren't met.
+type ProductAggregation_ProductFullReductionValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ProductAggregation_ProductFullReductionValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ProductAggregation_ProductFullReductionValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ProductAggregation_ProductFullReductionValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ProductAggregation_ProductFullReductionValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ProductAggregation_ProductFullReductionValidationError) ErrorName() string {
+	return "ProductAggregation_ProductFullReductionValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ProductAggregation_ProductFullReductionValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sProductAggregation_ProductFullReduction.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ProductAggregation_ProductFullReductionValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ProductAggregation_ProductFullReductionValidationError{}
+
+// Validate checks the field values on ProductAggregation_Coupon with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *ProductAggregation_Coupon) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ProductAggregation_Coupon with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// ProductAggregation_CouponMultiError, or nil if none found.
+func (m *ProductAggregation_Coupon) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ProductAggregation_Coupon) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if len(errors) > 0 {
+		return ProductAggregation_CouponMultiError(errors)
+	}
+
+	return nil
+}
+
+// ProductAggregation_CouponMultiError is an error wrapping multiple validation
+// errors returned by ProductAggregation_Coupon.ValidateAll() if the
+// designated constraints aren't met.
+type ProductAggregation_CouponMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ProductAggregation_CouponMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ProductAggregation_CouponMultiError) AllErrors() []error { return m }
+
+// ProductAggregation_CouponValidationError is the validation error returned by
+// ProductAggregation_Coupon.Validate if the designated constraints aren't met.
+type ProductAggregation_CouponValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ProductAggregation_CouponValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ProductAggregation_CouponValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ProductAggregation_CouponValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ProductAggregation_CouponValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ProductAggregation_CouponValidationError) ErrorName() string {
+	return "ProductAggregation_CouponValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ProductAggregation_CouponValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sProductAggregation_Coupon.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ProductAggregation_CouponValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ProductAggregation_CouponValidationError{}

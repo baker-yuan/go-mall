@@ -20,6 +20,19 @@ type (
 	}
 )
 
+// Brand 商品品牌
+type (
+	// IBrandUseCase 业务逻辑
+	IBrandUseCase interface {
+	}
+
+	// IBrandRepo 数据存储操作
+	IBrandRepo interface {
+		// GetByID 根据主键ID查询商品品牌表
+		GetByID(ctx context.Context, id uint64) (*entity.Brand, error)
+	}
+)
+
 // IHomeUseCase 首页
 type (
 	// IHomeUseCase 业务逻辑
@@ -34,11 +47,16 @@ type (
 	// IProductUseCase 业务逻辑
 	IProductUseCase interface {
 		// SearchProduct 综合搜索商品
-		SearchProduct(ctx context.Context, req *pb.SearchProductReq) ([]*pb.ProductItem, error)
+		SearchProduct(ctx context.Context, req *pb.SearchProductReq) ([]*pb.ProductList_Product, error)
+		// ProductDetail 获取前台商品详情
+		ProductDetail(ctx context.Context, req *pb.ProductDetailReq) (*pb.ProductAggregation, error)
 	}
 
 	// IProductRepo 数据存储操作
 	IProductRepo interface {
+		// GetByID 根据主键ID查询商品
+		GetByID(ctx context.Context, id uint64) (*entity.Product, error)
+
 		// SearchProduct 综合搜索商品
 		SearchProduct(ctx context.Context, req *pb.SearchProductReq) (entity.Products, error)
 	}

@@ -8,27 +8,7 @@ import "validate/validate.proto";
 import "google/api/annotations.proto";
 import "google/protobuf/wrappers.proto";
 
-message ProductItem {
-  // 基本信息
-  uint64 id = 1; // 主键
-  uint64 product_category_id = 2; // 商品分类id
-  string name = 3; // 商品名称
-  string sub_title = 4; // 副标题
-  double price = 8; // 价格
-  // 促销信息
 
-  // 属性信息
-  string pic = 31; // 图片
-
-  // 状态
-
-  // 其他
-  uint32 sale = 38; // 销量
-
-  // 冗余字段
-
-  // 设置
-}
 
 message SearchProductReq {
   // 条件
@@ -41,8 +21,18 @@ message SearchProductReq {
   uint32 sort = 12 [(validate.rules).uint32 = {in: [0, 1, 2, 3, 4]}];      // 排序字段:0->按相关度；1->按新品；2->按销量；3->价格从低到高；4->价格从高到低
 }
 
-message ProductRspItem {
-  repeated ProductItem data = 1;    // 商品
+message ProductList {
+  // 商品列表
+  message Product {
+    uint64 id = 1; // 主键
+    string pic = 31; // 图片
+    string name = 3; // 商品名称
+    string sub_title = 4; // 副标题
+    double price = 8; // 价格
+    uint32 sale = 38; // 销量
+  }
+
+  repeated Product data = 1;    // 商品
 
   uint32 total = 10;       // 总数量
   uint32 page_total = 11;  // 总页数
@@ -54,7 +44,7 @@ message SearchProductRsp {
   uint32 code = 1;      // 状态码
   string message = 2;   // 提示信息
 
-  ProductRspItem data = 3;
+  ProductList data = 3;
 }
 
 message CategoryTreeItem {
@@ -70,6 +60,69 @@ message CategoryTreeListRsp {
   string message = 2;   // 提示信息
 
   repeated CategoryTreeItem data = 3;
+}
+
+message ProductDetailReq {
+  uint64 id = 1 [(validate.rules).uint64.gte = 0]; // 主键
+}
+
+
+
+
+// 前台商品详情
+message ProductAggregation {
+  message Product {
+    repeated string album_pics = 32; // 画册图片，连产品图片限制为5张
+    string pic = 31; // 图片
+
+    string name = 3; // 商品名称
+    string sub_title = 4; // 副标题
+    double price = 8; // 价格
+    double original_price = 9; // 市场价
+    uint32 sale = 38; // 销量
+  }
+  message Brand {
+    string name = 2;                    // 名称
+    string first_letter = 3;            // 首字母
+    string logo = 9;                    // 品牌logo
+  }
+
+  message ProductAttribute {
+  }
+
+  message ProductAttributeValue {
+  }
+
+  message SkuStock {
+  }
+
+  message ProductLadder {
+
+  }
+
+  message ProductFullReduction {
+
+  }
+
+  message Coupon {
+
+  }
+
+  Product product = 1;                                         // 商品信息
+  Brand brand = 2;                                             // 商品品牌
+  repeated ProductAttribute product_attributes = 3;            // 商品属性与参数
+  repeated ProductAttributeValue product_attribute_values = 4; // 手动录入的商品属性与参数值
+  repeated SkuStock sku_stocks = 5;                            // 商品的sku库存信息
+  repeated ProductLadder product_ladders = 6;                  // 商品阶梯价格设置
+  repeated ProductFullReduction product_full_reductions = 7;   // 商品满减价格设置
+  repeated Coupon coupons = 8;                                 // 商品可用优惠券
+}
+
+message ProductDetailRsp {
+  uint32 code = 1;      // 状态码
+  string message = 2;   // 提示信息
+
+  ProductAggregation data = 3; // 详情
 }
 
 // 客户端接口
@@ -88,5 +141,9 @@ service PortalProductApi {
   }
 
   // 获取前台商品详情
-
+  rpc ProductDetail (ProductDetailReq) returns (ProductDetailRsp) {
+    option (google.api.http) = {
+      get: "/product/detail/{id}"
+    };
+  }
 }

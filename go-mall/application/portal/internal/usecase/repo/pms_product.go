@@ -23,6 +23,11 @@ func NewProductRepo(conn *gorm.DB) *ProductRepo {
 	}
 }
 
+// GetByID 根据主键ID查询商品
+func (r ProductRepo) GetByID(ctx context.Context, id uint64) (*entity.Product, error) {
+	return r.GenericDao.GetByID(ctx, id)
+}
+
 // SearchProduct 综合搜索商品
 func (r ProductRepo) SearchProduct(ctx context.Context, req *pb.SearchProductReq) (entity.Products, error) {
 	var (

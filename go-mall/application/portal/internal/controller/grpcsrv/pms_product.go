@@ -16,7 +16,7 @@ func (s PortalApiImpl) SearchProduct(ctx context.Context, req *pb.SearchProductR
 	if err != nil {
 		return nil, err
 	}
-	res.Data = &pb.ProductRspItem{
+	res.Data = &pb.ProductList{
 		Data: products,
 	}
 
@@ -29,5 +29,20 @@ func (s PortalApiImpl) CategoryTreeList(context.Context, *pb.CategoryTreeListReq
 	var (
 		res = &pb.CategoryTreeListRsp{}
 	)
+	return res, nil
+}
+
+// ProductDetail 获取前台商品详情
+func (s PortalApiImpl) ProductDetail(ctx context.Context, req *pb.ProductDetailReq) (*pb.ProductDetailRsp, error) {
+	var (
+		res = &pb.ProductDetailRsp{}
+	)
+	product, err := s.product.ProductDetail(ctx, req)
+	if err != nil {
+		return nil, err
+	}
+	res.Data = product
+
+	res.Code, res.Message = retcode.GetRetCodeMsg(retcode.RetSuccess)
 	return res, nil
 }
