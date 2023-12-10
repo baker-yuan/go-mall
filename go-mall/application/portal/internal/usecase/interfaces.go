@@ -61,3 +61,29 @@ type (
 		SearchProduct(ctx context.Context, req *pb.SearchProductReq) (entity.Products, error)
 	}
 )
+
+// ProductAttribute 商品属性参数
+type (
+	// IProductAttributeUseCase 业务逻辑
+	IProductAttributeUseCase interface {
+	}
+
+	// IProductAttributeRepo 数据存储操作
+	IProductAttributeRepo interface {
+		// GetProductAttributeByCategoryID 根据产品属性分类表ID获取商品属性参数表
+		GetProductAttributeByCategoryID(ctx context.Context, productAttributeCategoryID uint64) (entity.ProductAttributes, error)
+	}
+)
+
+// ProductAttributeValue 产品参数信息
+type (
+	// IProductAttributeValueUseCase 业务逻辑
+	IProductAttributeValueUseCase interface {
+	}
+
+	// IProductAttributeValueRepo 数据存储操作
+	IProductAttributeValueRepo interface {
+		// GetByProductAttributeID 根据productAttributeID查询产品参数信息
+		GetByProductAttributeID(ctx context.Context, productID uint64, productAttributeIDs []uint64) (entity.ProductAttributeValues, error)
+	}
+)

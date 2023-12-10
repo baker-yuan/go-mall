@@ -22,3 +22,13 @@ type ProductAttribute struct {
 func (c ProductAttribute) TableName() string {
 	return "pms_product_attribute"
 }
+
+type ProductAttributes []*ProductAttribute
+
+func (a ProductAttributes) GetIDs() []uint64 {
+	res := make([]uint64, 0)
+	for _, attributes := range a {
+		res = append(res, attributes.ID)
+	}
+	return res
+}

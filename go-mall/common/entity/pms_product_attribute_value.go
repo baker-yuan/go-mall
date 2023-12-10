@@ -16,3 +16,5 @@ type ProductAttributeValue struct {
 func (ProductAttributeValue) TableName() string {
 	return "pms_product_attribute_value"
 }
+
+type ProductAttributeValues []*ProductAttributeValue

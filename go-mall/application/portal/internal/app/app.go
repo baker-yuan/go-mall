@@ -47,12 +47,19 @@ func Run(cfg *config.Config) {
 	util.InitBaseUrl(cfg.Oss.BaseUrl)
 
 	var (
-		productCategoryRepo = repo.NewProductCategoryRepo(conn)
-		productRepo         = repo.NewProductRepo(conn)
-		brandRepo           = repo.NewBrandRepo(conn)
+		productCategoryRepo       = repo.NewProductCategoryRepo(conn)
+		productRepo               = repo.NewProductRepo(conn)
+		brandRepo                 = repo.NewBrandRepo(conn)
+		productAttributeRepo      = repo.NewProductAttributeRepo(conn)
+		productAttributeValueRepo = repo.NewProductAttributeValueRepo(conn)
 	)
 	homeUsecase := usecase.NewHome(productCategoryRepo)
-	productUsecase := usecase.NewProduct(productRepo, brandRepo)
+	productUsecase := usecase.NewProduct(
+		productRepo,
+		brandRepo,
+		productAttributeRepo,
+		productAttributeValueRepo,
+	)
 
 	// grpc服务
 	grpcSrvImpl := grpcsrv.New(homeUsecase, productUsecase)

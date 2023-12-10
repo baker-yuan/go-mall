@@ -1803,6 +1803,12 @@ func (m *ProductAggregation_ProductAttribute) validate(all bool) error {
 
 	var errors []error
 
+	// no validation rules for Id
+
+	// no validation rules for ProductAttributeCategoryId
+
+	// no validation rules for Name
+
 	if len(errors) > 0 {
 		return ProductAggregation_ProductAttributeMultiError(errors)
 	}
@@ -1908,6 +1914,14 @@ func (m *ProductAggregation_ProductAttributeValue) validate(all bool) error {
 	}
 
 	var errors []error
+
+	// no validation rules for Id
+
+	// no validation rules for ProductId
+
+	// no validation rules for ProductAttributeId
+
+	// no validation rules for Value
 
 	if len(errors) > 0 {
 		return ProductAggregation_ProductAttributeValueMultiError(errors)

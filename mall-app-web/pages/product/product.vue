@@ -278,28 +278,29 @@
 		},
 		data() {
 			return {
-				specClass: 'none',
-				attrClass: 'none',
-				specSelected: [],
+				specClass: 'none', //
+				attrClass: 'none', //
+        imgList: [], // 头图信息
+				specSelected: [], // 购买类型
 				favorite: false,
-				shareList: [],
-				imgList: [],
-				desc: '',
-				specList: [],
-				specChildList: [],
-				product: {},
-				brand: {},
-				serviceList: [],
-				skuStockList: [],
-				attrList: [],
-				promotionTipList: [],
-				couponState: 0,
-				couponList: []
+				shareList: [], //
+				desc: '', //
+				specList: [], //
+				specChildList: [], //
+				product: {}, //
+				brand: {}, //
+				serviceList: [], //
+				skuStockList: [], //
+				attrList: [], //
+				promotionTipList: [], //
+				couponState: 0, //
+				couponList: [] //
 			};
 		},
 		async onLoad(options) {
 			let id = options.id;
 			this.shareList = defaultShareList;
+      // 加载数据
 			this.loadData(id);
 		},
 		computed: {
@@ -393,7 +394,7 @@
 					}, timer)
 				});
 			},
-			//选择规格
+			// 选择规格
 			selectSpec(index, pid) {
 				let list = this.specChildList;
 				list.forEach(item => {
@@ -403,7 +404,7 @@
 				})
 
 				this.$set(list[index], 'selected', true);
-				//存储已选择
+				// 存储已选择
 				/**
 				 * 修复选择规格存储错误
 				 * 将这几行代码替换即可
@@ -418,7 +419,7 @@
 				this.changeSpecInfo();
 
 			},
-			//领取优惠券
+			// 领取优惠券
 			addCoupon(coupon) {
 				this.toggleCoupon();
 				addMemberCoupon(coupon.id).then(response => {
@@ -428,17 +429,17 @@
 					});
 				});
 			},
-			//分享
+			// 分享
 			share() {
 				this.$refs.share.toggleMask();
 			},
-			//收藏
+			// 收藏
 			toFavorite() {
 				if (!this.checkForLogin()) {
 					return;
 				}
 				if (this.favorite) {
-					//取消收藏
+					// 取消收藏
 					deleteProductCollection({
 						productId: this.product.id
 					}).then(response => {
@@ -449,7 +450,7 @@
 						this.favorite = !this.favorite;
 					});
 				} else {
-					//收藏
+					// 收藏
 					let productCollection = {
 						productId: this.product.id,
 						productName: this.product.name,
@@ -495,8 +496,8 @@
 			},
 			// 设置商品规格
 			initSpecList(data) {
-				for (let i = 0; i < data.productAttributeList.length; i++) {
-					let item = data.productAttributeList[i];
+				for (let i = 0; i < data.productAttributes.length; i++) {
+					let item = data.productAttributes[i];
 					if (item.type == 0) {
 						this.specList.push({
 							id: item.id,
@@ -504,7 +505,7 @@
 						});
 						if (item.handAddStatus == 1) {
 							// 支持手动新增的
-							let valueList = data.productAttributeValueList;
+							let valueList = data.productAttributeValues;
 							let filterValueList = valueList.filter(value => value.productAttributeId == item.id);
 							let inputList = filterValueList[0].value.split(',');
 							for (let j = 0; j < inputList.length; j++) {
@@ -515,7 +516,7 @@
 								});
 							}
 						} else if (item.handAddStatus == 0) {
-							//不支持手动新增的
+							// 不支持手动新增的
 							let inputList = item.inputList.split(',');
 							for (let j = 0; j < inputList.length; j++) {
 								this.specChildList.push({
@@ -552,9 +553,9 @@
 			},
 			// 设置商品参数
 			initAttrList(data) {
-				for (let item of data.productAttributeList) {
+				for (let item of data.productAttributes) {
 					if (item.type == 1) {
-						let valueList = data.productAttributeValueList;
+						let valueList = data.productAttributeValues;
 						let filterValueList = valueList.filter(value => value.productAttributeId == item.id);
 						let value = filterValueList[0].value;
 						this.attrList.push({
@@ -619,7 +620,7 @@
 				if (skuStock != null) {
 					this.product.originalPrice = skuStock.price;
 					if (this.product.promotionType == 1) {
-						//单品优惠使用促销价
+						// 单品优惠使用促销价
 						this.product.price = skuStock.promotionPrice;
 					} else {
 						this.product.price = skuStock.price;
@@ -627,7 +628,7 @@
 					this.product.stock = skuStock.stock;
 				}
 			},
-			//获取当前选中商品的SKU
+			// 获取当前选中商品的SKU
 			getSkuStock() {
 				for (let i = 0; i < this.skuStockList.length; i++) {
 					let spDataArr = JSON.parse(this.skuStockList[i].spData);
@@ -648,7 +649,7 @@
 				}
 				return null;
 			},
-			//将商品加入到购物车
+			// 将商品加入到购物车
 			addToCart() {
 				if (!this.checkForLogin()) {
 					return;
@@ -675,7 +676,7 @@
 					})
 				});
 			},
-			//检查登录状态并弹出登录框
+			// 检查登录状态并弹出登录框
 			checkForLogin() {
 				if (!this.hasLogin) {
 					uni.showModal({
