@@ -43,7 +43,7 @@
 					}
 				})
 			},
-			//一级分类点击
+			// 一级分类点击
 			tabtap(item) {
 				this.currentId = item.id;
 				fetchProductCateList(this.currentId).then(response => {

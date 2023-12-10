@@ -19,7 +19,13 @@ func ProductEntityToProductListItem(product *entity.Product) *pb.ProductList_Pro
 
 func ProductEntityToDetail(product *entity.Product) *pb.ProductAggregation_Product {
 	return &pb.ProductAggregation_Product{
-		AlbumPics: util.GetFullUrls(product.AlbumPics),
-		Pic:       util.GetFullUrl(product.Pic),
+		AlbumPics:     util.GetFullUrls(product.AlbumPics),
+		Pic:           util.GetFullUrl(product.Pic),
+		Name:          product.Name,
+		SubTitle:      product.SubTitle,
+		Price:         product.Price,
+		OriginalPrice: product.OriginalPrice,
+		Sale:          product.Sale,
+		Stock:         product.Stock,
 	}
 }

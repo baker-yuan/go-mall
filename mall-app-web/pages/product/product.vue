@@ -1,5 +1,6 @@
 <template>
 	<view class="container">
+		<!-- 图片列表 -->
 		<view class="carousel">
 			<swiper indicator-dots circular=true duration="400">
 				<swiper-item class="swiper-item" v-for="(item,index) in imgList" :key="index">
@@ -9,7 +10,7 @@
 				</swiper-item>
 			</swiper>
 		</view>
-
+		<!-- 商品介绍 -->
 		<view class="introduce-section">
 			<text class="title">{{product.name}}</text><br>
 			<text class="title2">{{product.subTitle}}</text>
@@ -37,9 +38,9 @@
 				立即分享
 				<text class="yticon icon-you"></text>
 			</view>
-
 		</view>
 
+		<!--  -->
 		<view class="c-list">
 			<view class="c-row b-b" @click="toggleSpec">
 				<text class="tit">购买类型</text>
@@ -325,21 +326,33 @@
 		},
 		methods: {
 			async loadData(id) {
+				// 获取商品详情
 				fetchProductDetail(id).then(response => {
+					// 商品信息
 					this.product = response.data.product;
-					this.skuStockList = response.data.skuStockList;
+					// 商品的sku库存信息
+					this.skuStockList = response.data.skuStocks;
+					// 品牌
 					this.brand = response.data.brand;
+					// 设置头图信息
 					this.initImgList();
+					// 设置服务信息
 					this.initServiceList();
+					// 设置商品规格
 					this.initSpecList(response.data);
+					// 设置商品参数
 					this.initAttrList(response.data);
+					// 设置促销活动信息
 					this.initPromotionTipList(response.data);
+					// 初始化商品详情信息
 					this.initProductDesc();
+					// 处理创建浏览记录
 					this.handleReadHistory();
+					// 初始化收藏状态
 					this.initProductCollection();
 				});
 			},
-			//规格弹窗开关
+			// 规格弹窗开关
 			toggleSpec() {
 				if (this.specClass === 'show') {
 					this.specClass = 'hide';
@@ -460,7 +473,7 @@
 				});
 			},
 			stopPrevent() {},
-			//设置头图信息
+			// 设置头图信息
 			initImgList() {
 				let tempPics = this.product.albumPics;
 				tempPics.unshift(this.product.pic);
@@ -472,7 +485,7 @@
 					}
 				}
 			},
-			//设置服务信息
+			// 设置服务信息
 			initServiceList() {
 				for (let item of defaultServiceList) {
 					if (this.product.serviceIds.indexOf(item.id) != -1) {
@@ -480,7 +493,7 @@
 					}
 				}
 			},
-			//设置商品规格
+			// 设置商品规格
 			initSpecList(data) {
 				for (let i = 0; i < data.productAttributeList.length; i++) {
 					let item = data.productAttributeList[i];
@@ -490,7 +503,7 @@
 							name: item.name
 						});
 						if (item.handAddStatus == 1) {
-							//支持手动新增的
+							// 支持手动新增的
 							let valueList = data.productAttributeValueList;
 							let filterValueList = valueList.filter(value => value.productAttributeId == item.id);
 							let inputList = filterValueList[0].value.split(',');
@@ -537,7 +550,7 @@
 					}
 				})
 			},
-			//设置商品参数
+			// 设置商品参数
 			initAttrList(data) {
 				for (let item of data.productAttributeList) {
 					if (item.type == 1) {
@@ -551,7 +564,7 @@
 					}
 				}
 			},
-			//设置促销活动信息
+			// 设置促销活动信息
 			initPromotionTipList(data) {
 				let promotionType = this.product.promotionType;
 				if (promotionType == 0) {
@@ -574,7 +587,7 @@
 					this.promotionTipList.push("限时优惠");
 				}
 			},
-			//初始化商品详情信息
+			// 初始化商品详情信息
 			initProductDesc() {
 				let rawhtml = this.product.detailMobileHtml;
 				let tempNode = document.createElement('div');
@@ -587,7 +600,7 @@
 				}
 				this.desc = tempNode.innerHTML;
 			},
-			//处理创建浏览记录
+			// 处理创建浏览记录
 			handleReadHistory() {
 				if (this.hasLogin) {
 					let data = {
@@ -685,7 +698,7 @@
 					return true;
 				}
 			},
-			//初始化收藏状态
+			// 初始化收藏状态
 			initProductCollection() {
 				if (this.hasLogin) {
 					productCollectionDetail({
@@ -695,7 +708,7 @@
 					});
 				}
 			},
-			//跳转到品牌详情页
+			// 跳转到品牌详情页
 			navToBrandDetail(){
 				let id = this.brand.id;
 				uni.navigateTo({

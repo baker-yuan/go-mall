@@ -1590,6 +1590,8 @@ func (m *ProductAggregation_Product) validate(all bool) error {
 
 	// no validation rules for Sale
 
+	// no validation rules for Stock
+
 	if len(errors) > 0 {
 		return ProductAggregation_ProductMultiError(errors)
 	}

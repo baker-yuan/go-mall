@@ -74,12 +74,12 @@ message ProductAggregation {
   message Product {
     repeated string album_pics = 32; // 画册图片，连产品图片限制为5张
     string pic = 31; // 图片
-
     string name = 3; // 商品名称
     string sub_title = 4; // 副标题
     double price = 8; // 价格
     double original_price = 9; // 市场价
     uint32 sale = 38; // 销量
+    uint32 stock = 10; // 库存
   }
   message Brand {
     string name = 2;                    // 名称
