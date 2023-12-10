@@ -4,21 +4,21 @@ import (
 	"context"
 	"errors"
 
-	"github.com/baker-yuan/go-mall/application/admin/internal/entity"
-	"github.com/baker-yuan/go-mall/application/admin/pkg/db"
 	"github.com/baker-yuan/go-mall/application/admin/pkg/util"
+	db2 "github.com/baker-yuan/go-mall/common/db"
+	"github.com/baker-yuan/go-mall/common/entity"
 	"gorm.io/gorm"
 )
 
 // SubjectRepo 专题表
 type SubjectRepo struct {
-	*db.GenericDao[entity.Subject, uint64]
+	*db2.GenericDao[entity.Subject, uint64]
 }
 
 // NewSubjectRepo 创建
 func NewSubjectRepo(conn *gorm.DB) *SubjectRepo {
 	return &SubjectRepo{
-		GenericDao: &db.GenericDao[entity.Subject, uint64]{
+		GenericDao: &db2.GenericDao[entity.Subject, uint64]{
 			DB: conn,
 		},
 	}
@@ -77,7 +77,7 @@ func (r SubjectRepo) GetByID(ctx context.Context, id uint64) (*entity.Subject, e
 }
 
 // GetByDBOption 根据动态条件查询专题表
-func (r SubjectRepo) GetByDBOption(ctx context.Context, pageNum uint32, pageSize uint32, opts ...db.DBOption) ([]*entity.Subject, uint32, error) {
+func (r SubjectRepo) GetByDBOption(ctx context.Context, pageNum uint32, pageSize uint32, opts ...db2.DBOption) ([]*entity.Subject, uint32, error) {
 	var (
 		res       = make([]*entity.Subject, 0)
 		pageTotal = int64(0)

@@ -4,21 +4,21 @@ import (
 	"context"
 	"errors"
 
-	"github.com/baker-yuan/go-mall/application/admin/internal/entity"
-	"github.com/baker-yuan/go-mall/application/admin/pkg/db"
 	"github.com/baker-yuan/go-mall/application/admin/pkg/util"
+	db2 "github.com/baker-yuan/go-mall/common/db"
+	"github.com/baker-yuan/go-mall/common/entity"
 	"gorm.io/gorm"
 )
 
 // BrandRepo 商品品牌表
 type BrandRepo struct {
-	*db.GenericDao[entity.Brand, uint64]
+	*db2.GenericDao[entity.Brand, uint64]
 }
 
 // NewBrandRepo 创建
 func NewBrandRepo(conn *gorm.DB) *BrandRepo {
 	return &BrandRepo{
-		GenericDao: &db.GenericDao[entity.Brand, uint64]{
+		GenericDao: &db2.GenericDao[entity.Brand, uint64]{
 			DB: conn,
 		},
 	}
@@ -88,7 +88,7 @@ func (r BrandRepo) GetByIDs(ctx context.Context, ids []uint64) (entity.Brands, e
 }
 
 // GetByDBOption 根据动态条件查询商品品牌表
-func (r BrandRepo) GetByDBOption(ctx context.Context, pageNum uint32, pageSize uint32, opts ...db.DBOption) (entity.Brands, uint32, error) {
+func (r BrandRepo) GetByDBOption(ctx context.Context, pageNum uint32, pageSize uint32, opts ...db2.DBOption) (entity.Brands, uint32, error) {
 	var (
 		res       = make([]*entity.Brand, 0)
 		pageTotal = int64(0)
@@ -106,12 +106,12 @@ func (r BrandRepo) GetByDBOption(ctx context.Context, pageNum uint32, pageSize u
 	return res, uint32(pageTotal), nil
 }
 
-func (r BrandRepo) WithByName(name string) db.DBOption {
+func (r BrandRepo) WithByName(name string) db2.DBOption {
 	return func(db *gorm.DB) *gorm.DB {
 		return db.Where("name like ?", "%"+name+"%")
 	}
 }
-func (r BrandRepo) WithByShowStatus(showStatus uint8) db.DBOption {
+func (r BrandRepo) WithByShowStatus(showStatus uint8) db2.DBOption {
 	return func(db *gorm.DB) *gorm.DB {
 		return db.Where("show_status = ?", showStatus)
 	}

@@ -4,21 +4,21 @@ import (
 	"context"
 	"errors"
 
-	"github.com/baker-yuan/go-mall/application/admin/internal/entity"
-	"github.com/baker-yuan/go-mall/application/admin/pkg/db"
 	"github.com/baker-yuan/go-mall/application/admin/pkg/util"
+	db2 "github.com/baker-yuan/go-mall/common/db"
+	"github.com/baker-yuan/go-mall/common/entity"
 	"gorm.io/gorm"
 )
 
 // CompanyAddressRepo 公司收发货地址
 type CompanyAddressRepo struct {
-	*db.GenericDao[entity.CompanyAddress, uint64]
+	*db2.GenericDao[entity.CompanyAddress, uint64]
 }
 
 // NewCompanyAddressRepo 创建
 func NewCompanyAddressRepo(conn *gorm.DB) *CompanyAddressRepo {
 	return &CompanyAddressRepo{
-		GenericDao: &db.GenericDao[entity.CompanyAddress, uint64]{
+		GenericDao: &db2.GenericDao[entity.CompanyAddress, uint64]{
 			DB: conn,
 		},
 	}
@@ -86,7 +86,7 @@ func (r CompanyAddressRepo) GetByIDs(ctx context.Context, ids []uint64) (entity.
 }
 
 // GetByDBOption 根据动态条件查询公司收发货地址
-func (r CompanyAddressRepo) GetByDBOption(ctx context.Context, pageNum uint32, pageSize uint32, opts ...db.DBOption) ([]*entity.CompanyAddress, uint32, error) {
+func (r CompanyAddressRepo) GetByDBOption(ctx context.Context, pageNum uint32, pageSize uint32, opts ...db2.DBOption) ([]*entity.CompanyAddress, uint32, error) {
 	var (
 		res       = make([]*entity.CompanyAddress, 0)
 		pageTotal = int64(0)

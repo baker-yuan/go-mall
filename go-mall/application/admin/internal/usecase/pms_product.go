@@ -6,10 +6,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/baker-yuan/go-mall/application/admin/internal/entity"
 	"github.com/baker-yuan/go-mall/application/admin/internal/usecase/assembler"
-	"github.com/baker-yuan/go-mall/application/admin/pkg/db"
 	"github.com/baker-yuan/go-mall/application/admin/pkg/util"
+	db2 "github.com/baker-yuan/go-mall/common/db"
+	"github.com/baker-yuan/go-mall/common/entity"
 	pb "github.com/baker-yuan/go-mall/proto/mall"
 )
 
@@ -60,7 +60,7 @@ func (c ProductUseCase) CreateProduct(ctx context.Context, param *pb.AddOrUpdate
 	product := assembler.AddOrUpdateProductParamToEntity(param)
 
 	// 事务执行
-	return db.Transaction(ctx, func(ctx context.Context) error {
+	return db2.Transaction(ctx, func(ctx context.Context) error {
 		// 创建商品
 		if err := c.productRepo.CreateWithTX(ctx, product); err != nil {
 			return err
@@ -137,7 +137,7 @@ func (c ProductUseCase) UpdateProduct(ctx context.Context, param *pb.AddOrUpdate
 	product.CreatedAt = oldProduct.CreatedAt
 
 	// 事务执行
-	return db.Transaction(ctx, func(ctx context.Context) error {
+	return db2.Transaction(ctx, func(ctx context.Context) error {
 		// 更新商品
 		if err := c.productRepo.UpdateWithTX(ctx, product); err != nil {
 			return err
@@ -309,7 +309,7 @@ func (c ProductUseCase) handleSkuStockCode(skuStockList []*entity.SkuStock, prod
 
 // GetProducts 分页查询商品
 func (c ProductUseCase) GetProducts(ctx context.Context, param *pb.GetProductsParam) ([]*pb.Product, uint32, error) {
-	opts := make([]db.DBOption, 0)
+	opts := make([]db2.DBOption, 0)
 	if param.GetId() != nil {
 		opts = append(opts, c.productRepo.WithByID(param.GetId().GetValue()))
 	}

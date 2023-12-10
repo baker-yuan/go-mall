@@ -4,21 +4,21 @@ import (
 	"context"
 	"errors"
 
-	"github.com/baker-yuan/go-mall/application/admin/internal/entity"
-	"github.com/baker-yuan/go-mall/application/admin/pkg/db"
 	"github.com/baker-yuan/go-mall/application/admin/pkg/util"
+	db2 "github.com/baker-yuan/go-mall/common/db"
+	"github.com/baker-yuan/go-mall/common/entity"
 	"gorm.io/gorm"
 )
 
 // PrefrenceAreaProductRelationRepo 优选专区和产品关系表
 type PrefrenceAreaProductRelationRepo struct {
-	*db.GenericDao[entity.PrefrenceAreaProductRelation, uint64]
+	*db2.GenericDao[entity.PrefrenceAreaProductRelation, uint64]
 }
 
 // NewPrefrenceAreaProductRelationRepo 创建
 func NewPrefrenceAreaProductRelationRepo(conn *gorm.DB) *PrefrenceAreaProductRelationRepo {
 	return &PrefrenceAreaProductRelationRepo{
-		GenericDao: &db.GenericDao[entity.PrefrenceAreaProductRelation, uint64]{
+		GenericDao: &db2.GenericDao[entity.PrefrenceAreaProductRelation, uint64]{
 			DB: conn,
 		},
 	}
@@ -77,7 +77,7 @@ func (r PrefrenceAreaProductRelationRepo) GetByID(ctx context.Context, id uint64
 }
 
 // GetByDBOption 根据动态条件查询优选专区和产品关系
-func (r PrefrenceAreaProductRelationRepo) GetByDBOption(ctx context.Context, pageNum uint32, pageSize uint32, opts ...db.DBOption) ([]*entity.PrefrenceAreaProductRelation, uint32, error) {
+func (r PrefrenceAreaProductRelationRepo) GetByDBOption(ctx context.Context, pageNum uint32, pageSize uint32, opts ...db2.DBOption) ([]*entity.PrefrenceAreaProductRelation, uint32, error) {
 	var (
 		res       = make([]*entity.PrefrenceAreaProductRelation, 0)
 		pageTotal = int64(0)
@@ -103,7 +103,7 @@ func (r PrefrenceAreaProductRelationRepo) BatchCreateWithTX(ctx context.Context,
 	for _, prefrenceAreaProductRelation := range prefrenceAreaProductRelations {
 		prefrenceAreaProductRelation.ProductID = productID
 	}
-	tdb, err := db.GetTransactionDB(ctx)
+	tdb, err := db2.GetTransactionDB(ctx)
 	if err != nil {
 		return err
 	}
@@ -112,7 +112,7 @@ func (r PrefrenceAreaProductRelationRepo) BatchCreateWithTX(ctx context.Context,
 
 // DeleteByProductIDWithTX 根据商品ID删除记录
 func (r PrefrenceAreaProductRelationRepo) DeleteByProductIDWithTX(ctx context.Context, productID uint64) error {
-	tdb, err := db.GetTransactionDB(ctx)
+	tdb, err := db2.GetTransactionDB(ctx)
 	if err != nil {
 		return err
 	}

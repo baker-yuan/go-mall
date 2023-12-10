@@ -4,21 +4,21 @@ import (
 	"context"
 	"errors"
 
-	"github.com/baker-yuan/go-mall/application/admin/internal/entity"
-	"github.com/baker-yuan/go-mall/application/admin/pkg/db"
 	"github.com/baker-yuan/go-mall/application/admin/pkg/util"
+	db2 "github.com/baker-yuan/go-mall/common/db"
+	"github.com/baker-yuan/go-mall/common/entity"
 	"gorm.io/gorm"
 )
 
 // OrderReturnReasonRepo 退货原因
 type OrderReturnReasonRepo struct {
-	*db.GenericDao[entity.OrderReturnReason, uint64]
+	*db2.GenericDao[entity.OrderReturnReason, uint64]
 }
 
 // NewOrderReturnReasonRepo 创建
 func NewOrderReturnReasonRepo(conn *gorm.DB) *OrderReturnReasonRepo {
 	return &OrderReturnReasonRepo{
-		GenericDao: &db.GenericDao[entity.OrderReturnReason, uint64]{
+		GenericDao: &db2.GenericDao[entity.OrderReturnReason, uint64]{
 			DB: conn,
 		},
 	}
@@ -50,7 +50,7 @@ func initOrderReturnReasonField(db *gorm.DB) error {
 	return nil
 }
 
-func (r OrderReturnReasonRepo) WithByID(id uint64) db.DBOption {
+func (r OrderReturnReasonRepo) WithByID(id uint64) db2.DBOption {
 	return func(db *gorm.DB) *gorm.DB {
 		return db.Where("id = ?", id)
 	}
@@ -83,7 +83,7 @@ func (r OrderReturnReasonRepo) GetByID(ctx context.Context, id uint64) (*entity.
 }
 
 // GetByDBOption 根据动态条件查询退货原因
-func (r OrderReturnReasonRepo) GetByDBOption(ctx context.Context, pageNum uint32, pageSize uint32, opts ...db.DBOption) ([]*entity.OrderReturnReason, uint32, error) {
+func (r OrderReturnReasonRepo) GetByDBOption(ctx context.Context, pageNum uint32, pageSize uint32, opts ...db2.DBOption) ([]*entity.OrderReturnReason, uint32, error) {
 	var (
 		res       = make([]*entity.OrderReturnReason, 0)
 		pageTotal = int64(0)

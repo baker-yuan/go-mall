@@ -4,21 +4,21 @@ import (
 	"context"
 	"errors"
 
-	"github.com/baker-yuan/go-mall/application/admin/internal/entity"
-	"github.com/baker-yuan/go-mall/application/admin/pkg/db"
 	"github.com/baker-yuan/go-mall/application/admin/pkg/util"
+	db2 "github.com/baker-yuan/go-mall/common/db"
+	"github.com/baker-yuan/go-mall/common/entity"
 	"gorm.io/gorm"
 )
 
 // ProductRepo 商品信息表
 type ProductRepo struct {
-	*db.GenericDao[entity.Product, uint64]
+	*db2.GenericDao[entity.Product, uint64]
 }
 
 // NewProductRepo 创建
 func NewProductRepo(conn *gorm.DB) *ProductRepo {
 	return &ProductRepo{
-		GenericDao: &db.GenericDao[entity.Product, uint64]{
+		GenericDao: &db2.GenericDao[entity.Product, uint64]{
 			DB: conn,
 		},
 	}
@@ -50,39 +50,39 @@ func initProductField(db *gorm.DB) error {
 	return nil
 }
 
-func (r ProductRepo) WithByID(id uint64) db.DBOption {
+func (r ProductRepo) WithByID(id uint64) db2.DBOption {
 	return func(db *gorm.DB) *gorm.DB {
 		return db.Where("id = ?", id)
 	}
 }
 
-func (r ProductRepo) WithByName(name string) db.DBOption {
+func (r ProductRepo) WithByName(name string) db2.DBOption {
 	return func(db *gorm.DB) *gorm.DB {
 		return db.Where("name like ?", "%"+name+"%")
 	}
 }
 
-func (r ProductRepo) WithByProductSN(productSN string) db.DBOption {
+func (r ProductRepo) WithByProductSN(productSN string) db2.DBOption {
 	return func(db *gorm.DB) *gorm.DB {
 		return db.Where("product_sn = ?", productSN)
 	}
 }
-func (r ProductRepo) WithByBrandID(brandID uint64) db.DBOption {
+func (r ProductRepo) WithByBrandID(brandID uint64) db2.DBOption {
 	return func(db *gorm.DB) *gorm.DB {
 		return db.Where("brand_id = ?", brandID)
 	}
 }
-func (r ProductRepo) WithByPublishStatus(publishStatus uint32) db.DBOption {
+func (r ProductRepo) WithByPublishStatus(publishStatus uint32) db2.DBOption {
 	return func(db *gorm.DB) *gorm.DB {
 		return db.Where("publish_status = ?", publishStatus)
 	}
 }
-func (r ProductRepo) WithByVerifyStatus(verifyStatus uint32) db.DBOption {
+func (r ProductRepo) WithByVerifyStatus(verifyStatus uint32) db2.DBOption {
 	return func(db *gorm.DB) *gorm.DB {
 		return db.Where("verify_status = ?", verifyStatus)
 	}
 }
-func (r ProductRepo) WithByProductCategoryID(productCategoryID uint64) db.DBOption {
+func (r ProductRepo) WithByProductCategoryID(productCategoryID uint64) db2.DBOption {
 	return func(db *gorm.DB) *gorm.DB {
 		return db.Where("product_category_id = ?", productCategoryID)
 	}
@@ -115,7 +115,7 @@ func (r ProductRepo) GetByID(ctx context.Context, id uint64) (*entity.Product, e
 }
 
 // GetByDBOption 根据动态条件查询商品
-func (r ProductRepo) GetByDBOption(ctx context.Context, pageNum uint32, pageSize uint32, opts ...db.DBOption) (entity.Products, uint32, error) {
+func (r ProductRepo) GetByDBOption(ctx context.Context, pageNum uint32, pageSize uint32, opts ...db2.DBOption) (entity.Products, uint32, error) {
 	var (
 		res       = make([]*entity.Product, 0)
 		pageTotal = int64(0)
@@ -138,7 +138,7 @@ func (r ProductRepo) GetByDBOption(ctx context.Context, pageNum uint32, pageSize
 
 // CreateWithTX 创建商品
 func (r ProductRepo) CreateWithTX(ctx context.Context, product *entity.Product) error {
-	tdb, err := db.GetTransactionDB(ctx)
+	tdb, err := db2.GetTransactionDB(ctx)
 	if err != nil {
 		return err
 	}
@@ -147,7 +147,7 @@ func (r ProductRepo) CreateWithTX(ctx context.Context, product *entity.Product) 
 
 // UpdateWithTX 修改商品
 func (r ProductRepo) UpdateWithTX(ctx context.Context, product *entity.Product) error {
-	tdb, err := db.GetTransactionDB(ctx)
+	tdb, err := db2.GetTransactionDB(ctx)
 	if err != nil {
 		return err
 	}

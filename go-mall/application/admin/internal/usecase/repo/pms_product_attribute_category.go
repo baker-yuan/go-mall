@@ -4,21 +4,21 @@ import (
 	"context"
 	"errors"
 
-	"github.com/baker-yuan/go-mall/application/admin/internal/entity"
-	"github.com/baker-yuan/go-mall/application/admin/pkg/db"
 	"github.com/baker-yuan/go-mall/application/admin/pkg/util"
+	db2 "github.com/baker-yuan/go-mall/common/db"
+	"github.com/baker-yuan/go-mall/common/entity"
 	"gorm.io/gorm"
 )
 
 // ProductAttributeCategoryRepo 产品属性分类表
 type ProductAttributeCategoryRepo struct {
-	*db.GenericDao[entity.ProductAttributeCategory, uint64]
+	*db2.GenericDao[entity.ProductAttributeCategory, uint64]
 }
 
 // NewProductAttributeCategoryRepo 创建
 func NewProductAttributeCategoryRepo(conn *gorm.DB) *ProductAttributeCategoryRepo {
 	return &ProductAttributeCategoryRepo{
-		GenericDao: &db.GenericDao[entity.ProductAttributeCategory, uint64]{
+		GenericDao: &db2.GenericDao[entity.ProductAttributeCategory, uint64]{
 			DB: conn,
 		},
 	}
@@ -77,7 +77,7 @@ func (r ProductAttributeCategoryRepo) GetByID(ctx context.Context, id uint64) (*
 }
 
 // GetByDBOption 根据动态条件查询产品属性分类表
-func (r ProductAttributeCategoryRepo) GetByDBOption(ctx context.Context, pageNum uint32, pageSize uint32, opts ...db.DBOption) ([]*entity.ProductAttributeCategory, uint32, error) {
+func (r ProductAttributeCategoryRepo) GetByDBOption(ctx context.Context, pageNum uint32, pageSize uint32, opts ...db2.DBOption) ([]*entity.ProductAttributeCategory, uint32, error) {
 	var (
 		res       = make([]*entity.ProductAttributeCategory, 0)
 		pageTotal = int64(0)
@@ -98,7 +98,7 @@ func (r ProductAttributeCategoryRepo) GetByDBOption(ctx context.Context, pageNum
 	return res, uint32(pageTotal), nil
 }
 
-func (r ProductAttributeCategoryRepo) WithByName(name string) db.DBOption {
+func (r ProductAttributeCategoryRepo) WithByName(name string) db2.DBOption {
 	return func(db *gorm.DB) *gorm.DB {
 		return db.Where("name like ?", "%"+name+"%")
 	}

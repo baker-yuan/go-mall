@@ -3,9 +3,9 @@ package usecase
 import (
 	"context"
 
-	"github.com/baker-yuan/go-mall/application/admin/internal/entity"
 	"github.com/baker-yuan/go-mall/application/admin/internal/usecase/assembler"
-	"github.com/baker-yuan/go-mall/application/admin/pkg/db"
+	"github.com/baker-yuan/go-mall/common/db"
+	"github.com/baker-yuan/go-mall/common/entity"
 	pb "github.com/baker-yuan/go-mall/proto/mall"
 )
 

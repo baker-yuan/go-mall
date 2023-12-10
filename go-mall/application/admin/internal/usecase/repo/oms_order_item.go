@@ -4,21 +4,21 @@ import (
 	"context"
 	"errors"
 
-	"github.com/baker-yuan/go-mall/application/admin/internal/entity"
-	"github.com/baker-yuan/go-mall/application/admin/pkg/db"
 	"github.com/baker-yuan/go-mall/application/admin/pkg/util"
+	db2 "github.com/baker-yuan/go-mall/common/db"
+	"github.com/baker-yuan/go-mall/common/entity"
 	"gorm.io/gorm"
 )
 
 // OrderItemRepo 订单商品信息
 type OrderItemRepo struct {
-	*db.GenericDao[entity.OrderItem, uint64]
+	*db2.GenericDao[entity.OrderItem, uint64]
 }
 
 // NewOrderItemRepo 创建
 func NewOrderItemRepo(conn *gorm.DB) *OrderItemRepo {
 	return &OrderItemRepo{
-		GenericDao: &db.GenericDao[entity.OrderItem, uint64]{
+		GenericDao: &db2.GenericDao[entity.OrderItem, uint64]{
 			DB: conn,
 		},
 	}
@@ -77,7 +77,7 @@ func (r OrderItemRepo) GetByID(ctx context.Context, id uint64) (*entity.OrderIte
 }
 
 // GetByDBOption 根据动态条件查询订单商品信息
-func (r OrderItemRepo) GetByDBOption(ctx context.Context, pageNum uint32, pageSize uint32, opts ...db.DBOption) ([]*entity.OrderItem, uint32, error) {
+func (r OrderItemRepo) GetByDBOption(ctx context.Context, pageNum uint32, pageSize uint32, opts ...db2.DBOption) ([]*entity.OrderItem, uint32, error) {
 	var (
 		res       = make([]*entity.OrderItem, 0)
 		pageTotal = int64(0)

@@ -4,21 +4,21 @@ import (
 	"context"
 	"errors"
 
-	"github.com/baker-yuan/go-mall/application/admin/internal/entity"
-	"github.com/baker-yuan/go-mall/application/admin/pkg/db"
 	"github.com/baker-yuan/go-mall/application/admin/pkg/util"
+	db2 "github.com/baker-yuan/go-mall/common/db"
+	"github.com/baker-yuan/go-mall/common/entity"
 	"gorm.io/gorm"
 )
 
 // PrefrenceAreaRepo 优选专区
 type PrefrenceAreaRepo struct {
-	*db.GenericDao[entity.PrefrenceArea, uint64]
+	*db2.GenericDao[entity.PrefrenceArea, uint64]
 }
 
 // NewPrefrenceAreaRepo 创建
 func NewPrefrenceAreaRepo(conn *gorm.DB) *PrefrenceAreaRepo {
 	return &PrefrenceAreaRepo{
-		GenericDao: &db.GenericDao[entity.PrefrenceArea, uint64]{
+		GenericDao: &db2.GenericDao[entity.PrefrenceArea, uint64]{
 			DB: conn,
 		},
 	}
@@ -77,7 +77,7 @@ func (r PrefrenceAreaRepo) GetByID(ctx context.Context, id uint64) (*entity.Pref
 }
 
 // GetByDBOption 根据动态条件查询优选专区
-func (r PrefrenceAreaRepo) GetByDBOption(ctx context.Context, pageNum uint32, pageSize uint32, opts ...db.DBOption) ([]*entity.PrefrenceArea, uint32, error) {
+func (r PrefrenceAreaRepo) GetByDBOption(ctx context.Context, pageNum uint32, pageSize uint32, opts ...db2.DBOption) ([]*entity.PrefrenceArea, uint32, error) {
 	var (
 		res       = make([]*entity.PrefrenceArea, 0)
 		pageTotal = int64(0)

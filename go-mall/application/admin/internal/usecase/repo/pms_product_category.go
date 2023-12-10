@@ -4,21 +4,21 @@ import (
 	"context"
 	"errors"
 
-	"github.com/baker-yuan/go-mall/application/admin/internal/entity"
-	"github.com/baker-yuan/go-mall/application/admin/pkg/db"
 	"github.com/baker-yuan/go-mall/application/admin/pkg/util"
+	db2 "github.com/baker-yuan/go-mall/common/db"
+	"github.com/baker-yuan/go-mall/common/entity"
 	"gorm.io/gorm"
 )
 
 // ProductCategoryRepo 商品分类表
 type ProductCategoryRepo struct {
-	*db.GenericDao[entity.ProductCategory, uint64]
+	*db2.GenericDao[entity.ProductCategory, uint64]
 }
 
 // NewProductCategoryRepo 创建
 func NewProductCategoryRepo(conn *gorm.DB) *ProductCategoryRepo {
 	return &ProductCategoryRepo{
-		GenericDao: &db.GenericDao[entity.ProductCategory, uint64]{
+		GenericDao: &db2.GenericDao[entity.ProductCategory, uint64]{
 			DB: conn,
 		},
 	}
@@ -51,18 +51,18 @@ func initProductCategoryField(db *gorm.DB) error {
 	return nil
 }
 
-func (p ProductCategoryRepo) WithByParentID(parentID uint64) db.DBOption {
+func (p ProductCategoryRepo) WithByParentID(parentID uint64) db2.DBOption {
 	return func(db *gorm.DB) *gorm.DB {
 		return db.Where("parent_id = ?", parentID)
 	}
 }
 
-func (p ProductCategoryRepo) WithByID(id uint64) db.DBOption {
+func (p ProductCategoryRepo) WithByID(id uint64) db2.DBOption {
 	return func(db *gorm.DB) *gorm.DB {
 		return db.Where("id = ?", id)
 	}
 }
-func (p ProductCategoryRepo) WithByName(name string) db.DBOption {
+func (p ProductCategoryRepo) WithByName(name string) db2.DBOption {
 	return func(db *gorm.DB) *gorm.DB {
 		return db.Where("name like ?", "%"+name+"%")
 	}
@@ -105,7 +105,7 @@ func (p ProductCategoryRepo) GetByIDs(ctx context.Context, ids []uint64) (entity
 
 // CreateWithTX 创建商品分类
 func (p ProductCategoryRepo) CreateWithTX(ctx context.Context, productCategory *entity.ProductCategory) error {
-	tdb, err := db.GetTransactionDB(ctx)
+	tdb, err := db2.GetTransactionDB(ctx)
 	if err != nil {
 		return err
 	}
@@ -117,7 +117,7 @@ func (p ProductCategoryRepo) UpdateWithTX(ctx context.Context, productCategory *
 	if productCategory.ID == 0 {
 		return errors.New("productCategory not exist")
 	}
-	tdb, err := db.GetTransactionDB(ctx)
+	tdb, err := db2.GetTransactionDB(ctx)
 	if err != nil {
 		return err
 	}
@@ -125,7 +125,7 @@ func (p ProductCategoryRepo) UpdateWithTX(ctx context.Context, productCategory *
 }
 
 // GetByDBOption 根据动态条件查询商品分类
-func (p ProductCategoryRepo) GetByDBOption(ctx context.Context, pageNum uint32, pageSize uint32, opts ...db.DBOption) ([]*entity.ProductCategory, uint32, error) {
+func (p ProductCategoryRepo) GetByDBOption(ctx context.Context, pageNum uint32, pageSize uint32, opts ...db2.DBOption) ([]*entity.ProductCategory, uint32, error) {
 	var (
 		res       = make([]*entity.ProductCategory, 0)
 		pageTotal = int64(0)

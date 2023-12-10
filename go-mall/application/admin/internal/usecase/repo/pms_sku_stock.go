@@ -4,21 +4,21 @@ import (
 	"context"
 	"errors"
 
-	"github.com/baker-yuan/go-mall/application/admin/internal/entity"
-	"github.com/baker-yuan/go-mall/application/admin/pkg/db"
 	"github.com/baker-yuan/go-mall/application/admin/pkg/util"
+	db2 "github.com/baker-yuan/go-mall/common/db"
+	"github.com/baker-yuan/go-mall/common/entity"
 	"gorm.io/gorm"
 )
 
 // SkuStockRepo sku的库存
 type SkuStockRepo struct {
-	*db.GenericDao[entity.SkuStock, uint64]
+	*db2.GenericDao[entity.SkuStock, uint64]
 }
 
 // NewSkuStockRepo 创建
 func NewSkuStockRepo(conn *gorm.DB) *SkuStockRepo {
 	return &SkuStockRepo{
-		GenericDao: &db.GenericDao[entity.SkuStock, uint64]{
+		GenericDao: &db2.GenericDao[entity.SkuStock, uint64]{
 			DB: conn,
 		},
 	}
@@ -50,12 +50,12 @@ func initSkuStockField(db *gorm.DB) error {
 	return nil
 }
 
-func (r SkuStockRepo) WithByProductID(productID uint64) db.DBOption {
+func (r SkuStockRepo) WithByProductID(productID uint64) db2.DBOption {
 	return func(db *gorm.DB) *gorm.DB {
 		return db.Where("product_id = ?", productID)
 	}
 }
-func (r SkuStockRepo) WithBySkuCode(skuCode string) db.DBOption {
+func (r SkuStockRepo) WithBySkuCode(skuCode string) db2.DBOption {
 	return func(db *gorm.DB) *gorm.DB {
 		return db.Where("sku_code like ?", "%"+skuCode+"%")
 	}
@@ -88,7 +88,7 @@ func (r SkuStockRepo) GetByID(ctx context.Context, id uint64) (*entity.SkuStock,
 }
 
 // GetByDBOption 根据动态条件查询sku的库存
-func (r SkuStockRepo) GetByDBOption(ctx context.Context, pageNum uint32, pageSize uint32, opts ...db.DBOption) ([]*entity.SkuStock, uint32, error) {
+func (r SkuStockRepo) GetByDBOption(ctx context.Context, pageNum uint32, pageSize uint32, opts ...db2.DBOption) ([]*entity.SkuStock, uint32, error) {
 	var (
 		res       = make([]*entity.SkuStock, 0)
 		pageTotal = int64(0)
@@ -127,7 +127,7 @@ func (r SkuStockRepo) BatchCreateWithTX(ctx context.Context, productID uint64, s
 	for _, skuStock := range skuStocks {
 		skuStock.ProductID = productID
 	}
-	tdb, err := db.GetTransactionDB(ctx)
+	tdb, err := db2.GetTransactionDB(ctx)
 	if err != nil {
 		return err
 	}
@@ -163,7 +163,7 @@ func (r SkuStockRepo) BatchUpdateOrInsertSkuStock(ctx context.Context, stocks []
 
 // DeleteByProductIDWithTX 根据商品ID删除记录
 func (r SkuStockRepo) DeleteByProductIDWithTX(ctx context.Context, productID uint64) error {
-	tdb, err := db.GetTransactionDB(ctx)
+	tdb, err := db2.GetTransactionDB(ctx)
 	if err != nil {
 		return err
 	}
@@ -172,7 +172,7 @@ func (r SkuStockRepo) DeleteByProductIDWithTX(ctx context.Context, productID uin
 
 // BatchDeleteByIDWithTX 根据ID删除记录
 func (r SkuStockRepo) BatchDeleteByIDWithTX(ctx context.Context, ids []uint64) error {
-	tdb, err := db.GetTransactionDB(ctx)
+	tdb, err := db2.GetTransactionDB(ctx)
 	if err != nil {
 		return err
 	}
@@ -181,7 +181,7 @@ func (r SkuStockRepo) BatchDeleteByIDWithTX(ctx context.Context, ids []uint64) e
 
 // BatchUpDateByIDWithTX 根据ID修改记录
 func (r SkuStockRepo) BatchUpDateByIDWithTX(ctx context.Context, skuStocks []*entity.SkuStock) error {
-	tdb, err := db.GetTransactionDB(ctx)
+	tdb, err := db2.GetTransactionDB(ctx)
 	if err != nil {
 		return err
 	}

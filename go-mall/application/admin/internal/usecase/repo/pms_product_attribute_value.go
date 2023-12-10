@@ -4,21 +4,21 @@ import (
 	"context"
 	"errors"
 
-	"github.com/baker-yuan/go-mall/application/admin/internal/entity"
-	"github.com/baker-yuan/go-mall/application/admin/pkg/db"
 	"github.com/baker-yuan/go-mall/application/admin/pkg/util"
+	db2 "github.com/baker-yuan/go-mall/common/db"
+	"github.com/baker-yuan/go-mall/common/entity"
 	"gorm.io/gorm"
 )
 
 // ProductAttributeValueRepo 产品参数信息
 type ProductAttributeValueRepo struct {
-	*db.GenericDao[entity.ProductAttributeValue, uint64]
+	*db2.GenericDao[entity.ProductAttributeValue, uint64]
 }
 
 // NewProductAttributeValueRepo 创建
 func NewProductAttributeValueRepo(conn *gorm.DB) *ProductAttributeValueRepo {
 	return &ProductAttributeValueRepo{
-		GenericDao: &db.GenericDao[entity.ProductAttributeValue, uint64]{
+		GenericDao: &db2.GenericDao[entity.ProductAttributeValue, uint64]{
 			DB: conn,
 		},
 	}
@@ -77,7 +77,7 @@ func (r ProductAttributeValueRepo) GetByID(ctx context.Context, id uint64) (*ent
 }
 
 // GetByDBOption 根据动态条件查询产品参数信息
-func (r ProductAttributeValueRepo) GetByDBOption(ctx context.Context, pageNum uint32, pageSize uint32, opts ...db.DBOption) ([]*entity.ProductAttributeValue, uint32, error) {
+func (r ProductAttributeValueRepo) GetByDBOption(ctx context.Context, pageNum uint32, pageSize uint32, opts ...db2.DBOption) ([]*entity.ProductAttributeValue, uint32, error) {
 	var (
 		res       = make([]*entity.ProductAttributeValue, 0)
 		pageTotal = int64(0)
@@ -103,7 +103,7 @@ func (r ProductAttributeValueRepo) BatchCreateWithTX(ctx context.Context, produc
 	for _, productAttributeValue := range productAttributeValues {
 		productAttributeValue.ProductID = productID
 	}
-	tdb, err := db.GetTransactionDB(ctx)
+	tdb, err := db2.GetTransactionDB(ctx)
 	if err != nil {
 		return err
 	}
@@ -112,7 +112,7 @@ func (r ProductAttributeValueRepo) BatchCreateWithTX(ctx context.Context, produc
 
 // DeleteByProductIDWithTX 根据商品ID删除记录
 func (r ProductAttributeValueRepo) DeleteByProductIDWithTX(ctx context.Context, productID uint64) error {
-	tdb, err := db.GetTransactionDB(ctx)
+	tdb, err := db2.GetTransactionDB(ctx)
 	if err != nil {
 		return err
 	}

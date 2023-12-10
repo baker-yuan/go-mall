@@ -9,9 +9,14 @@ logger:
   log_level: 'debug'
   rollbar_env: 'go-clean-template'
 
-postgres:
-  pool_max: 2
 
-rabbitmq:
-  rpc_server_exchange: 'rpc_server'
-  rpc_client_exchange: 'rpc_client'
+db:
+  username: root
+  password: 123456
+  host: 127.0.0.1
+  port: 3306
+  db_name: go_mall_admin
+  timeout: 10s
+
+oss:
+  base_url: http://macro-oss.oss-cn-shenzhen.aliyuncs.com

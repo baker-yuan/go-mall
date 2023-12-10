@@ -3,20 +3,20 @@ package repo
 import (
 	"context"
 
-	"github.com/baker-yuan/go-mall/application/admin/internal/entity"
-	"github.com/baker-yuan/go-mall/application/admin/pkg/db"
+	db2 "github.com/baker-yuan/go-mall/common/db"
+	"github.com/baker-yuan/go-mall/common/entity"
 	"gorm.io/gorm"
 )
 
 // PmsProductCategoryAttributeRelationRepo 产品的分类和属性的关系表，用于设置分类筛选条件（只支持一级分类）
 type PmsProductCategoryAttributeRelationRepo struct {
-	*db.GenericDao[entity.ProductCategoryAttributeRelation, uint64]
+	*db2.GenericDao[entity.ProductCategoryAttributeRelation, uint64]
 }
 
 // NewProductCategoryAttributeRelationRepo 创建
 func NewProductCategoryAttributeRelationRepo(conn *gorm.DB) *PmsProductCategoryAttributeRelationRepo {
 	return &PmsProductCategoryAttributeRelationRepo{
-		GenericDao: &db.GenericDao[entity.ProductCategoryAttributeRelation, uint64]{
+		GenericDao: &db2.GenericDao[entity.ProductCategoryAttributeRelation, uint64]{
 			DB: conn,
 		},
 	}
@@ -44,7 +44,7 @@ func (p PmsProductCategoryAttributeRelationRepo) GetByID(ctx context.Context, id
 
 // CreateWithTX 创建
 func (p PmsProductCategoryAttributeRelationRepo) CreateWithTX(ctx context.Context, relation *entity.ProductCategoryAttributeRelation) error {
-	tdb, err := db.GetTransactionDB(ctx)
+	tdb, err := db2.GetTransactionDB(ctx)
 	if err != nil {
 		return err
 	}
@@ -63,7 +63,7 @@ func (p PmsProductCategoryAttributeRelationRepo) BatchCreateWithTX(ctx context.C
 		})
 	}
 
-	tdb, err := db.GetTransactionDB(ctx)
+	tdb, err := db2.GetTransactionDB(ctx)
 	if err != nil {
 		return err
 	}
@@ -71,7 +71,7 @@ func (p PmsProductCategoryAttributeRelationRepo) BatchCreateWithTX(ctx context.C
 }
 
 func (p PmsProductCategoryAttributeRelationRepo) DeleteByProductCategoryIDWithTX(ctx context.Context, productCategoryID uint64) error {
-	tdb, err := db.GetTransactionDB(ctx)
+	tdb, err := db2.GetTransactionDB(ctx)
 	if err != nil {
 		return err
 	}

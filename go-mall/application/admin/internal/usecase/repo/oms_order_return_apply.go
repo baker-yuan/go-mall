@@ -4,21 +4,21 @@ import (
 	"context"
 	"errors"
 
-	"github.com/baker-yuan/go-mall/application/admin/internal/entity"
-	"github.com/baker-yuan/go-mall/application/admin/pkg/db"
 	"github.com/baker-yuan/go-mall/application/admin/pkg/util"
+	db2 "github.com/baker-yuan/go-mall/common/db"
+	"github.com/baker-yuan/go-mall/common/entity"
 	"gorm.io/gorm"
 )
 
 // OrderReturnApplyRepo 订单退货申请
 type OrderReturnApplyRepo struct {
-	*db.GenericDao[entity.OrderReturnApply, uint64]
+	*db2.GenericDao[entity.OrderReturnApply, uint64]
 }
 
 // NewOrderReturnApplyRepo 创建
 func NewOrderReturnApplyRepo(conn *gorm.DB) *OrderReturnApplyRepo {
 	return &OrderReturnApplyRepo{
-		GenericDao: &db.GenericDao[entity.OrderReturnApply, uint64]{
+		GenericDao: &db2.GenericDao[entity.OrderReturnApply, uint64]{
 			DB: conn,
 		},
 	}
@@ -50,12 +50,12 @@ func initOrderReturnApplyField(db *gorm.DB) error {
 	return nil
 }
 
-func (r OrderReturnApplyRepo) WithByID(id uint64) db.DBOption {
+func (r OrderReturnApplyRepo) WithByID(id uint64) db2.DBOption {
 	return func(db *gorm.DB) *gorm.DB {
 		return db.Where("id = ?", id)
 	}
 }
-func (r OrderReturnApplyRepo) WithByStatus(status uint8) db.DBOption {
+func (r OrderReturnApplyRepo) WithByStatus(status uint8) db2.DBOption {
 	return func(db *gorm.DB) *gorm.DB {
 		return db.Where("status = ?", status)
 	}
@@ -88,7 +88,7 @@ func (r OrderReturnApplyRepo) GetByID(ctx context.Context, id uint64) (*entity.O
 }
 
 // GetByDBOption 根据动态条件查询订单退货申请
-func (r OrderReturnApplyRepo) GetByDBOption(ctx context.Context, pageNum uint32, pageSize uint32, opts ...db.DBOption) ([]*entity.OrderReturnApply, uint32, error) {
+func (r OrderReturnApplyRepo) GetByDBOption(ctx context.Context, pageNum uint32, pageSize uint32, opts ...db2.DBOption) ([]*entity.OrderReturnApply, uint32, error) {
 	var (
 		res       = make([]*entity.OrderReturnApply, 0)
 		pageTotal = int64(0)

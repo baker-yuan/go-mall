@@ -15,13 +15,13 @@ import (
 
 	config "github.com/baker-yuan/go-mall/application/admin/config"
 	"github.com/baker-yuan/go-mall/application/admin/internal/controller/grpcsrv"
-	"github.com/baker-yuan/go-mall/application/admin/internal/entity"
 	"github.com/baker-yuan/go-mall/application/admin/internal/usecase"
 	"github.com/baker-yuan/go-mall/application/admin/internal/usecase/repo"
-	"github.com/baker-yuan/go-mall/application/admin/pkg/db"
-	"github.com/baker-yuan/go-mall/application/admin/pkg/interceptor"
-	"github.com/baker-yuan/go-mall/application/admin/pkg/logger"
 	"github.com/baker-yuan/go-mall/application/admin/pkg/util"
+	db2 "github.com/baker-yuan/go-mall/common/db"
+	"github.com/baker-yuan/go-mall/common/entity"
+	"github.com/baker-yuan/go-mall/common/interceptor"
+	"github.com/baker-yuan/go-mall/common/logger"
 	pb "github.com/baker-yuan/go-mall/proto/mall"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"golang.org/x/net/http2"
@@ -36,13 +36,13 @@ func Run(cfg *config.Config) {
 	customLog := logger.New(cfg.Log.Level)
 
 	// 初始化数据库
-	conn, err := db.GetConn(cfg.DB.Username, cfg.DB.Password, cfg.DB.Host, cfg.DB.Port, cfg.DB.Timeout, cfg.DB.DbName)
+	conn, err := db2.GetConn(cfg.DB.Username, cfg.DB.Password, cfg.DB.Host, cfg.DB.Port, cfg.DB.Timeout, cfg.DB.DbName)
 	if err != nil {
 		customLog.Fatal(fmt.Errorf("app - Run - db.GetConn: %w", err))
 	}
 
 	// gorm事务封装
-	db.InitTransaction(conn)
+	db2.InitTransaction(conn)
 
 	// gorm创建表
 	if err := entity.Init(conn); err != nil {

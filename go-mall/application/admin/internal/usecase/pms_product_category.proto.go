@@ -3,9 +3,9 @@ package usecase
 import (
 	"context"
 
-	"github.com/baker-yuan/go-mall/application/admin/internal/entity"
 	"github.com/baker-yuan/go-mall/application/admin/internal/usecase/assembler"
-	"github.com/baker-yuan/go-mall/application/admin/pkg/db"
+	db2 "github.com/baker-yuan/go-mall/common/db"
+	"github.com/baker-yuan/go-mall/common/entity"
 	pb "github.com/baker-yuan/go-mall/proto/mall"
 )
 
@@ -36,7 +36,7 @@ func (p ProductCategoryUseCase) CreateProductCategory(ctx context.Context, param
 	}
 
 	// 事务执行
-	return db.Transaction(ctx, func(ctx context.Context) error {
+	return db2.Transaction(ctx, func(ctx context.Context) error {
 		// save
 		if err := p.categoryRepo.CreateWithTX(ctx, productCategory); err != nil {
 			return err
@@ -74,7 +74,7 @@ func (p ProductCategoryUseCase) UpdateProductCategory(ctx context.Context, param
 		return err
 	}
 
-	return db.Transaction(ctx, func(ctx context.Context) error {
+	return db2.Transaction(ctx, func(ctx context.Context) error {
 		// 同时更新筛选属性的信息，先删除在添加
 		if err := p.categoryAttributeRelationRepo.DeleteByProductCategoryIDWithTX(ctx, param.GetId()); err != nil {
 			return err
@@ -92,7 +92,7 @@ func (p ProductCategoryUseCase) UpdateProductCategory(ctx context.Context, param
 
 // GetProductCategories 分页查询商品分类
 func (p ProductCategoryUseCase) GetProductCategories(ctx context.Context, param *pb.GetProductCategoriesParam) ([]*pb.ProductCategory, uint32, error) {
-	opts := make([]db.DBOption, 0)
+	opts := make([]db2.DBOption, 0)
 	if param.GetParentId() != nil {
 		opts = append(opts, p.categoryRepo.WithByParentID(param.GetParentId().GetValue()))
 	}

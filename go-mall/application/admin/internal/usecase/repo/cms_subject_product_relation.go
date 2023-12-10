@@ -4,21 +4,21 @@ import (
 	"context"
 	"errors"
 
-	"github.com/baker-yuan/go-mall/application/admin/internal/entity"
-	"github.com/baker-yuan/go-mall/application/admin/pkg/db"
 	"github.com/baker-yuan/go-mall/application/admin/pkg/util"
+	db2 "github.com/baker-yuan/go-mall/common/db"
+	"github.com/baker-yuan/go-mall/common/entity"
 	"gorm.io/gorm"
 )
 
 // SubjectProductRelationRepo 专题商品关系
 type SubjectProductRelationRepo struct {
-	*db.GenericDao[entity.SubjectProductRelation, uint64]
+	*db2.GenericDao[entity.SubjectProductRelation, uint64]
 }
 
 // NewSubjectProductRelationRepo 创建
 func NewSubjectProductRelationRepo(conn *gorm.DB) *SubjectProductRelationRepo {
 	return &SubjectProductRelationRepo{
-		GenericDao: &db.GenericDao[entity.SubjectProductRelation, uint64]{
+		GenericDao: &db2.GenericDao[entity.SubjectProductRelation, uint64]{
 			DB: conn,
 		},
 	}
@@ -77,7 +77,7 @@ func (r SubjectProductRelationRepo) GetByID(ctx context.Context, id uint64) (*en
 }
 
 // GetByDBOption 根据动态条件查询专题商品关系表
-func (r SubjectProductRelationRepo) GetByDBOption(ctx context.Context, pageNum uint32, pageSize uint32, opts ...db.DBOption) ([]*entity.SubjectProductRelation, uint32, error) {
+func (r SubjectProductRelationRepo) GetByDBOption(ctx context.Context, pageNum uint32, pageSize uint32, opts ...db2.DBOption) ([]*entity.SubjectProductRelation, uint32, error) {
 	var (
 		res       = make([]*entity.SubjectProductRelation, 0)
 		pageTotal = int64(0)
@@ -103,7 +103,7 @@ func (r SubjectProductRelationRepo) BatchCreateWithTX(ctx context.Context, produ
 	for _, subjectProductRelation := range subjectProductRelations {
 		subjectProductRelation.ProductID = productID
 	}
-	tdb, err := db.GetTransactionDB(ctx)
+	tdb, err := db2.GetTransactionDB(ctx)
 	if err != nil {
 		return err
 	}
@@ -112,7 +112,7 @@ func (r SubjectProductRelationRepo) BatchCreateWithTX(ctx context.Context, produ
 
 // DeleteByProductIDWithTX 根据商品ID删除记录
 func (r SubjectProductRelationRepo) DeleteByProductIDWithTX(ctx context.Context, productID uint64) error {
-	tdb, err := db.GetTransactionDB(ctx)
+	tdb, err := db2.GetTransactionDB(ctx)
 	if err != nil {
 		return err
 	}

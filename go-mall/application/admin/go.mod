@@ -3,6 +3,7 @@ module github.com/baker-yuan/go-mall/application/admin
 go 1.20
 
 require (
+	github.com/baker-yuan/go-mall/common v0.0.0-incompatible
 	github.com/baker-yuan/go-mall/proto v0.0.0-incompatible
 	github.com/gin-gonic/gin v1.7.7
 	github.com/golang-migrate/migrate/v4 v4.15.1
@@ -16,7 +17,7 @@ require (
 	golang.org/x/net v0.17.0
 	google.golang.org/grpc v1.59.0
 	gorm.io/driver/mysql v1.5.2
-	gorm.io/gorm v1.25.2-0.20230530020048-26663ab9bf55
+	gorm.io/gorm v1.25.5
 )
 
 require (
@@ -68,4 +69,7 @@ require (
 	olympos.io/encoding/edn v0.0.0-20201019073823-d3554ca0b0a3 // indirect
 )
 
-replace github.com/baker-yuan/go-mall/proto => ../../proto
+replace (
+	github.com/baker-yuan/go-mall/common => ../../common
+	github.com/baker-yuan/go-mall/proto => ../../proto
+)

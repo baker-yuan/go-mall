@@ -4,21 +4,21 @@ import (
 	"context"
 	"errors"
 
-	"github.com/baker-yuan/go-mall/application/admin/internal/entity"
-	"github.com/baker-yuan/go-mall/application/admin/pkg/db"
 	"github.com/baker-yuan/go-mall/application/admin/pkg/util"
+	db2 "github.com/baker-yuan/go-mall/common/db"
+	"github.com/baker-yuan/go-mall/common/entity"
 	"gorm.io/gorm"
 )
 
 // MemberPriceRepo 商品会员价格
 type MemberPriceRepo struct {
-	*db.GenericDao[entity.MemberPrice, uint64]
+	*db2.GenericDao[entity.MemberPrice, uint64]
 }
 
 // NewMemberPriceRepo 创建
 func NewMemberPriceRepo(conn *gorm.DB) *MemberPriceRepo {
 	return &MemberPriceRepo{
-		GenericDao: &db.GenericDao[entity.MemberPrice, uint64]{
+		GenericDao: &db2.GenericDao[entity.MemberPrice, uint64]{
 			DB: conn,
 		},
 	}
@@ -77,7 +77,7 @@ func (r MemberPriceRepo) GetByID(ctx context.Context, id uint64) (*entity.Member
 }
 
 // GetByDBOption 根据动态条件查询商品会员价格
-func (r MemberPriceRepo) GetByDBOption(ctx context.Context, pageNum uint32, pageSize uint32, opts ...db.DBOption) ([]*entity.MemberPrice, uint32, error) {
+func (r MemberPriceRepo) GetByDBOption(ctx context.Context, pageNum uint32, pageSize uint32, opts ...db2.DBOption) ([]*entity.MemberPrice, uint32, error) {
 	var (
 		res       = make([]*entity.MemberPrice, 0)
 		pageTotal = int64(0)
@@ -103,7 +103,7 @@ func (r MemberPriceRepo) BatchCreateWithTX(ctx context.Context, productID uint64
 	for _, memberPrice := range memberPrices {
 		memberPrice.ProductID = productID
 	}
-	tdb, err := db.GetTransactionDB(ctx)
+	tdb, err := db2.GetTransactionDB(ctx)
 	if err != nil {
 		return err
 	}
@@ -112,7 +112,7 @@ func (r MemberPriceRepo) BatchCreateWithTX(ctx context.Context, productID uint64
 
 // DeleteByProductIDWithTX 根据商品ID删除记录
 func (r MemberPriceRepo) DeleteByProductIDWithTX(ctx context.Context, productID uint64) error {
-	tdb, err := db.GetTransactionDB(ctx)
+	tdb, err := db2.GetTransactionDB(ctx)
 	if err != nil {
 		return err
 	}

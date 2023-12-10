@@ -12,8 +12,8 @@ type (
 		App  `yaml:"app"`
 		HTTP `yaml:"http"`
 		Log  `yaml:"logger"`
-		PG   `yaml:"postgres"`
-		RMQ  `yaml:"rabbitmq"`
+		DB   `yaml:"db"`
+		Oss  `yaml:"oss"`
 	}
 
 	// App app配置
@@ -32,17 +32,18 @@ type (
 		Level string `env-required:"true" yaml:"log_level"   env:"LOG_LEVEL"`
 	}
 
-	// PG PostgreSQL数据库配置
-	PG struct {
-		PoolMax int    `env-required:"true" yaml:"pool_max" env:"PG_POOL_MAX"`
-		URL     string `env-required:"true"                 env:"PG_URL"`
+	// DB 数据库配置
+	DB struct {
+		Username string `env-required:"true" yaml:"username" env:"DB_USERNAME"`
+		Password string `env-required:"true" yaml:"password" env:"DB_PASSWORD"`
+		Host     string `env-required:"true" yaml:"host" env:"DB_HOST"`
+		Port     uint32 `env-required:"true" yaml:"port" env:"DB_PORT"`
+		DbName   string `env-required:"true" yaml:"db_name" env:"DB_DB_NAME"`
+		Timeout  string `env-required:"true" yaml:"timeout" env:"DB_TIMEOUT"`
 	}
 
-	// RMQ RabbitMQ配置
-	RMQ struct {
-		ServerExchange string `env-required:"true" yaml:"rpc_server_exchange" env:"RMQ_RPC_SERVER"`
-		ClientExchange string `env-required:"true" yaml:"rpc_client_exchange" env:"RMQ_RPC_CLIENT"`
-		URL            string `env-required:"true"                            env:"RMQ_URL"`
+	Oss struct {
+		BaseUrl string `env-required:"true" yaml:"base_url" env:"OSS_BaseUrl"`
 	}
 )
 
