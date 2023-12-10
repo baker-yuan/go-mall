@@ -48,11 +48,13 @@ func Run(cfg *config.Config) {
 
 	var (
 		productCategoryRepo = repo.NewProductCategoryRepo(conn)
+		productRepo         = repo.NewProductRepo(conn)
 	)
 	homeUsecase := usecase.NewHome(productCategoryRepo)
+	productUsecase := usecase.NewProduct(productRepo)
 
 	// grpc服务
-	grpcSrvImpl := grpcsrv.New(homeUsecase)
+	grpcSrvImpl := grpcsrv.New(homeUsecase, productUsecase)
 	grpcServer, err := configGrpc(customLog, grpcSrvImpl, cfg.HTTP.IP, cfg.HTTP.Port)
 	if err != nil {
 		log.Fatal(fmt.Errorf("app - Run - configGrpc: %w", err))
@@ -116,12 +118,16 @@ func configGrpc(customLog *logger.Logger, grpcSrvImpl grpcsrv.PortalApi, ip stri
 	)
 
 	// 注册grpc服务
-	pb.RegisterPortalApiServer(grpcServer, grpcSrvImpl)
+	pb.RegisterPortalHomeApiServer(grpcServer, grpcSrvImpl)
+	pb.RegisterPortalProductApiServer(grpcServer, grpcSrvImpl)
 
 	// gRPC-Gateway mux
 	gwmux := runtime.NewServeMux()
 	dops := []grpc.DialOption{grpc.WithTransportCredentials(insecure.NewCredentials())}
-	if err := pb.RegisterPortalApiHandlerFromEndpoint(context.Background(), gwmux, addr, dops); err != nil {
+	if err := pb.RegisterPortalHomeApiHandlerFromEndpoint(context.Background(), gwmux, addr, dops); err != nil {
+		return nil, err
+	}
+	if err := pb.RegisterPortalProductApiHandlerFromEndpoint(context.Background(), gwmux, addr, dops); err != nil {
 		return nil, err
 	}
 

@@ -3,6 +3,7 @@ package usecase
 import (
 	"context"
 
+	"github.com/baker-yuan/go-mall/common/db"
 	"github.com/baker-yuan/go-mall/common/entity"
 	pb "github.com/baker-yuan/go-mall/proto/mall"
 )
@@ -11,8 +12,11 @@ import (
 type (
 	// IProductCategoryRepo 数据存储操作
 	IProductCategoryRepo interface {
-		// GetByParentID 根据上级分类的编号查询商品分类
-		GetByParentID(ctx context.Context, parentID uint64) (entity.ProductCategories, error)
+		WithByParentID(parentID uint64) db.DBOption
+		WithByShowStatus(showStatus uint8) db.DBOption
+
+		// GetShowProductCategory 根据上级分类的编号查询商品分类
+		GetShowProductCategory(ctx context.Context, parentID uint64) (entity.ProductCategories, error)
 	}
 )
 
@@ -22,5 +26,20 @@ type (
 	IHomeUseCase interface {
 		// ProductCategoryList 分页查询订单
 		ProductCategoryList(context.Context, *pb.ProductCategoryListReq) ([]*pb.ProductCategoryItem, error)
+	}
+)
+
+// PmsProduct 商品信息
+type (
+	// IProductUseCase 业务逻辑
+	IProductUseCase interface {
+		// SearchProduct 综合搜索商品
+		SearchProduct(ctx context.Context, req *pb.SearchProductReq) ([]*pb.ProductItem, error)
+	}
+
+	// IProductRepo 数据存储操作
+	IProductRepo interface {
+		// SearchProduct 综合搜索商品
+		SearchProduct(ctx context.Context, req *pb.SearchProductReq) (entity.Products, error)
 	}
 )

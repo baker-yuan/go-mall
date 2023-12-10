@@ -22,10 +22,26 @@ func NewProductCategoryRepo(conn *gorm.DB) *ProductCategoryRepo {
 	}
 }
 
-// GetByParentID 根据上级分类的编号查询商品分类
-func (p ProductCategoryRepo) GetByParentID(ctx context.Context, parentID uint64) (entity.ProductCategories, error) {
+func (p ProductCategoryRepo) WithByParentID(parentID uint64) db.DBOption {
+	return func(db *gorm.DB) *gorm.DB {
+		return db.Where("parent_id = ?", parentID)
+	}
+}
+
+func (p ProductCategoryRepo) WithByShowStatus(showStatus uint8) db.DBOption {
+	return func(db *gorm.DB) *gorm.DB {
+		return db.Where("show_status = ?", showStatus)
+	}
+}
+
+// GetShowProductCategory 根据上级分类的编号查询商品分类
+func (p ProductCategoryRepo) GetShowProductCategory(ctx context.Context, parentID uint64) (entity.ProductCategories, error) {
 	res := make([]*entity.ProductCategory, 0)
-	if err := p.GenericDao.DB.WithContext(ctx).Where("parent_id = ?", parentID).Find(&res).Error; err != nil {
+	if err := p.GenericDao.DB.WithContext(ctx).
+		Where("parent_id = ?", parentID).
+		Where("show_status = ?", 1).
+		Order("sort desc").
+		Find(&res).Error; err != nil {
 		return nil, err
 	}
 	return res, nil

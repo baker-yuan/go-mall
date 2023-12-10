@@ -139,7 +139,7 @@
 					}
 				}
 				searchProductList(this.searchParam).then(response => {
-					let productList = response.data.list;
+					let productList = response.data.data;
 					if (response.data.list.length === 0) {
 						//没有更多了
 						this.loadingType = 'nomore';

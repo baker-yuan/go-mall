@@ -24,7 +24,7 @@ func (h HomeUseCase) ProductCategoryList(ctx context.Context, req *pb.ProductCat
 	var (
 		res = make([]*pb.ProductCategoryItem, 0)
 	)
-	categories, err := h.productCategoryRepo.GetByParentID(ctx, req.GetParentId())
+	categories, err := h.productCategoryRepo.GetShowProductCategory(ctx, req.GetParentId())
 	if err != nil {
 		return nil, err
 	}

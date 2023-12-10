@@ -14,6 +14,7 @@ import (
 )
 
 type DBOption func(*gorm.DB) *gorm.DB
+type DBOrderOption func(*gorm.DB) *gorm.DB
 
 // GetConn 创建gorm
 func GetConn(username string, password string, host string, port uint32, timeout string, dbName string) (*gorm.DB, error) {

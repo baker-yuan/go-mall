@@ -1,0 +1,53 @@
+syntax = "proto3";
+package admin;
+option go_package = ".;mall";
+
+import "portal/portal.proto";
+
+import "validate/validate.proto";
+import "google/api/annotations.proto";
+import "google/protobuf/wrappers.proto";
+
+message ProductItem {
+  // 基本信息
+  uint64 id = 1; // 主键
+  uint64 product_category_id = 2; // 商品分类id
+  string name = 3; // 商品名称
+}
+
+message SearchProductReq {
+  // 条件
+  string keyword = 1;             // 关键词
+  google.protobuf.UInt64Value brandId = 2;             // 品牌ID
+  google.protobuf.UInt64Value productCategoryId = 3;   // 商品分类ID
+  // 分页排序
+  uint64 pageNum = 10; //
+  uint64 pageSize = 11; //
+  uint32 sort = 12 [(validate.rules).uint32 = {in: [0, 1, 2, 3, 4]}];      // 排序字段:0->按相关度；1->按新品；2->按销量；3->价格从低到高；4->价格从高到低
+}
+
+message ProductRspItem {
+  repeated ProductItem data = 1;    // 商品
+
+  uint32 total = 10;       // 总数量
+  uint32 page_total = 11;  // 总页数
+  uint32 page_size = 12;   // 每页的数量
+  uint32 page_num = 13;    // 当前页数
+}
+
+message SearchProductRsp {
+  uint32 code = 1;      // 状态码
+  string message = 2;   // 提示信息
+
+  ProductRspItem data = 3;
+}
+
+// 客户端接口
+service PortalProductApi {
+  // 综合搜索商品
+  rpc SearchProduct (SearchProductReq) returns (SearchProductRsp) {
+    option (google.api.http) = {
+      get: "/product/search"
+    };
+  }
+}
