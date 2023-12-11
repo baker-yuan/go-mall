@@ -863,46 +863,6 @@ CREATE TABLE `ums_integration_consume_setting`  (
 -- ----------------------------
 INSERT INTO `ums_integration_consume_setting` VALUES (1, 100, 50, 100, 1);
 
--- ----------------------------
--- Table structure for ums_member
--- ----------------------------
-DROP TABLE IF EXISTS `ums_member`;
-CREATE TABLE `ums_member`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `member_level_id` bigint(20) NULL DEFAULT NULL,
-  `username` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '用户名',
-  `password` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '密码',
-  `nickname` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '昵称',
-  `phone` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '手机号码',
-  `status` int(1) NULL DEFAULT NULL COMMENT '帐号启用状态:0->禁用；1->启用',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '注册时间',
-  `icon` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '头像',
-  `gender` int(1) NULL DEFAULT NULL COMMENT '性别：0->未知；1->男；2->女',
-  `birthday` date NULL DEFAULT NULL COMMENT '生日',
-  `city` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '所做城市',
-  `job` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '职业',
-  `personalized_signature` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '个性签名',
-  `source_type` int(1) NULL DEFAULT NULL COMMENT '用户来源',
-  `integration` int(11) NULL DEFAULT NULL COMMENT '积分',
-  `growth` int(11) NULL DEFAULT NULL COMMENT '成长值',
-  `luckey_count` int(11) NULL DEFAULT NULL COMMENT '剩余抽奖次数',
-  `history_integration` int(11) NULL DEFAULT NULL COMMENT '历史积分数量',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `idx_username`(`username`) USING BTREE,
-  UNIQUE INDEX `idx_phone`(`phone`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '会员表' ROW_FORMAT = DYNAMIC;
-
-insert into go_mall_admin.ums_member (id, member_level_id, username, password, nickname, phone, status, icon, gender, birthday, city, job, personalized_signature, source_type, integration, growth, luckey_count, history_integration, create_time)
-values  (1, 4, 'test', '$2a$10$NZ5o7r2E.ayT2ZoxgjlI.eJ6OEYqjH7INR/F.mXDbjZJi9HF0YCVG', 'test', '18061581849', 1, 'https://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/icon/github_icon_03.png', 1, '2009-06-01', '上海', '学生', 'test', 0, 3900, 1000, 0, 0, 1533177344),
-        (3, 4, 'windy', '$2a$10$NZ5o7r2E.ayT2ZoxgjlI.eJ6OEYqjH7INR/F.mXDbjZJi9HF0YCVG', 'windy', '18061581848', 1, '', 0, null, '', '', '', 0, 0, 0, 0, 0, 1533285998),
-        (4, 4, 'zhengsan', '$2a$10$NZ5o7r2E.ayT2ZoxgjlI.eJ6OEYqjH7INR/F.mXDbjZJi9HF0YCVG', 'zhengsan', '18061581847', 1, '', 0, null, '', '', '', 0, 0, 0, 0, 0, 1542003124),
-        (5, 4, 'lisi', '$2a$10$NZ5o7r2E.ayT2ZoxgjlI.eJ6OEYqjH7INR/F.mXDbjZJi9HF0YCVG', 'lisi', '18061581841', 1, '', 0, null, '', '', '', 0, 0, 0, 0, 0, 1542003158),
-        (6, 4, 'wangwu', '$2a$10$NZ5o7r2E.ayT2ZoxgjlI.eJ6OEYqjH7INR/F.mXDbjZJi9HF0YCVG', 'wangwu', '18061581842', 1, '', 0, null, '', '', '', 0, 0, 0, 0, 0, 1542003189),
-        (7, 4, 'lion', '$2a$10$NZ5o7r2E.ayT2ZoxgjlI.eJ6OEYqjH7INR/F.mXDbjZJi9HF0YCVG', 'lion', '18061581845', 1, '', 0, null, '', '', '', 0, 0, 0, 0, 0, 1542003699),
-        (8, 4, 'shari', '$2a$10$NZ5o7r2E.ayT2ZoxgjlI.eJ6OEYqjH7INR/F.mXDbjZJi9HF0YCVG', 'shari', '18061581844', 1, '', 0, null, '', '', '', 0, 0, 0, 0, 0, 1542003720),
-        (9, 4, 'aewen', '$2a$10$NZ5o7r2E.ayT2ZoxgjlI.eJ6OEYqjH7INR/F.mXDbjZJi9HF0YCVG', 'aewen', '18061581843', 1, '', 0, null, '', '', '', 0, 0, 0, 0, 0, 1542003775),
-        (10, 4, 'guest', '$2a$10$WQiD4RzEs1iJVWU.2HVu8OdSlExJHWKmwndaw3SUfMyqfKZmXe1vq', '', '18911111111', 1, '', 0, null, '', '', '', 0, 0, 0, 0, 0, 1584168738),
-        (11, 4, 'member', '$2a$10$Q08uzqvtPj61NnpYQZsVvOnyilJ3AU4VdngAcJFGvPhEeqhhC.hhS', 'member', '18961511111', 1, 'https://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/icon/github_icon_02.png', 1, '2009-06-01', '上海', '学生', 'member', 0, 5000, 1000, 0, 0, 1683789758);
 
 
 
@@ -984,32 +944,6 @@ CREATE TABLE `ums_member_product_category_relation`  (
 -- Records of ums_member_product_category_relation
 -- ----------------------------
 
--- ----------------------------
--- Table structure for ums_member_receive_address
--- ----------------------------
-DROP TABLE IF EXISTS `ums_member_receive_address`;
-CREATE TABLE `ums_member_receive_address`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `member_id` bigint(20) NULL DEFAULT NULL,
-  `name` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '收货人名称',
-  `phone_number` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `default_status` int(1) NULL DEFAULT NULL COMMENT '是否为默认',
-  `post_code` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '邮政编码',
-  `province` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '省份/直辖市',
-  `city` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '城市',
-  `region` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '区',
-  `detail_address` varchar(128) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '详细地址(街道)',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '会员收货地址表' ROW_FORMAT = DYNAMIC;
-
--- ----------------------------
--- Records of ums_member_receive_address
--- ----------------------------
-INSERT INTO `ums_member_receive_address` VALUES (1, 1, '大梨', '18033441849', 0, '518000', '广东省', '深圳市', '南山区', '科兴科学园');
-INSERT INTO `ums_member_receive_address` VALUES (3, 1, '大梨', '18033441849', 0, '518000', '广东省', '深圳市', '福田区', '清水河街道');
-INSERT INTO `ums_member_receive_address` VALUES (4, 1, '大梨', '18033441849', 1, '518000', '广东省', '深圳市', '福田区', '东晓街道');
-INSERT INTO `ums_member_receive_address` VALUES (5, 11, '小李', '18961511111', 1, '518000', '广东省', '深圳市', '福田区', '东晓街道');
-INSERT INTO `ums_member_receive_address` VALUES (6, 11, '小李', '18961511111', NULL, '518000', '广东省', '深圳市', '福田区', '清水河街道');
 
 -- ----------------------------
 -- Table structure for ums_member_rule_setting

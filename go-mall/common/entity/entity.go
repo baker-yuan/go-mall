@@ -219,15 +219,15 @@ func Init(db *gorm.DB) error {
 			TableName: "首页轮播广告表",
 			StructPtr: &HomeAdvertise{},
 		},
-		//
-		//{
-		//	TableName: "会员表",
-		//	StructPtr: &Member{},
-		//},
-		//{
-		//	TableName: "会员收货地址表",
-		//	StructPtr: &MemberReceiveAddress{},
-		//},
+		// 用户信息
+		{
+			TableName: "会员表",
+			StructPtr: &Member{},
+		},
+		{
+			TableName: "会员收货地址表",
+			StructPtr: &MemberReceiveAddress{},
+		},
 	}
 
 	schemas := make([]tableSchema, 0)

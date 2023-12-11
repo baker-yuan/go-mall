@@ -1080,3 +1080,21 @@ values  (2, '夏季大热促销', 1, '/mall/images/20190525/ad1.jpg', 0, 0, 0, '
         (16, 'OPPO推荐广告', 1, '/mall/images/20221108/oppo_banner_01.png', 1, 0, 0, '/pages/brand/brandDetail?id=21', '', 0, 1667899210, 1699435211);
 
 
+insert into go_mall_admin.ums_member (id, member_level_id, username, password, nickname, phone, status, icon, gender, birthday, city, job, personalized_signature, source_type, integration, growth, luckey_count, history_integration, create_time)
+values  (1, 4, 'test', '$2a$10$NZ5o7r2E.ayT2ZoxgjlI.eJ6OEYqjH7INR/F.mXDbjZJi9HF0YCVG', 'test', '18061581849', 1, 'https://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/icon/github_icon_03.png', 1, '20090601', '上海', '学生', 'test', 0, 3900, 1000, 0, 0, 1533177344),
+        (3, 4, 'windy', '$2a$10$NZ5o7r2E.ayT2ZoxgjlI.eJ6OEYqjH7INR/F.mXDbjZJi9HF0YCVG', 'windy', '18061581848', 1, '', 0, 0, '', '', '', 0, 0, 0, 0, 0, 1533285998),
+        (4, 4, 'zhengsan', '$2a$10$NZ5o7r2E.ayT2ZoxgjlI.eJ6OEYqjH7INR/F.mXDbjZJi9HF0YCVG', 'zhengsan', '18061581847', 1, '', 0, 0, '', '', '', 0, 0, 0, 0, 0, 1542003124),
+        (5, 4, 'lisi', '$2a$10$NZ5o7r2E.ayT2ZoxgjlI.eJ6OEYqjH7INR/F.mXDbjZJi9HF0YCVG', 'lisi', '18061581841', 1, '', 0, 0, '', '', '', 0, 0, 0, 0, 0, 1542003158),
+        (6, 4, 'wangwu', '$2a$10$NZ5o7r2E.ayT2ZoxgjlI.eJ6OEYqjH7INR/F.mXDbjZJi9HF0YCVG', 'wangwu', '18061581842', 1, '', 0, 0, '', '', '', 0, 0, 0, 0, 0, 1542003189),
+        (7, 4, 'lion', '$2a$10$NZ5o7r2E.ayT2ZoxgjlI.eJ6OEYqjH7INR/F.mXDbjZJi9HF0YCVG', 'lion', '18061581845', 1, '', 0, 0, '', '', '', 0, 0, 0, 0, 0, 1542003699),
+        (8, 4, 'shari', '$2a$10$NZ5o7r2E.ayT2ZoxgjlI.eJ6OEYqjH7INR/F.mXDbjZJi9HF0YCVG', 'shari', '18061581844', 1, '', 0, 0, '', '', '', 0, 0, 0, 0, 0, 1542003720),
+        (9, 4, 'aewen', '$2a$10$NZ5o7r2E.ayT2ZoxgjlI.eJ6OEYqjH7INR/F.mXDbjZJi9HF0YCVG', 'aewen', '18061581843', 1, '', 0, 0, '', '', '', 0, 0, 0, 0, 0, 1542003775),
+        (10, 4, 'guest', '$2a$10$WQiD4RzEs1iJVWU.2HVu8OdSlExJHWKmwndaw3SUfMyqfKZmXe1vq', '', '18911111111', 1, '', 0, 0, '', '', '', 0, 0, 0, 0, 0, 1584168738),
+        (11, 4, 'member', '$2a$10$Q08uzqvtPj61NnpYQZsVvOnyilJ3AU4VdngAcJFGvPhEeqhhC.hhS', 'member', '18961511111', 1, 'https://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/icon/github_icon_02.png', 1, '20090601', '上海', '学生', 'member', 0, 5000, 1000, 0, 0, 1683789758);
+
+insert into go_mall_admin.ums_member_receive_address (id, member_id, name, phone_number, default_status, post_code, province, city, region, detail_address)
+values  (1, 1, '大梨', '18033441849', 0, '518000', '广东省', '深圳市', '南山区', '科兴科学园'),
+        (3, 1, '大梨', '18033441849', 0, '518000', '广东省', '深圳市', '福田区', '清水河街道'),
+        (4, 1, '大梨', '18033441849', 1, '518000', '广东省', '深圳市', '福田区', '东晓街道'),
+        (5, 11, '小李', '18961511111', 1, '518000', '广东省', '深圳市', '福田区', '东晓街道'),
+        (6, 11, '小李', '18961511111', 0, '518000', '广东省', '深圳市', '福田区', '清水河街道');
