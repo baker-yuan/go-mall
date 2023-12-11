@@ -281,12 +281,12 @@
 				specClass: 'none', //
 				attrClass: 'none', //
         imgList: [], // 头图信息
-				specSelected: [], // 购买类型
 				favorite: false,
 				shareList: [], //
 				desc: '', //
 				specList: [], //
 				specChildList: [], //
+        specSelected: [], // 购买类型
 				product: {}, //
 				brand: {}, //
 				serviceList: [], //
