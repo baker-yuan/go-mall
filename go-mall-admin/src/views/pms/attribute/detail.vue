@@ -51,13 +51,13 @@
       </el-form-item>
 
       <el-form-item label="属性值的录入方式">
-        <el-radio-group v-model="drawerProps.row!.inputType">
+        <el-radio-group v-model="drawerProps.row!.inputType" @change="handleInputTypeChange">
           <el-radio :label="0">手工录入</el-radio>
           <el-radio :label="1">从下面列表中选择</el-radio>
         </el-radio-group>
       </el-form-item>
 
-      <el-form-item label="属性值可选值列表">
+      <el-form-item label="属性值可选值列表" v-show="drawerProps.row!.inputType == 1">
         <comma-input v-model="drawerProps.row!.inputList"></comma-input>
       </el-form-item>
       <!--
@@ -141,6 +141,13 @@ const handleSubmit = () => {
       console.log(error);
     }
   });
+};
+
+// 属性录入方式：0->手工录入；1->从列表中选取
+const handleInputTypeChange = (value: number) => {
+  if (value === 0) {
+    drawerProps.value.row.inputList = "";
+  }
 };
 
 defineExpose({
