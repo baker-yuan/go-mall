@@ -319,7 +319,7 @@ message AddOrUpdateProductAttributeParam {
   uint32 select_type = 5 [(validate.rules).uint32 = {in: [0, 1, 2]}];               // 属性选择类型：0->唯一；1->单选；2->多选
   uint32 input_type = 6 [(validate.rules).uint32 = {in: [0, 1]}];                   // 属性录入方式：0->手工录入；1->从列表中选取
   string input_list = 7;                                                            // 可选值列表，以逗号隔开
-  int32 sort = 8;                                                                   // 排序字段
+  uint32 sort = 8;                                                                  // 排序字段
   uint32 filter_type = 9 [(validate.rules).uint32 = {in: [0, 1]}];                  // 分类筛选样式：0->普通；1->颜色
   uint32 search_type = 10 [(validate.rules).uint32 = {in: [0, 1, 2]}];              // 检索类型；0->不需要进行检索；1->关键字检索；2->范围检索
   uint32 related_status = 11 [(validate.rules).uint32 = {in: [0, 1]}];              // 相同属性产品是否关联；0->不关联；1->关联

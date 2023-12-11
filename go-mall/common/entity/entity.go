@@ -7,18 +7,13 @@ import (
 	"gorm.io/gorm"
 )
 
-type BaseModel struct {
-	ID        uint64 `gorm:"primarykey"`
-	CreatedAt time.Time
-	UpdatedAt time.Time
-	DeletedAt gorm.DeletedAt `gorm:"index"`
-}
-
+// BaseTime 基础的时间字段，每个dao结构体都应该嵌套这个字段
 type BaseTime struct {
 	CreatedAt uint32 `gorm:"type:int(10);unsigned;not null;default:0;comment:创建时间"` // 使用时间戳秒数填充创建时间
 	UpdatedAt uint32 `gorm:"type:int(10);unsigned;not null;default:0;comment:修改时间"` // 使用时间戳秒数填充修改时间
 }
 
+// BeforeCreate gorm创建之前回调
 func (bt *BaseTime) BeforeCreate(tx *gorm.DB) (err error) {
 	timestamp := uint32(time.Now().Unix())
 	bt.CreatedAt = timestamp
@@ -26,11 +21,13 @@ func (bt *BaseTime) BeforeCreate(tx *gorm.DB) (err error) {
 	return
 }
 
+// BeforeUpdate gorm修改之前回调
 func (bt *BaseTime) BeforeUpdate(tx *gorm.DB) (err error) {
 	bt.UpdatedAt = uint32(time.Now().Unix())
 	return
 }
 
+// Init 初始化
 func Init(db *gorm.DB) error {
 	pmsSchemas := []tableSchema{
 		{
@@ -101,7 +98,6 @@ func Init(db *gorm.DB) error {
 	}
 
 	cmsSchemas := []tableSchema{
-		// cms
 		{
 			TableName: "优选专区",
 			StructPtr: &PrefrenceArea{},
@@ -134,7 +130,6 @@ func Init(db *gorm.DB) error {
 	}
 
 	omsSchemas := []tableSchema{
-		// oms
 		{
 			TableName: "订单表",
 			StructPtr: &Order{},
@@ -170,7 +165,6 @@ func Init(db *gorm.DB) error {
 	}
 
 	smsSchemas := []tableSchema{
-		// sms
 		{
 			TableName: "限时购表",
 			StructPtr: &FlashPromotion{},
@@ -187,6 +181,7 @@ func Init(db *gorm.DB) error {
 		//	TableName: "限时购通知记录表",
 		//	StructPtr: &FlashPromotionLog{},
 		//},
+		// 优惠券
 		{
 			TableName: "优惠券表",
 			StructPtr: &Coupon{},
@@ -203,7 +198,7 @@ func Init(db *gorm.DB) error {
 			TableName: "优惠券使用、领取历史表",
 			StructPtr: &CouponHistory{},
 		},
-
+		// 首页
 		{
 			TableName: "首页品牌推荐表",
 			StructPtr: &HomeBrand{},
@@ -224,6 +219,7 @@ func Init(db *gorm.DB) error {
 			TableName: "首页轮播广告表",
 			StructPtr: &HomeAdvertise{},
 		},
+		//
 		//{
 		//	TableName: "会员表",
 		//	StructPtr: &Member{},
@@ -239,13 +235,10 @@ func Init(db *gorm.DB) error {
 	schemas = append(schemas, cmsSchemas...)
 	schemas = append(schemas, omsSchemas...)
 	schemas = append(schemas, smsSchemas...)
-	if err := autoMigrate(db, schemas); err != nil {
-		return err
-	}
-
-	return nil
+	return autoMigrate(db, schemas)
 }
 
+// tableSchema 自动建表描述信息
 type tableSchema struct {
 	TableName string      // 表名
 	StructPtr interface{} // 结构体指针
@@ -253,7 +246,8 @@ type tableSchema struct {
 
 func autoMigrate(db *gorm.DB, schemas []tableSchema) error {
 	for _, schema := range schemas {
-		if err := db.Set("gorm:table_options", fmt.Sprintf("COMMENT='%s'", schema.TableName)).
+		if err := db.
+			Set("gorm:table_options", fmt.Sprintf("COMMENT='%s'", schema.TableName)).
 			AutoMigrate(schema.StructPtr); err != nil {
 			return err
 		}

@@ -7,7 +7,8 @@ type ProductAttributeValue struct {
 	ID                 uint64 `gorm:"column:id;type:bigint;primary_key;auto_increment;comment:主键ID"`
 	ProductID          uint64 `gorm:"column:product_id;type:bigint;unsigned;not null;default:0;comment:商品ID"`             // pms_product#id
 	ProductAttributeID uint64 `gorm:"column:product_attribute_id;type:bigint;unsigned;not null;default:0;comment:商品属性ID"` // pms_product_attribute#id
-	Value              string `gorm:"column:value;type:varchar(64);not null;default:'';comment:手动添加规格或参数的值，参数单值，规格有多个时以逗号隔开"`
+	// 值
+	Value string `gorm:"column:value;type:varchar(64);not null;default:'';comment:手动添加规格或参数的值，参数单值，规格有多个时以逗号隔开"`
 	// 公共字段
 	BaseTime
 }

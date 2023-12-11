@@ -8,18 +8,22 @@ import (
 
 func ProductCategoryEntityToModel(category *entity.ProductCategory) *pb.ProductCategory {
 	return &pb.ProductCategory{
-		Id:           category.ID,
-		ParentId:     category.ParentID,
-		Name:         category.Name,
-		Level:        uint32(category.Level),
+		Id:          category.ID,
+		ParentId:    category.ParentID,
+		Name:        category.Name,
+		Icon:        util.GetFullUrl(category.Icon),
+		ProductUnit: category.ProductUnit,
+		Sort:        category.Sort,
+		//
+		Description: category.Description,
+		Keywords:    category.Keywords,
+		// 状态
+		NavStatus:  uint32(category.NavStatus),
+		ShowStatus: uint32(category.ShowStatus),
+		// 计算得出
+		Level: uint32(category.Level),
+		// 冗余字段
 		ProductCount: category.ProductCount,
-		ProductUnit:  category.ProductUnit,
-		NavStatus:    uint32(category.NavStatus),
-		ShowStatus:   uint32(category.ShowStatus),
-		Sort:         category.Sort,
-		Icon:         util.GetFullUrl(category.Icon),
-		Keywords:     category.Keywords,
-		Description:  category.Description,
 	}
 }
 
@@ -27,11 +31,13 @@ func AddOrUpdateProductCategoryParamToEntity(param *pb.AddOrUpdateProductCategor
 	return &entity.ProductCategory{
 		ParentID:    param.ParentId,
 		Name:        param.Name,
-		ProductUnit: param.ProductUnit,
-		NavStatus:   uint8(param.NavStatus),
-		ShowStatus:  uint8(param.ShowStatus),
-		Sort:        param.Sort,
 		Icon:        util.GetRelativeUrl(param.Icon),
+		ProductUnit: param.ProductUnit,
+		Sort:        param.Sort,
+		// 状态
+		NavStatus:  uint8(param.NavStatus),
+		ShowStatus: uint8(param.ShowStatus),
+		//
 		Keywords:    param.Keywords,
 		Description: param.Description,
 	}
