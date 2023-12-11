@@ -52,6 +52,7 @@ func Run(cfg *config.Config) {
 		brandRepo                 = repo.NewBrandRepo(conn)
 		productAttributeRepo      = repo.NewProductAttributeRepo(conn)
 		productAttributeValueRepo = repo.NewProductAttributeValueRepo(conn)
+		skuStockRepo              = repo.NewSkuStockRepo(conn)
 	)
 	homeUsecase := usecase.NewHome(productCategoryRepo)
 	productUsecase := usecase.NewProduct(
@@ -59,6 +60,7 @@ func Run(cfg *config.Config) {
 		brandRepo,
 		productAttributeRepo,
 		productAttributeValueRepo,
+		skuStockRepo,
 	)
 
 	// grpc服务

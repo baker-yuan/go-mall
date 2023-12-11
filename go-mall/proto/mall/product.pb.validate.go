@@ -1592,6 +1592,8 @@ func (m *ProductAggregation_Product) validate(all bool) error {
 
 	// no validation rules for Stock
 
+	// no validation rules for ServiceIds
+
 	if len(errors) > 0 {
 		return ProductAggregation_ProductMultiError(errors)
 	}
@@ -1805,9 +1807,27 @@ func (m *ProductAggregation_ProductAttribute) validate(all bool) error {
 
 	// no validation rules for Id
 
+	// no validation rules for Type
+
 	// no validation rules for ProductAttributeCategoryId
 
 	// no validation rules for Name
+
+	// no validation rules for Sort
+
+	// no validation rules for SelectType
+
+	// no validation rules for InputType
+
+	// no validation rules for InputList
+
+	// no validation rules for FilterType
+
+	// no validation rules for SearchType
+
+	// no validation rules for RelatedStatus
+
+	// no validation rules for HandAddStatus
 
 	if len(errors) > 0 {
 		return ProductAggregation_ProductAttributeMultiError(errors)
@@ -2026,6 +2046,28 @@ func (m *ProductAggregation_SkuStock) validate(all bool) error {
 	}
 
 	var errors []error
+
+	// no validation rules for Id
+
+	// no validation rules for SkuCode
+
+	// no validation rules for Pic
+
+	// no validation rules for Sale
+
+	// no validation rules for SpData
+
+	// no validation rules for ProductId
+
+	// no validation rules for Price
+
+	// no validation rules for PromotionPrice
+
+	// no validation rules for Stock
+
+	// no validation rules for LowStock
+
+	// no validation rules for LockStock
 
 	if len(errors) > 0 {
 		return ProductAggregation_SkuStockMultiError(errors)

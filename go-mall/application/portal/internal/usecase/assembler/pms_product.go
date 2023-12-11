@@ -27,5 +27,6 @@ func ProductEntityToDetail(product *entity.Product) *pb.ProductAggregation_Produ
 		OriginalPrice: product.OriginalPrice,
 		Sale:          product.Sale,
 		Stock:         product.Stock,
+		ServiceIds:    product.ServiceIDs,
 	}
 }

@@ -2216,7 +2216,7 @@ type AddOrUpdateProductAttributeParam struct {
 	SelectType                 uint32 `protobuf:"varint,5,opt,name=select_type,json=selectType,proto3" json:"select_type,omitempty"`                                                     // 属性选择类型：0->唯一；1->单选；2->多选
 	InputType                  uint32 `protobuf:"varint,6,opt,name=input_type,json=inputType,proto3" json:"input_type,omitempty"`                                                        // 属性录入方式：0->手工录入；1->从列表中选取
 	InputList                  string `protobuf:"bytes,7,opt,name=input_list,json=inputList,proto3" json:"input_list,omitempty"`                                                         // 可选值列表，以逗号隔开
-	Sort                       int32  `protobuf:"varint,8,opt,name=sort,proto3" json:"sort,omitempty"`                                                                                   // 排序字段
+	Sort                       uint32 `protobuf:"varint,8,opt,name=sort,proto3" json:"sort,omitempty"`                                                                                   // 排序字段
 	FilterType                 uint32 `protobuf:"varint,9,opt,name=filter_type,json=filterType,proto3" json:"filter_type,omitempty"`                                                     // 分类筛选样式：0->普通；1->颜色
 	SearchType                 uint32 `protobuf:"varint,10,opt,name=search_type,json=searchType,proto3" json:"search_type,omitempty"`                                                    // 检索类型；0->不需要进行检索；1->关键字检索；2->范围检索
 	RelatedStatus              uint32 `protobuf:"varint,11,opt,name=related_status,json=relatedStatus,proto3" json:"related_status,omitempty"`                                           // 相同属性产品是否关联；0->不关联；1->关联
@@ -2304,7 +2304,7 @@ func (x *AddOrUpdateProductAttributeParam) GetInputList() string {
 	return ""
 }
 
-func (x *AddOrUpdateProductAttributeParam) GetSort() int32 {
+func (x *AddOrUpdateProductAttributeParam) GetSort() uint32 {
 	if x != nil {
 		return x.Sort
 	}
@@ -4273,7 +4273,7 @@ var file_admin_cms_admin_proto_rawDesc = []byte{
 	0x6e, 0x70, 0x75, 0x74, 0x54, 0x79, 0x70, 0x65, 0x12, 0x1d, 0x0a, 0x0a, 0x69, 0x6e, 0x70, 0x75,
 	0x74, 0x5f, 0x6c, 0x69, 0x73, 0x74, 0x18, 0x07, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x69, 0x6e,
 	0x70, 0x75, 0x74, 0x4c, 0x69, 0x73, 0x74, 0x12, 0x12, 0x0a, 0x04, 0x73, 0x6f, 0x72, 0x74, 0x18,
-	0x08, 0x20, 0x01, 0x28, 0x05, 0x52, 0x04, 0x73, 0x6f, 0x72, 0x74, 0x12, 0x2a, 0x0a, 0x0b, 0x66,
+	0x08, 0x20, 0x01, 0x28, 0x0d, 0x52, 0x04, 0x73, 0x6f, 0x72, 0x74, 0x12, 0x2a, 0x0a, 0x0b, 0x66,
 	0x69, 0x6c, 0x74, 0x65, 0x72, 0x5f, 0x74, 0x79, 0x70, 0x65, 0x18, 0x09, 0x20, 0x01, 0x28, 0x0d,
 	0x42, 0x09, 0xfa, 0x42, 0x06, 0x2a, 0x04, 0x30, 0x00, 0x30, 0x01, 0x52, 0x0a, 0x66, 0x69, 0x6c,
 	0x74, 0x65, 0x72, 0x54, 0x79, 0x70, 0x65, 0x12, 0x2c, 0x0a, 0x0b, 0x73, 0x65, 0x61, 0x72, 0x63,

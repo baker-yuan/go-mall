@@ -59,25 +59,25 @@ func (m *SkuStock) validate(all bool) error {
 
 	// no validation rules for Id
 
-	// no validation rules for ProductId
-
 	// no validation rules for SkuCode
-
-	// no validation rules for Price
-
-	// no validation rules for Stock
-
-	// no validation rules for LowStock
 
 	// no validation rules for Pic
 
 	// no validation rules for Sale
 
+	// no validation rules for SpData
+
+	// no validation rules for ProductId
+
+	// no validation rules for Price
+
 	// no validation rules for PromotionPrice
 
-	// no validation rules for LockStock
+	// no validation rules for Stock
 
-	// no validation rules for SpData
+	// no validation rules for LowStock
+
+	// no validation rules for LockStock
 
 	if len(errors) > 0 {
 		return SkuStockMultiError(errors)

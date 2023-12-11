@@ -62,6 +62,12 @@ func (m *Brand) validate(all bool) error {
 
 	// no validation rules for FirstLetter
 
+	// no validation rules for Logo
+
+	// no validation rules for BigPic
+
+	// no validation rules for BrandStory
+
 	// no validation rules for Sort
 
 	// no validation rules for FactoryStatus
@@ -71,12 +77,6 @@ func (m *Brand) validate(all bool) error {
 	// no validation rules for ProductCount
 
 	// no validation rules for ProductCommentCount
-
-	// no validation rules for Logo
-
-	// no validation rules for BigPic
-
-	// no validation rules for BrandStory
 
 	if len(errors) > 0 {
 		return BrandMultiError(errors)

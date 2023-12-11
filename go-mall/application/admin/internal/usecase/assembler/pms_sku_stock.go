@@ -17,17 +17,19 @@ func SkuStocksToModel(skuStocks []*entity.SkuStock) []*pb.SkuStock {
 // SkuStockToModel entity转pb
 func SkuStockToModel(skuStockEntity *entity.SkuStock) *pb.SkuStock {
 	return &pb.SkuStock{
-		Id:             skuStockEntity.ID,
-		ProductId:      skuStockEntity.ProductID,
-		SkuCode:        skuStockEntity.SkuCode,
+		Id:        skuStockEntity.ID,
+		SkuCode:   skuStockEntity.SkuCode,
+		Pic:       skuStockEntity.Pic,
+		Sale:      skuStockEntity.Sale,
+		SpData:    skuStockEntity.SpData,
+		ProductId: skuStockEntity.ProductID,
+		// 价格
 		Price:          skuStockEntity.Price,
-		Stock:          skuStockEntity.Stock,
-		LowStock:       skuStockEntity.LowStock,
-		Pic:            skuStockEntity.Pic,
-		Sale:           skuStockEntity.Sale,
 		PromotionPrice: skuStockEntity.PromotionPrice,
-		LockStock:      skuStockEntity.LockStock,
-		SpData:         skuStockEntity.SpData,
+		// 库存
+		Stock:     skuStockEntity.Stock,
+		LowStock:  skuStockEntity.LowStock,
+		LockStock: skuStockEntity.LockStock,
 	}
 }
 

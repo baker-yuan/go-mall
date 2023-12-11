@@ -12,14 +12,17 @@ func ProductAttributeEntityToModel(productAttribute *entity.ProductAttribute) *p
 		Type:                       uint32(productAttribute.Type),
 		ProductAttributeCategoryId: productAttribute.ProductAttributeCategoryID,
 		Name:                       productAttribute.Name,
-		SelectType:                 uint32(productAttribute.SelectType),
-		InputType:                  uint32(productAttribute.InputType),
-		InputList:                  productAttribute.InputList,
 		Sort:                       productAttribute.Sort,
-		FilterType:                 uint32(productAttribute.FilterType),
-		SearchType:                 uint32(productAttribute.SearchType),
-		RelatedStatus:              uint32(productAttribute.RelatedStatus),
-		HandAddStatus:              uint32(productAttribute.HandAddStatus),
+		//
+		SelectType: uint32(productAttribute.SelectType),
+		InputType:  uint32(productAttribute.InputType),
+		InputList:  productAttribute.InputList,
+		//
+		FilterType: uint32(productAttribute.FilterType),
+		SearchType: uint32(productAttribute.SearchType),
+		//
+		RelatedStatus: uint32(productAttribute.RelatedStatus),
+		HandAddStatus: uint32(productAttribute.HandAddStatus),
 	}
 
 }

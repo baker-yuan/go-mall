@@ -13,6 +13,7 @@ type ProductUseCase struct {
 	brandRepo                 IBrandRepo                 // 操作商品品牌
 	productAttributeRepo      IProductAttributeRepo      // 操作商品属性参数
 	productAttributeValueRepo IProductAttributeValueRepo // 操作产品参数信息
+	skuStockRepo              ISkuStockRepo              // 操作sku
 }
 
 // NewProduct 创建前台商品管理Service实现类
@@ -21,12 +22,14 @@ func NewProduct(
 	brandRepo IBrandRepo,
 	productAttributeRepo IProductAttributeRepo,
 	productAttributeValueRepo IProductAttributeValueRepo,
+	skuStockRepo ISkuStockRepo,
 ) *ProductUseCase {
 	return &ProductUseCase{
 		productRepo:               productRepo,
 		brandRepo:                 brandRepo,
 		productAttributeRepo:      productAttributeRepo,
 		productAttributeValueRepo: productAttributeValueRepo,
+		skuStockRepo:              skuStockRepo,
 	}
 }
 
@@ -76,9 +79,16 @@ func (c ProductUseCase) ProductDetail(ctx context.Context, req *pb.ProductDetail
 		return nil, err
 	}
 
+	// 获取商品SKU库存信息
+	skuStocks, err := c.skuStockRepo.GetByProductID(ctx, productID)
+	if err != nil {
+		return nil, err
+	}
+
 	res.Product = assembler.ProductEntityToDetail(product)
 	res.Brand = assembler.BrandEntityToDetail(brand)
 	res.ProductAttributes = assembler.ProductAttributesToDetail(productAttributes)
 	res.ProductAttributeValues = assembler.ProductAttributeValuesToDetail(attributeValues)
+	res.SkuStocks = assembler.SkuStocksToDetail(skuStocks)
 	return res, nil
 }

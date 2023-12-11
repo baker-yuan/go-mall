@@ -65,13 +65,13 @@ func (m *ProductAttribute) validate(all bool) error {
 
 	// no validation rules for Name
 
+	// no validation rules for Sort
+
 	// no validation rules for SelectType
 
 	// no validation rules for InputType
 
 	// no validation rules for InputList
-
-	// no validation rules for Sort
 
 	// no validation rules for FilterType
 

@@ -87,3 +87,16 @@ type (
 		GetByProductAttributeID(ctx context.Context, productID uint64, productAttributeIDs []uint64) (entity.ProductAttributeValues, error)
 	}
 )
+
+// SkuStock sku的库存
+type (
+	// ISkuStockUseCase 业务逻辑
+	ISkuStockUseCase interface {
+	}
+
+	// ISkuStockRepo 数据存储操作
+	ISkuStockRepo interface {
+		// GetByProductID 根据商品ID查询sku的库存
+		GetByProductID(ctx context.Context, productID uint64) (entity.SkuStocks, error)
+	}
+)

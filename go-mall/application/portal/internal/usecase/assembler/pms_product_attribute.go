@@ -10,12 +10,20 @@ func ProductAttributesToDetail(productAttributes entity.ProductAttributes) []*pb
 	for _, productAttribute := range productAttributes {
 		res = append(res, &pb.ProductAggregation_ProductAttribute{
 			Id:                         productAttribute.ID,
-			Type:                       productAttribute.Type,
-			InputType:                  productAttribute.InputType,
-			InputList:                  productAttribute.InputList,
+			Type:                       uint32(productAttribute.Type),
 			ProductAttributeCategoryId: productAttribute.ProductAttributeCategoryID,
 			Name:                       productAttribute.Name,
-			HandAddStatus:              productAttribute.HandAddStatus,
+			Sort:                       productAttribute.Sort,
+			//
+			SelectType: uint32(productAttribute.SelectType),
+			InputType:  uint32(productAttribute.InputType),
+			InputList:  productAttribute.InputList,
+			//
+			FilterType: uint32(productAttribute.FilterType),
+			SearchType: uint32(productAttribute.SearchType),
+			//
+			RelatedStatus: uint32(productAttribute.RelatedStatus),
+			HandAddStatus: uint32(productAttribute.HandAddStatus),
 		})
 	}
 	return res

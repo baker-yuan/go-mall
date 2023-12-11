@@ -63,23 +63,23 @@ func (m *ProductCategory) validate(all bool) error {
 
 	// no validation rules for Name
 
-	// no validation rules for Level
-
-	// no validation rules for ProductCount
+	// no validation rules for Icon
 
 	// no validation rules for ProductUnit
+
+	// no validation rules for Sort
+
+	// no validation rules for Description
+
+	// no validation rules for Keywords
 
 	// no validation rules for NavStatus
 
 	// no validation rules for ShowStatus
 
-	// no validation rules for Sort
+	// no validation rules for Level
 
-	// no validation rules for Icon
-
-	// no validation rules for Keywords
-
-	// no validation rules for Description
+	// no validation rules for ProductCount
 
 	if len(errors) > 0 {
 		return ProductCategoryMultiError(errors)
