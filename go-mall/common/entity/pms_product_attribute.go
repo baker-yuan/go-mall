@@ -11,7 +11,7 @@ type ProductAttribute struct {
 	//
 	SelectType uint8  `gorm:"column:select_type;type:tinyint(4);unsigned;not null;default:0;comment:属性选择类型：0->唯一；1->单选；2->多选"`
 	InputType  uint8  `gorm:"column:input_type;type:tinyint(4);unsigned;not null;default:0;comment:属性录入方式：0->手工录入；1->从列表中选取"`
-	InputList  string `gorm:"column:input_list;type:varchar(255);not null;default:'';comment:可选值列表，以逗号隔开"`
+	InputList  string `gorm:"column:input_list;type:varchar(255);not null;default:'';comment:可选值列表，以逗号隔开"` // input_type=1
 	//
 	FilterType uint8 `gorm:"column:filter_type;type:tinyint(4);unsigned;not null;default:0;comment:分类筛选样式：1->普通；1->颜色"`
 	SearchType uint8 `gorm:"column:search_type;type:tinyint(4);unsigned;not null;default:0;comment:检索类型；0->不需要进行检索；1->关键字检索；2->范围检索"`
