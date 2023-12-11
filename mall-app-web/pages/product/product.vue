@@ -135,7 +135,6 @@
 				<text class="yticon icon-shoucang"></text>
 				<text>收藏</text>
 			</view>
-
 			<view class="action-btn-group">
 				<button type="primary" class=" action-btn no-border buy-now-btn" @click="buy">立即购买</button>
 				<button type="primary" class=" action-btn no-border add-cart-btn" @click="addToCart">加入购物车</button>
@@ -145,7 +144,7 @@
 
 		<!-- 规格-模态层弹窗 -->
 		<view class="popup spec" :class="specClass" @touchmove.stop.prevent="stopPrevent" @click="toggleSpec">
-			<!-- 遮罩层 -->
+      <!-- 遮罩层 -->
 			<view class="mask"></view>
 			<view class="layer attr-content" @click.stop="stopPrevent">
 				<view class="a-t">
@@ -173,6 +172,7 @@
 				<button class="btn" @click="toggleSpec">完成</button>
 			</view>
 		</view>
+
 		<!-- 属性-模态层弹窗 -->
 		<view class="popup spec" :class="attrClass" @touchmove.stop.prevent="stopPrevent" @click="toggleAttr">
 			<!-- 遮罩层 -->
@@ -188,6 +188,7 @@
 				</view>
 			</view>
 		</view>
+
 		<!-- 优惠券面板 -->
 		<view class="mask" :class="couponState===0 ? 'none' : couponState===1 ? 'show' : ''" @click="toggleCoupon">
 			<view class="mask-content" @click.stop.prevent="stopPrevent">
@@ -241,6 +242,7 @@
 	import {
 		formatDate
 	} from '@/utils/date';
+  // 产品服务
 	const defaultServiceList = [{
 		id: 1,
 		name: "无忧退货"
@@ -251,6 +253,7 @@
 		id: 3,
 		name: "免费包邮"
 	}];
+  //
 	const defaultShareList = [{
 			type: 1,
 			icon: '/static/temp/share_wechat.png',
@@ -280,21 +283,26 @@
 			return {
 				specClass: 'none', //
 				attrClass: 'none', //
+        favorite: false,
+        // 商品加工数据
         imgList: [], // 头图信息
-				favorite: false,
-				shareList: [], //
-				desc: '', //
-				specList: [], //
-				specChildList: [], //
+        serviceList: [], // 产品服务名称集合
+        desc: '', // 移动端详情
+        //
+				shareList: [], // 分享
+        //
+				specList: [], // 商品属性与参数-规格
+				specChildList: [], // 商品属性与参数
         specSelected: [], // 购买类型
-				product: {}, //
-				brand: {}, //
-				serviceList: [], //
-				skuStockList: [], //
-				attrList: [], //
+        //
+				attrList: [], // 商品参数
 				promotionTipList: [], //
 				couponState: 0, //
-				couponList: [] //
+				couponList: [], //
+        //
+        product: {}, // 商品
+        brand: {}, // 商品品牌
+        skuStockList: [], // 商品的sku库存信息
 			};
 		},
 		async onLoad(options) {
@@ -364,7 +372,7 @@
 					this.specClass = 'show';
 				}
 			},
-			//属性弹窗开关
+			// 属性弹窗开关
 			toggleAttr() {
 				if (this.attrClass === 'show') {
 					this.attrClass = 'hide';
@@ -486,10 +494,10 @@
 					}
 				}
 			},
-			// 设置服务信息
+			// 设置产品服务信息
 			initServiceList() {
 				for (let item of defaultServiceList) {
-					if (this.product.serviceIds.indexOf(item.id) != -1) {
+					if (this.product.serviceIds.indexOf(item.id) !== -1) {
 						this.serviceList.push(item.name);
 					}
 				}
@@ -498,15 +506,16 @@
 			initSpecList(data) {
 				for (let i = 0; i < data.productAttributes.length; i++) {
 					let item = data.productAttributes[i];
-					if (item.type == 0) {
+					// 规格
+          if (item.type == 0) {
 						this.specList.push({
 							id: item.id,
 							name: item.name
 						});
-						if (item.handAddStatus == 1) {
+						if (item.handAddStatus === 1) {
 							// 支持手动新增的
 							let valueList = data.productAttributeValues;
-							let filterValueList = valueList.filter(value => value.productAttributeId == item.id);
+							let filterValueList = valueList.filter(value => value.productAttributeId === item.id);
 							let inputList = filterValueList[0].value.split(',');
 							for (let j = 0; j < inputList.length; j++) {
 								this.specChildList.push({
@@ -515,7 +524,7 @@
 									name: inputList[j]
 								});
 							}
-						} else if (item.handAddStatus == 0) {
+						} else if (item.handAddStatus === 0) {
 							// 不支持手动新增的
 							let inputList = item.inputList.split(',');
 							for (let j = 0; j < inputList.length; j++) {
@@ -528,6 +537,7 @@
 						}
 					}
 				}
+        //
 				let availAbleSpecSet = new Set();
 				for (let i = 0; i < this.skuStockList.length; i++) {
 					let spDataArr = JSON.parse(this.skuStockList[i].spData);
@@ -550,13 +560,14 @@
 						}
 					}
 				})
+        // console.log("specSelected", this.specSelected)
 			},
 			// 设置商品参数
 			initAttrList(data) {
 				for (let item of data.productAttributes) {
-					if (item.type == 1) {
+					if (item.type === 1) {
 						let valueList = data.productAttributeValues;
-						let filterValueList = valueList.filter(value => value.productAttributeId == item.id);
+						let filterValueList = valueList.filter(value => value.productAttributeId === item.id);
 						let value = filterValueList[0].value;
 						this.attrList.push({
 							key: item.name,
@@ -568,23 +579,23 @@
 			// 设置促销活动信息
 			initPromotionTipList(data) {
 				let promotionType = this.product.promotionType;
-				if (promotionType == 0) {
+				if (promotionType === 0) {
 					this.promotionTipList.push("暂无优惠");
-				} else if (promotionType == 1) {
+				} else if (promotionType === 1) {
 					this.promotionTipList.push("单品优惠");
-				} else if (promotionType == 2) {
+				} else if (promotionType === 2) {
 					this.promotionTipList.push("会员优惠");
-				} else if (promotionType == 3) {
+				} else if (promotionType === 3) {
 					this.promotionTipList.push("多买优惠");
 					for (let item of data.productLadderList) {
 						this.promotionTipList.push("满" + item.count + "件打" + item.discount * 10 + "折");
 					}
-				} else if (promotionType == 4) {
+				} else if (promotionType === 4) {
 					this.promotionTipList.push("满减优惠");
 					for (let item of data.productFullReductionList) {
 						this.promotionTipList.push("满" + item.fullPrice + "元减" + item.reducePrice + "元");
 					}
-				} else if (promotionType == 5) {
+				} else if (promotionType === 5) {
 					this.promotionTipList.push("限时优惠");
 				}
 			},
@@ -619,7 +630,7 @@
 				let skuStock = this.getSkuStock();
 				if (skuStock != null) {
 					this.product.originalPrice = skuStock.price;
-					if (this.product.promotionType == 1) {
+					if (this.product.promotionType === 1) {
 						// 单品优惠使用促销价
 						this.product.price = skuStock.promotionPrice;
 					} else {
@@ -639,11 +650,11 @@
 					let correctCount = 0;
 					for (let item of this.specSelected) {
 						let value = availAbleSpecSet.get(item.pname);
-						if (value != null && value == item.name) {
+						if (value != null && value === item.name) {
 							correctCount++;
 						}
 					}
-					if (correctCount == this.specSelected.length) {
+					if (correctCount === this.specSelected.length) {
 						return this.skuStockList[i];
 					}
 				}
