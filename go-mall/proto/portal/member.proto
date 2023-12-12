@@ -1,0 +1,50 @@
+syntax = "proto3";
+package admin;
+option go_package = ".;mall";
+
+import "portal/portal.proto";
+
+import "validate/validate.proto";
+import "google/api/annotations.proto";
+import "google/protobuf/wrappers.proto";
+
+// 会员注册
+message MemberRegisterReq {
+  string username = 1 [(validate.rules).string.min_len = 1];  // 用户名
+  string password = 2 [(validate.rules).string.min_len = 1];  // 密码
+  string telephone = 3 [(validate.rules).string.min_len = 1]; // 手机号码
+  string auth_code = 4 [(validate.rules).string.min_len = 1]; //
+}
+
+// 会员登录
+message MemberLoginReq {
+  string username = 1 [(validate.rules).string.min_len = 1];  // 用户名
+  string password = 2 [(validate.rules).string.min_len = 1];  // 密码
+}
+
+message MemberLoginRsp {
+  uint32 code = 1;      // 状态码
+  string message = 2;   // 提示信息
+
+}
+
+// 会员登录注册管理
+service PortalMemberApi {
+  // 会员注册
+  rpc MemberRegister(MemberRegisterReq) returns (PortalCommonRsp) {
+    option (google.api.http) = {
+      post: "/sso/register"
+      body: "*"
+    };
+  }
+
+  // 会员登录
+  rpc MemberLogin(MemberLoginReq) returns (MemberLoginRsp) {
+    option (google.api.http) = {
+      post: "/sso/login"
+      body: "*"
+    };
+  }
+
+
+}
