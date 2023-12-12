@@ -35,46 +35,41 @@ var (
 	_ = sort.Sort
 )
 
-// Validate checks the field values on PortalCommonRsp with the rules defined
-// in the proto definition for this message. If any rules are violated, the
-// first error encountered is returned, or nil if there are no violations.
-func (m *PortalCommonRsp) Validate() error {
+// Validate checks the field values on EmptyRsp with the rules defined in the
+// proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *EmptyRsp) Validate() error {
 	return m.validate(false)
 }
 
-// ValidateAll checks the field values on PortalCommonRsp with the rules
-// defined in the proto definition for this message. If any rules are
-// violated, the result is a list of violation errors wrapped in
-// PortalCommonRspMultiError, or nil if none found.
-func (m *PortalCommonRsp) ValidateAll() error {
+// ValidateAll checks the field values on EmptyRsp with the rules defined in
+// the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in EmptyRspMultiError, or nil
+// if none found.
+func (m *EmptyRsp) ValidateAll() error {
 	return m.validate(true)
 }
 
-func (m *PortalCommonRsp) validate(all bool) error {
+func (m *EmptyRsp) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
 
 	var errors []error
 
-	// no validation rules for Code
-
-	// no validation rules for Message
-
 	if len(errors) > 0 {
-		return PortalCommonRspMultiError(errors)
+		return EmptyRspMultiError(errors)
 	}
 
 	return nil
 }
 
-// PortalCommonRspMultiError is an error wrapping multiple validation errors
-// returned by PortalCommonRsp.ValidateAll() if the designated constraints
-// aren't met.
-type PortalCommonRspMultiError []error
+// EmptyRspMultiError is an error wrapping multiple validation errors returned
+// by EmptyRsp.ValidateAll() if the designated constraints aren't met.
+type EmptyRspMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
-func (m PortalCommonRspMultiError) Error() string {
+func (m EmptyRspMultiError) Error() string {
 	var msgs []string
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
@@ -83,11 +78,11 @@ func (m PortalCommonRspMultiError) Error() string {
 }
 
 // AllErrors returns a list of validation violation errors.
-func (m PortalCommonRspMultiError) AllErrors() []error { return m }
+func (m EmptyRspMultiError) AllErrors() []error { return m }
 
-// PortalCommonRspValidationError is the validation error returned by
-// PortalCommonRsp.Validate if the designated constraints aren't met.
-type PortalCommonRspValidationError struct {
+// EmptyRspValidationError is the validation error returned by
+// EmptyRsp.Validate if the designated constraints aren't met.
+type EmptyRspValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -95,22 +90,22 @@ type PortalCommonRspValidationError struct {
 }
 
 // Field function returns field value.
-func (e PortalCommonRspValidationError) Field() string { return e.field }
+func (e EmptyRspValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e PortalCommonRspValidationError) Reason() string { return e.reason }
+func (e EmptyRspValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e PortalCommonRspValidationError) Cause() error { return e.cause }
+func (e EmptyRspValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e PortalCommonRspValidationError) Key() bool { return e.key }
+func (e EmptyRspValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e PortalCommonRspValidationError) ErrorName() string { return "PortalCommonRspValidationError" }
+func (e EmptyRspValidationError) ErrorName() string { return "EmptyRspValidationError" }
 
 // Error satisfies the builtin error interface
-func (e PortalCommonRspValidationError) Error() string {
+func (e EmptyRspValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -122,14 +117,14 @@ func (e PortalCommonRspValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sPortalCommonRsp.%s: %s%s",
+		"invalid %sEmptyRsp.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = PortalCommonRspValidationError{}
+var _ error = EmptyRspValidationError{}
 
 var _ interface {
 	Field() string
@@ -137,4 +132,4 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = PortalCommonRspValidationError{}
+} = EmptyRspValidationError{}

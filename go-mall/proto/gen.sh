@@ -24,28 +24,3 @@ protoc \
 portal/*.proto
 
 
-# model
-
-#protoc \
-#-I ${OUT} \
-#--go_out=":./model/"  \
-#--go-grpc_out=":./model/"  \
-#--grpc-gateway_out=":./model/" \
-#--validate_out="lang=go:./model/" \
-#model/*.proto
-
-#protoc \
-#-I ${OUT} \
-#-I validate/ \
-#--go_out=":./model/" \
-#--validate_out="lang=go:./model/" \
-#model/pms_product_category.proto
-#
-#protoc \
-#--go_out=${OUT} \
-#--go-grpc_out=${OUT} \
-#--go-grpc_opt=require_unimplemented_servers=false \
-#model/pms_product_category.proto
-
-
-

@@ -20,18 +20,15 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// 通用返回
-type PortalCommonRsp struct {
+// 空响应
+type EmptyRsp struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
-
-	Code    uint32 `protobuf:"varint,1,opt,name=code,proto3" json:"code,omitempty"`      // 状态码
-	Message string `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"` // 提示信息
 }
 
-func (x *PortalCommonRsp) Reset() {
-	*x = PortalCommonRsp{}
+func (x *EmptyRsp) Reset() {
+	*x = EmptyRsp{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_portal_portal_proto_msgTypes[0]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -39,13 +36,13 @@ func (x *PortalCommonRsp) Reset() {
 	}
 }
 
-func (x *PortalCommonRsp) String() string {
+func (x *EmptyRsp) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*PortalCommonRsp) ProtoMessage() {}
+func (*EmptyRsp) ProtoMessage() {}
 
-func (x *PortalCommonRsp) ProtoReflect() protoreflect.Message {
+func (x *EmptyRsp) ProtoReflect() protoreflect.Message {
 	mi := &file_portal_portal_proto_msgTypes[0]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -57,35 +54,18 @@ func (x *PortalCommonRsp) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use PortalCommonRsp.ProtoReflect.Descriptor instead.
-func (*PortalCommonRsp) Descriptor() ([]byte, []int) {
+// Deprecated: Use EmptyRsp.ProtoReflect.Descriptor instead.
+func (*EmptyRsp) Descriptor() ([]byte, []int) {
 	return file_portal_portal_proto_rawDescGZIP(), []int{0}
-}
-
-func (x *PortalCommonRsp) GetCode() uint32 {
-	if x != nil {
-		return x.Code
-	}
-	return 0
-}
-
-func (x *PortalCommonRsp) GetMessage() string {
-	if x != nil {
-		return x.Message
-	}
-	return ""
 }
 
 var File_portal_portal_proto protoreflect.FileDescriptor
 
 var file_portal_portal_proto_rawDesc = []byte{
 	0x0a, 0x13, 0x70, 0x6f, 0x72, 0x74, 0x61, 0x6c, 0x2f, 0x70, 0x6f, 0x72, 0x74, 0x61, 0x6c, 0x2e,
-	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x12, 0x05, 0x61, 0x64, 0x6d, 0x69, 0x6e, 0x22, 0x3f, 0x0a, 0x0f,
-	0x50, 0x6f, 0x72, 0x74, 0x61, 0x6c, 0x43, 0x6f, 0x6d, 0x6d, 0x6f, 0x6e, 0x52, 0x73, 0x70, 0x12,
-	0x12, 0x0a, 0x04, 0x63, 0x6f, 0x64, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0d, 0x52, 0x04, 0x63,
-	0x6f, 0x64, 0x65, 0x12, 0x18, 0x0a, 0x07, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x18, 0x02,
-	0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x42, 0x08, 0x5a,
-	0x06, 0x2e, 0x3b, 0x6d, 0x61, 0x6c, 0x6c, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x12, 0x05, 0x61, 0x64, 0x6d, 0x69, 0x6e, 0x22, 0x0a, 0x0a, 0x08,
+	0x45, 0x6d, 0x70, 0x74, 0x79, 0x52, 0x73, 0x70, 0x42, 0x08, 0x5a, 0x06, 0x2e, 0x3b, 0x6d, 0x61,
+	0x6c, 0x6c, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -102,7 +82,7 @@ func file_portal_portal_proto_rawDescGZIP() []byte {
 
 var file_portal_portal_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_portal_portal_proto_goTypes = []interface{}{
-	(*PortalCommonRsp)(nil), // 0: admin.PortalCommonRsp
+	(*EmptyRsp)(nil), // 0: admin.EmptyRsp
 }
 var file_portal_portal_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for method output_type
@@ -119,7 +99,7 @@ func file_portal_portal_proto_init() {
 	}
 	if !protoimpl.UnsafeEnabled {
 		file_portal_portal_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*PortalCommonRsp); i {
+			switch v := v.(*EmptyRsp); i {
 			case 0:
 				return &v.state
 			case 1:

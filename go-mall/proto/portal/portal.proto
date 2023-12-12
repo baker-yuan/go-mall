@@ -2,8 +2,8 @@ syntax = "proto3";
 package admin;
 option go_package = ".;mall";
 
-// 通用返回
-message PortalCommonRsp {
-  uint32 code = 1;      // 状态码
-  string message = 2;   // 提示信息
+
+
+// 空响应
+message EmptyRsp {
 }
