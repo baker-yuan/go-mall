@@ -27,9 +27,7 @@ import (
 	"golang.org/x/net/http2"
 	"golang.org/x/net/http2/h2c"
 	"google.golang.org/grpc"
-	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/credentials/insecure"
-	"google.golang.org/grpc/status"
 )
 
 // Run creates objects via constructors.
@@ -116,55 +114,6 @@ func gracefulStopWithTimeout(customLog *logger.Logger, grpcServer *grpc.Server, 
 	}
 }
 
-// customHTTPError 自定义错误处理函数
-func customHTTPError(ctx context.Context, mux *runtime.ServeMux, marshaler runtime.Marshaler, w http.ResponseWriter, req *http.Request, err error) {
-	// err := status.New(codes.InvalidArgument, "无效的参数").Err()
-
-	var (
-		grpcCode   = codes.Internal
-		message    = ""
-		defaultErr = CustomError{
-			HTTPStatus: http.StatusInternalServerError,
-			ErrorCode:  int32(grpcCode),
-			Message:    message,
-		}
-	)
-	// 检查错误类型
-	st, ok := status.FromError(err)
-	if ok {
-		grpcCode = st.Code()
-		message = st.Message()
-	} else {
-		grpcCode = codes.Internal
-		message = err.Error()
-	}
-
-	// 查找自定义错误映射，如果没有找到，则使用默认的映射
-	customErr, ok := customErrorMap[grpcCode]
-	if !ok {
-		customErr = defaultErr
-	}
-
-	// 设置响应的Content-Type和状态码
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(customErr.HTTPStatus)
-
-	// 创建包含code和message的JSON响应体
-	responseBody := struct {
-		Code    int32  `json:"code"`
-		Message string `json:"message"`
-	}{
-		Code:    customErr.ErrorCode,
-		Message: customErr.Message,
-	}
-
-	// 发送JSON响应
-	if err := marshaler.NewEncoder(w).Encode(responseBody); err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		_, _ = w.Write([]byte(`{"code": 500, "message": "failed to marshal error message"}`))
-	}
-}
-
 func configGrpc(customLog *logger.Logger, grpcSrvImpl grpcsrv.PortalApi, ip string, port uint32) (*grpc.Server, error) {
 	var (
 		addr = fmt.Sprintf("%s:%d", ip, port)
@@ -174,7 +123,6 @@ func configGrpc(customLog *logger.Logger, grpcSrvImpl grpcsrv.PortalApi, ip stri
 		grpc.UnaryInterceptor(interceptor.ChainUnaryServerInterceptors(
 			interceptor.ValidationInterceptor,
 			interceptor.PanicRecoveryInterceptor,
-			//interceptor.CorsInterceptor()
 		),
 		),
 	)
@@ -182,14 +130,18 @@ func configGrpc(customLog *logger.Logger, grpcSrvImpl grpcsrv.PortalApi, ip stri
 	// 注册grpc服务
 	pb.RegisterPortalHomeApiServer(grpcServer, grpcSrvImpl)
 	pb.RegisterPortalProductApiServer(grpcServer, grpcSrvImpl)
+	pb.RegisterPortalMemberApiServer(grpcServer, grpcSrvImpl)
 
 	// gRPC-Gateway mux
-	gwmux := runtime.NewServeMux(runtime.WithErrorHandler(customHTTPError))
+	gwmux := runtime.NewServeMux(runtime.WithErrorHandler(interceptor.CustomHTTPError))
 	dops := []grpc.DialOption{grpc.WithTransportCredentials(insecure.NewCredentials())}
 	if err := pb.RegisterPortalHomeApiHandlerFromEndpoint(context.Background(), gwmux, addr, dops); err != nil {
 		return nil, err
 	}
 	if err := pb.RegisterPortalProductApiHandlerFromEndpoint(context.Background(), gwmux, addr, dops); err != nil {
+		return nil, err
+	}
+	if err := pb.RegisterPortalMemberApiHandlerFromEndpoint(context.Background(), gwmux, addr, dops); err != nil {
 		return nil, err
 	}
 

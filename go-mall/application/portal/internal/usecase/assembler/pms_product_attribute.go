@@ -5,10 +5,10 @@ import (
 	pb "github.com/baker-yuan/go-mall/proto/mall"
 )
 
-func ProductAttributesToDetail(productAttributes entity.ProductAttributes) []*pb.ProductAggregation_ProductAttribute {
-	res := make([]*pb.ProductAggregation_ProductAttribute, 0)
+func ProductAttributesToDetail(productAttributes entity.ProductAttributes) []*pb.ProductDetailRsp_ProductAttribute {
+	res := make([]*pb.ProductDetailRsp_ProductAttribute, 0)
 	for _, productAttribute := range productAttributes {
-		res = append(res, &pb.ProductAggregation_ProductAttribute{
+		res = append(res, &pb.ProductDetailRsp_ProductAttribute{
 			Id:                         productAttribute.ID,
 			Type:                       uint32(productAttribute.Type),
 			ProductAttributeCategoryId: productAttribute.ProductAttributeCategoryID,

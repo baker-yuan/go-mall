@@ -5,10 +5,10 @@ import (
 	pb "github.com/baker-yuan/go-mall/proto/mall"
 )
 
-func SkuStocksToDetail(skuStocks entity.SkuStocks) []*pb.ProductAggregation_SkuStock {
-	res := make([]*pb.ProductAggregation_SkuStock, 0)
+func SkuStocksToDetail(skuStocks entity.SkuStocks) []*pb.ProductDetailRsp_SkuStock {
+	res := make([]*pb.ProductDetailRsp_SkuStock, 0)
 	for _, skuStock := range skuStocks {
-		res = append(res, &pb.ProductAggregation_SkuStock{
+		res = append(res, &pb.ProductDetailRsp_SkuStock{
 			Id:        skuStock.ID,
 			SkuCode:   skuStock.SkuCode,
 			Pic:       skuStock.Pic,

@@ -34,9 +34,9 @@ func NewProduct(
 }
 
 // SearchProduct 综合搜索商品
-func (c ProductUseCase) SearchProduct(ctx context.Context, req *pb.SearchProductReq) ([]*pb.ProductList_Product, error) {
+func (c ProductUseCase) SearchProduct(ctx context.Context, req *pb.SearchProductReq) ([]*pb.SearchProductRsp_Product, error) {
 	var (
-		res = make([]*pb.ProductList_Product, 0)
+		res = make([]*pb.SearchProductRsp_Product, 0)
 	)
 	products, err := c.productRepo.SearchProduct(ctx, req)
 	if err != nil {
@@ -50,9 +50,9 @@ func (c ProductUseCase) SearchProduct(ctx context.Context, req *pb.SearchProduct
 }
 
 // ProductDetail 获取前台商品详情
-func (c ProductUseCase) ProductDetail(ctx context.Context, req *pb.ProductDetailReq) (*pb.ProductAggregation, error) {
+func (c ProductUseCase) ProductDetail(ctx context.Context, req *pb.ProductDetailReq) (*pb.ProductDetailRsp, error) {
 	var (
-		res = &pb.ProductAggregation{}
+		res = &pb.ProductDetailRsp{}
 	)
 	productID := req.GetId()
 

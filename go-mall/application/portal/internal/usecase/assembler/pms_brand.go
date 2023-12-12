@@ -6,8 +6,8 @@ import (
 	pb "github.com/baker-yuan/go-mall/proto/mall"
 )
 
-func BrandEntityToDetail(brand *entity.Brand) *pb.ProductAggregation_Brand {
-	return &pb.ProductAggregation_Brand{
+func BrandEntityToDetail(brand *entity.Brand) *pb.ProductDetailRsp_Brand {
+	return &pb.ProductDetailRsp_Brand{
 		Name:        brand.Name,
 		FirstLetter: brand.FirstLetter,
 		Logo:        util.GetFullUrl(brand.Logo),

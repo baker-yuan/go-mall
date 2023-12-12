@@ -6,8 +6,8 @@ import (
 	pb "github.com/baker-yuan/go-mall/proto/mall"
 )
 
-func ProductEntityToProductListItem(product *entity.Product) *pb.ProductList_Product {
-	return &pb.ProductList_Product{
+func ProductEntityToProductListItem(product *entity.Product) *pb.SearchProductRsp_Product {
+	return &pb.SearchProductRsp_Product{
 		Id:       product.ID,
 		Pic:      util.GetFullUrl(product.Pic),
 		Name:     product.Name,
@@ -17,8 +17,8 @@ func ProductEntityToProductListItem(product *entity.Product) *pb.ProductList_Pro
 	}
 }
 
-func ProductEntityToDetail(product *entity.Product) *pb.ProductAggregation_Product {
-	return &pb.ProductAggregation_Product{
+func ProductEntityToDetail(product *entity.Product) *pb.ProductDetailRsp_Product {
+	return &pb.ProductDetailRsp_Product{
 		AlbumPics:     util.GetFullUrls(product.AlbumPics),
 		Pic:           util.GetFullUrl(product.Pic),
 		Name:          product.Name,

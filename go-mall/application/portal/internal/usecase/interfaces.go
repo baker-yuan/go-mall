@@ -47,9 +47,9 @@ type (
 	// IProductUseCase 业务逻辑
 	IProductUseCase interface {
 		// SearchProduct 综合搜索商品
-		SearchProduct(ctx context.Context, req *pb.SearchProductReq) ([]*pb.ProductList_Product, error)
+		SearchProduct(ctx context.Context, req *pb.SearchProductReq) ([]*pb.SearchProductRsp_Product, error)
 		// ProductDetail 获取前台商品详情
-		ProductDetail(ctx context.Context, req *pb.ProductDetailReq) (*pb.ProductAggregation, error)
+		ProductDetail(ctx context.Context, req *pb.ProductDetailReq) (*pb.ProductDetailRsp, error)
 	}
 
 	// IProductRepo 数据存储操作
