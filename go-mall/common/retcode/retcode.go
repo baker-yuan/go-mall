@@ -10,6 +10,9 @@ import (
 const (
 	RetSuccess       codes.Code = 200
 	RetInternalError codes.Code = 500
+
+	// 登录
+	PasswordDecryptionFailed codes.Code = 1000
 )
 
 // customError 自定义错误结构体
@@ -92,12 +95,16 @@ var customErrorMap = map[codes.Code]customError{
 	},
 	// 业务异常
 	RetSuccess: {
-		HTTPStatus: 200,
+		HTTPStatus: http.StatusOK,
 		Message:    "请求成功",
 	},
 	RetInternalError: {
-		HTTPStatus: http.StatusInternalServerError,
+		HTTPStatus: http.StatusOK,
 		Message:    "服务器异常",
+	},
+	PasswordDecryptionFailed: {
+		HTTPStatus: http.StatusOK,
+		Message:    "密码错误",
 	},
 }
 
@@ -116,6 +123,6 @@ func GetHttpCodeAndMsg(code codes.Code) (uint32, string) {
 }
 
 // NewError 创建自定义异常
-func NewError(code codes.Code, message string) error {
-	return status.New(code, message).Err()
+func NewError(code codes.Code) error {
+	return status.New(code, customErrorMap[code].Message).Err()
 }

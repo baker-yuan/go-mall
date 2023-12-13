@@ -327,6 +327,8 @@ func (m *MemberLoginRsp) validate(all bool) error {
 
 	// no validation rules for Token
 
+	// no validation rules for TokenHead
+
 	if len(errors) > 0 {
 		return MemberLoginRspMultiError(errors)
 	}

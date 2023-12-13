@@ -20,6 +20,8 @@ import (
 	"github.com/baker-yuan/go-mall/common/db"
 	"github.com/baker-yuan/go-mall/common/interceptor"
 	"github.com/baker-yuan/go-mall/common/logger"
+	"github.com/baker-yuan/go-mall/common/pkg/crypto"
+	"github.com/baker-yuan/go-mall/common/pkg/jwt"
 	"github.com/baker-yuan/go-mall/common/util"
 	pb "github.com/baker-yuan/go-mall/proto/mall"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
@@ -46,6 +48,20 @@ func Run(cfg *config.Config) {
 	// oss url 前缀
 	util.InitBaseUrl(cfg.Oss.BaseUrl)
 
+	// 全字段更新，初始化那些字段不更新，那些字段需要更新
+	if err := repo.InitField(conn); err != nil {
+		customLog.Fatal(fmt.Errorf("app - Run - repo.InitField: %w", err))
+	}
+
+	var (
+		passwordEncoder = &crypto.BcryptPasswordEncoder{}
+		jwtTokenUtil    = jwt.NewJWT(jwt.JwtConfig{
+			TimeOut: time.Second * time.Duration(cfg.Jwt.TimeOut),
+			Issuer:  cfg.Jwt.Issuer,
+			SignKey: cfg.Jwt.SignKey,
+		})
+	)
+
 	var (
 		productCategoryRepo       = repo.NewProductCategoryRepo(conn)
 		productRepo               = repo.NewProductRepo(conn)
@@ -53,6 +69,7 @@ func Run(cfg *config.Config) {
 		productAttributeRepo      = repo.NewProductAttributeRepo(conn)
 		productAttributeValueRepo = repo.NewProductAttributeValueRepo(conn)
 		skuStockRepo              = repo.NewSkuStockRepo(conn)
+		memberRepo                = repo.NewMemberRepo(conn)
 	)
 	homeUseCase := usecase.NewHome(productCategoryRepo)
 	productUseCase := usecase.NewProduct(
@@ -63,9 +80,14 @@ func Run(cfg *config.Config) {
 		skuStockRepo,
 	)
 
+	memberUseCase := usecase.NewMember(cfg, passwordEncoder, jwtTokenUtil, memberRepo)
+
 	// grpc服务
-	grpcSrvImpl := grpcsrv.New(homeUseCase, productUseCase)
-	grpcServer, err := configGrpc(customLog, grpcSrvImpl, cfg.HTTP.IP, cfg.HTTP.Port)
+	grpcSrvImpl := grpcsrv.New(
+		homeUseCase,
+		productUseCase, memberUseCase,
+	)
+	grpcServer, err := configGrpc(customLog, grpcSrvImpl, cfg, jwtTokenUtil, cfg.HTTP.IP, cfg.HTTP.Port)
 	if err != nil {
 		log.Fatal(fmt.Errorf("app - Run - configGrpc: %w", err))
 	}
@@ -114,13 +136,14 @@ func gracefulStopWithTimeout(customLog *logger.Logger, grpcServer *grpc.Server, 
 	}
 }
 
-func configGrpc(customLog *logger.Logger, grpcSrvImpl grpcsrv.PortalApi, ip string, port uint32) (*grpc.Server, error) {
+func configGrpc(customLog *logger.Logger, grpcSrvImpl grpcsrv.PortalApi, cfg *config.Config, jwtTokenUtil *jwt.JWT, ip string, port uint32) (*grpc.Server, error) {
 	var (
 		addr = fmt.Sprintf("%s:%d", ip, port)
 	)
 	// 创建一个gRPC server对象
 	grpcServer := grpc.NewServer(
 		grpc.UnaryInterceptor(interceptor.ChainUnaryServerInterceptors(
+			//interceptor.JWTAuthInterceptor(jwtTokenUtil, cfg.Jwt.Whitelist, cfg.Jwt.TokenHeader, cfg.Jwt.TokenHead),
 			interceptor.ValidationInterceptor,
 			interceptor.PanicRecoveryInterceptor,
 		),
@@ -133,7 +156,10 @@ func configGrpc(customLog *logger.Logger, grpcSrvImpl grpcsrv.PortalApi, ip stri
 	pb.RegisterPortalMemberApiServer(grpcServer, grpcSrvImpl)
 
 	// gRPC-Gateway mux
-	gwmux := runtime.NewServeMux(runtime.WithErrorHandler(interceptor.CustomHTTPError))
+	gwmux := runtime.NewServeMux(
+		runtime.WithMetadata(interceptor.CustomAnnotator), // 注册自定义 Annotator
+		runtime.WithErrorHandler(interceptor.CustomHTTPError),
+	)
 	dops := []grpc.DialOption{grpc.WithTransportCredentials(insecure.NewCredentials())}
 	if err := pb.RegisterPortalHomeApiHandlerFromEndpoint(context.Background(), gwmux, addr, dops); err != nil {
 		return nil, err
@@ -148,15 +174,28 @@ func configGrpc(customLog *logger.Logger, grpcSrvImpl grpcsrv.PortalApi, ip stri
 	mux := http.NewServeMux()
 	mux.Handle("/", gwmux)
 
-	// cors处理器
-	corsWrapper := cors.AllowAll().Handler(mux)
+	// 创建一个自定义的 CORS 中间件配置
+	corsOptions := cors.Options{
+		AllowedOrigins:   []string{"*"}, // 允许的源列表
+		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowedHeaders:   []string{"Authorization", "Content-Type"},
+		AllowCredentials: true,
+		MaxAge:           86400, // 预检请求的结果可以被缓存的最大秒数
+	}
+
 	// 统一返回值处理
-	responseWrapper := interceptor.WrapResponseMiddleware(corsWrapper)
+	responseWrapper := interceptor.WrapResponseMiddleware(mux)
+	// jwt拦截
+	jwtWrapper := interceptor.NewJWTAuthMiddleware(responseWrapper, jwtTokenUtil, cfg.Jwt.Whitelist, cfg.Jwt.TokenHeader, cfg.Jwt.TokenHead)
+	// 请求响应日志记录
+	logWrapper := interceptor.NewLoggingMiddleware(jwtWrapper)
+	// cors处理器
+	corsWrapper := cors.New(corsOptions).Handler(logWrapper)
 
 	// 定义HTTP server配置
 	gwServer := &http.Server{
 		Addr:    addr,
-		Handler: grpcHandlerFunc(grpcServer, responseWrapper), // 请求的统一入口
+		Handler: grpcHandlerFunc(grpcServer, corsWrapper), // 请求的统一入口
 	}
 
 	// tpc监听

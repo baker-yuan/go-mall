@@ -1092,6 +1092,10 @@ values  (1, 4, 'test', '$2a$10$NZ5o7r2E.ayT2ZoxgjlI.eJ6OEYqjH7INR/F.mXDbjZJi9HF0
         (10, 4, 'guest', '$2a$10$WQiD4RzEs1iJVWU.2HVu8OdSlExJHWKmwndaw3SUfMyqfKZmXe1vq', '', '18911111111', 1, '', 0, 0, '', '', '', 0, 0, 0, 0, 0, 1584168738),
         (11, 4, 'member', '$2a$10$Q08uzqvtPj61NnpYQZsVvOnyilJ3AU4VdngAcJFGvPhEeqhhC.hhS', 'member', '18961511111', 1, 'https://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/icon/github_icon_02.png', 1, '20090601', '上海', '学生', 'member', 0, 5000, 1000, 0, 0, 1683789758);
 
+update ums_member set password = '$2a$10$rE0i24Ukj8KuybGQ5zvtheeXu3roaXb1cS5pk7.ahNIGOoNPkQXny' where username = 'test';
+
+
+
 insert into go_mall_admin.ums_member_receive_address (id, member_id, name, phone_number, default_status, post_code, province, city, region, detail_address)
 values  (1, 1, '大梨', '18033441849', 0, '518000', '广东省', '深圳市', '南山区', '科兴科学园'),
         (3, 1, '大梨', '18033441849', 0, '518000', '广东省', '深圳市', '福田区', '清水河街道'),

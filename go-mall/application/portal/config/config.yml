@@ -22,3 +22,13 @@ db:
 
 oss:
   base_url: http://macro-oss.oss-cn-shenzhen.aliyuncs.com
+
+
+jwt:
+  time_out: 3600
+  issuer: 'baker'
+  sign_key: 'baker'
+  token_header: 'Authorization'
+  token_head: 'Bearer '
+  whitelist:
+    - '/sso/login'

@@ -128,7 +128,6 @@
 			top: 0;
 			transform: rotate(-50deg);
 			border-radius: 50px 0 0 0;
-			/* background: pink; */
 		}
 	}
 

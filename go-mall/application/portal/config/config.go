@@ -49,9 +49,12 @@ type (
 	}
 
 	Jwt struct {
-		TimeOut uint32 `yaml:"time_out"` // 超时时间，s
-		Issuer  string `yaml:"issuer"`   // 签证签发人
-		SignKey string `yaml:"sign_key"`
+		TimeOut     uint32   `yaml:"time_out"`     // 超时时间，s
+		Issuer      string   `yaml:"issuer"`       // 签证签发人
+		SignKey     string   `yaml:"sign_key"`     // 密钥
+		TokenHeader string   `yaml:"token_header"` // jwt请求头
+		TokenHead   string   `yaml:"token_head"`   //
+		Whitelist   []string `yaml:"whitelist"`    // 白名单
 	}
 )
 

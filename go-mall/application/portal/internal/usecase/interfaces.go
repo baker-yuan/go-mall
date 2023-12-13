@@ -100,3 +100,39 @@ type (
 		GetByProductID(ctx context.Context, productID uint64) (entity.SkuStocks, error)
 	}
 )
+
+// Member 会员
+type (
+	// IMemberUseCase 业务逻辑
+	IMemberUseCase interface {
+		// MemberRegister 会员注册
+		MemberRegister(ctx context.Context, req *pb.MemberRegisterReq) (*pb.EmptyRsp, error)
+		// MemberLogin 会员登录
+		MemberLogin(ctx context.Context, req *pb.MemberLoginReq) (*pb.MemberLoginRsp, error)
+		// MemberInfo 获取会员信息
+		MemberInfo(ctx context.Context, username string) (*pb.MemberInfoRsp, error)
+		// MemberGetAuthCode 获取验证码
+		MemberGetAuthCode(ctx context.Context, req *pb.MemberGetAuthCodeReq) (*pb.MemberGetAuthCodeRsp, error)
+		// MemberUpdatePassword 修改密码
+		MemberUpdatePassword(ctx context.Context, req *pb.MemberUpdatePasswordReq) (*pb.MemberUpdatePasswordRsp, error)
+		// MemberRefreshToken 刷新token
+		MemberRefreshToken(ctx context.Context, req *pb.MemberRefreshTokenReq) (*pb.MemberRefreshTokenRsp, error)
+	}
+
+	// IMemberRepo 数据存储操作
+	IMemberRepo interface {
+		// Create 创建会员表
+		Create(ctx context.Context, member *entity.Member) error
+		// DeleteByID 根据主键ID删除会员表
+		DeleteByID(ctx context.Context, id uint64) error
+		// Update 修改会员表
+		Update(ctx context.Context, member *entity.Member) error
+		// GetByID 根据主键ID查询会员表
+		GetByID(ctx context.Context, id uint64) (*entity.Member, error)
+		// GetByDBOption 根据动态条件查询会员表
+		GetByDBOption(ctx context.Context, pageNum uint32, pageSize uint32, opts ...db.DBOption) ([]*entity.Member, uint32, error)
+
+		// GetByUsername 根据用户名查询会员表
+		GetByUsername(ctx context.Context, username string) (*entity.Member, error)
+	}
+)

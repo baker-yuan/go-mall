@@ -20,16 +20,19 @@ type PortalApiImpl struct {
 	pb.UnimplementedPortalProductApiServer
 	pb.UnimplementedPortalMemberApiServer
 
-	home    usecase.IHomeUseCase
-	product usecase.IProductUseCase
+	home          usecase.IHomeUseCase
+	product       usecase.IProductUseCase
+	memberUseCase usecase.IMemberUseCase
 }
 
 func New(
 	home usecase.IHomeUseCase,
 	product usecase.IProductUseCase,
+	memberUseCase usecase.IMemberUseCase,
 ) PortalApi {
 	return &PortalApiImpl{
-		home:    home,
-		product: product,
+		home:          home,
+		product:       product,
+		memberUseCase: memberUseCase,
 	}
 }

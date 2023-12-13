@@ -1,0 +1,8 @@
+### 会员登录
+POST http://localhost:8085/sso/login
+Content-Type: application/json
+
+{
+  "username": "test",
+  "password": "test"
+}

@@ -24,6 +24,7 @@ message MemberLoginReq {
 
 message MemberLoginRsp {
   string token = 1; // 凭证
+  string token_head = 2; // 凭证请求头
 }
 
 // 获取会员信息
