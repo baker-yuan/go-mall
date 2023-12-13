@@ -3,6 +3,7 @@ module github.com/baker-yuan/go-mall/common
 go 1.20
 
 require (
+	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.18.1
 	github.com/rs/zerolog v1.31.0
 	google.golang.org/grpc v1.59.0

@@ -14,6 +14,7 @@ type (
 		Log  `yaml:"logger"`
 		DB   `yaml:"db"`
 		Oss  `yaml:"oss"`
+		Jwt  `yaml:"jwt"`
 	}
 
 	// App app配置
@@ -45,6 +46,12 @@ type (
 
 	Oss struct {
 		BaseUrl string `env-required:"true" yaml:"base_url" env:"OSS_BaseUrl"`
+	}
+
+	Jwt struct {
+		TimeOut uint32 `yaml:"time_out"` // 超时时间，s
+		Issuer  string `yaml:"issuer"`   // 签证签发人
+		SignKey string `yaml:"sign_key"`
 	}
 )
 
