@@ -14,7 +14,7 @@ import (
 
 // standardResponse 统一的响应结构
 type standardResponse struct {
-	Code    codes.Code  `json:"code"`
+	Code    uint32      `json:"code"`
 	Message string      `json:"message"`
 	Data    interface{} `json:"data,omitempty"`
 }
@@ -49,7 +49,7 @@ func CustomHTTPError(ctx context.Context, mux *runtime.ServeMux, marshaler runti
 
 	// 创建包含code和message的JSON响应体
 	responseBody := standardResponse{
-		Code:    bizCode,
+		Code:    uint32(bizCode),
 		Message: message,
 	}
 
