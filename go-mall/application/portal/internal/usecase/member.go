@@ -49,7 +49,7 @@ func (s MemberUseCase) MemberLogin(ctx context.Context, req *pb.MemberLoginReq) 
 	}
 	// 生成token
 	token, err := s.jwtTokenUtil.CreateUserToken(&jwt.Member{
-		Username: member.Username,
+		UserID: member.ID,
 	})
 	if err != nil {
 		return nil, err
@@ -62,8 +62,8 @@ func (s MemberUseCase) MemberLogin(ctx context.Context, req *pb.MemberLoginReq) 
 }
 
 // MemberInfo 获取会员信息
-func (s MemberUseCase) MemberInfo(ctx context.Context, username string) (*pb.MemberInfoRsp, error) {
-	member, err := s.memberRepo.GetByUsername(ctx, username)
+func (s MemberUseCase) MemberInfo(ctx context.Context, memberID uint64) (*pb.MemberInfoRsp, error) {
+	member, err := s.memberRepo.GetByMemberID(ctx, memberID)
 	if err != nil {
 		return nil, err
 	}

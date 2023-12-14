@@ -2,6 +2,8 @@ package util
 
 import (
 	"context"
+	"fmt"
+	"strings"
 
 	"google.golang.org/grpc/metadata"
 )
@@ -12,36 +14,42 @@ type contextKey string
 // 定义上下文中使用的键
 const (
 	UsernameKey     contextKey = "username"     // 用户名
+	UserIDKey       contextKey = "userId"       // 用户名
 	RequestIDHeader contextKey = "X-Request-ID" // 请求ID
 )
 
-// SetUsername 将用户名设置到上下文中
-func SetUsername(ctx context.Context, username string) context.Context {
-	return context.WithValue(ctx, UsernameKey, username)
+// SetUserID 将用户id设置到上下文中
+func SetUserID(ctx context.Context, userID uint64) context.Context {
+	return context.WithValue(ctx, UserIDKey, fmt.Sprintf("%d", userID))
 }
 
-// GetUsername 从上下文中获取用户名
-func GetUsername(ctx context.Context) (string, bool) {
-	username, ok := getFromGrpcContext(ctx, UsernameKey)
+// GetUserID 从上下文中获取用户ID
+func GetUserID(ctx context.Context) (uint64, bool) {
+	userID, ok := getFromHttpContext(ctx, UserIDKey)
 	if ok {
-		return username, ok
+		return userID, ok
 	}
-	return getFromHttpContext(ctx, UsernameKey)
+	return getFromGrpcContext(ctx, UserIDKey)
 }
 
-func getFromHttpContext(ctx context.Context, key contextKey) (string, bool) {
+func getFromHttpContext(ctx context.Context, key contextKey) (uint64, bool) {
 	value, ok := ctx.Value(key).(string)
-	return value, ok
+	if !ok {
+		return 0, false
+	}
+	userID, _ := StringToUint64(value)
+	return userID, true
 }
 
-func getFromGrpcContext(ctx context.Context, key contextKey) (string, bool) {
+func getFromGrpcContext(ctx context.Context, key contextKey) (uint64, bool) {
 	md, ok := metadata.FromIncomingContext(ctx)
 	if !ok {
-		return "", false
+		return 0, false
 	}
-	slice, ok := md[string(key)]
+	slice, ok := md[strings.ToLower(string(key))]
 	if !ok || len(slice) == 0 {
-		return "", false
+		return 0, false
 	}
-	return slice[0], true
+	userID, _ := StringToUint64(slice[0])
+	return userID, true
 }

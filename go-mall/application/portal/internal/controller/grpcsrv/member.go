@@ -21,11 +21,11 @@ func (s PortalApiImpl) MemberLogin(ctx context.Context, req *pb.MemberLoginReq) 
 
 // MemberInfo 获取会员信息
 func (s PortalApiImpl) MemberInfo(ctx context.Context, req *pb.MemberInfoReq) (*pb.MemberInfoRsp, error) {
-	username, exist := util.GetUsername(ctx)
+	memberID, exist := util.GetUserID(ctx)
 	if !exist {
-		return nil, retcode.NewError(retcode.RetInternalError)
+		return nil, retcode.NewError(retcode.NeedLogin)
 	}
-	return s.memberUseCase.MemberInfo(ctx, username)
+	return s.memberUseCase.MemberInfo(ctx, memberID)
 }
 
 // MemberGetAuthCode 获取验证码

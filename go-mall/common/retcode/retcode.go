@@ -12,7 +12,8 @@ const (
 	RetInternalError codes.Code = 500
 
 	// 登录
-	PasswordDecryptionFailed codes.Code = 1000
+	NeedLogin                codes.Code = 1000
+	PasswordDecryptionFailed codes.Code = 1001
 )
 
 // customError 自定义错误结构体

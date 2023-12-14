@@ -110,7 +110,7 @@ type (
 		// MemberLogin 会员登录
 		MemberLogin(ctx context.Context, req *pb.MemberLoginReq) (*pb.MemberLoginRsp, error)
 		// MemberInfo 获取会员信息
-		MemberInfo(ctx context.Context, username string) (*pb.MemberInfoRsp, error)
+		MemberInfo(ctx context.Context, memberID uint64) (*pb.MemberInfoRsp, error)
 		// MemberGetAuthCode 获取验证码
 		MemberGetAuthCode(ctx context.Context, req *pb.MemberGetAuthCodeReq) (*pb.MemberGetAuthCodeRsp, error)
 		// MemberUpdatePassword 修改密码
@@ -134,5 +134,46 @@ type (
 
 		// GetByUsername 根据用户名查询会员表
 		GetByUsername(ctx context.Context, username string) (*entity.Member, error)
+		// GetByMemberID 根据用户id查询会员表
+		GetByMemberID(ctx context.Context, memberID uint64) (*entity.Member, error)
+	}
+)
+
+// CartItem 购物车
+type (
+	// ICartItemUseCase 业务逻辑
+	ICartItemUseCase interface {
+		// CartItemAdd 添加商品到购物车
+		CartItemAdd(context.Context, *pb.CartItemAddReq) (*pb.CartItemAddRsp, error)
+		// CartItemList 获取当前会员的购物车列表
+		CartItemList(ctx context.Context, memberID uint64) ([]*pb.CartItem, error)
+		// CartItemListPromotion 获取当前会员的购物车列表,包括促销信息
+		CartItemListPromotion(context.Context, *pb.CartItemListPromotionReq) (*pb.CartItemListPromotionRsp, error)
+		// CartItemUpdateQuantity 修改购物车中指定商品的数量
+		CartItemUpdateQuantity(context.Context, *pb.CartItemUpdateQuantityReq) (*pb.CartItemUpdateQuantityRsp, error)
+		// CartItemGetCartProduct 获取购物车中指定商品的规格,用于重选规格
+		CartItemGetCartProduct(context.Context, *pb.CartItemGetCartProductReq) (*pb.CartItemGetCartProductRsp, error)
+		// CartItemUpdateAttr 修改购物车中商品的规格
+		CartItemUpdateAttr(context.Context, *pb.CartItemUpdateAttrReq) (*pb.CartItemUpdateAttrRsp, error)
+		// CartItemDelete 删除购物车中的指定商品
+		CartItemDelete(context.Context, *pb.CartItemDeleteReq) (*pb.CartItemDeleteRsp, error)
+		// CartItemClear 清空当前会员的购物车
+		CartItemClear(context.Context, *pb.CartItemClearReq) (*pb.CartItemClearRsp, error)
+	}
+
+	// ICartItemRepo 数据存储操作
+	ICartItemRepo interface {
+		// Create 创建购物车表
+		Create(ctx context.Context, cartItem *entity.CartItem) error
+		// DeleteByID 根据主键ID删除购物车表
+		DeleteByID(ctx context.Context, id uint64) error
+		// Update 修改购物车表
+		Update(ctx context.Context, cartItem *entity.CartItem) error
+		// GetByID 根据主键ID查询购物车表
+		GetByID(ctx context.Context, id uint64) (*entity.CartItem, error)
+		// GetByDBOption 根据动态条件查询购物车表
+		GetByDBOption(ctx context.Context, pageNum uint32, pageSize uint32, opts ...db.DBOption) ([]*entity.CartItem, uint32, error)
+		// GetEffectCartItemByMemberID 根据会员id查询购物车
+		GetEffectCartItemByMemberID(ctx context.Context, memberID uint64) ([]*entity.CartItem, error)
 	}
 )

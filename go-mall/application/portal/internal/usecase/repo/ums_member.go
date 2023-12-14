@@ -106,3 +106,12 @@ func (r MemberRepo) GetByUsername(ctx context.Context, username string) (*entity
 	}
 	return &res, nil
 }
+
+// GetByMemberID 根据用户id查询会员表
+func (r MemberRepo) GetByMemberID(ctx context.Context, memberID uint64) (*entity.Member, error) {
+	res := entity.Member{}
+	if err := r.GenericDao.DB.WithContext(ctx).Where("id = ?", memberID).Find(&res).Error; err != nil {
+		return nil, err
+	}
+	return &res, nil
+}

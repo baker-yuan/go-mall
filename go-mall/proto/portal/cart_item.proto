@@ -8,6 +8,8 @@ import "validate/validate.proto";
 import "google/api/annotations.proto";
 import "google/protobuf/wrappers.proto";
 
+import "model/oms_cart_item.proto";
+
 // 添加商品到购物车
 message CartItemAddReq {
 
@@ -24,8 +26,12 @@ message CartItemListReq {
 }
 
 message CartItemListRsp {
+  uint32 code = 1;      // 状态码
+  string message = 2;   // 提示信息
 
+  repeated model.CartItem data = 3;
 }
+
 
 // 获取当前会员的购物车列表,包括促销信息
 message CartItemListPromotionReq {
@@ -110,7 +116,7 @@ service PortalCartItemApi {
   // 获取购物车中指定商品的规格,用于重选规格
   rpc CartItemGetCartProduct(CartItemGetCartProductReq) returns (CartItemGetCartProductRsp) {
     option (google.api.http) = {
-      get: "/cart/getProduct/{productId}"
+      get: "/cart/getProduct/{product_id}"
     };
   }
 

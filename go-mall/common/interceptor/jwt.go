@@ -2,6 +2,7 @@ package interceptor
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 	"strings"
 
@@ -40,7 +41,7 @@ func NewJWTAuthMiddleware(next http.Handler, jwtTokenUtil *pkg_jwt.JWT, whitelis
 			return
 		}
 
-		ctx := util.SetUsername(r.Context(), token.UserInfo.Username)
+		ctx := util.SetUserID(r.Context(), token.UserInfo.UserID)
 
 		// 将上下文传递到下一个处理器
 		next.ServeHTTP(w, r.WithContext(ctx))
@@ -50,13 +51,13 @@ func NewJWTAuthMiddleware(next http.Handler, jwtTokenUtil *pkg_jwt.JWT, whitelis
 // CustomAnnotator 将 HTTP 上下文中的用户名添加到 gRPC 上下文的元数据中
 func CustomAnnotator(ctx context.Context, req *http.Request) metadata.MD {
 	// 从HTTP context中获取用户名
-	username, exist := util.GetUsername(ctx)
+	userID, exist := util.GetUserID(ctx)
 	if !exist {
 		return nil
 	}
 
 	// 创建gRPC metadata并添加用户名
-	md := metadata.Pairs("username", username)
+	md := metadata.Pairs(string(util.UserIDKey), fmt.Sprintf("%d", userID))
 	return md
 }
 
@@ -95,7 +96,7 @@ func JWTAuthInterceptor(jwtTokenUtil *pkg_jwt.JWT, whitelist []string, tokenHead
 		}
 
 		// 将用户名设置到 gRPC 上下文中
-		newCtx := util.SetUsername(ctx, token.UserInfo.Username)
+		newCtx := util.SetUserID(ctx, token.UserInfo.UserID)
 
 		// 调用 RPC 方法
 		return handler(newCtx, req)

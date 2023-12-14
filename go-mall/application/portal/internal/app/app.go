@@ -70,6 +70,7 @@ func Run(cfg *config.Config) {
 		productAttributeValueRepo = repo.NewProductAttributeValueRepo(conn)
 		skuStockRepo              = repo.NewSkuStockRepo(conn)
 		memberRepo                = repo.NewMemberRepo(conn)
+		cartItemRepo              = repo.NewCartItemRepo(conn)
 	)
 	homeUseCase := usecase.NewHome(productCategoryRepo)
 	productUseCase := usecase.NewProduct(
@@ -82,10 +83,14 @@ func Run(cfg *config.Config) {
 
 	memberUseCase := usecase.NewMember(cfg, passwordEncoder, jwtTokenUtil, memberRepo)
 
+	cartItemUseCase := usecase.NewCartItem(cartItemRepo)
+
 	// grpc服务
 	grpcSrvImpl := grpcsrv.New(
 		homeUseCase,
-		productUseCase, memberUseCase,
+		productUseCase,
+		memberUseCase,
+		cartItemUseCase,
 	)
 	grpcServer, err := configGrpc(customLog, grpcSrvImpl, cfg, jwtTokenUtil, cfg.HTTP.IP, cfg.HTTP.Port)
 	if err != nil {
@@ -154,6 +159,7 @@ func configGrpc(customLog *logger.Logger, grpcSrvImpl grpcsrv.PortalApi, cfg *co
 	pb.RegisterPortalHomeApiServer(grpcServer, grpcSrvImpl)
 	pb.RegisterPortalProductApiServer(grpcServer, grpcSrvImpl)
 	pb.RegisterPortalMemberApiServer(grpcServer, grpcSrvImpl)
+	pb.RegisterPortalCartItemApiServer(grpcServer, grpcSrvImpl)
 
 	// gRPC-Gateway mux
 	gwmux := runtime.NewServeMux(
@@ -168,6 +174,9 @@ func configGrpc(customLog *logger.Logger, grpcSrvImpl grpcsrv.PortalApi, cfg *co
 		return nil, err
 	}
 	if err := pb.RegisterPortalMemberApiHandlerFromEndpoint(context.Background(), gwmux, addr, dops); err != nil {
+		return nil, err
+	}
+	if err := pb.RegisterPortalCartItemApiHandlerFromEndpoint(context.Background(), gwmux, addr, dops); err != nil {
 		return nil, err
 	}
 

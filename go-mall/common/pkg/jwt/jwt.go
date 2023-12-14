@@ -29,7 +29,7 @@ type JwtConfig struct {
 
 // Member 载荷
 type Member struct {
-	Username string // 用户名
+	UserID uint64 // 用户id
 }
 
 // CustomClaims 载荷，可以加一些自己需要的信息

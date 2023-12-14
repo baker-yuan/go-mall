@@ -1,1 +1,69 @@
 package grpcsrv
+
+import (
+	"context"
+
+	"github.com/baker-yuan/go-mall/common/retcode"
+	"github.com/baker-yuan/go-mall/common/util"
+	pb "github.com/baker-yuan/go-mall/proto/mall"
+)
+
+// CartItemAdd 添加商品到购物车
+func (s PortalApiImpl) CartItemAdd(ctx context.Context, req *pb.CartItemAddReq) (*pb.CartItemAddRsp, error) {
+	//TODO implement me
+	panic("implement me")
+}
+
+// CartItemList 获取当前会员的购物车列表
+func (s PortalApiImpl) CartItemList(ctx context.Context, req *pb.CartItemListReq) (*pb.CartItemListRsp, error) {
+	memberID, exist := util.GetUserID(ctx)
+	if !exist {
+		return nil, retcode.NewError(retcode.NeedLogin)
+	}
+	list, err := s.cartItemUseCase.CartItemList(ctx, memberID)
+	if err != nil {
+		return nil, err
+	}
+
+	res := &pb.CartItemListRsp{
+		Data: list,
+	}
+	res.Code, res.Message = retcode.GetRetCodeMsg(retcode.RetSuccess)
+	return res, err
+}
+
+// CartItemListPromotion 获取当前会员的购物车列表,包括促销信息
+func (s PortalApiImpl) CartItemListPromotion(ctx context.Context, req *pb.CartItemListPromotionReq) (*pb.CartItemListPromotionRsp, error) {
+	//TODO implement me
+	panic("implement me")
+}
+
+// CartItemUpdateQuantity 修改购物车中指定商品的数量
+func (s PortalApiImpl) CartItemUpdateQuantity(ctx context.Context, req *pb.CartItemUpdateQuantityReq) (*pb.CartItemUpdateQuantityRsp, error) {
+	//TODO implement me
+	panic("implement me")
+}
+
+// CartItemGetCartProduct 获取购物车中指定商品的规格,用于重选规格
+func (s PortalApiImpl) CartItemGetCartProduct(ctx context.Context, req *pb.CartItemGetCartProductReq) (*pb.CartItemGetCartProductRsp, error) {
+	//TODO implement me
+	panic("implement me")
+}
+
+// CartItemUpdateAttr 修改购物车中商品的规格
+func (s PortalApiImpl) CartItemUpdateAttr(ctx context.Context, req *pb.CartItemUpdateAttrReq) (*pb.CartItemUpdateAttrRsp, error) {
+	//TODO implement me
+	panic("implement me")
+}
+
+// CartItemDelete 删除购物车中的指定商品
+func (s PortalApiImpl) CartItemDelete(ctx context.Context, req *pb.CartItemDeleteReq) (*pb.CartItemDeleteRsp, error) {
+	//TODO implement me
+	panic("implement me")
+}
+
+// CartItemClear 清空当前会员的购物车
+func (s PortalApiImpl) CartItemClear(ctx context.Context, req *pb.CartItemClearReq) (*pb.CartItemClearRsp, error) {
+	//TODO implement me
+	panic("implement me")
+}
