@@ -50,6 +50,30 @@ const columns = reactive<ColumnProps<HomeAdvertise.HomeAdvertiseModel>[]>([
     label: "广告名称",
     search: { el: "input" }
   },
+  {
+    prop: "type",
+    label: "广告位置"
+  },
+  {
+    prop: "pic",
+    label: "广告图片"
+  },
+  {
+    prop: "timeRange",
+    label: "时间"
+  },
+  {
+    prop: "status",
+    label: "上线/下线"
+  },
+  {
+    prop: "clickCount",
+    label: "点击次数"
+  },
+  {
+    prop: "orderCount",
+    label: "生成订单"
+  },
   { prop: "operation", label: "操作", fixed: "right", width: 170 }
 ]);
 
