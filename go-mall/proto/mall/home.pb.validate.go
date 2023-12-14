@@ -35,6 +35,235 @@ var (
 	_ = sort.Sort
 )
 
+// Validate checks the field values on HomeContentReq with the rules defined in
+// the proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *HomeContentReq) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on HomeContentReq with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in HomeContentReqMultiError,
+// or nil if none found.
+func (m *HomeContentReq) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *HomeContentReq) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if len(errors) > 0 {
+		return HomeContentReqMultiError(errors)
+	}
+
+	return nil
+}
+
+// HomeContentReqMultiError is an error wrapping multiple validation errors
+// returned by HomeContentReq.ValidateAll() if the designated constraints
+// aren't met.
+type HomeContentReqMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m HomeContentReqMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m HomeContentReqMultiError) AllErrors() []error { return m }
+
+// HomeContentReqValidationError is the validation error returned by
+// HomeContentReq.Validate if the designated constraints aren't met.
+type HomeContentReqValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e HomeContentReqValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e HomeContentReqValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e HomeContentReqValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e HomeContentReqValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e HomeContentReqValidationError) ErrorName() string { return "HomeContentReqValidationError" }
+
+// Error satisfies the builtin error interface
+func (e HomeContentReqValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sHomeContentReq.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = HomeContentReqValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = HomeContentReqValidationError{}
+
+// Validate checks the field values on HomeContentRsp with the rules defined in
+// the proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *HomeContentRsp) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on HomeContentRsp with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in HomeContentRspMultiError,
+// or nil if none found.
+func (m *HomeContentRsp) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *HomeContentRsp) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if all {
+		switch v := interface{}(m.GetAdvertises()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, HomeContentRspValidationError{
+					field:  "Advertises",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, HomeContentRspValidationError{
+					field:  "Advertises",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetAdvertises()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return HomeContentRspValidationError{
+				field:  "Advertises",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if len(errors) > 0 {
+		return HomeContentRspMultiError(errors)
+	}
+
+	return nil
+}
+
+// HomeContentRspMultiError is an error wrapping multiple validation errors
+// returned by HomeContentRsp.ValidateAll() if the designated constraints
+// aren't met.
+type HomeContentRspMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m HomeContentRspMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m HomeContentRspMultiError) AllErrors() []error { return m }
+
+// HomeContentRspValidationError is the validation error returned by
+// HomeContentRsp.Validate if the designated constraints aren't met.
+type HomeContentRspValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e HomeContentRspValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e HomeContentRspValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e HomeContentRspValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e HomeContentRspValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e HomeContentRspValidationError) ErrorName() string { return "HomeContentRspValidationError" }
+
+// Error satisfies the builtin error interface
+func (e HomeContentRspValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sHomeContentRsp.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = HomeContentRspValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = HomeContentRspValidationError{}
+
 // Validate checks the field values on ProductCategoryItem with the rules
 // defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.
@@ -397,3 +626,118 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = ProductCategoryListRspValidationError{}
+
+// Validate checks the field values on HomeContentRsp_HomeAdvertise with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *HomeContentRsp_HomeAdvertise) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on HomeContentRsp_HomeAdvertise with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// HomeContentRsp_HomeAdvertiseMultiError, or nil if none found.
+func (m *HomeContentRsp_HomeAdvertise) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *HomeContentRsp_HomeAdvertise) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Id
+
+	// no validation rules for Name
+
+	// no validation rules for Pic
+
+	// no validation rules for Url
+
+	// no validation rules for Sort
+
+	// no validation rules for Note
+
+	if len(errors) > 0 {
+		return HomeContentRsp_HomeAdvertiseMultiError(errors)
+	}
+
+	return nil
+}
+
+// HomeContentRsp_HomeAdvertiseMultiError is an error wrapping multiple
+// validation errors returned by HomeContentRsp_HomeAdvertise.ValidateAll() if
+// the designated constraints aren't met.
+type HomeContentRsp_HomeAdvertiseMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m HomeContentRsp_HomeAdvertiseMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m HomeContentRsp_HomeAdvertiseMultiError) AllErrors() []error { return m }
+
+// HomeContentRsp_HomeAdvertiseValidationError is the validation error returned
+// by HomeContentRsp_HomeAdvertise.Validate if the designated constraints
+// aren't met.
+type HomeContentRsp_HomeAdvertiseValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e HomeContentRsp_HomeAdvertiseValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e HomeContentRsp_HomeAdvertiseValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e HomeContentRsp_HomeAdvertiseValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e HomeContentRsp_HomeAdvertiseValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e HomeContentRsp_HomeAdvertiseValidationError) ErrorName() string {
+	return "HomeContentRsp_HomeAdvertiseValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e HomeContentRsp_HomeAdvertiseValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sHomeContentRsp_HomeAdvertise.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = HomeContentRsp_HomeAdvertiseValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = HomeContentRsp_HomeAdvertiseValidationError{}

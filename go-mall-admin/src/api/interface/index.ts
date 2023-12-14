@@ -498,3 +498,29 @@ export namespace OrderReturnApply {
   // 分页查询订单退货申请
   export interface ReqOrderReturnApplyListParams extends ReqPage {}
 }
+
+// 首页轮播广告表管理模块
+export namespace HomeAdvertise {
+  // 首页轮播广告表模型
+  export interface HomeAdvertiseModel {
+    id: number; // id
+    name: string; // 名称
+    pic: string; // 图片地址
+    url: string; // 链接地址
+    sort: number; // 排序
+    note: string; // 备注
+    // 类型
+    type: number; // 轮播位置：0->PC首页轮播；1->app首页轮播
+    // 时间
+    startTime: number; // 开始时间
+    endTime: number; // 结束时间
+    // 状态
+    status: number; // 上下线状态：0->下线；1->上线
+    // 统计
+    clickCount: number; // 点击数
+    orderCount: number; // 下单数
+  }
+
+  // 分页查询首页轮播广告表
+  export interface ReqHomeAdvertiseListParams extends ReqPage {}
+}

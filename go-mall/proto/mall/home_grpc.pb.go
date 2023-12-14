@@ -19,6 +19,7 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
+	PortalHomeApi_HomeContent_FullMethodName         = "/admin.PortalHomeApi/HomeContent"
 	PortalHomeApi_ProductCategoryList_FullMethodName = "/admin.PortalHomeApi/ProductCategoryList"
 )
 
@@ -26,6 +27,8 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type PortalHomeApiClient interface {
+	// 首页内容信息展示
+	HomeContent(ctx context.Context, in *HomeContentReq, opts ...grpc.CallOption) (*HomeContentRsp, error)
 	// 获取首页商品分类
 	ProductCategoryList(ctx context.Context, in *ProductCategoryListReq, opts ...grpc.CallOption) (*ProductCategoryListRsp, error)
 }
@@ -36,6 +39,15 @@ type portalHomeApiClient struct {
 
 func NewPortalHomeApiClient(cc grpc.ClientConnInterface) PortalHomeApiClient {
 	return &portalHomeApiClient{cc}
+}
+
+func (c *portalHomeApiClient) HomeContent(ctx context.Context, in *HomeContentReq, opts ...grpc.CallOption) (*HomeContentRsp, error) {
+	out := new(HomeContentRsp)
+	err := c.cc.Invoke(ctx, PortalHomeApi_HomeContent_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (c *portalHomeApiClient) ProductCategoryList(ctx context.Context, in *ProductCategoryListReq, opts ...grpc.CallOption) (*ProductCategoryListRsp, error) {
@@ -51,6 +63,8 @@ func (c *portalHomeApiClient) ProductCategoryList(ctx context.Context, in *Produ
 // All implementations must embed UnimplementedPortalHomeApiServer
 // for forward compatibility
 type PortalHomeApiServer interface {
+	// 首页内容信息展示
+	HomeContent(context.Context, *HomeContentReq) (*HomeContentRsp, error)
 	// 获取首页商品分类
 	ProductCategoryList(context.Context, *ProductCategoryListReq) (*ProductCategoryListRsp, error)
 	mustEmbedUnimplementedPortalHomeApiServer()
@@ -60,6 +74,9 @@ type PortalHomeApiServer interface {
 type UnimplementedPortalHomeApiServer struct {
 }
 
+func (UnimplementedPortalHomeApiServer) HomeContent(context.Context, *HomeContentReq) (*HomeContentRsp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method HomeContent not implemented")
+}
 func (UnimplementedPortalHomeApiServer) ProductCategoryList(context.Context, *ProductCategoryListReq) (*ProductCategoryListRsp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ProductCategoryList not implemented")
 }
@@ -74,6 +91,24 @@ type UnsafePortalHomeApiServer interface {
 
 func RegisterPortalHomeApiServer(s grpc.ServiceRegistrar, srv PortalHomeApiServer) {
 	s.RegisterService(&PortalHomeApi_ServiceDesc, srv)
+}
+
+func _PortalHomeApi_HomeContent_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(HomeContentReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PortalHomeApiServer).HomeContent(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PortalHomeApi_HomeContent_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PortalHomeApiServer).HomeContent(ctx, req.(*HomeContentReq))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 func _PortalHomeApi_ProductCategoryList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -101,6 +136,10 @@ var PortalHomeApi_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "admin.PortalHomeApi",
 	HandlerType: (*PortalHomeApiServer)(nil),
 	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "HomeContent",
+			Handler:    _PortalHomeApi_HomeContent_Handler,
+		},
 		{
 			MethodName: "ProductCategoryList",
 			Handler:    _PortalHomeApi_ProductCategoryList_Handler,

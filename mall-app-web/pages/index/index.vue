@@ -25,6 +25,7 @@
 				<text class="num">{{swiperLength}}</text>
 			</view>
 		</view>
+
 		<!-- 头部功能区 -->
 		<view class="cate-section">
 			<view class="cate-item">

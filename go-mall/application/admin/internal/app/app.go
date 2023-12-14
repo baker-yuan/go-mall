@@ -24,6 +24,7 @@ import (
 	"github.com/baker-yuan/go-mall/common/util"
 	pb "github.com/baker-yuan/go-mall/proto/mall"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
+	"github.com/rs/cors"
 	"golang.org/x/net/http2"
 	"golang.org/x/net/http2/h2c"
 	"google.golang.org/grpc"
@@ -78,6 +79,7 @@ func Run(cfg *config.Config) {
 		orderOperateHistoryRepo = repo.NewOrderOperateHistoryRepo(conn)
 		orderReturnApplyRepo    = repo.NewOrderReturnApplyRepo(conn)
 		companyAddressRepo      = repo.NewCompanyAddressRepo(conn)
+		homeAdvertiseRepo       = repo.NewHomeAdvertiseRepo(conn)
 	)
 
 	// 业务逻辑
@@ -118,6 +120,8 @@ func Run(cfg *config.Config) {
 	orderReturnApplyUseCase := usecase.NewOrderReturnApply(orderReturnApplyRepo, companyAddressRepo)
 	companyAddressUseCase := usecase.NewCompanyAddress(companyAddressRepo)
 
+	homeAdvertiseUseCase := usecase.NewHomeAdvertise(homeAdvertiseRepo)
+
 	// grpc服务
 	grpcSrvImpl := grpcsrv.New(
 		categoryUseCase,
@@ -133,6 +137,7 @@ func Run(cfg *config.Config) {
 		orderUseCase,
 		orderReturnApplyUseCase,
 		companyAddressUseCase,
+		homeAdvertiseUseCase,
 	)
 	grpcServer, err := configGrpc(customLog, grpcSrvImpl, cfg.HTTP.IP, cfg.HTTP.Port)
 	if err != nil {
@@ -189,12 +194,17 @@ func configGrpc(customLog *logger.Logger, grpcSrvImpl grpcsrv.AdminApi, ip strin
 	)
 	// 创建一个gRPC server对象
 	grpcServer := grpc.NewServer(
-		grpc.UnaryInterceptor(interceptor.ValidationInterceptor),
+		grpc.UnaryInterceptor(interceptor.ChainUnaryServerInterceptors(
+			interceptor.ValidationInterceptor,
+			interceptor.PanicRecoveryInterceptor,
+		),
+		),
 	)
 
 	// 注册grpc服务
 	pb.RegisterCmsAdminApiServer(grpcServer, grpcSrvImpl)
 	pb.RegisterOmsAdminApiServer(grpcServer, grpcSrvImpl)
+	pb.RegisterSmsAdminApiServer(grpcServer, grpcSrvImpl)
 
 	// gRPC-Gateway mux
 	gwmux := runtime.NewServeMux()
@@ -205,13 +215,34 @@ func configGrpc(customLog *logger.Logger, grpcSrvImpl grpcsrv.AdminApi, ip strin
 	if err := pb.RegisterOmsAdminApiHandlerFromEndpoint(context.Background(), gwmux, addr, dops); err != nil {
 		return nil, err
 	}
+	if err := pb.RegisterSmsAdminApiHandlerFromEndpoint(context.Background(), gwmux, addr, dops); err != nil {
+		return nil, err
+	}
 	mux := http.NewServeMux()
 	mux.Handle("/", gwmux)
+
+	// 创建一个自定义的 CORS 中间件配置
+	corsOptions := cors.Options{
+		AllowedOrigins:   []string{"*"}, // 允许的源列表
+		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowedHeaders:   []string{"Authorization", "Content-Type"},
+		AllowCredentials: true,
+		MaxAge:           86400, // 预检请求的结果可以被缓存的最大秒数
+	}
+
+	// 统一返回值处理
+	responseWrapper := interceptor.WrapResponseMiddleware(mux)
+	// jwt拦截
+	//jwtWrapper := interceptor.NewJWTAuthMiddleware(responseWrapper, jwtTokenUtil, cfg.Jwt.Whitelist, cfg.Jwt.TokenHeader, cfg.Jwt.TokenHead)
+	// 请求响应日志记录
+	logWrapper := interceptor.NewLoggingMiddleware(responseWrapper)
+	// cors处理器
+	corsWrapper := cors.New(corsOptions).Handler(logWrapper)
 
 	// 定义HTTP server配置
 	gwServer := &http.Server{
 		Addr:    addr,
-		Handler: grpcHandlerFunc(grpcServer, mux), // 请求的统一入口
+		Handler: grpcHandlerFunc(grpcServer, corsWrapper), // 请求的统一入口
 	}
 
 	// tpc监听

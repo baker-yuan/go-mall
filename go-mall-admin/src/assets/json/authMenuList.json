@@ -200,6 +200,20 @@
             "isAffix": false,
             "isKeepAlive": false
           }
+        },
+        {
+          "path": "/sms/advertise",
+          "name": "flash",
+          "component": "/sms/advertise/index",
+          "meta": {
+            "icon": "Connection",
+            "title": "广告列表",
+            "isLink": "",
+            "isHide": false,
+            "isFull": false,
+            "isAffix": false,
+            "isKeepAlive": false
+          }
         }
       ]
     },

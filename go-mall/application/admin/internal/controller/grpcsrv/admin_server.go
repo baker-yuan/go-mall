@@ -7,15 +7,18 @@ import (
 
 var _ pb.CmsAdminApiServer = &AdminApiImpl{}
 var _ pb.OmsAdminApiServer = &AdminApiImpl{}
+var _ pb.SmsAdminApiServer = &AdminApiImpl{}
 
 type AdminApi interface {
 	pb.CmsAdminApiServer
 	pb.OmsAdminApiServer
+	pb.SmsAdminApiServer
 }
 
 type AdminApiImpl struct {
 	pb.UnimplementedCmsAdminApiServer
 	pb.UnimplementedOmsAdminApiServer
+	pb.UnimplementedSmsAdminApiServer
 
 	category                 usecase.IProductCategoryUseCase
 	brand                    usecase.IBrandUseCase
@@ -30,6 +33,8 @@ type AdminApiImpl struct {
 	order             usecase.IOrderUseCase
 	orderReturnApply  usecase.IOrderReturnApplyUseCase
 	companyAddress    usecase.ICompanyAddressUseCase
+	//
+	homeAdvertise usecase.IHomeAdvertiseUseCase
 }
 
 func New(category usecase.IProductCategoryUseCase,
@@ -45,6 +50,8 @@ func New(category usecase.IProductCategoryUseCase,
 	order usecase.IOrderUseCase,
 	orderReturnApply usecase.IOrderReturnApplyUseCase,
 	companyAddress usecase.ICompanyAddressUseCase,
+	//
+	homeAdvertise usecase.IHomeAdvertiseUseCase,
 ) AdminApi {
 	return &AdminApiImpl{
 		category:                 category,
@@ -60,6 +67,7 @@ func New(category usecase.IProductCategoryUseCase,
 		order:             order,
 		orderReturnApply:  orderReturnApply,
 		companyAddress:    companyAddress,
+		homeAdvertise:     homeAdvertise,
 	}
 
 }

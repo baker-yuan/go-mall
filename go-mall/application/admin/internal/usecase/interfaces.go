@@ -677,3 +677,34 @@ type (
 		GetByDBOption(ctx context.Context, pageNum uint32, pageSize uint32, opts ...db.DBOption) ([]*entity.CompanyAddress, uint32, error)
 	}
 )
+
+// HomeAdvertise 首页轮播广告表
+type (
+	// IHomeAdvertiseUseCase 业务逻辑
+	IHomeAdvertiseUseCase interface {
+		// CreateHomeAdvertise 添加首页轮播广告表
+		CreateHomeAdvertise(ctx context.Context, param *pb.AddOrUpdateHomeAdvertiseParam) error
+		// UpdateHomeAdvertise 修改首页轮播广告表
+		UpdateHomeAdvertise(ctx context.Context, param *pb.AddOrUpdateHomeAdvertiseParam) error
+		// GetHomeAdvertises 分页查询首页轮播广告表
+		GetHomeAdvertises(ctx context.Context, param *pb.GetHomeAdvertisesParam) ([]*pb.HomeAdvertise, uint32, error)
+		// GetHomeAdvertise 根据id获取首页轮播广告表
+		GetHomeAdvertise(ctx context.Context, id uint64) (*pb.HomeAdvertise, error)
+		// DeleteHomeAdvertise 删除首页轮播广告表
+		DeleteHomeAdvertise(ctx context.Context, id uint64) error
+	}
+
+	// IHomeAdvertiseRepo 数据存储操作
+	IHomeAdvertiseRepo interface {
+		// Create 创建首页轮播广告表
+		Create(ctx context.Context, homeAdvertise *entity.HomeAdvertise) error
+		// DeleteByID 根据主键ID删除首页轮播广告表
+		DeleteByID(ctx context.Context, id uint64) error
+		// Update 修改首页轮播广告表
+		Update(ctx context.Context, homeAdvertise *entity.HomeAdvertise) error
+		// GetByID 根据主键ID查询首页轮播广告表
+		GetByID(ctx context.Context, id uint64) (*entity.HomeAdvertise, error)
+		// GetByDBOption 根据动态条件查询首页轮播广告表
+		GetByDBOption(ctx context.Context, pageNum uint32, pageSize uint32, opts ...db.DBOption) ([]*entity.HomeAdvertise, uint32, error)
+	}
+)

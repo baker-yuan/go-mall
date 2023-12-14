@@ -8,6 +8,7 @@ require (
 	github.com/golang-migrate/migrate/v4 v4.15.1
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.18.1
 	github.com/ilyakaznacheev/cleanenv v1.2.6
+	github.com/rs/cors v1.10.1
 	github.com/swaggo/swag v1.7.6
 	golang.org/x/net v0.17.0
 	google.golang.org/grpc v1.59.0
