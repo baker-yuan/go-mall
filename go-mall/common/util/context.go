@@ -22,24 +22,26 @@ func SetUsername(ctx context.Context, username string) context.Context {
 
 // GetUsername 从上下文中获取用户名
 func GetUsername(ctx context.Context) (string, bool) {
-
-	username, ok := GetUsernameFromMd(ctx)
+	username, ok := getFromGrpcContext(ctx, UsernameKey)
 	if ok {
 		return username, ok
 	}
-	//
-	username, ok = ctx.Value(UsernameKey).(string)
-	return username, ok
+	return getFromHttpContext(ctx, UsernameKey)
 }
 
-func GetUsernameFromMd(ctx context.Context) (string, bool) {
+func getFromHttpContext(ctx context.Context, key contextKey) (string, bool) {
+	value, ok := ctx.Value(key).(string)
+	return value, ok
+}
+
+func getFromGrpcContext(ctx context.Context, key contextKey) (string, bool) {
 	md, ok := metadata.FromIncomingContext(ctx)
 	if !ok {
 		return "", false
 	}
-	usernameSlice, ok := md["username"]
-	if !ok || len(usernameSlice) == 0 {
+	slice, ok := md[string(key)]
+	if !ok || len(slice) == 0 {
 		return "", false
 	}
-	return usernameSlice[0], true
+	return slice[0], true
 }

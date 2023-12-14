@@ -6,3 +6,8 @@ Content-Type: application/json
   "username": "test",
   "password": "test"
 }
+
+### 获取会员信息
+GET http://localhost:8085/sso/info
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mbyI6eyJVc2VybmFtZSI6InRlc3QifSwiZXhwIjoxODQ1ODU5MTc2LCJpYXQiOjE3MDI1MTY3ODAsImlzcyI6ImJha2VyIn0.PeXP2kg12DqWBA9QuaPiyoWmn1yKcYpbERxuJmK2c7Y

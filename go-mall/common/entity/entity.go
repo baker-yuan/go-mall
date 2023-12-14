@@ -34,10 +34,10 @@ func Init(db *gorm.DB) error {
 			TableName: "商品分类表",
 			StructPtr: &ProductCategory{},
 		},
-		//{
-		//	TableName: "商品分类和属性的关系表",
-		//	StructPtr: &ProductCategoryAttributeRelation{},
-		//},
+		{
+			TableName: "商品分类和属性的关系表",
+			StructPtr: &ProductCategoryAttributeRelation{},
+		},
 		{
 			TableName: "商品品牌表",
 			StructPtr: &Brand{},

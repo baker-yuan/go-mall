@@ -1,0 +1,141 @@
+syntax = "proto3";
+package admin;
+option go_package = ".;mall";
+
+import "portal/portal.proto";
+
+import "validate/validate.proto";
+import "google/api/annotations.proto";
+import "google/protobuf/wrappers.proto";
+
+// 添加商品到购物车
+message CartItemAddReq {
+
+}
+
+message CartItemAddRsp {
+
+}
+
+
+// 获取当前会员的购物车列表
+message CartItemListReq {
+
+}
+
+message CartItemListRsp {
+
+}
+
+// 获取当前会员的购物车列表,包括促销信息
+message CartItemListPromotionReq {
+
+}
+
+message CartItemListPromotionRsp {
+
+}
+
+// 修改购物车中指定商品的数量
+message CartItemUpdateQuantityReq {
+
+}
+
+message CartItemUpdateQuantityRsp {
+
+}
+
+// 获取购物车中指定商品的规格,用于重选规格
+message CartItemGetCartProductReq {
+  uint64 product_id = 1; // 商品ID
+}
+
+message CartItemGetCartProductRsp {
+
+}
+
+// 修改购物车中商品的规格
+message CartItemUpdateAttrReq {
+
+}
+message CartItemUpdateAttrRsp {
+
+}
+
+// 删除购物车中的指定商品
+message CartItemDeleteReq {
+  repeated uint64 ids = 1; // 商品ID集合
+}
+
+message CartItemDeleteRsp {
+
+}
+
+// 清空当前会员的购物车
+message CartItemClearReq {}
+message CartItemClearRsp {}
+
+// 购物车管理
+service PortalCartItemApi {
+  // 添加商品到购物车
+  rpc CartItemAdd(CartItemAddReq) returns (CartItemAddRsp) {
+    option (google.api.http) = {
+      post: "/cart/add"
+      body: "*"
+    };
+  }
+
+  // 获取当前会员的购物车列表
+  rpc CartItemList(CartItemListReq) returns (CartItemListRsp) {
+    option (google.api.http) = {
+      get: "/cart/list"
+    };
+  }
+
+  // 获取当前会员的购物车列表,包括促销信息
+  rpc CartItemListPromotion(CartItemListPromotionReq) returns (CartItemListPromotionRsp) {
+    option (google.api.http) = {
+      get: "/cart/list/promotion"
+    };
+  }
+
+  // 修改购物车中指定商品的数量
+  rpc CartItemUpdateQuantity(CartItemUpdateQuantityReq) returns (CartItemUpdateQuantityRsp) {
+    option (google.api.http) = {
+      post: "/cart/update/quantity"
+      body: "*"
+    };
+  }
+
+  // 获取购物车中指定商品的规格,用于重选规格
+  rpc CartItemGetCartProduct(CartItemGetCartProductReq) returns (CartItemGetCartProductRsp) {
+    option (google.api.http) = {
+      get: "/cart/getProduct/{productId}"
+    };
+  }
+
+  // 修改购物车中商品的规格
+  rpc CartItemUpdateAttr(CartItemUpdateAttrReq) returns (CartItemUpdateAttrRsp) {
+    option (google.api.http) = {
+      post: "/cart/update/attr"
+      body: "*"
+    };
+  }
+
+  // 删除购物车中的指定商品
+  rpc CartItemDelete(CartItemDeleteReq) returns (CartItemDeleteRsp) {
+    option (google.api.http) = {
+      post: "/cart/delete"
+      body: "*"
+    };
+  }
+
+  // 清空当前会员的购物车
+  rpc CartItemClear(CartItemClearReq) returns (CartItemClearRsp) {
+    option (google.api.http) = {
+      post: "/cart/clear"
+      body: "*"
+    };
+  }
+
+}
