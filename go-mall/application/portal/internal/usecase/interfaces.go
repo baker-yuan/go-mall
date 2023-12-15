@@ -37,6 +37,8 @@ type (
 type (
 	// IHomeUseCase 业务逻辑
 	IHomeUseCase interface {
+		// HomeContent 获取首页内容
+		HomeContent(ctx context.Context, req *pb.HomeContentReq) (*pb.HomeContentRsp, error)
 		// ProductCategoryList 分页查询订单
 		ProductCategoryList(context.Context, *pb.ProductCategoryListReq) ([]*pb.ProductCategoryItem, error)
 	}
@@ -175,5 +177,18 @@ type (
 		GetByDBOption(ctx context.Context, pageNum uint32, pageSize uint32, opts ...db.DBOption) ([]*entity.CartItem, uint32, error)
 		// GetEffectCartItemByMemberID 根据会员id查询购物车
 		GetEffectCartItemByMemberID(ctx context.Context, memberID uint64) ([]*entity.CartItem, error)
+	}
+)
+
+// HomeAdvertise 首页轮播广告表
+type (
+	// IHomeAdvertiseUseCase 业务逻辑
+	IHomeAdvertiseUseCase interface {
+	}
+
+	// IHomeAdvertiseRepo 数据存储操作
+	IHomeAdvertiseRepo interface {
+		// GetHomeAdvertises 获取首页广告
+		GetHomeAdvertises(ctx context.Context) ([]*entity.HomeAdvertise, error)
 	}
 )

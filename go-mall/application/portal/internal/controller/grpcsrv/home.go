@@ -7,6 +7,11 @@ import (
 	pb "github.com/baker-yuan/go-mall/proto/mall"
 )
 
+// HomeContent 首页内容信息展示
+func (s PortalApiImpl) HomeContent(ctx context.Context, req *pb.HomeContentReq) (*pb.HomeContentRsp, error) {
+	return s.home.HomeContent(ctx, req)
+}
+
 // ProductCategoryList 获取首页商品分类
 func (s PortalApiImpl) ProductCategoryList(ctx context.Context, req *pb.ProductCategoryListReq) (*pb.ProductCategoryListRsp, error) {
 	var (
@@ -20,9 +25,4 @@ func (s PortalApiImpl) ProductCategoryList(ctx context.Context, req *pb.ProductC
 
 	res.Code, res.Message = retcode.GetRetCodeMsg(retcode.RetSuccess)
 	return res, nil
-}
-
-// HomeContent 首页内容信息展示
-func (s PortalApiImpl) HomeContent(ctx context.Context, req *pb.HomeContentReq) (*pb.HomeContentRsp, error) {
-	return nil, nil
 }

@@ -10,13 +10,33 @@ import (
 // HomeUseCase 首页
 type HomeUseCase struct {
 	productCategoryRepo IProductCategoryRepo // 操作商品分类
+	homeAdvertiseRepo   IHomeAdvertiseRepo   // 操作首页轮播广告
 }
 
 // NewHome 创建首页Service实现类
-func NewHome(productCategoryRepo IProductCategoryRepo) *HomeUseCase {
+func NewHome(productCategoryRepo IProductCategoryRepo, homeAdvertiseRepo IHomeAdvertiseRepo) *HomeUseCase {
 	return &HomeUseCase{
 		productCategoryRepo: productCategoryRepo,
+		homeAdvertiseRepo:   homeAdvertiseRepo,
 	}
+}
+
+// HomeContent 获取首页内容
+func (h HomeUseCase) HomeContent(ctx context.Context, req *pb.HomeContentReq) (*pb.HomeContentRsp, error) {
+	res := &pb.HomeContentRsp{}
+	// 获取首页广告
+	advertises, err := h.homeAdvertiseRepo.GetHomeAdvertises(ctx)
+	if err != nil {
+		return nil, err
+	}
+	// 获取推荐品牌
+	// 获取秒杀信息
+	// 获取新品推荐
+	// 获取人气推荐
+	// 获取推荐专题
+
+	res.Advertises = assembler.HomeAdvertiseEntitysToDetail(advertises)
+	return res, nil
 }
 
 // ProductCategoryList 分页查询订单

@@ -71,8 +71,9 @@ func Run(cfg *config.Config) {
 		skuStockRepo              = repo.NewSkuStockRepo(conn)
 		memberRepo                = repo.NewMemberRepo(conn)
 		cartItemRepo              = repo.NewCartItemRepo(conn)
+		homeAdvertiseRepo         = repo.NewHomeAdvertiseRepo(conn)
 	)
-	homeUseCase := usecase.NewHome(productCategoryRepo)
+	homeUseCase := usecase.NewHome(productCategoryRepo, homeAdvertiseRepo)
 	productUseCase := usecase.NewProduct(
 		productRepo,
 		brandRepo,

@@ -23,7 +23,7 @@ message HomeContentRsp {
     uint32 sort = 5; // 排序
     string note = 6; // 备注
   }
-  HomeAdvertise advertises = 1; // 轮播广告
+  repeated HomeAdvertise advertises = 1; // 轮播广告
   // 推荐品牌
   // 当前秒杀场次
   // 新品推荐
