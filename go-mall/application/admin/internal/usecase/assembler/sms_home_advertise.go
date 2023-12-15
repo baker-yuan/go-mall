@@ -11,8 +11,8 @@ func HomeAdvertiseEntityToModel(homeAdvertise *entity.HomeAdvertise) *pb.HomeAdv
 	return &pb.HomeAdvertise{
 		Id:   homeAdvertise.ID,
 		Name: homeAdvertise.Name,
-		Pic:  homeAdvertise.Pic,
-		Url:  util.GetFullUrl(homeAdvertise.URL),
+		Pic:  util.GetFullUrl(homeAdvertise.Pic),
+		Url:  homeAdvertise.URL,
 		Sort: homeAdvertise.Sort,
 		Note: homeAdvertise.Note,
 		// 类型
@@ -32,17 +32,17 @@ func HomeAdvertiseEntityToModel(homeAdvertise *entity.HomeAdvertise) *pb.HomeAdv
 func AddOrUpdateHomeAdvertiseParamToEntity(param *pb.AddOrUpdateHomeAdvertiseParam) *entity.HomeAdvertise {
 	return &entity.HomeAdvertise{
 		Name: param.Name,
-		Pic:  param.Pic,
+		Pic:  util.GetRelativeUrl(param.Pic),
 		URL:  param.Url,
 		Sort: param.Sort,
 		Note: param.Note,
 		// 类型
-		Type: uint8(uint32(param.Type)),
+		Type: uint8(param.Type),
 		// 时间
 		StartTime: param.StartTime,
 		EndTime:   param.EndTime,
 		// 状态
-		Status: uint8(uint32(param.Status)),
+		Status: uint8(param.Status),
 		// 统计
 		ClickCount: param.ClickCount,
 		OrderCount: param.OrderCount,

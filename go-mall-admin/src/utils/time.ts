@@ -8,7 +8,7 @@ import moment from "moment";
 export const formatTimestamp = (timestamp: number) => {
   // 如果时间戳为0，返回空字符串
   if (timestamp === 0) {
-    return "";
+    return "N/A";
   }
   // 使用 moment 库将时间戳（秒）转换为日期字符串
   return moment(timestamp * 1000).format("YYYY-MM-DD HH:mm:ss");

@@ -32,6 +32,8 @@ var (
 	// 全字段修改HomeAdvertise那些字段不修改
 	notUpdateHomeAdvertiseField = []string{
 		"created_at",
+		"click_count",
+		"order_count",
 	}
 	updateHomeAdvertiseField []string
 )

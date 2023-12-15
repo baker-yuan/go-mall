@@ -10,8 +10,29 @@
       :border="false"
     >
       <!-- 表格 header 按钮 -->
-      <template>
-        <el-button type="primary" :icon="CirclePlus" @click="openDrawer('新增')">新增首页轮播广告表</el-button>
+      <template #tableHeader>
+        <el-button type="primary" :icon="CirclePlus" @click="openDrawer('新增')">新增</el-button>
+      </template>
+
+      <!-- 广告位置 -->
+      <template #type="scope">
+        {{ formatType(scope.row.type) }}
+      </template>
+
+      <!-- 广告图片 -->
+      <template #pic="scope">
+        <img style="height: 80px; width: 100px" :src="scope.row.pic" />
+      </template>
+      <!-- 时间 -->
+      <template #timeRange="scope">
+        <p>开始时间：{{ formatTimestamp(scope.row.startTime) }}</p>
+        <p>到期时间：{{ formatTimestamp(scope.row.endTime) }}</p>
+      </template>
+
+      <!-- 上线/下线 -->
+      <template #status="scope">
+        <el-switch @change="handleUpdateStatus(scope.row)" :active-value="1" :inactive-value="0" v-model="scope.row.status">
+        </el-switch>
       </template>
 
       <!-- 表格操作 -->
@@ -38,6 +59,8 @@ import {
   deleteHomeAdvertiseApi,
   getHomeAdvertisesApi
 } from "@/api/modules/advertise.ts";
+import { formatType, typeOptions } from "@/views/sms/advertise/index";
+import { formatTimestamp } from "@/utils/time";
 
 // ProTable 实例
 const proTable = ref<ProTableInstance>();
@@ -46,21 +69,30 @@ const proTable = ref<ProTableInstance>();
 const columns = reactive<ColumnProps<HomeAdvertise.HomeAdvertiseModel>[]>([
   { type: "selection", fixed: "left", width: 70 },
   {
+    prop: "id",
+    label: "编号"
+  },
+  {
     prop: "name",
     label: "广告名称",
     search: { el: "input" }
   },
   {
     prop: "type",
-    label: "广告位置"
+    label: "广告位置",
+    enum: typeOptions,
+    search: { el: "select", props: { filterable: true } }
   },
   {
     prop: "pic",
-    label: "广告图片"
+    label: "广告图片",
+    showOverflowTooltip: false
   },
   {
     prop: "timeRange",
-    label: "时间"
+    label: "时间",
+    showOverflowTooltip: false,
+    width: 300
   },
   {
     prop: "status",
@@ -72,8 +104,15 @@ const columns = reactive<ColumnProps<HomeAdvertise.HomeAdvertiseModel>[]>([
   },
   {
     prop: "orderCount",
-    label: "生成订单"
+    label: "下单数"
   },
+  {
+    prop: "endTime",
+    label: "到期时间",
+    isShow: false,
+    search: { el: "date-picker", props: { filterable: true } }
+  },
+
   { prop: "operation", label: "操作", fixed: "right", width: 170 }
 ]);
 
@@ -122,5 +161,14 @@ const openDrawer = (title: string, row: Partial<HomeAdvertise.HomeAdvertiseModel
     getTableList: proTable.value?.getTableList
   };
   drawerRef.value?.acceptParams(params);
+};
+
+// 上线/下线
+const handleUpdateStatus = (row: HomeAdvertise.HomeAdvertiseModel) => {
+  if (row.id == 0 || row.id == undefined) {
+    return;
+  }
+  let newParams = JSON.parse(JSON.stringify(row));
+  updateHomeAdvertiseApi(newParams);
 };
 </script>
