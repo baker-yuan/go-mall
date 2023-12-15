@@ -73,7 +73,7 @@ func Run(cfg *config.Config) {
 		cartItemRepo              = repo.NewCartItemRepo(conn)
 		homeAdvertiseRepo         = repo.NewHomeAdvertiseRepo(conn)
 	)
-	homeUseCase := usecase.NewHome(productCategoryRepo, homeAdvertiseRepo)
+	homeUseCase := usecase.NewHome(productCategoryRepo, homeAdvertiseRepo, brandRepo)
 	productUseCase := usecase.NewProduct(
 		productRepo,
 		brandRepo,

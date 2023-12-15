@@ -192,3 +192,6 @@ type (
 		GetHomeAdvertises(ctx context.Context) ([]*entity.HomeAdvertise, error)
 	}
 )
+
+// GetRecommendBrandList 获取推荐品牌
+//GetRecommendBrandList(ctx context.Context, offset uint32, limit uint32) ([]*entity.Brand, error)

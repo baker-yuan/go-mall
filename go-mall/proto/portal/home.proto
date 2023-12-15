@@ -16,12 +16,8 @@ message HomeContentReq {
 
 message HomeContentRsp {
   message HomeAdvertise {
-    uint64 id = 1; // 主键
-    string name = 2; // 名称
     string pic = 3; // 图片地址
     string url = 4; // 链接地址
-    uint32 sort = 5; // 排序
-    string note = 6; // 备注
   }
   repeated HomeAdvertise advertises = 1; // 轮播广告
   // 推荐品牌

@@ -6,8 +6,8 @@ import (
 	pb "github.com/baker-yuan/go-mall/proto/mall"
 )
 
-// HomeAdvertiseEntityToDetail entity转pb
-func HomeAdvertiseEntitysToDetail(homeAdvertises []*entity.HomeAdvertise) []*pb.HomeContentRsp_HomeAdvertise {
+// HomeAdvertisesEntityToDetail entity转pb
+func HomeAdvertisesEntityToDetail(homeAdvertises []*entity.HomeAdvertise) []*pb.HomeContentRsp_HomeAdvertise {
 	res := make([]*pb.HomeContentRsp_HomeAdvertise, 0)
 	for _, homeAdvertise := range homeAdvertises {
 		res = append(res, HomeAdvertiseEntityToDetail(homeAdvertise))
@@ -18,11 +18,7 @@ func HomeAdvertiseEntitysToDetail(homeAdvertises []*entity.HomeAdvertise) []*pb.
 // HomeAdvertiseEntityToDetail entity转pb
 func HomeAdvertiseEntityToDetail(homeAdvertise *entity.HomeAdvertise) *pb.HomeContentRsp_HomeAdvertise {
 	return &pb.HomeContentRsp_HomeAdvertise{
-		Id:   homeAdvertise.ID,
-		Name: homeAdvertise.Name,
-		Pic:  util.GetFullUrl(homeAdvertise.Pic),
-		Url:  homeAdvertise.URL,
-		Sort: homeAdvertise.Sort,
-		Note: homeAdvertise.Note,
+		Pic: util.GetFullUrl(homeAdvertise.Pic),
+		Url: homeAdvertise.URL,
 	}
 }
