@@ -31,10 +31,10 @@ func NewHome(
 func (h HomeUseCase) HomeContent(ctx context.Context, req *pb.HomeContentReq) (*pb.HomeContentRsp, error) {
 	res := &pb.HomeContentRsp{}
 	// 获取首页广告
-	//advertises, err := h.homeAdvertiseRepo.GetHomeAdvertises(ctx)
-	//if err != nil {
-	//	return nil, err
-	//}
+	advertises, err := h.homeAdvertiseRepo.GetHomeAdvertises(ctx)
+	if err != nil {
+		return nil, err
+	}
 	// 获取推荐品牌
 	//h.brandRepo.GetRecommendBrandList(ctx, 0, 6)
 
@@ -43,7 +43,7 @@ func (h HomeUseCase) HomeContent(ctx context.Context, req *pb.HomeContentReq) (*
 	// 获取人气推荐
 	// 获取推荐专题
 
-	//res.Advertises = assembler.HomeAdvertisesEntityToDetail(advertises)
+	res.Advertises = assembler.HomeAdvertisesEntityToDetail(advertises)
 	return res, nil
 }
 

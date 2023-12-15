@@ -67,7 +67,7 @@
 		</view>
 
 		<!-- 秒杀专区 -->
-		<view class="f-header m-t" v-if="homeFlashPromotion!==null">
+		<view class="f-header m-t" v-if="homeFlashPromotion">
 			<image src="/static/icon_flash_promotion.png"></image>
 			<view class="tit-box">
 				<text class="tit">秒杀专区</text>
@@ -86,7 +86,7 @@
 			<text class="yticon icon-you" v-show="false"></text>
 		</view>
 
-		<view class="guess-section">
+		<view class="guess-section" v-if="homeFlashPromotion">
 			<view v-for="(item, index) in homeFlashPromotion.productList" :key="index" class="guess-item" @click="navToDetailPage(item)">
 				<view class="image-wrapper">
 					<image :src="item.pic" mode="aspectFill"></image>
@@ -187,11 +187,11 @@
 				swiperLength: 0,
 				carouselList: [],
 				goodsList: [],
-				advertiseList: [],
-				brandList: [],
-				homeFlashPromotion: [],
-				newProductList: [],
-				hotProductList: [],
+				advertiseList: [], // 轮播广告
+				brandList: [], // 推荐品牌
+				homeFlashPromotion: [], // 当前秒杀场次
+				newProductList: [], // 新品推荐
+				hotProductList: [], // 人气推荐
 				recommendProductList: [],
 				recommendParams: {
 					pageNum: 1,
@@ -255,13 +255,11 @@
 			},
 		},
 		methods: {
-			/**
-			 * 加载数据
-			 */
+			// 加载首页数据
 			async loadData() {
 				fetchContent().then(response => {
 					console.log("onLoad", response.data);
-					this.advertiseList = response.data.advertiseList;
+					this.advertiseList = response.data.advertises;
 					this.swiperLength = this.advertiseList.length;
 					this.titleNViewBackground = this.titleNViewBackgroundList[0];
 					this.brandList = response.data.brandList;
@@ -274,45 +272,45 @@
 					})
 				});
 			},
-			//轮播图切换修改背景色
+			// 轮播图切换修改背景色
 			swiperChange(e) {
 				const index = e.detail.current;
 				this.swiperCurrent = index;
 				let changeIndex = index % this.titleNViewBackgroundList.length;
 				this.titleNViewBackground = this.titleNViewBackgroundList[changeIndex];
 			},
-			//商品详情页
+			// 商品详情页
 			navToDetailPage(item) {
 				let id = item.id;
 				uni.navigateTo({
 					url: `/pages/product/product?id=${id}`
 				})
 			},
-			//广告详情页
+			// 广告详情页
 			navToAdvertisePage(item) {
 				let id = item.id;
 				console.log("navToAdvertisePage",item)
 			},
-			//品牌详情页
+			// 品牌详情页
 			navToBrandDetailPage(item) {
 				let id = item.id;
 				uni.navigateTo({
 					url: `/pages/brand/brandDetail?id=${id}`
 				})
 			},
-			//推荐品牌列表页
+			// 推荐品牌列表页
 			navToRecommendBrandPage() {
 				uni.navigateTo({
 					url: `/pages/brand/list`
 				})
 			},
-			//新鲜好物列表页
+			// 新鲜好物列表页
 			navToNewProudctListPage() {
 				uni.navigateTo({
 					url: `/pages/product/newProductList`
 				})
 			},
-			//人气推荐列表页
+			// 人气推荐列表页
 			navToHotProudctListPage() {
 				uni.navigateTo({
 					url: `/pages/product/hotProductList`
