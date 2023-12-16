@@ -1,5 +1,6 @@
-pnpm + monorepo vue3 + ts + vuepress2.x
 
-组件库文档以及组件
-
-持续开发中~
+```text
+https://github.com/woow-wu7/8-divine-plus
+https://github.com/LiuyangAce/tt-ui
+https://github.com/it235/it235-vuepress
+```
