@@ -1,4 +1,4 @@
-
+# 1、表设计
 ```sql
 CREATE TABLE `pms_product_category`
 (
@@ -22,3 +22,12 @@ CREATE TABLE `pms_product_category`
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci COMMENT ='商品分类表'
 ```
+
+# 2、页面
+## 2.1、页面
+![01-分类.jpg](./images/01-分类.jpg)
+
+## 2.2、添加分类
+![02-添加分类.jpg](./images/02-添加分类.jpg)
+
+# 3、接口

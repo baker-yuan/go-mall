@@ -1,7 +1,9 @@
 // navbar.ts
 export default [
   { text: '表设计', link: '/table/table.md' },
-  { text: '文档搭建', link: '/document/document.md' },
+  { text: '环境搭建', link: '/environment/index.md' },
+  { text: '代码讲解', link: '/code/index.md' },
+  { text: '文档搭建', link: '/document/index.md' },
   {
     text: '其他',
     children: [

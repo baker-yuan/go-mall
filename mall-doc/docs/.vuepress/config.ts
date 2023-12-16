@@ -4,14 +4,15 @@ import sidebar from './configs/sidebar'
 import { demoblockPlugin } from 'vuepress-plugin-demoblock-plus'
 
 export default {
+
   // 基础路径，用于部署到非根 URL。这里的 '/mall-doc/' 表示站点将部署在域名下的 /mall-doc/ 路径。
-  base: '/mall-doc/',
+  base: '',
   // 网站使用的语言
   lang: 'zh-CN',
   // 网站的标题
   title: 'mall-doc',
   // 网站的描述
-  description: 'go+vue实现电商系统',
+  description: 'go+vue+uni-app实现电商系统',
   // 主题配置
   theme: defaultTheme({
     // 导航栏配置
@@ -46,5 +47,5 @@ export default {
         },
       ],
     })
-  ]
+  ],
 }

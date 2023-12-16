@@ -247,7 +247,7 @@ type tableSchema struct {
 func autoMigrate(db *gorm.DB, schemas []tableSchema) error {
 	for _, schema := range schemas {
 		if err := db.
-			Set("gorm:table_options", fmt.Sprintf("COMMENT='%s'", schema.TableName)).
+			Set("gorm:table_options", fmt.Sprintf("CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT='%s'", schema.TableName)).
 			AutoMigrate(schema.StructPtr); err != nil {
 			return err
 		}

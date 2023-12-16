@@ -7,9 +7,21 @@ export default {
 // 文档搭建
 function getDocumentSidebar() {
   return [
-    // {
-    //   link: '/document/document.md',
-    // },
+    {
+      text: '搭建vuepress',
+      link: '/document/document.md',
+      children: [
+        { text: '设置代码拷贝', link: '/document/code_copy.md' },
+        { text: '头部导航栏', link: '/document/nav_bar.md' },
+        { text: '测边导航栏', link: '/document/side_bar.md' },
+      ],
+    },
+    {
+      text: '部署vuepress',
+      children: [
+        { text: '使用自己的域名', link: '/document/deployment/nginx.md' },
+      ],
+    },
   ]
 }
 
@@ -22,7 +34,7 @@ function getTableSidebar() {
       link: '/table/oms/oms.md',
       children: [
         { text: '商品分类', link: '/table/pms/pms_product_category.md' },
-        { text: '商品品牌表', link: '/table/pms/pms_brand.md' },
+        { text: '商品品牌', link: '/table/pms/pms_brand.md' },
       ],
     },
     {

@@ -1,8 +1,8 @@
 <template>
-  <el-drawer v-model="drawerVisible" :destroy-on-close="true" size="550px" :title="`${drawerProps.title}分类`">
+  <el-drawer v-model="drawerVisible" :destroy-on-close="true" size="560px" :title="`${drawerProps.title}分类`">
     <el-form
       ref="ruleFormRef"
-      label-width="130px"
+      label-width="140px"
       label-suffix=" :"
       :rules="rules"
       :disabled="drawerProps.isView"
