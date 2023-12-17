@@ -12,6 +12,7 @@ pnpm docs:build
 # 3、官方文档
 ```text
 https://v2.vuepress.vuejs.org/zh/
+https://vuepress.vuejs.org/zh/theme/default-theme-config.html
 ```
 
 

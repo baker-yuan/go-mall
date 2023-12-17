@@ -37,4 +37,7 @@ export default {
       cssPreprocessor: 'scss',
     })
   ],
+  head: [
+    ['link', { rel: 'stylesheet', href: '/styles/index.css' }],
+  ],
 }

@@ -9,16 +9,21 @@ export default {
 function getRecommendSidebar () {
   return [
     {
-      text: '商业版',
-      link: '/recommend/index.md',
-      children: [
-
-      ],
+      text: '项目介绍',
+      link: '/recommend/lilishop/index.md',
     },
     {
-      text: '学习类',
+      text: '页面效果',
+      link: '/recommend/lilishop/show.md'
+    },
+    {
+      text: '核心表设计',
+      link: '/recommend/lilishop/',
       children: [
-        { text: 'java实现&适合学习', link: '/recommend/macrozheng_mall.md' },
+        { text: '分类', link: '/recommend/lilishop/table/category.md' },
+        { text: '商品', link: '/recommend/lilishop/table/product.md' },
+        { text: '购物车', link: '/recommend/lilishop/table/cart.md' },
+        { text: '用户', link: '/recommend/lilishop/table/user.md' },
       ],
     },
   ]
