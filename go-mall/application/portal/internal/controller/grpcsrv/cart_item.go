@@ -10,8 +10,15 @@ import (
 
 // CartItemAdd 添加商品到购物车
 func (s PortalApiImpl) CartItemAdd(ctx context.Context, req *pb.CartItemAddReq) (*pb.CartItemAddRsp, error) {
-	//TODO implement me
-	panic("implement me")
+	res := &pb.CartItemAddRsp{}
+	memberID, exist := util.GetUserID(ctx)
+	if !exist {
+		return nil, retcode.NewError(retcode.NeedLogin)
+	}
+	if err := s.cartItemUseCase.CartItemAdd(ctx, memberID, req); err != nil {
+		return nil, err
+	}
+	return res, nil
 }
 
 // CartItemList 获取当前会员的购物车列表

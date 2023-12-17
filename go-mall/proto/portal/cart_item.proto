@@ -12,13 +12,20 @@ import "model/oms_cart_item.proto";
 
 // 添加商品到购物车
 message CartItemAddReq {
-
+  // 商品信息
+  uint64 product_id = 3 [(validate.rules).uint64.gte = 0]; // 商品id
+  // 商品属性
+  string product_attr = 10; // 商品销售属性，JSON 字符串
+  // 商品sku
+  uint64 product_sku_id = 11; // 商品sku id
+  string product_sku_code = 12; // 商品sku条码
+  // 价格数量
+  uint32 quantity = 14; // 购买数量
 }
 
 message CartItemAddRsp {
 
 }
-
 
 // 获取当前会员的购物车列表
 message CartItemListReq {

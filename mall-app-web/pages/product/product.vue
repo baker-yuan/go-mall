@@ -667,19 +667,13 @@
 				}
 				let productSkuStock = this.getSkuStock();
 				let cartItem = {
-					price: this.product.price,
 					productAttr: productSkuStock.spData,
-					productBrand: this.product.brandName,
-					productCategoryId: this.product.productCategoryId,
 					productId: this.product.id,
-					productName: this.product.name,
-					productPic: this.product.pic,
 					productSkuCode: productSkuStock.skuCode,
 					productSkuId: productSkuStock.id,
-					productSn: this.product.productSn,
-					productSubTitle: this.product.subTitle,
 					quantity: 1
 				};
+        // 添加购物车
 				addCartItem(cartItem).then(response => {
 					uni.showToast({
 						title: response.message,

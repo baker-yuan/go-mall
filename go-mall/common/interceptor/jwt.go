@@ -2,10 +2,12 @@ package interceptor
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"net/http"
 	"strings"
 
+	"github.com/baker-yuan/go-mall/common/pkg/jwt"
 	pkg_jwt "github.com/baker-yuan/go-mall/common/pkg/jwt"
 	"github.com/baker-yuan/go-mall/common/util"
 	"google.golang.org/grpc"
@@ -15,37 +17,71 @@ import (
 )
 
 // NewJWTAuthMiddleware 是一个用于验证 JWT 令牌的 HTTP 中间件
-func NewJWTAuthMiddleware(next http.Handler, jwtTokenUtil *pkg_jwt.JWT, whitelist []string, tokenHeader string, tokenHead string) http.Handler {
+func NewJWTAuthMiddleware(next http.Handler, jwtTokenUtil *pkg_jwt.JWT, blacklist []string, whitelist []string, tokenHeader string, tokenHead string) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		// 检查当前请求的路径是否在白名单中
-		for _, path := range whitelist {
-			if strings.HasPrefix(r.URL.Path, path) {
-				// 如果在白名单中，直接传递给下一个处理器
-				next.ServeHTTP(w, r)
+		// 尝试解析 JWT
+		_, ctx, parseErr := parseJWT(r, jwtTokenUtil, tokenHeader, tokenHead)
+		if len(blacklist) != 0 {
+			blackLogic(ctx, next, w, r, blacklist, parseErr)
+		} else {
+			whiteLogic(ctx, next, w, r, whitelist, parseErr)
+		}
+	})
+}
+
+func whiteLogic(ctx context.Context, next http.Handler, w http.ResponseWriter, r *http.Request, whitelist []string, parseErr error) {
+	// 检查白名单，白名单直接放行
+	for _, path := range whitelist {
+		if strings.HasPrefix(r.URL.Path, path) {
+			// 如果在白名单中，直接传递给下一个处理器
+			next.ServeHTTP(w, r)
+			return
+		}
+	}
+
+	// 如果请求不在白名单中，且JWT解析失败
+	if parseErr != nil {
+		http.Error(w, "invalid token", http.StatusUnauthorized)
+		return
+	}
+
+	// 如果JWT解析成功，且请求不在黑名单中，也不在白名单中，传递给下一个处理器
+	next.ServeHTTP(w, r.WithContext(ctx))
+}
+
+func blackLogic(ctx context.Context, next http.Handler, w http.ResponseWriter, r *http.Request, blacklist []string, parseErr error) {
+	// 检查黑名单，黑名单url必须限制登录
+	for _, path := range blacklist {
+		if strings.HasPrefix(r.URL.Path, path) {
+			if parseErr != nil {
+				// 如果在黑名单中且JWT解析失败，返回错误
+				http.Error(w, "invalid token", http.StatusUnauthorized)
 				return
 			}
-		}
-
-		// 执行 JWT 认证逻辑
-		authHeader := r.Header.Get(tokenHeader)
-		if authHeader == "" {
-			http.Error(w, "Authorization header is required", http.StatusUnauthorized)
+			// 如果在黑名单中且JWT解析成功，将上下文传递到下一个处理器
+			next.ServeHTTP(w, r.WithContext(ctx))
 			return
 		}
+	}
+	// 未命中黑名单，直接放行
+	next.ServeHTTP(w, r.WithContext(ctx))
+}
 
-		bearerToken := strings.TrimPrefix(authHeader, tokenHead)
+func parseJWT(r *http.Request, jwtTokenUtil *pkg_jwt.JWT, tokenHeader string, tokenHead string) (*jwt.CustomClaims, context.Context, error) {
+	authHeader := r.Header.Get(tokenHeader)
+	if authHeader == "" {
+		return nil, r.Context(), errors.New("authorization header is required")
+	}
 
-		token, err := jwtTokenUtil.ParseToken(bearerToken)
-		if err != nil {
-			http.Error(w, "Invalid token", http.StatusUnauthorized)
-			return
-		}
+	bearerToken := strings.TrimPrefix(authHeader, tokenHead)
+	token, err := jwtTokenUtil.ParseToken(bearerToken)
+	if err != nil {
+		return nil, r.Context(), err
+	}
 
-		ctx := util.SetUserID(r.Context(), token.UserInfo.UserID)
-
-		// 将上下文传递到下一个处理器
-		next.ServeHTTP(w, r.WithContext(ctx))
-	})
+	// 用户信息放入上下文
+	ctx := util.SetUserID(r.Context(), token.UserInfo.UserID)
+	return token, ctx, nil
 }
 
 // CustomAnnotator 将 HTTP 上下文中的用户名添加到 gRPC 上下文的元数据中

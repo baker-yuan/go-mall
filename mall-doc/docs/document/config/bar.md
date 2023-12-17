@@ -1,5 +1,9 @@
 
 ```text
+https://v2.vuepress.vuejs.org/zh/reference/default-theme/config.html#navbar
+```
+
+```text
 // 导航栏出不来尝试加下这个
 "vuepress-plugin-demoblock-plus": "^2.0.4"
 ```

@@ -131,6 +131,8 @@ type (
 		Update(ctx context.Context, member *entity.Member) error
 		// GetByID 根据主键ID查询会员表
 		GetByID(ctx context.Context, id uint64) (*entity.Member, error)
+		// GetByIDs 根据主键ID集合查询会员表
+		GetByIDs(ctx context.Context, ids []uint64) (entity.Members, error)
 		// GetByDBOption 根据动态条件查询会员表
 		GetByDBOption(ctx context.Context, pageNum uint32, pageSize uint32, opts ...db.DBOption) ([]*entity.Member, uint32, error)
 
@@ -145,8 +147,8 @@ type (
 type (
 	// ICartItemUseCase 业务逻辑
 	ICartItemUseCase interface {
-		// CartItemAdd 添加商品到购物车
-		CartItemAdd(context.Context, *pb.CartItemAddReq) (*pb.CartItemAddRsp, error)
+		// CartItemAdd 查询购物车中是否包含该商品，有增加数量，无添加到购物车
+		CartItemAdd(ctx context.Context, memberID uint64, req *pb.CartItemAddReq) error
 		// CartItemList 获取当前会员的购物车列表
 		CartItemList(ctx context.Context, memberID uint64) ([]*pb.CartItem, error)
 		// CartItemListPromotion 获取当前会员的购物车列表,包括促销信息
@@ -176,7 +178,10 @@ type (
 		// GetByDBOption 根据动态条件查询购物车表
 		GetByDBOption(ctx context.Context, pageNum uint32, pageSize uint32, opts ...db.DBOption) ([]*entity.CartItem, uint32, error)
 		// GetEffectCartItemByMemberID 根据会员id查询购物车
-		GetEffectCartItemByMemberID(ctx context.Context, memberID uint64) ([]*entity.CartItem, error)
+		GetEffectCartItemByMemberID(ctx context.Context, memberID uint64) (entity.CartItems, error)
+
+		// GetCartItem 根据会员id，商品id和规格获取购物车中商品
+		GetCartItem(ctx context.Context, memberID uint64, productId uint64, productSkuID uint64) (*entity.CartItem, error)
 	}
 )
 

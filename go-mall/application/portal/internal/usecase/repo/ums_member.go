@@ -76,6 +76,16 @@ func (r MemberRepo) GetByID(ctx context.Context, id uint64) (*entity.Member, err
 	return r.GenericDao.GetByID(ctx, id)
 }
 
+// GetByIDs 根据主键ID集合查询会员表
+func (r MemberRepo) GetByIDs(ctx context.Context, ids []uint64) (entity.Members, error) {
+	res := make([]*entity.Member, 0)
+	if err := r.GenericDao.DB.WithContext(ctx).
+		Where("id in ?", ids).Find(&res).Error; err != nil {
+		return nil, err
+	}
+	return res, nil
+}
+
 // GetByDBOption 根据动态条件查询会员表
 func (r MemberRepo) GetByDBOption(ctx context.Context, pageNum uint32, pageSize uint32, opts ...db.DBOption) ([]*entity.Member, uint32, error) {
 	var (

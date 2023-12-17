@@ -30,5 +30,7 @@ jwt:
   sign_key: 'baker'
   token_header: 'Authorization'
   token_head: 'Bearer '
-  whitelist:
-    - '/sso/login'
+  blacklist:
+    - '/cart/add'
+    - '/cart/list'
+    - '/sso/info'

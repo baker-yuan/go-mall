@@ -19,6 +19,7 @@ func ProductEntityToProductListItem(product *entity.Product) *pb.SearchProductRs
 
 func ProductEntityToDetail(product *entity.Product) *pb.ProductDetailRsp_Product {
 	return &pb.ProductDetailRsp_Product{
+		Id:            product.ID,
 		AlbumPics:     util.GetFullUrls(product.AlbumPics),
 		Pic:           util.GetFullUrl(product.Pic),
 		Name:          product.Name,

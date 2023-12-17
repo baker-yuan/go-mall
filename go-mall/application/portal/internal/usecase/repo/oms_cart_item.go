@@ -99,7 +99,7 @@ func (r CartItemRepo) GetByDBOption(ctx context.Context, pageNum uint32, pageSiz
 }
 
 // GetEffectCartItemByMemberID 根据会员id查询购物车
-func (r CartItemRepo) GetEffectCartItemByMemberID(ctx context.Context, memberID uint64) ([]*entity.CartItem, error) {
+func (r CartItemRepo) GetEffectCartItemByMemberID(ctx context.Context, memberID uint64) (entity.CartItems, error) {
 	res := make([]*entity.CartItem, 0)
 	if err := r.GenericDao.DB.WithContext(ctx).
 		Where("delete_status = 0").
@@ -108,4 +108,22 @@ func (r CartItemRepo) GetEffectCartItemByMemberID(ctx context.Context, memberID 
 		return nil, err
 	}
 	return res, nil
+}
+
+// GetCartItem 根据会员id，商品id和规格获取购物车中商品
+func (r CartItemRepo) GetCartItem(ctx context.Context, memberID uint64, productId uint64, productSkuID uint64) (*entity.CartItem, error) {
+	res := entity.CartItem{}
+	tx := r.GenericDao.DB.WithContext(ctx)
+	tx = tx.Where("member_id = ?", memberID)
+	tx = tx.Where("product_id = ?", productId)
+	if productSkuID != 0 {
+		tx = tx.Where("product_sku_id = ?", productSkuID)
+	}
+	if err := tx.Find(&res).Error; err != nil {
+		return nil, err
+	}
+	if res.ID == 0 {
+		return nil, nil
+	}
+	return &res, nil
 }

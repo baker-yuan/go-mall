@@ -34,3 +34,14 @@ type CartItem struct {
 func (c CartItem) TableName() string {
 	return "oms_cart_item"
 }
+
+type CartItems []*CartItem
+
+// GetMemberIDs 获取会员ID集合
+func (c CartItems) GetMemberIDs() []uint64 {
+	res := make([]uint64, 0)
+	for _, item := range c {
+		res = append(res, item.MemberID)
+	}
+	return res
+}

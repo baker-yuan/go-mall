@@ -84,7 +84,7 @@ func Run(cfg *config.Config) {
 
 	memberUseCase := usecase.NewMember(cfg, passwordEncoder, jwtTokenUtil, memberRepo)
 
-	cartItemUseCase := usecase.NewCartItem(cartItemRepo)
+	cartItemUseCase := usecase.NewCartItem(cartItemRepo, memberRepo, productRepo, brandRepo)
 
 	// grpc服务
 	grpcSrvImpl := grpcsrv.New(
@@ -196,7 +196,7 @@ func configGrpc(customLog *logger.Logger, grpcSrvImpl grpcsrv.PortalApi, cfg *co
 	// 统一返回值处理
 	responseWrapper := interceptor.WrapResponseMiddleware(mux)
 	// jwt拦截
-	jwtWrapper := interceptor.NewJWTAuthMiddleware(responseWrapper, jwtTokenUtil, cfg.Jwt.Whitelist, cfg.Jwt.TokenHeader, cfg.Jwt.TokenHead)
+	jwtWrapper := interceptor.NewJWTAuthMiddleware(responseWrapper, jwtTokenUtil, cfg.Jwt.Blacklist, cfg.Jwt.Whitelist, cfg.Jwt.TokenHeader, cfg.Jwt.TokenHead)
 	// 请求响应日志记录
 	logWrapper := interceptor.NewLoggingMiddleware(jwtWrapper)
 	// cors处理器

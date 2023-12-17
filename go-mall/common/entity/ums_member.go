@@ -34,3 +34,14 @@ type Member struct {
 func (m Member) TableName() string {
 	return "ums_member"
 }
+
+type Members []*Member
+
+// GetMap 获取集合 key=id value=*Member
+func (m Members) GetMap() map[uint64]*Member {
+	res := make(map[uint64]*Member)
+	for _, item := range m {
+		res[item.ID] = item
+	}
+	return res
+}

@@ -55,6 +55,7 @@ type (
 		TokenHeader string   `yaml:"token_header"` // jwt请求头
 		TokenHead   string   `yaml:"token_head"`   //
 		Whitelist   []string `yaml:"whitelist"`    // 白名单
+		Blacklist   []string `yaml:"blacklist"`    // 黑名单
 	}
 )
 
