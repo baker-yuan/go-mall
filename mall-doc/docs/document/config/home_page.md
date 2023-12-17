@@ -1,3 +1,8 @@
+# 1、位置
+docs/README.md
+
+# 2、添加内容
+```text
 ---
 home: true
 heroImage: /img/log3.png
@@ -10,3 +15,7 @@ features:
   - title: 使用vue开发管理端
     details: Vue.js 是一个轻量级且灵活的前端 JavaScript 框架，专注于构建用户界面，以数据驱动和组件化的思想让开发者能够轻松创建可维护和可测试的单页应用程序。
 ---
+```
+
+# 3、效果
+![02-首页.jpg](./img/02-首页.jpg)

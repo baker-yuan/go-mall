@@ -1,27 +1,23 @@
-# 一、环境
+# 1、环境
 ```text
 nvm use v18.16.1
 ```
+
+# 2、启动
 ```text
 pnpm docs:dev
 pnpm docs:build
 ```
 
-# 二、文档
+# 3、官方文档
 ```text
 https://v2.vuepress.vuejs.org/zh/
 ```
 
-# 三、参考案例
-```text
-https://github.com/woow-wu7/8-divine-plus
-https://github.com/LiuyangAce/tt-ui
 
-https://github.com/it235/it235-vuepress
 
-```
 
-# 四、标准目录结构
+# 4、标准目录结构
 VuePress 2 是一个基于 Vue 3 的静态网站生成器，它的标准目录结构如下所示：
 ```
 .
@@ -58,3 +54,13 @@ VuePress 2 是一个基于 Vue 3 的静态网站生成器，它的标准目录�
 - `yarn.lock` 或 `package-lock.json` 文件用于锁定依赖的版本，确保其他人在安装依赖时能够得到相同的版本。
 
 请注意，这个结构是可扩展的，你可以根据项目的需要添加更多的目录和文件。例如，你可能会有一个 `blog` 目录来存放博客文章，或者一个 `api` 目录来存放 API 文档。
+
+
+# 4、参考案例
+```text
+https://github.com/woow-wu7/8-divine-plus
+https://github.com/LiuyangAce/tt-ui
+
+https://github.com/it235/it235-vuepress
+https://www.bilibili.com/video/BV17t41177cr
+```

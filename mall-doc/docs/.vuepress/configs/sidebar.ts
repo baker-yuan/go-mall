@@ -2,6 +2,26 @@
 export default {
   '/document/': getDocumentSidebar(),
   '/table/': getTableSidebar(),
+  '/recommend/': getRecommendSidebar(),
+}
+
+// 推荐
+function getRecommendSidebar () {
+  return [
+    {
+      text: '商业版',
+      link: '/recommend/index.md',
+      children: [
+
+      ],
+    },
+    {
+      text: '学习类',
+      children: [
+        { text: 'java实现&适合学习', link: '/recommend/macrozheng_mall.md' },
+      ],
+    },
+  ]
 }
 
 // 文档搭建
@@ -9,17 +29,19 @@ function getDocumentSidebar() {
   return [
     {
       text: '搭建vuepress',
-      link: '/document/document.md',
+      link: '/document/index.md',
       children: [
-        { text: '设置代码拷贝', link: '/document/code_copy.md' },
-        { text: '头部导航栏', link: '/document/nav_bar.md' },
-        { text: '测边导航栏', link: '/document/side_bar.md' },
+        { text: '搭建文档', link: '/document/init/init.md' },
+        { text: '导航栏', link: '/document/config/bar.md' },
+        { text: '首页', link: '/document/config/home_page.md' },
+        { text: '设置代码拷贝', link: '/document/config/code_copy.md' },
       ],
     },
     {
       text: '部署vuepress',
       children: [
-        { text: '使用自己的域名', link: '/document/deployment/nginx.md' },
+        { text: '域名+nginx', link: '/document/deployment/nginx.md' },
+        { text: 'github.io', link: '/document/deployment/github.md' },
       ],
     },
   ]
@@ -35,6 +57,8 @@ function getTableSidebar() {
       children: [
         { text: '商品分类', link: '/table/pms/pms_product_category.md' },
         { text: '商品品牌', link: '/table/pms/pms_brand.md' },
+        { text: '商品类型', link: '/table/pms/pms_attribute.md' },
+        { text: '商品', link: '/table/pms/pms_product.md' },
       ],
     },
     {
