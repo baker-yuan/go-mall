@@ -1,11 +1,15 @@
 # 1、lilishop
 ## 1.1、位置
 > https://github.com/lilishop/lilishop
+> 
 > https://gitee.com/beijing_hongye_huicheng
 
 
 > https://github.com/lilishop/lilishop-uniapp
+> 
 > https://gitee.com/beijing_hongye_huicheng/docker/tree/v4.3/init/mysql
+> 
+> https://gitee.com/beijing_hongye_huicheng/docker/raw/v4.3/init/mysql/lilishop.sql
 
 ## 1.2、商城介绍
 官网：https://pickmall.cn
