@@ -140,6 +140,8 @@ type (
 		GetByUsername(ctx context.Context, username string) (*entity.Member, error)
 		// GetByMemberID 根据用户id查询会员表
 		GetByMemberID(ctx context.Context, memberID uint64) (*entity.Member, error)
+		// CartItemUpdateQuantity 修改购物车中指定商品的数量
+		CartItemUpdateQuantity(ctx context.Context, memberID uint64, id uint64, quantity uint32) error
 	}
 )
 
@@ -152,17 +154,17 @@ type (
 		// CartItemList 获取当前会员的购物车列表
 		CartItemList(ctx context.Context, memberID uint64) ([]*pb.CartItem, error)
 		// CartItemListPromotion 获取当前会员的购物车列表,包括促销信息
-		CartItemListPromotion(context.Context, *pb.CartItemListPromotionReq) (*pb.CartItemListPromotionRsp, error)
+		CartItemListPromotion(ctx context.Context, memberID uint64, req *pb.CartItemListPromotionReq) (*pb.CartItemListPromotionRsp, error)
 		// CartItemUpdateQuantity 修改购物车中指定商品的数量
-		CartItemUpdateQuantity(context.Context, *pb.CartItemUpdateQuantityReq) (*pb.CartItemUpdateQuantityRsp, error)
+		CartItemUpdateQuantity(ctx context.Context, memberID uint64, req *pb.CartItemUpdateQuantityReq) error
 		// CartItemGetCartProduct 获取购物车中指定商品的规格,用于重选规格
-		CartItemGetCartProduct(context.Context, *pb.CartItemGetCartProductReq) (*pb.CartItemGetCartProductRsp, error)
+		CartItemGetCartProduct(ctx context.Context, memberID uint64, req *pb.CartItemGetCartProductReq) (*pb.CartItemGetCartProductRsp, error)
 		// CartItemUpdateAttr 修改购物车中商品的规格
-		CartItemUpdateAttr(context.Context, *pb.CartItemUpdateAttrReq) (*pb.CartItemUpdateAttrRsp, error)
+		CartItemUpdateAttr(ctx context.Context, memberID uint64, req *pb.CartItemUpdateAttrReq) (*pb.CartItemUpdateAttrRsp, error)
 		// CartItemDelete 删除购物车中的指定商品
-		CartItemDelete(context.Context, *pb.CartItemDeleteReq) (*pb.CartItemDeleteRsp, error)
+		CartItemDelete(ctx context.Context, memberID uint64, req *pb.CartItemDeleteReq) error
 		// CartItemClear 清空当前会员的购物车
-		CartItemClear(context.Context, *pb.CartItemClearReq) (*pb.CartItemClearRsp, error)
+		CartItemClear(ctx context.Context, memberID uint64) error
 	}
 
 	// ICartItemRepo 数据存储操作
@@ -182,6 +184,10 @@ type (
 
 		// GetCartItem 根据会员id，商品id和规格获取购物车中商品
 		GetCartItem(ctx context.Context, memberID uint64, productId uint64, productSkuID uint64) (*entity.CartItem, error)
+		// CartItemClear 清空当前会员的购物车
+		CartItemClear(ctx context.Context, memberID uint64) error
+		// CartItemDelete 批量删除购物车中的商品
+		CartItemDelete(ctx context.Context, memberID uint64, ids []uint64) error
 	}
 )
 

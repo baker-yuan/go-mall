@@ -43,6 +43,11 @@ func (c CartItemUseCase) CartItemAdd(ctx context.Context, memberID uint64, req *
 	if err != nil {
 		return err
 	}
+	// 获取用户信息
+	//member, err := c.memberRepo.GetByID(ctx, memberID)
+	//if err != nil {
+	//	return err
+	//}
 
 	cartItem.ProductName = product.Name
 	cartItem.ProductPic = product.Pic
@@ -51,6 +56,7 @@ func (c CartItemUseCase) CartItemAdd(ctx context.Context, memberID uint64, req *
 	cartItem.ProductCategoryID = product.ProductCategoryID
 	cartItem.ProductBrand = brand.Name
 	cartItem.Price = product.Price
+	//cartItem.MemberNickname = member.Nickname
 
 	// 查询db是否存在
 	existCartItem, err := c.cartItemRepo.GetCartItem(ctx, memberID, req.GetProductId(), req.GetProductSkuId())
@@ -91,37 +97,34 @@ func (c CartItemUseCase) CartItemList(ctx context.Context, memberID uint64) ([]*
 }
 
 // CartItemListPromotion 获取当前会员的购物车列表,包括促销信息
-func (c CartItemUseCase) CartItemListPromotion(ctx context.Context, req *pb.CartItemListPromotionReq) (*pb.CartItemListPromotionRsp, error) {
+func (c CartItemUseCase) CartItemListPromotion(ctx context.Context, memberID uint64, req *pb.CartItemListPromotionReq) (*pb.CartItemListPromotionRsp, error) {
 	//TODO implement me
 	panic("implement me")
 }
 
 // CartItemUpdateQuantity 修改购物车中指定商品的数量
-func (c CartItemUseCase) CartItemUpdateQuantity(ctx context.Context, req *pb.CartItemUpdateQuantityReq) (*pb.CartItemUpdateQuantityRsp, error) {
-	//TODO implement me
-	panic("implement me")
+func (c CartItemUseCase) CartItemUpdateQuantity(ctx context.Context, memberID uint64, req *pb.CartItemUpdateQuantityReq) error {
+	return c.memberRepo.CartItemUpdateQuantity(ctx, memberID, req.GetId(), req.GetQuantity())
 }
 
-// CartItemGetCartProduct 获取购物车中指定商品的规格,用于重选规格
-func (c CartItemUseCase) CartItemGetCartProduct(ctx context.Context, req *pb.CartItemGetCartProductReq) (*pb.CartItemGetCartProductRsp, error) {
+// CartItemGetCartProduct 获取购物车中指定商品的规格，用于重选规格
+func (c CartItemUseCase) CartItemGetCartProduct(ctx context.Context, memberID uint64, req *pb.CartItemGetCartProductReq) (*pb.CartItemGetCartProductRsp, error) {
 	//TODO implement me
 	panic("implement me")
 }
 
 // CartItemUpdateAttr 修改购物车中商品的规格
-func (c CartItemUseCase) CartItemUpdateAttr(ctx context.Context, req *pb.CartItemUpdateAttrReq) (*pb.CartItemUpdateAttrRsp, error) {
+func (c CartItemUseCase) CartItemUpdateAttr(ctx context.Context, memberID uint64, req *pb.CartItemUpdateAttrReq) (*pb.CartItemUpdateAttrRsp, error) {
 	//TODO implement me
 	panic("implement me")
 }
 
 // CartItemDelete 删除购物车中的指定商品
-func (c CartItemUseCase) CartItemDelete(ctx context.Context, req *pb.CartItemDeleteReq) (*pb.CartItemDeleteRsp, error) {
-	//TODO implement me
-	panic("implement me")
+func (c CartItemUseCase) CartItemDelete(ctx context.Context, memberID uint64, req *pb.CartItemDeleteReq) error {
+	return c.cartItemRepo.CartItemDelete(ctx, memberID, req.GetIds())
 }
 
 // CartItemClear 清空当前会员的购物车
-func (c CartItemUseCase) CartItemClear(ctx context.Context, req *pb.CartItemClearReq) (*pb.CartItemClearRsp, error) {
-	//TODO implement me
-	panic("implement me")
+func (c CartItemUseCase) CartItemClear(ctx context.Context, memberID uint64) error {
+	return c.cartItemRepo.CartItemClear(ctx, memberID)
 }

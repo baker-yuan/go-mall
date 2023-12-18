@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/baker-yuan/go-mall/common/retcode"
 	"google.golang.org/grpc/metadata"
 )
 
@@ -24,12 +25,14 @@ func SetUserID(ctx context.Context, userID uint64) context.Context {
 }
 
 // GetUserID 从上下文中获取用户ID
-func GetUserID(ctx context.Context) (uint64, bool) {
-	userID, ok := getFromHttpContext(ctx, UserIDKey)
-	if ok {
-		return userID, ok
+func GetUserID(ctx context.Context) (uint64, error) {
+	if userID, ok := getFromHttpContext(ctx, UserIDKey); ok {
+		return userID, nil
 	}
-	return getFromGrpcContext(ctx, UserIDKey)
+	if userID, ok := getFromGrpcContext(ctx, UserIDKey); ok {
+		return userID, nil
+	}
+	return 0, retcode.NewError(retcode.NeedLogin)
 }
 
 func getFromHttpContext(ctx context.Context, key contextKey) (uint64, bool) {

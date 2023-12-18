@@ -87,8 +87,8 @@ func parseJWT(r *http.Request, jwtTokenUtil *pkg_jwt.JWT, tokenHeader string, to
 // CustomAnnotator 将 HTTP 上下文中的用户名添加到 gRPC 上下文的元数据中
 func CustomAnnotator(ctx context.Context, req *http.Request) metadata.MD {
 	// 从HTTP context中获取用户名
-	userID, exist := util.GetUserID(ctx)
-	if !exist {
+	userID, err := util.GetUserID(ctx)
+	if err != nil {
 		return nil
 	}
 

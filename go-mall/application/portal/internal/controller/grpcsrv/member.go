@@ -3,7 +3,6 @@ package grpcsrv
 import (
 	"context"
 
-	"github.com/baker-yuan/go-mall/common/retcode"
 	"github.com/baker-yuan/go-mall/common/util"
 	pb "github.com/baker-yuan/go-mall/proto/mall"
 )
@@ -21,9 +20,9 @@ func (s PortalApiImpl) MemberLogin(ctx context.Context, req *pb.MemberLoginReq) 
 
 // MemberInfo 获取会员信息
 func (s PortalApiImpl) MemberInfo(ctx context.Context, req *pb.MemberInfoReq) (*pb.MemberInfoRsp, error) {
-	memberID, exist := util.GetUserID(ctx)
-	if !exist {
-		return nil, retcode.NewError(retcode.NeedLogin)
+	memberID, err := util.GetUserID(ctx)
+	if err != nil {
+		return nil, err
 	}
 	return s.memberUseCase.MemberInfo(ctx, memberID)
 }

@@ -127,3 +127,30 @@ func (r CartItemRepo) GetCartItem(ctx context.Context, memberID uint64, productI
 	}
 	return &res, nil
 }
+
+// CartItemClear 清空购物车
+func (r CartItemRepo) CartItemClear(ctx context.Context, memberID uint64) error {
+	return r.GenericDao.DB.WithContext(ctx).
+		Model(&entity.CartItem{}).
+		Where("member_id = ?", memberID).
+		Update("delete_status", 1).Error
+}
+
+// CartItemDelete 批量删除购物车中的商品
+func (r CartItemRepo) CartItemDelete(ctx context.Context, memberID uint64, ids []uint64) error {
+	return r.GenericDao.DB.WithContext(ctx).
+		Model(&entity.CartItem{}).
+		Where("member_id = ?", memberID).
+		Where("id in ?", ids).
+		Update("delete_status", 1).Error
+}
+
+// CartItemUpdateQuantity 修改购物车中指定商品的数量
+func (r CartItemRepo) CartItemUpdateQuantity(ctx context.Context, memberID uint64, id uint64, quantity uint32) error {
+	return r.GenericDao.DB.WithContext(ctx).
+		Model(&entity.CartItem{}).
+		Where("member_id = ?", memberID).
+		Where("id = ?", id).
+		Where("delete_status = ?", 0).
+		Update("quantity", quantity).Error
+}

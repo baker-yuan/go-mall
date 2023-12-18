@@ -51,7 +51,11 @@ message CartItemListPromotionRsp {
 
 // 修改购物车中指定商品的数量
 message CartItemUpdateQuantityReq {
+  // 主键
+  uint64 id = 1;
 
+  // 价格数量
+  uint32 quantity = 14; // 购买数量
 }
 
 message CartItemUpdateQuantityRsp {
