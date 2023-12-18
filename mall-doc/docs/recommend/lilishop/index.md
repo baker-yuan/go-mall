@@ -1,4 +1,6 @@
 # 1、lilishop
+
+
 ## 1.1、位置
 > https://github.com/lilishop/lilishop
 > 
@@ -22,3 +24,6 @@ Lilishop商城系统支持商家入驻，后端基于SpringBoot 研发，前端�
 商业授权模式为永久授权，支持永久升级。
 商业案例由于涉及部分多层二开关系，如需了解可以咨询销售。
 
+
+## 1.4、文档
+https://docs.pickmall.cn/项目介绍.html
