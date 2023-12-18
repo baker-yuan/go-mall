@@ -58,9 +58,11 @@ CREATE TABLE `pms_product_attribute_value`
 ## 1.4、名称解释
 ### 1.4.1、什么是属性
 ![04-属性_规格.jpg](./images/04-属性_规格.jpg)
+![07-属性-管理端.jpg](./images/07-属性-管理端.jpg)
 
 ### 1.4.2、什么是参数
 ![05-参数.jpg](./images/05-参数.jpg)
+![06-参数-管理端.jpg](./images/06-参数-管理端.jpg)
 
 ## 1.5、三张表的关系
 ![03-商品类型.jpg](./images/03-商品类型.jpg)
