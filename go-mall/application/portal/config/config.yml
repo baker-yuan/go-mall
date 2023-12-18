@@ -31,6 +31,6 @@ jwt:
   token_header: 'Authorization'
   token_head: 'Bearer '
   blacklist:
-    - '/cart/add'
-    - '/cart/list'
+    - '/cart/'
     - '/sso/info'
+

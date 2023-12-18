@@ -1,4 +1,3 @@
-
 # 1、表设计
 ## 1.1、商品属性分类表
 ```sql
@@ -55,3 +54,16 @@ CREATE TABLE `pms_product_attribute_value`
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci COMMENT ='商品属性值表';
 ```
+
+## 1.4、名称解释
+### 1.4.1、什么是属性
+![04-属性_规格.jpg](./images/04-属性_规格.jpg)
+
+### 1.4.2、什么是参数
+![05-参数.jpg](./images/05-参数.jpg)
+
+## 1.5、三张表的关系
+![03-商品类型.jpg](./images/03-商品类型.jpg)
+
+
+

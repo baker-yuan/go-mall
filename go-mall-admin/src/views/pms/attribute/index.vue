@@ -1,7 +1,10 @@
 <template>
   <div class="main-box">
     <div class="card filter">
-      <el-input placeholder="输入关键字进行过滤" clearable />
+      <el-button type="primary" size="small" :icon="CirclePlus" @click="openDrawer('新增')" style="margin-bottom: 10px">
+        新增
+      </el-button>
+      <el-input size="small" placeholder="输入关键字进行过滤" clearable />
       <el-scrollbar :style="{ height: `calc(100% - 95px)` }">
         <el-tree
           ref="treeRef"

@@ -15,19 +15,19 @@ export function fetchCartList() {
 	})
 }
 
-export function deletCartItem(params) {
+export function deletCartItem(data) {
 	return request({
 		method: 'POST',
 		url: '/cart/delete',
-		params:params
+    data:data
 	})
 }
 
-export function updateQuantity(params) {
+export function updateQuantity(data) {
 	return request({
-		method: 'GET',
+		method: 'POST',
 		url: '/cart/update/quantity',
-		params:params
+    data:data
 	})
 }
 

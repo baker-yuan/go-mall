@@ -44,10 +44,10 @@ func (c CartItemUseCase) CartItemAdd(ctx context.Context, memberID uint64, req *
 		return err
 	}
 	// 获取用户信息
-	//member, err := c.memberRepo.GetByID(ctx, memberID)
-	//if err != nil {
-	//	return err
-	//}
+	member, err := c.memberRepo.GetByID(ctx, memberID)
+	if err != nil {
+		return err
+	}
 
 	cartItem.ProductName = product.Name
 	cartItem.ProductPic = product.Pic
@@ -56,7 +56,7 @@ func (c CartItemUseCase) CartItemAdd(ctx context.Context, memberID uint64, req *
 	cartItem.ProductCategoryID = product.ProductCategoryID
 	cartItem.ProductBrand = brand.Name
 	cartItem.Price = product.Price
-	//cartItem.MemberNickname = member.Nickname
+	cartItem.MemberNickname = member.Nickname
 
 	// 查询db是否存在
 	existCartItem, err := c.cartItemRepo.GetCartItem(ctx, memberID, req.GetProductId(), req.GetProductSkuId())
@@ -104,7 +104,7 @@ func (c CartItemUseCase) CartItemListPromotion(ctx context.Context, memberID uin
 
 // CartItemUpdateQuantity 修改购物车中指定商品的数量
 func (c CartItemUseCase) CartItemUpdateQuantity(ctx context.Context, memberID uint64, req *pb.CartItemUpdateQuantityReq) error {
-	return c.memberRepo.CartItemUpdateQuantity(ctx, memberID, req.GetId(), req.GetQuantity())
+	return c.cartItemRepo.CartItemUpdateQuantity(ctx, memberID, req.GetId(), req.GetQuantity())
 }
 
 // CartItemGetCartProduct 获取购物车中指定商品的规格，用于重选规格

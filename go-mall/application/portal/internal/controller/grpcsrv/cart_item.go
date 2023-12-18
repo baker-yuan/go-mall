@@ -47,11 +47,18 @@ func (s PortalApiImpl) CartItemListPromotion(ctx context.Context, req *pb.CartIt
 
 // CartItemUpdateQuantity 修改购物车中指定商品的数量
 func (s PortalApiImpl) CartItemUpdateQuantity(ctx context.Context, req *pb.CartItemUpdateQuantityReq) (*pb.CartItemUpdateQuantityRsp, error) {
-	//TODO implement me
-	panic("implement me")
+	res := &pb.CartItemUpdateQuantityRsp{}
+	memberID, err := util.GetUserID(ctx)
+	if err != nil {
+		return nil, err
+	}
+	if err := s.cartItemUseCase.CartItemUpdateQuantity(ctx, memberID, req); err != nil {
+		return nil, err
+	}
+	return res, nil
 }
 
-// CartItemGetCartProduct 获取购物车中指定商品的规格,用于重选规格
+// CartItemGetCartProduct 获取购物车中指定商品的规格，用于重选规格
 func (s PortalApiImpl) CartItemGetCartProduct(ctx context.Context, req *pb.CartItemGetCartProductReq) (*pb.CartItemGetCartProductRsp, error) {
 	//TODO implement me
 	panic("implement me")

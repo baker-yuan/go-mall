@@ -806,7 +806,7 @@ const handleSyncProductSkuStock = () => {
   });
 };
 
-const getParamInputList = inputList => {
+const getParamInputList = (inputList: string) => {
   return inputList.split(",");
 };
 

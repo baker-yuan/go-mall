@@ -121,7 +121,7 @@
 			onImageLoad(key, index) {
 				this.$set(this[key][index], 'loaded', 'loaded');
 			},
-			//监听image加载失败
+			// 监听image加载失败
 			onImageError(key, index) {
 				this[key][index].productPic = '/static/errorImage.jpg';
 			},
@@ -130,7 +130,7 @@
 					url: '/pages/public/login'
 				})
 			},
-			//选中状态处理
+			// 选中状态处理
 			check(type, index) {
 				if (type === 'item') {
 					this.cartList[index].checked = !this.cartList[index].checked;
@@ -144,7 +144,7 @@
 				}
 				this.calcTotal(type);
 			},
-			//数量
+			// 数量
 			numberChange(data) {
 				let cartItem = this.cartList[data.index];
 				updateQuantity({id:cartItem.id,quantity:data.number}).then(response=>{
@@ -152,18 +152,18 @@
 					this.calcTotal();
 				});
 			},
-			//删除
+			// 删除
 			handleDeleteCartItem(index) {
 				let list = this.cartList;
 				let row = list[index];
 				let id = row.id;
-				deletCartItem({ids:id}).then(response=>{
+				deletCartItem({ids:[id]}).then(response=>{
 					this.cartList.splice(index, 1);
 					this.calcTotal();
 					uni.hideLoading();
 				});
 			},
-			//清空
+			// 清空
 			clearCart() {
 				clearCartList().then(response=>{
 					uni.showModal({

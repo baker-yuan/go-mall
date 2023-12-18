@@ -140,8 +140,6 @@ type (
 		GetByUsername(ctx context.Context, username string) (*entity.Member, error)
 		// GetByMemberID 根据用户id查询会员表
 		GetByMemberID(ctx context.Context, memberID uint64) (*entity.Member, error)
-		// CartItemUpdateQuantity 修改购物车中指定商品的数量
-		CartItemUpdateQuantity(ctx context.Context, memberID uint64, id uint64, quantity uint32) error
 	}
 )
 
@@ -188,6 +186,8 @@ type (
 		CartItemClear(ctx context.Context, memberID uint64) error
 		// CartItemDelete 批量删除购物车中的商品
 		CartItemDelete(ctx context.Context, memberID uint64, ids []uint64) error
+		//CartItemUpdateQuantity 修改购物车中指定商品的数量
+		CartItemUpdateQuantity(ctx context.Context, memberID uint64, id uint64, quantity uint32) error
 	}
 )
 

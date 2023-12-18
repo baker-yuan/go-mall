@@ -667,10 +667,10 @@
 				}
 				let productSkuStock = this.getSkuStock();
 				let cartItem = {
-					productAttr: productSkuStock.spData,
 					productId: this.product.id,
-					productSkuCode: productSkuStock.skuCode,
 					productSkuId: productSkuStock.id,
+          productAttr: productSkuStock.spData,
+          productSkuCode: productSkuStock.skuCode,
 					quantity: 1
 				};
         // 添加购物车

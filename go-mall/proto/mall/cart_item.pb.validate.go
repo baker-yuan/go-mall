@@ -718,6 +718,10 @@ func (m *CartItemUpdateQuantityReq) validate(all bool) error {
 
 	var errors []error
 
+	// no validation rules for Id
+
+	// no validation rules for Quantity
+
 	if len(errors) > 0 {
 		return CartItemUpdateQuantityReqMultiError(errors)
 	}
