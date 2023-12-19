@@ -232,12 +232,13 @@
           <!-- sku -->
           <el-form-item label="商品规格">
             <el-row direction="column">
+              <!-- 商品规格 -->
               <el-col :span="24">
                 <el-card shadow="never" class="cardBg">
                   <div v-for="(productAttr, idx) in selectProductAttr" :key="idx">
                     {{ productAttr.name }}：
                     <el-checkbox-group v-if="productAttr.handAddStatus === 0" v-model="selectProductAttr[idx].values">
-                      <!-- 非手动新增 -->
+                      <!-- 非手动新增-只能勾选 -->
                       <el-checkbox
                         v-for="item in getInputListArr(productAttr.inputList)"
                         :label="item"
@@ -246,7 +247,7 @@
                       ></el-checkbox>
                     </el-checkbox-group>
                     <div v-else>
-                      <!-- 手动新增 -->
+                      <!-- 手动新增-添加删除 -->
                       <el-checkbox-group v-model="selectProductAttr[idx].values">
                         <div
                           v-for="(item, index) in selectProductAttr[idx].options"
@@ -268,6 +269,7 @@
                   </div>
                 </el-card>
               </el-col>
+              <!-- sku表格 -->
               <el-col :span="24">
                 <el-table style="width: 100%; margin-top: 20px" :data="productDetail.skuStocks" border>
                   <el-table-column v-for="(item, index) in selectProductAttr" :label="item.name" :key="item.id" align="center">
@@ -308,6 +310,7 @@
                 </el-table>
               </el-col>
             </el-row>
+            <!-- 按钮 -->
             <el-button type="primary" style="margin-top: 20px" @click="handleRefreshProductSkuList">刷新列表 </el-button>
             <el-button type="primary" style="margin-top: 20px" @click="handleSyncProductSkuPrice">同步价格 </el-button>
             <el-button type="primary" style="margin-top: 20px" @click="handleSyncProductSkuStock">同步库存 </el-button>
@@ -511,8 +514,9 @@ export interface SelectProductAttrModel {
   name: string; // 属性名称
   handAddStatus: number; // 是否支持手动新增；0->不支持；1->支持
   inputList: string; // 可选值列表，以逗号隔开
-  options: string[];
-  values: any[];
+  //
+  options: string[]; // 手动新增-获取可手动添加属性值
+  values: any[]; // 选中的属性
 }
 export interface SelectProductParamModel {
   id: number; // 编号
@@ -818,7 +822,7 @@ const getInputListArr = (inputList: string) => {
 };
 
 const handleEditCreated = () => {
-  //根据商品属性分类id获取属性和参数
+  // 根据商品属性分类id获取属性和参数
   if (productDetail.value && productDetail.value.productAttributeCategoryId != null) {
     handleProductAttrChange(productDetail.value.productAttributeCategoryId);
   }
@@ -897,7 +901,14 @@ const getEditParamValue = (id: number) => {
   return "";
 };
 
+/**
+ * 初始化
+ *
+ * @param type 属性的类型；0->规格；1->参数
+ * @param productAttributeCategoryId 产品属性分类表ID
+ */
 const getProductAttrList = async (type: number, productAttributeCategoryId: number) => {
+  // 查询商品属性参数
   let productAttributes = await getProductAttributesSyncApi({
     pageNum: 1,
     pageSize: 10000,
@@ -907,17 +918,18 @@ const getProductAttrList = async (type: number, productAttributeCategoryId: numb
   let data = productAttributes.data.data;
 
   if (type === 0) {
-    selectProductAttr.value = [];
     // 属性
+    selectProductAttr.value = [];
     for (let i = 0; i < data.length; i++) {
       let options: string[] = [];
       let values: any[] = [];
       if (isEdit.value) {
         // 编辑状态下获取手动添加编辑属性
         if (data[i].handAddStatus === 1) {
+          // 从pms_product_attribute_value里面获取数据
           options = getEditAttrOptions(data[i].id);
         }
-        // 编辑状态下获取选中属性
+        // 编辑状态下获取选中属性，从pms_sku_stock里面取值
         values = getEditAttrValues(i);
       }
       selectProductAttr.value.push({
@@ -934,8 +946,8 @@ const getProductAttrList = async (type: number, productAttributeCategoryId: numb
       }
     }
   } else {
-    selectProductParam.value = [];
     // 参数
+    selectProductParam.value = [];
     for (let i = 0; i < data.length; i++) {
       let value: string = "";
       if (isEdit.value) {

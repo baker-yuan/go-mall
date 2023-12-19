@@ -1,3 +1,5 @@
+[[toc]]
+
 # 1、表结构
 ## 1.1、商品表
 ```sql
@@ -76,6 +78,8 @@ CREATE TABLE `pms_sku_stock`
   COLLATE = utf8mb4_0900_ai_ci COMMENT ='商品SKU表';
 ```
 
+
+
 ## 1.3、商品阶梯价格表
 ```sql
 CREATE TABLE `pms_product_ladder`
@@ -125,3 +129,5 @@ CREATE TABLE `pms_member_price`
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci COMMENT ='商品会员价格表';
 ```
+
+## 1.6、sku生成逻辑
