@@ -229,6 +229,7 @@
             </el-select>
           </el-form-item>
 
+          <!-- sku -->
           <el-form-item label="商品规格">
             <el-row direction="column">
               <el-col :span="24">
@@ -236,6 +237,7 @@
                   <div v-for="(productAttr, idx) in selectProductAttr" :key="idx">
                     {{ productAttr.name }}：
                     <el-checkbox-group v-if="productAttr.handAddStatus === 0" v-model="selectProductAttr[idx].values">
+                      <!-- 非手动新增 -->
                       <el-checkbox
                         v-for="item in getInputListArr(productAttr.inputList)"
                         :label="item"
@@ -244,6 +246,7 @@
                       ></el-checkbox>
                     </el-checkbox-group>
                     <div v-else>
+                      <!-- 手动新增 -->
                       <el-checkbox-group v-model="selectProductAttr[idx].values">
                         <div
                           v-for="(item, index) in selectProductAttr[idx].options"

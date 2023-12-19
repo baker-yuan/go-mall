@@ -1,3 +1,6 @@
+
+[[toc]]
+
 # 1、表设计
 ## 1.1、商品属性分类表
 ```sql
@@ -55,10 +58,24 @@ CREATE TABLE `pms_product_attribute_value`
   COLLATE = utf8mb4_0900_ai_ci COMMENT ='商品属性值表';
 ```
 
+> 1、如果对应的商品属性是`规格`且规格支持`手动添加`(pms_product_attribute#input_type=0)，那么该表用于存储手动新增的值；
+>
+> 2、如果对应的商品属性是`参数`(pms_product_attribute#input_type=1)，那么该表用于存储参数的值；
+
+![07-商品属性值表案例.png](./images/07-商品属性值表案例.png)
+
+
 ## 1.4、名称解释
 ### 1.4.1、什么是属性
+> sku表的数据来自于两张表
+> 
+> 1、pms_product_attribute 从列表中选取(pms_product_attribute#input_type=0)
+> 
+> 2、pms_product_attribute_value 手工录入(pms_product_attribute#input_type=1)
+
 ![04-属性_规格.jpg](./images/04-属性_规格.jpg)
 ![07-属性-管理端.jpg](./images/07-属性-管理端.jpg)
+
 
 ### 1.4.2、什么是参数
 ![05-参数.jpg](./images/05-参数.jpg)

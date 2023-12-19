@@ -5,7 +5,11 @@ nvm use v18.16.1
 
 # 2、启动
 ```text
+// 安装依赖
+pnpm install
+// 启动
 pnpm docs:dev
+// 构建
 pnpm docs:build
 ```
 
@@ -64,4 +68,11 @@ https://github.com/LiuyangAce/tt-ui
 
 https://github.com/it235/it235-vuepress
 https://www.bilibili.com/video/BV17t41177cr
+```
+
+```text
+https://blog.csdn.net/weixin_44235759/article/details/134686166
+https://zhuanlan.zhihu.com/p/663307185
+https://blog.csdn.net/weixin_52834435/article/details/125136805
+https://www.cnblogs.com/dingshaohua/p/17432484.html
 ```
