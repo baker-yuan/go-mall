@@ -653,6 +653,7 @@ const drawerProps = ref<DrawerProps>({
   row: {}
 });
 
+// 监听商品id变化
 let productId = computed(() => productDetail.value.id);
 watch(productId, newValue => {
   if (!isEdit.value) return;
@@ -822,6 +823,7 @@ const getInputListArr = (inputList: string) => {
 };
 
 const handleEditCreated = () => {
+  console.log("handleEditCreated...");
   // 根据商品属性分类id获取属性和参数
   if (productDetail.value && productDetail.value.productAttributeCategoryId != null) {
     handleProductAttrChange(productDetail.value.productAttributeCategoryId);
