@@ -9,12 +9,14 @@ var _ pb.PortalHomeApiServer = &PortalApiImpl{}
 var _ pb.PortalProductApiServer = &PortalApiImpl{}
 var _ pb.PortalMemberApiServer = &PortalApiImpl{}
 var _ pb.PortalCartItemApiServer = &PortalApiImpl{}
+var _ pb.PortalOrderApiServer = &PortalApiImpl{}
 
 type PortalApi interface {
 	pb.PortalHomeApiServer
 	pb.PortalProductApiServer
 	pb.PortalMemberApiServer
 	pb.PortalCartItemApiServer
+	pb.PortalOrderApiServer
 }
 
 type PortalApiImpl struct {
@@ -22,6 +24,7 @@ type PortalApiImpl struct {
 	pb.UnimplementedPortalProductApiServer
 	pb.UnimplementedPortalMemberApiServer
 	pb.UnimplementedPortalCartItemApiServer
+	pb.UnimplementedPortalOrderApiServer
 
 	home            usecase.IHomeUseCase
 	product         usecase.IProductUseCase

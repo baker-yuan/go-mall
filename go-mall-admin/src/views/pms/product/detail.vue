@@ -272,12 +272,13 @@
               <!-- sku表格 -->
               <el-col :span="24">
                 <el-table style="width: 100%; margin-top: 20px" :data="productDetail.skuStocks" border>
-                  <!-- 属性动态字段 -->
+                  <!-- 属性动态字段，值从pms_sku_stock里面动态获取 -->
                   <el-table-column v-for="(item, index) in selectProductAttr" :label="item.name" :key="item.id" align="center">
                     <template #default="scope">
                       {{ getProductSkuSp(scope.row, index) }}
                     </template>
                   </el-table-column>
+                  <!-- 其他字段 -->
                   <el-table-column label="销售价格" width="90" align="center">
                     <template #default="scope">
                       <el-input v-model="scope.row.price"></el-input>
@@ -514,9 +515,9 @@ export interface SelectProductAttrModel {
   id: number; // 编号
   name: string; // 属性名称
   handAddStatus: number; // 是否支持手动新增；0->不支持；1->支持
-  inputList: string; // 可选值列表，以逗号隔开（非手动输入时的下拉框）
-  options: string[]; // 手动新增-获取可手动添加属性值（手动输入时的下拉框）
-  values: any[]; // 选中的属性
+  inputList: string; // 可选值列表，以逗号隔开（非手动输入时的下拉框 pms_product_attribute）
+  options: string[]; // 手动新增-获取可手动添加属性值（手动输入时的下拉框 pms_product_attribute_value）
+  values: any[]; // 选中的属性(pms_sku_stock)
 }
 export interface SelectProductParamModel {
   id: number; // 编号
@@ -680,6 +681,7 @@ const handleAddProductAttrValue = (idx: number) => {
   addProductAttrValue.value = "";
 };
 
+// pms_sku_stock 获取pms_sku_stock里面的值
 const getProductSkuSp = (row: any, index: number) => {
   let spData = JSON.parse(row.spData);
   if (spData != null && index < spData.length) {
@@ -698,82 +700,123 @@ const handleRemoveProductSku = (index: number) => {
   }
 };
 
+// 刷新列表
 const handleRefreshProductSkuList = () => {
   ElMessageBox.confirm("刷新列表将导致sku信息重新生成，是否要刷新", "提示", {
     confirmButtonText: "确定",
     cancelButtonText: "取消",
     type: "warning"
   }).then(async () => {
+    // 编辑模式下刷新商品属性图片
     refreshProductAttrPics();
+    // 刷新sku
     refreshProductSkuList();
+    console.log("refreshProductSkuList", JSON.stringify(productDetail.value.skuStocks));
   });
 };
 
+// // 重新根据勾选的属性生成sku
+// const refreshProductSkuList = () => {
+//   productDetail.value.skuStocks = [];
+//   let skuList = productDetail.value.skuStocks;
+//   if (selectProductAttr.value.length === 1) {
+//     // 只有一个属性时
+//     let attr = selectProductAttr.value[0];
+//     for (let i = 0; i < attr.values.length; i++) {
+//       skuList.push({
+//         spData: JSON.stringify([{ key: attr.name, value: attr.values[i] }])
+//       });
+//     }
+//   } else if (selectProductAttr.value.length === 2) {
+//     // 只有二个属性时
+//     let attr0 = selectProductAttr.value[0];
+//     let attr1 = selectProductAttr.value[1];
+//     for (let i = 0; i < attr0.values.length; i++) {
+//       if (attr1.values.length === 0) {
+//         skuList.push({
+//           spData: JSON.stringify([{ key: attr0.name, value: attr0.values[i] }])
+//         });
+//         continue;
+//       }
+//       for (let j = 0; j < attr1.values.length; j++) {
+//         let spData = [];
+//         spData.push({ key: attr0.name, value: attr0.values[i] });
+//         spData.push({ key: attr1.name, value: attr1.values[j] });
+//         skuList.push({
+//           spData: JSON.stringify(spData)
+//         });
+//       }
+//     }
+//   } else {
+//     // 3个属性
+//     // todo 这里代码硬编码了，改成递归写法
+//     let attr0 = selectProductAttr.value[0];
+//     let attr1 = selectProductAttr.value[1];
+//     let attr2 = selectProductAttr.value[2];
+//     for (let i = 0; i < attr0.values.length; i++) {
+//       if (attr1.values.length === 0) {
+//         skuList.push({
+//           spData: JSON.stringify([{ key: attr0.name, value: attr0.values[i] }])
+//         });
+//         continue;
+//       }
+//       for (let j = 0; j < attr1.values.length; j++) {
+//         if (attr2.values.length === 0) {
+//           let spData = [];
+//           spData.push({ key: attr0.name, value: attr0.values[i] });
+//           spData.push({ key: attr1.name, value: attr1.values[j] });
+//           skuList.push({
+//             spData: JSON.stringify(spData)
+//           });
+//           continue;
+//         }
+//         for (let k = 0; k < attr2.values.length; k++) {
+//           let spData = [];
+//           spData.push({ key: attr0.name, value: attr0.values[i] });
+//           spData.push({ key: attr1.name, value: attr1.values[j] });
+//           spData.push({ key: attr2.name, value: attr2.values[k] });
+//           skuList.push({
+//             spData: JSON.stringify(spData)
+//           });
+//         }
+//       }
+//     }
+//   }
+// };
+
+// 重新根据勾选的属性生成sku
 const refreshProductSkuList = () => {
   productDetail.value.skuStocks = [];
-  let skuList = productDetail.value.skuStocks;
-  //只有一个属性时
-  if (selectProductAttr.value.length === 1) {
-    let attr = selectProductAttr.value[0];
-    for (let i = 0; i < attr.values.length; i++) {
-      skuList.push({
-        spData: JSON.stringify([{ key: attr.name, value: attr.values[i] }])
-      });
-    }
-  } else if (selectProductAttr.value.length === 2) {
-    let attr0 = selectProductAttr.value[0];
-    let attr1 = selectProductAttr.value[1];
-    for (let i = 0; i < attr0.values.length; i++) {
-      if (attr1.values.length === 0) {
-        skuList.push({
-          spData: JSON.stringify([{ key: attr0.name, value: attr0.values[i] }])
-        });
-        continue;
-      }
-      for (let j = 0; j < attr1.values.length; j++) {
-        let spData = [];
-        spData.push({ key: attr0.name, value: attr0.values[i] });
-        spData.push({ key: attr1.name, value: attr1.values[j] });
-        skuList.push({
-          spData: JSON.stringify(spData)
-        });
-      }
-    }
-  } else {
-    let attr0 = selectProductAttr.value[0];
-    let attr1 = selectProductAttr.value[1];
-    let attr2 = selectProductAttr.value[2];
-    for (let i = 0; i < attr0.values.length; i++) {
-      if (attr1.values.length === 0) {
-        skuList.push({
-          spData: JSON.stringify([{ key: attr0.name, value: attr0.values[i] }])
-        });
-        continue;
-      }
-      for (let j = 0; j < attr1.values.length; j++) {
-        if (attr2.values.length === 0) {
-          let spData = [];
-          spData.push({ key: attr0.name, value: attr0.values[i] });
-          spData.push({ key: attr1.name, value: attr1.values[j] });
-          skuList.push({
-            spData: JSON.stringify(spData)
-          });
-          continue;
-        }
-        for (let k = 0; k < attr2.values.length; k++) {
-          let spData = [];
-          spData.push({ key: attr0.name, value: attr0.values[i] });
-          spData.push({ key: attr1.name, value: attr1.values[j] });
-          spData.push({ key: attr2.name, value: attr2.values[k] });
-          skuList.push({
-            spData: JSON.stringify(spData)
-          });
-        }
-      }
-    }
-  }
+  generateSkuCombinations([], 0);
+  // [{"spData":"[{\"key\":\"颜色\",\"value\":\"金色\"},{\"key\":\"容量\",\"value\":\"16G\"}]"},{"spData":"[{\"key\":\"颜色\",\"value\":\"金色\"},{\"key\":\"容量\",\"value\":\"32G\"}]"},{"spData":"[{\"key\":\"颜色\",\"value\":\"银色\"},{\"key\":\"容量\",\"value\":\"16G\"}]"},{"spData":"[{\"key\":\"颜色\",\"value\":\"银色\"},{\"key\":\"容量\",\"value\":\"32G\"}]"}]
+  console.log("refreshProductSkuList", JSON.stringify(productDetail.value.skuStocks));
 };
 
+function generateSkuCombinations(currentCombination: any, index: number) {
+  // 如果已处理所有属性，则添加当前组合到SKU列表
+  if (index === selectProductAttr.value.length) {
+    if (currentCombination.length > 0) {
+      productDetail.value.skuStocks.push({
+        spData: JSON.stringify(currentCombination)
+      });
+    }
+    return;
+  }
+
+  const currentAttribute = selectProductAttr.value[index];
+  // 如果当前属性没有值，则跳过
+  if (currentAttribute.values.length === 0) {
+    return;
+  }
+
+  // 遍历当前属性的所有值
+  for (let value of currentAttribute.values) {
+    // 创建新组合并递归处理下一个属性
+    generateSkuCombinations([...currentCombination, { key: currentAttribute.name, value }], index + 1);
+  }
+}
+
+// 同步价格，把第一个sku的价格复制到下面的sku里面去
 const handleSyncProductSkuPrice = () => {
   ElMessageBox.confirm("将同步第一个sku的价格到所有sku,是否继续", "提示", {
     confirmButtonText: "确定",
@@ -793,6 +836,7 @@ const handleSyncProductSkuPrice = () => {
   });
 };
 
+// 同步库存，把第一个sku的库存复制到下面的sku里面去
 const handleSyncProductSkuStock = () => {
   ElMessageBox.confirm("将同步第一个sku的库存到所有sku,是否继续", "提示", {
     confirmButtonText: "确定",

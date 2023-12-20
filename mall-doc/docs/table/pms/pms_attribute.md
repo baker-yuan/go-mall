@@ -58,15 +58,20 @@ CREATE TABLE `pms_product_attribute_value`
   COLLATE = utf8mb4_0900_ai_ci COMMENT ='商品属性值表';
 ```
 
-> 1、如果对应的商品属性是`规格`且规格支持`手动添加`(pms_product_attribute#input_type=0)，那么该表用于存储手动新增的值；
+> 1、如果对应的商品属性是`规格`且规格支持`手动添加`(pms_product_attribute#type=0#input_type=0)，那么该表用于存储手动新增的值；
 >
-> 2、如果对应的商品属性是`参数`(pms_product_attribute#input_type=1)，那么该表用于存储参数的值；
+> 2、如果对应的商品属性是`参数`(pms_product_attribute#type=1)，那么该表用于存储参数的值；
 
 ![07-商品属性值表案例.png](./images/07-商品属性值表案例.png)
 
 ![08-商品属性.png](./images/08-商品属性.png)
 
+
+> pms_sku_stock的数据来自于两张表，pms_product_attribute和pms_product_attribute_value
+> 
+
 ![09-商品sku.png](./images/09-商品sku.png)
+
 > 注意：如果是通过下标定位数据，pms_sku_stock#sp_data的排序要和pms_product_attribute一致，
 > 或者这里根据名称来定位
 
@@ -83,6 +88,8 @@ CREATE TABLE `pms_product_attribute_value`
 
 
 ### 1.4.2、什么是参数
+> 参数数据存在pms_product_attribute_value里面
+
 ![05-参数.jpg](./images/05-参数.jpg)
 ![06-参数-管理端.jpg](./images/06-参数-管理端.jpg)
 

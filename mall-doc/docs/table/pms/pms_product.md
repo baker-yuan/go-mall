@@ -139,7 +139,7 @@ CREATE TABLE `pms_member_price`
 <div v-for="(productAttr, idx) in selectProductAttr" :key="idx">
 {{ productAttr.name }}：
 <el-checkbox-group v-if="productAttr.handAddStatus === 0" v-model="selectProductAttr[idx].values">
-  <!-- 非手动新增-只能勾选 -->
+  <!-- 非手动新增-只能勾选 下拉框数据来自于productAttr.inputList(pms_product_attribute) -->
   <el-checkbox
     v-for="item in getInputListArr(productAttr.inputList)"
     :label="item"
@@ -150,6 +150,7 @@ CREATE TABLE `pms_member_price`
 <div v-else>
   <!-- 手动新增-添加删除 -->
   <el-checkbox-group v-model="selectProductAttr[idx].values">
+    <!-- 下拉框数据来自于options(pms_product_attribute_value) -->
     <div
       v-for="(item, index) in selectProductAttr[idx].options"
       :key="index"
@@ -217,7 +218,6 @@ const getProductAttrList = async (type: number, productAttributeCategoryId: numb
     });
     let productAttributes = productAttributesRes.data.data;
 
-    // selectProductAttr [{"id":"43","name":"颜色","handAddStatus":1,"inputList":"","values":["金色","银色"],"options":["金色","银色"]},{"id":"44","name":"容量","handAddStatus":0,"inputList":"16G,32G,64G,128G,256G,512G","values":["16G","32G"],"options":[]}]
     if (type === 0) {
         // 属性
         selectProductAttr.value = [];
@@ -283,19 +283,19 @@ const getEditAttrValues = (index: number) => {
     return Array.from(values);
 };
 ```
-最终生成的selectProductAttr如下
+最终生成的selectProductAttr如下，这个比较重要，理解其他代码和这个字段有关系可以看看这个具体的内容
 ```json
 [
     {
         "id": "43",
         "name": "颜色",
-        "handAddStatus": 1,
-        "inputList": "",
-        "values": [
+        "handAddStatus": 1, // 手动新增
+        "inputList": "", // 数据不在这里，在pms_product_attribute_value表里面
+        "values": [ // 实际选择的
             "金色",
             "银色"
         ],
-        "options": [
+        "options": [ // 允许选的值
             "金色",
             "银色"
         ]
@@ -303,9 +303,9 @@ const getEditAttrValues = (index: number) => {
     {
         "id": "44",
         "name": "容量",
-        "handAddStatus": 0,
-        "inputList": "16G,32G,64G,128G,256G,512G",
-        "values": [
+        "handAddStatus": 0, // 非手动新增（只能选择商品属性表pms_product_attribute里面的数据）
+        "inputList": "16G,32G,64G,128G,256G,512G", // 下拉框用的这个数据
+        "values": [ // 实际选择的
             "16G",
             "32G"
         ],
@@ -364,4 +364,125 @@ const getEditAttrValues = (index: number) => {
 <el-button type="primary" style="margin-top: 20px" @click="handleRefreshProductSkuList">刷新列表 </el-button>
 <el-button type="primary" style="margin-top: 20px" @click="handleSyncProductSkuPrice">同步价格 </el-button>
 <el-button type="primary" style="margin-top: 20px" @click="handleSyncProductSkuStock">同步库存 </el-button>
+```
+#### 刷新列表
+刷新列表，这里会基于勾选的属性重新生成sku，即使是以前有的sku也会被删除，然后重新生成
+```ts
+// 刷新列表
+const handleRefreshProductSkuList = () => {
+  ElMessageBox.confirm("刷新列表将导致sku信息重新生成，是否要刷新", "提示", {
+    confirmButtonText: "确定",
+    cancelButtonText: "取消",
+    type: "warning"
+  }).then(async () => {
+    // 编辑模式下刷新商品属性图片
+    refreshProductAttrPics();
+    // 刷新sku
+    refreshProductSkuList();
+    console.log("refreshProductSkuList", JSON.stringify(productDetail.value.skuStocks));
+  });
+};
+
+// 重新根据勾选的属性生成sku
+const refreshProductSkuList = () => {
+  productDetail.value.skuStocks = [];
+  generateSkuCombinations([], 0);
+  console.log("refreshProductSkuList", JSON.stringify(productDetail.value.skuStocks));
+};
+function generateSkuCombinations(currentCombination: any, index: number) {
+  // 如果已处理所有属性，则添加当前组合到SKU列表
+  if (index === selectProductAttr.value.length) {
+    if (currentCombination.length > 0) {
+      productDetail.value.skuStocks.push({
+        spData: JSON.stringify(currentCombination)
+      });
+    }
+    return;
+  }
+  const currentAttribute = selectProductAttr.value[index];
+  // 如果当前属性没有值，则跳过
+  if (currentAttribute.values.length === 0) {
+    return;
+  }
+  // 遍历当前属性的所有值
+  for (let value of currentAttribute.values) {
+    // 创建新组合并递归处理下一个属性
+    generateSkuCombinations([...currentCombination, { key: currentAttribute.name, value }], index + 1);
+  }
+}
+```
+
+在电商中，SKU（Stock Keeping Unit，库存量单位）通常是产品属性的笛卡尔积。每个SKU代表了一种特定的属性组合，例如颜色、尺寸、材质等。当你有多个属性，每个属性有多个可能的值时，SKU的总数就是每个属性值数量的乘积，即它们的笛卡尔积。
+例如，如果你有两个属性：
+- 颜色：红色，蓝色
+- 尺寸：小，中，大
+
+那么可能的SKU组合数量就是颜色的数量乘以尺寸的数量，即 2 * 3 = 6 个SKU。 在前面的代码中，`generateSkuCombinations` 函数通过递归的方式生成了所有可能的属性组合，从而创建了相应的SKU列表。这个函数能够处理任意数量的属性和值，生成它们的笛卡尔积。
+
+![12-刷新列表-生成sku.png](./images/12-刷新列表-生成sku.png)
+```json
+[
+  {
+    "spData": "[{\"key\":\"颜色\",\"value\":\"金色\"},{\"key\":\"容量\",\"value\":\"16G\"}]"
+  },
+  {
+    "spData": "[{\"key\":\"颜色\",\"value\":\"金色\"},{\"key\":\"容量\",\"value\":\"32G\"}]"
+  },
+  {
+    "spData": "[{\"key\":\"颜色\",\"value\":\"银色\"},{\"key\":\"容量\",\"value\":\"16G\"}]"
+  },
+  {
+    "spData": "[{\"key\":\"颜色\",\"value\":\"银色\"},{\"key\":\"容量\",\"value\":\"32G\"}]"
+  }
+]
+```
+
+#### 同步价格
+同步价格逻辑比较简单，一个快捷操作，把第一个sku的价格复制到下面的sku里面去
+```ts
+// 同步价格，把第一个sku的价格复制到下面的sku里面去
+const handleSyncProductSkuPrice = () => {
+  ElMessageBox.confirm("将同步第一个sku的价格到所有sku,是否继续", "提示", {
+    confirmButtonText: "确定",
+    cancelButtonText: "取消",
+    type: "warning"
+  }).then(async () => {
+    if (productDetail.value.skuStocks !== null && productDetail.value.skuStocks.length > 0) {
+      let tempSkuList: SkuStock.SkuStockModel[] = [];
+      tempSkuList = tempSkuList.concat(tempSkuList, productDetail.value.skuStocks);
+      let price = productDetail.value.skuStocks[0].price;
+      for (let i = 0; i < tempSkuList.length; i++) {
+        tempSkuList[i].price = price;
+      }
+      productDetail.value.skuStocks = [];
+      productDetail.value.skuStocks = productDetail.value.skuStocks.concat(productDetail.value.skuStocks, tempSkuList);
+    }
+  });
+};
+```
+
+#### 同步库存
+同步库存逻辑比较简单，一个快捷操作，把第一个sku的库存复制到下面的sku里面去
+```ts
+// 同步库存，把第一个sku的库存复制到下面的sku里面去
+const handleSyncProductSkuStock = () => {
+  ElMessageBox.confirm("将同步第一个sku的库存到所有sku,是否继续", "提示", {
+    confirmButtonText: "确定",
+    cancelButtonText: "取消",
+    type: "warning"
+  }).then(async () => {
+    if (productDetail.value.skuStocks !== null && productDetail.value.skuStocks.length > 0) {
+      let tempSkuList: SkuStock.SkuStockModel[] = [];
+      tempSkuList = tempSkuList.concat(tempSkuList, productDetail.value.skuStocks);
+      let stock = productDetail.value.skuStocks[0].stock;
+      let lowStock = productDetail.value.skuStocks[0].lowStock;
+      for (let i = 0; i < tempSkuList.length; i++) {
+        tempSkuList[i].stock = stock;
+        tempSkuList[i].lowStock = lowStock;
+      }
+      productDetail.value.skuStocks = [];
+      productDetail.value.skuStocks = productDetail.value.skuStocks.concat(productDetail.value.skuStocks, tempSkuList);
+    }
+  });
+};
 ```

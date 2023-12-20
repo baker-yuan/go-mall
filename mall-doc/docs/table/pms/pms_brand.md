@@ -22,3 +22,7 @@ CREATE TABLE `pms_brand`
   COLLATE = utf8mb4_0900_ai_ci COMMENT ='商品品牌表';
 ```
 
+# 2、管理页面
+![13-商品品牌.png](./images/13-商品品牌.png)
+
+# 3、客户端

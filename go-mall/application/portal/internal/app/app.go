@@ -161,6 +161,7 @@ func configGrpc(customLog *logger.Logger, grpcSrvImpl grpcsrv.PortalApi, cfg *co
 	pb.RegisterPortalProductApiServer(grpcServer, grpcSrvImpl)
 	pb.RegisterPortalMemberApiServer(grpcServer, grpcSrvImpl)
 	pb.RegisterPortalCartItemApiServer(grpcServer, grpcSrvImpl)
+	pb.RegisterPortalOrderApiServer(grpcServer, grpcSrvImpl)
 
 	// gRPC-Gateway mux
 	gwmux := runtime.NewServeMux(
@@ -178,6 +179,9 @@ func configGrpc(customLog *logger.Logger, grpcSrvImpl grpcsrv.PortalApi, cfg *co
 		return nil, err
 	}
 	if err := pb.RegisterPortalCartItemApiHandlerFromEndpoint(context.Background(), gwmux, addr, dops); err != nil {
+		return nil, err
+	}
+	if err := pb.RegisterPortalOrderApiHandlerFromEndpoint(context.Background(), gwmux, addr, dops); err != nil {
 		return nil, err
 	}
 
