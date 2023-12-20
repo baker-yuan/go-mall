@@ -66,6 +66,10 @@ CREATE TABLE `pms_product_attribute_value`
 
 ![08-商品属性.png](./images/08-商品属性.png)
 
+![09-商品sku.png](./images/09-商品sku.png)
+> 注意：如果是通过下标定位数据，pms_sku_stock#sp_data的排序要和pms_product_attribute一致，
+> 或者这里根据名称来定位
+
 ## 1.4、名称解释
 ### 1.4.1、什么是属性
 > sku表的数据来自于两张表

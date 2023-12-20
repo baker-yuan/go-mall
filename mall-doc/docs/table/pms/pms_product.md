@@ -131,3 +131,237 @@ CREATE TABLE `pms_member_price`
 ```
 
 ## 1.6、sku生成逻辑
+### 1.6.1、商品规格
+
+![10-商品规格.png](./images/10-商品规格.png)
+
+```vue
+<div v-for="(productAttr, idx) in selectProductAttr" :key="idx">
+{{ productAttr.name }}：
+<el-checkbox-group v-if="productAttr.handAddStatus === 0" v-model="selectProductAttr[idx].values">
+  <!-- 非手动新增-只能勾选 -->
+  <el-checkbox
+    v-for="item in getInputListArr(productAttr.inputList)"
+    :label="item"
+    :key="item"
+    class="littleMarginLeft"
+  ></el-checkbox>
+</el-checkbox-group>
+<div v-else>
+  <!-- 手动新增-添加删除 -->
+  <el-checkbox-group v-model="selectProductAttr[idx].values">
+    <div
+      v-for="(item, index) in selectProductAttr[idx].options"
+      :key="index"
+      style="display: inline-block"
+      class="littleMarginLeft"
+    >
+      <div style="display: flex; align-items: center">
+        <el-checkbox :label="item" :key="item"></el-checkbox>
+        <el-button type="text" class="littleMarginLeft" @click="handleRemoveProductAttrValue(idx, index)">
+          删除
+        </el-button>
+      </div>
+    </div>
+  </el-checkbox-group>
+  <el-input v-model="addProductAttrValue" style="width: 160px; margin-left: 10px" clearable></el-input>
+  <el-button class="littleMarginLeft" @click="handleAddProductAttrValue(idx)">增加</el-button>
+</div>
+</div>
+```
+
+```ts
+// 选中的商品属性
+const selectProductAttr = ref<SelectProductAttrModel[]>([]);
+// 商品详情
+const productDetail = ref<Product.ProductModel>(defaultProductDetail);
+
+// 监听商品id变化
+let productId = computed(() => productDetail.value.id);
+watch(productId, newValue => {
+    if (!isEdit.value) return;
+    if (hasEditCreated.value) return;
+    if (newValue === undefined || newValue == null || newValue === 0) return;
+    handleEditCreated();
+});
+
+const handleEditCreated = () => {
+    console.log("handleEditCreated...");
+    // 根据商品属性分类id获取属性和参数
+    if (productDetail.value && productDetail.value.productAttributeCategoryId != null) {
+        handleProductAttrChange(productDetail.value.productAttributeCategoryId);
+    }
+    hasEditCreated.value = true;
+};
+
+// 根据商品属性分类id获取属性和参数
+const handleProductAttrChange = async (productAttributeCategoryId: number) => {
+    await getProductAttrList(0, productAttributeCategoryId);
+    await getProductAttrList(1, productAttributeCategoryId);
+};
+
+/**
+ * 1、初始化属性，以及选中了哪些属性
+ *
+ * @param type 属性的类型；0->规格；1->参数
+ * @param productAttributeCategoryId 产品属性分类表ID
+ */
+const getProductAttrList = async (type: number, productAttributeCategoryId: number) => {
+    console.log("isEdit", isEdit.value);
+    // 查询商品关联的属性和参数
+    let productAttributesRes = await getProductAttributesSyncApi({
+        pageNum: 1,
+        pageSize: 10000,
+        type: type,
+        productAttributeCategoryId: productAttributeCategoryId
+    });
+    let productAttributes = productAttributesRes.data.data;
+
+    // selectProductAttr [{"id":"43","name":"颜色","handAddStatus":1,"inputList":"","values":["金色","银色"],"options":["金色","银色"]},{"id":"44","name":"容量","handAddStatus":0,"inputList":"16G,32G,64G,128G,256G,512G","values":["16G","32G"],"options":[]}]
+    if (type === 0) {
+        // 属性
+        selectProductAttr.value = [];
+        for (let i = 0; i < productAttributes.length; i++) {
+            let productAttribute = productAttributes[i];
+            let options: string[] = [];
+            let values: any[] = [];
+            if (isEdit.value) {
+                // 编辑状态下获取手动添加编辑属性，从pms_product_attribute_value里面获取数据
+                if (productAttribute.handAddStatus === 1) {
+                    options = getEditAttrOptions(productAttribute.id);
+                }
+                // 编辑状态下获取选中属性，从pms_sku_stock里面取值
+                values = getEditAttrValues(i);
+            }
+            // 新增选中的商品属性
+            selectProductAttr.value.push({
+                id: productAttribute.id,
+                name: productAttribute.name,
+                handAddStatus: productAttribute.handAddStatus,
+                inputList: productAttribute.inputList, // 非手动输入时的下拉框
+                options: options, // 手动输入时的下拉框
+                values: values // 选了哪些
+            });
+            if (isEdit.value) {
+                // 编辑模式下刷新商品属性图片
+                refreshProductAttrPics();
+            }
+        }
+    } else {
+        // 参数 先忽略...
+    }
+    console.log("selectProductAttr", JSON.stringify(selectProductAttr.value));
+};
+
+// 获取设置的可手动添加属性值 从pms_product_attribute_value里面获取数据
+const getEditAttrOptions = (id: number) => {
+    let options = [];
+    for (let i = 0; i < productDetail.value.productAttributeValues.length; i++) {
+        let attrValue = productDetail.value.productAttributeValues[i];
+        if (attrValue.productAttributeId === id) {
+            let strArr = attrValue.value.split(",");
+            for (let j = 0; j < strArr.length; j++) {
+                options.push(strArr[j]);
+            }
+            break;
+        }
+    }
+    return options;
+};
+
+// 获取选中的属性值 从pms_sku_stock里面取值
+const getEditAttrValues = (index: number) => {
+    // todo index换成名称定位
+    let values = new Set();
+    for (let i = 0; i < productDetail.value.skuStocks.length; i++) {
+        let sku = productDetail.value.skuStocks[i];
+        let spData = JSON.parse(sku.spData);
+        if (spData != null && spData.length > index) {
+            values.add(spData[index].value);
+        }
+    }
+    return Array.from(values);
+};
+```
+最终生成的selectProductAttr如下
+```json
+[
+    {
+        "id": "43",
+        "name": "颜色",
+        "handAddStatus": 1,
+        "inputList": "",
+        "values": [
+            "金色",
+            "银色"
+        ],
+        "options": [
+            "金色",
+            "银色"
+        ]
+    },
+    {
+        "id": "44",
+        "name": "容量",
+        "handAddStatus": 0,
+        "inputList": "16G,32G,64G,128G,256G,512G",
+        "values": [
+            "16G",
+            "32G"
+        ],
+        "options": []
+    }
+]
+```
+
+
+
+### 1.6.2、sku表格
+![11-sku表格.png](./images/11-sku表格.png)
+```vue
+<el-table style="width: 100%; margin-top: 20px" :data="productDetail.skuStocks" border>
+  <!-- 属性动态字段 -->
+  <el-table-column v-for="(item, index) in selectProductAttr" :label="item.name" :key="item.id" align="center">
+    <template #default="scope">
+      {{ getProductSkuSp(scope.row, index) }}
+    </template>
+  </el-table-column>
+  <el-table-column label="销售价格" width="90" align="center">
+    <template #default="scope">
+      <el-input v-model="scope.row.price"></el-input>
+    </template>
+  </el-table-column>
+  <el-table-column label="促销价格" width="90" align="center">
+    <template #default="scope">
+      <el-input v-model="scope.row.promotionPrice"></el-input>
+    </template>
+  </el-table-column>
+  <el-table-column label="商品库存" width="75" align="center">
+    <template #default="scope">
+      <el-input v-model="scope.row.stock"></el-input>
+    </template>
+  </el-table-column>
+  <el-table-column label="库存预警值" width="75" align="center">
+    <template #default="scope">
+      <el-input v-model="scope.row.lowStock"></el-input>
+    </template>
+  </el-table-column>
+  <el-table-column label="SKU编号" width="170" align="center">
+    <template #default="scope">
+      <el-input v-model="scope.row.skuCode"></el-input>
+    </template>
+  </el-table-column>
+  <el-table-column label="操作" width="80" align="center">
+    <template #default="scope">
+      <el-button type="text" @click="handleRemoveProductSku(scope.$index)">删除 </el-button>
+    </template>
+  </el-table-column>
+</el-table>
+```
+
+### 1.6.3、按钮
+```vue
+<el-button type="primary" style="margin-top: 20px" @click="handleRefreshProductSkuList">刷新列表 </el-button>
+<el-button type="primary" style="margin-top: 20px" @click="handleSyncProductSkuPrice">同步价格 </el-button>
+<el-button type="primary" style="margin-top: 20px" @click="handleSyncProductSkuStock">同步库存 </el-button>
+```

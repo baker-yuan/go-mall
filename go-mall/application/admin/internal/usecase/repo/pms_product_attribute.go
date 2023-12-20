@@ -89,7 +89,7 @@ func (r ProductAttributeRepo) GetByDBOption(ctx context.Context, pageNum uint32,
 		session = opt(session)
 	}
 
-	session = session.Offset(int(offset)).Limit(int(pageSize)).Order("id desc").Find(&res).
+	session = session.Offset(int(offset)).Limit(int(pageSize)).Order("id asc").Find(&res).
 		Offset(-1).Limit(-1).Count(&pageTotal)
 
 	if err := session.Error; err != nil {

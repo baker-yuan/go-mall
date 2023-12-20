@@ -124,6 +124,7 @@ func (r ProductAttributeValueRepo) GetByProductID(ctx context.Context, productID
 	res := make([]*entity.ProductAttributeValue, 0)
 	if err := r.GenericDao.DB.WithContext(ctx).
 		Where("product_id = ?", productID).
+		Order("id asc").
 		Find(&res).Error; err != nil {
 		return nil, err
 	}

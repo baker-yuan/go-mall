@@ -116,7 +116,7 @@ func (r SkuStockRepo) GetByProductID(ctx context.Context, productID uint64) ([]*
 	)
 	if err := r.GenericDao.DB.WithContext(ctx).
 		Where("product_id = ?", productID).
-		Order("id desc").Find(&res).Error; err != nil {
+		Order("id asc").Find(&res).Error; err != nil {
 		return nil, err
 	}
 	return res, nil
