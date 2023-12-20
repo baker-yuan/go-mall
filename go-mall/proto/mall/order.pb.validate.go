@@ -170,6 +170,153 @@ func (m *GenerateConfirmOrderRsp) validate(all bool) error {
 
 	var errors []error
 
+	if all {
+		switch v := interface{}(m.GetCartPromotionItems()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, GenerateConfirmOrderRspValidationError{
+					field:  "CartPromotionItems",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, GenerateConfirmOrderRspValidationError{
+					field:  "CartPromotionItems",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetCartPromotionItems()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return GenerateConfirmOrderRspValidationError{
+				field:  "CartPromotionItems",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if all {
+		switch v := interface{}(m.GetMemberReceiveAddress()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, GenerateConfirmOrderRspValidationError{
+					field:  "MemberReceiveAddress",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, GenerateConfirmOrderRspValidationError{
+					field:  "MemberReceiveAddress",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetMemberReceiveAddress()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return GenerateConfirmOrderRspValidationError{
+				field:  "MemberReceiveAddress",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if all {
+		switch v := interface{}(m.GetCouponHistoryDetails()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, GenerateConfirmOrderRspValidationError{
+					field:  "CouponHistoryDetails",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, GenerateConfirmOrderRspValidationError{
+					field:  "CouponHistoryDetails",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetCouponHistoryDetails()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return GenerateConfirmOrderRspValidationError{
+				field:  "CouponHistoryDetails",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if all {
+		switch v := interface{}(m.GetIntegrationConsumeSetting()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, GenerateConfirmOrderRspValidationError{
+					field:  "IntegrationConsumeSetting",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, GenerateConfirmOrderRspValidationError{
+					field:  "IntegrationConsumeSetting",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetIntegrationConsumeSetting()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return GenerateConfirmOrderRspValidationError{
+				field:  "IntegrationConsumeSetting",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	// no validation rules for MemberIntegration
+
+	if all {
+		switch v := interface{}(m.GetCalcAmount()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, GenerateConfirmOrderRspValidationError{
+					field:  "CalcAmount",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, GenerateConfirmOrderRspValidationError{
+					field:  "CalcAmount",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetCalcAmount()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return GenerateConfirmOrderRspValidationError{
+				field:  "CalcAmount",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
 	if len(errors) > 0 {
 		return GenerateConfirmOrderRspMultiError(errors)
 	}
@@ -2122,3 +2269,588 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = DeleteOrderRspValidationError{}
+
+// Validate checks the field values on GenerateConfirmOrderRsp_CalcAmount with
+// the rules defined in the proto definition for this message. If any rules
+// are violated, the first error encountered is returned, or nil if there are
+// no violations.
+func (m *GenerateConfirmOrderRsp_CalcAmount) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on GenerateConfirmOrderRsp_CalcAmount
+// with the rules defined in the proto definition for this message. If any
+// rules are violated, the result is a list of violation errors wrapped in
+// GenerateConfirmOrderRsp_CalcAmountMultiError, or nil if none found.
+func (m *GenerateConfirmOrderRsp_CalcAmount) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *GenerateConfirmOrderRsp_CalcAmount) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for TotalAmount
+
+	// no validation rules for FreightAmount
+
+	// no validation rules for PromotionAmount
+
+	// no validation rules for PayAmount
+
+	if len(errors) > 0 {
+		return GenerateConfirmOrderRsp_CalcAmountMultiError(errors)
+	}
+
+	return nil
+}
+
+// GenerateConfirmOrderRsp_CalcAmountMultiError is an error wrapping multiple
+// validation errors returned by
+// GenerateConfirmOrderRsp_CalcAmount.ValidateAll() if the designated
+// constraints aren't met.
+type GenerateConfirmOrderRsp_CalcAmountMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m GenerateConfirmOrderRsp_CalcAmountMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m GenerateConfirmOrderRsp_CalcAmountMultiError) AllErrors() []error { return m }
+
+// GenerateConfirmOrderRsp_CalcAmountValidationError is the validation error
+// returned by GenerateConfirmOrderRsp_CalcAmount.Validate if the designated
+// constraints aren't met.
+type GenerateConfirmOrderRsp_CalcAmountValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e GenerateConfirmOrderRsp_CalcAmountValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e GenerateConfirmOrderRsp_CalcAmountValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e GenerateConfirmOrderRsp_CalcAmountValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e GenerateConfirmOrderRsp_CalcAmountValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e GenerateConfirmOrderRsp_CalcAmountValidationError) ErrorName() string {
+	return "GenerateConfirmOrderRsp_CalcAmountValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e GenerateConfirmOrderRsp_CalcAmountValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sGenerateConfirmOrderRsp_CalcAmount.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = GenerateConfirmOrderRsp_CalcAmountValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = GenerateConfirmOrderRsp_CalcAmountValidationError{}
+
+// Validate checks the field values on
+// GenerateConfirmOrderRsp_IntegrationConsumeSetting with the rules defined in
+// the proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *GenerateConfirmOrderRsp_IntegrationConsumeSetting) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on
+// GenerateConfirmOrderRsp_IntegrationConsumeSetting with the rules defined in
+// the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in
+// GenerateConfirmOrderRsp_IntegrationConsumeSettingMultiError, or nil if none found.
+func (m *GenerateConfirmOrderRsp_IntegrationConsumeSetting) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *GenerateConfirmOrderRsp_IntegrationConsumeSetting) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Id
+
+	// no validation rules for DeductionPerAmount
+
+	// no validation rules for MaxPercentPerOrder
+
+	// no validation rules for UseUnit
+
+	// no validation rules for CouponStatus
+
+	if len(errors) > 0 {
+		return GenerateConfirmOrderRsp_IntegrationConsumeSettingMultiError(errors)
+	}
+
+	return nil
+}
+
+// GenerateConfirmOrderRsp_IntegrationConsumeSettingMultiError is an error
+// wrapping multiple validation errors returned by
+// GenerateConfirmOrderRsp_IntegrationConsumeSetting.ValidateAll() if the
+// designated constraints aren't met.
+type GenerateConfirmOrderRsp_IntegrationConsumeSettingMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m GenerateConfirmOrderRsp_IntegrationConsumeSettingMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m GenerateConfirmOrderRsp_IntegrationConsumeSettingMultiError) AllErrors() []error { return m }
+
+// GenerateConfirmOrderRsp_IntegrationConsumeSettingValidationError is the
+// validation error returned by
+// GenerateConfirmOrderRsp_IntegrationConsumeSetting.Validate if the
+// designated constraints aren't met.
+type GenerateConfirmOrderRsp_IntegrationConsumeSettingValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e GenerateConfirmOrderRsp_IntegrationConsumeSettingValidationError) Field() string {
+	return e.field
+}
+
+// Reason function returns reason value.
+func (e GenerateConfirmOrderRsp_IntegrationConsumeSettingValidationError) Reason() string {
+	return e.reason
+}
+
+// Cause function returns cause value.
+func (e GenerateConfirmOrderRsp_IntegrationConsumeSettingValidationError) Cause() error {
+	return e.cause
+}
+
+// Key function returns key value.
+func (e GenerateConfirmOrderRsp_IntegrationConsumeSettingValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e GenerateConfirmOrderRsp_IntegrationConsumeSettingValidationError) ErrorName() string {
+	return "GenerateConfirmOrderRsp_IntegrationConsumeSettingValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e GenerateConfirmOrderRsp_IntegrationConsumeSettingValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sGenerateConfirmOrderRsp_IntegrationConsumeSetting.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = GenerateConfirmOrderRsp_IntegrationConsumeSettingValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = GenerateConfirmOrderRsp_IntegrationConsumeSettingValidationError{}
+
+// Validate checks the field values on
+// GenerateConfirmOrderRsp_MemberReceiveAddress with the rules defined in the
+// proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *GenerateConfirmOrderRsp_MemberReceiveAddress) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on
+// GenerateConfirmOrderRsp_MemberReceiveAddress with the rules defined in the
+// proto definition for this message. If any rules are violated, the result is
+// a list of violation errors wrapped in
+// GenerateConfirmOrderRsp_MemberReceiveAddressMultiError, or nil if none found.
+func (m *GenerateConfirmOrderRsp_MemberReceiveAddress) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *GenerateConfirmOrderRsp_MemberReceiveAddress) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Id
+
+	// no validation rules for MemberId
+
+	// no validation rules for Name
+
+	// no validation rules for PhoneNumber
+
+	// no validation rules for DefaultStatus
+
+	// no validation rules for PostCode
+
+	// no validation rules for Province
+
+	// no validation rules for City
+
+	// no validation rules for Region
+
+	// no validation rules for DetailAddress
+
+	if len(errors) > 0 {
+		return GenerateConfirmOrderRsp_MemberReceiveAddressMultiError(errors)
+	}
+
+	return nil
+}
+
+// GenerateConfirmOrderRsp_MemberReceiveAddressMultiError is an error wrapping
+// multiple validation errors returned by
+// GenerateConfirmOrderRsp_MemberReceiveAddress.ValidateAll() if the
+// designated constraints aren't met.
+type GenerateConfirmOrderRsp_MemberReceiveAddressMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m GenerateConfirmOrderRsp_MemberReceiveAddressMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m GenerateConfirmOrderRsp_MemberReceiveAddressMultiError) AllErrors() []error { return m }
+
+// GenerateConfirmOrderRsp_MemberReceiveAddressValidationError is the
+// validation error returned by
+// GenerateConfirmOrderRsp_MemberReceiveAddress.Validate if the designated
+// constraints aren't met.
+type GenerateConfirmOrderRsp_MemberReceiveAddressValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e GenerateConfirmOrderRsp_MemberReceiveAddressValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e GenerateConfirmOrderRsp_MemberReceiveAddressValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e GenerateConfirmOrderRsp_MemberReceiveAddressValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e GenerateConfirmOrderRsp_MemberReceiveAddressValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e GenerateConfirmOrderRsp_MemberReceiveAddressValidationError) ErrorName() string {
+	return "GenerateConfirmOrderRsp_MemberReceiveAddressValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e GenerateConfirmOrderRsp_MemberReceiveAddressValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sGenerateConfirmOrderRsp_MemberReceiveAddress.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = GenerateConfirmOrderRsp_MemberReceiveAddressValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = GenerateConfirmOrderRsp_MemberReceiveAddressValidationError{}
+
+// Validate checks the field values on
+// GenerateConfirmOrderRsp_CartPromotionItem with the rules defined in the
+// proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *GenerateConfirmOrderRsp_CartPromotionItem) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on
+// GenerateConfirmOrderRsp_CartPromotionItem with the rules defined in the
+// proto definition for this message. If any rules are violated, the result is
+// a list of violation errors wrapped in
+// GenerateConfirmOrderRsp_CartPromotionItemMultiError, or nil if none found.
+func (m *GenerateConfirmOrderRsp_CartPromotionItem) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *GenerateConfirmOrderRsp_CartPromotionItem) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for PromotionMessage
+
+	// no validation rules for ReduceAmount
+
+	// no validation rules for RealStock
+
+	// no validation rules for Integration
+
+	// no validation rules for Growth
+
+	if len(errors) > 0 {
+		return GenerateConfirmOrderRsp_CartPromotionItemMultiError(errors)
+	}
+
+	return nil
+}
+
+// GenerateConfirmOrderRsp_CartPromotionItemMultiError is an error wrapping
+// multiple validation errors returned by
+// GenerateConfirmOrderRsp_CartPromotionItem.ValidateAll() if the designated
+// constraints aren't met.
+type GenerateConfirmOrderRsp_CartPromotionItemMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m GenerateConfirmOrderRsp_CartPromotionItemMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m GenerateConfirmOrderRsp_CartPromotionItemMultiError) AllErrors() []error { return m }
+
+// GenerateConfirmOrderRsp_CartPromotionItemValidationError is the validation
+// error returned by GenerateConfirmOrderRsp_CartPromotionItem.Validate if the
+// designated constraints aren't met.
+type GenerateConfirmOrderRsp_CartPromotionItemValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e GenerateConfirmOrderRsp_CartPromotionItemValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e GenerateConfirmOrderRsp_CartPromotionItemValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e GenerateConfirmOrderRsp_CartPromotionItemValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e GenerateConfirmOrderRsp_CartPromotionItemValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e GenerateConfirmOrderRsp_CartPromotionItemValidationError) ErrorName() string {
+	return "GenerateConfirmOrderRsp_CartPromotionItemValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e GenerateConfirmOrderRsp_CartPromotionItemValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sGenerateConfirmOrderRsp_CartPromotionItem.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = GenerateConfirmOrderRsp_CartPromotionItemValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = GenerateConfirmOrderRsp_CartPromotionItemValidationError{}
+
+// Validate checks the field values on
+// GenerateConfirmOrderRsp_CouponHistoryDetail with the rules defined in the
+// proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *GenerateConfirmOrderRsp_CouponHistoryDetail) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on
+// GenerateConfirmOrderRsp_CouponHistoryDetail with the rules defined in the
+// proto definition for this message. If any rules are violated, the result is
+// a list of violation errors wrapped in
+// GenerateConfirmOrderRsp_CouponHistoryDetailMultiError, or nil if none found.
+func (m *GenerateConfirmOrderRsp_CouponHistoryDetail) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *GenerateConfirmOrderRsp_CouponHistoryDetail) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if len(errors) > 0 {
+		return GenerateConfirmOrderRsp_CouponHistoryDetailMultiError(errors)
+	}
+
+	return nil
+}
+
+// GenerateConfirmOrderRsp_CouponHistoryDetailMultiError is an error wrapping
+// multiple validation errors returned by
+// GenerateConfirmOrderRsp_CouponHistoryDetail.ValidateAll() if the designated
+// constraints aren't met.
+type GenerateConfirmOrderRsp_CouponHistoryDetailMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m GenerateConfirmOrderRsp_CouponHistoryDetailMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m GenerateConfirmOrderRsp_CouponHistoryDetailMultiError) AllErrors() []error { return m }
+
+// GenerateConfirmOrderRsp_CouponHistoryDetailValidationError is the validation
+// error returned by GenerateConfirmOrderRsp_CouponHistoryDetail.Validate if
+// the designated constraints aren't met.
+type GenerateConfirmOrderRsp_CouponHistoryDetailValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e GenerateConfirmOrderRsp_CouponHistoryDetailValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e GenerateConfirmOrderRsp_CouponHistoryDetailValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e GenerateConfirmOrderRsp_CouponHistoryDetailValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e GenerateConfirmOrderRsp_CouponHistoryDetailValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e GenerateConfirmOrderRsp_CouponHistoryDetailValidationError) ErrorName() string {
+	return "GenerateConfirmOrderRsp_CouponHistoryDetailValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e GenerateConfirmOrderRsp_CouponHistoryDetailValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sGenerateConfirmOrderRsp_CouponHistoryDetail.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = GenerateConfirmOrderRsp_CouponHistoryDetailValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = GenerateConfirmOrderRsp_CouponHistoryDetailValidationError{}

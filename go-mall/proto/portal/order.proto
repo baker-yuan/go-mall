@@ -17,8 +17,53 @@ message GenerateConfirmOrderReq {
 message GenerateConfirmOrderRsp {
   // 计算的金额
   message CalcAmount {
+    double total_amount = 1; // 订单商品总金额
+    double freight_amount = 2; // 运费
+    double promotion_amount = 3; // 活动优惠
+    double pay_amount = 4; // 应付金额
+  }
+
+  // 积分使用规则
+  message IntegrationConsumeSetting {
+    int64 id = 1; //
+    int32 deduction_per_amount = 2; // 每一元需要抵扣的积分数量
+    int32 max_percent_per_order = 3; // 每笔订单最高抵用百分比
+    int32 use_unit = 4; // 每次使用积分最小单位100
+    int32 coupon_status = 5; // 是否可以和优惠券同用；0->不可以；1->可以
+  }
+
+  // 用户收货地址列表
+  message MemberReceiveAddress {
+    int64 id = 1; // ID
+    int64 member_id = 2; // 会员ID
+    string name = 3; // 收货人名称
+    string phone_number = 4; // 电话号码
+    int32 default_status = 5; // 是否为默认
+    string post_code = 6; // 邮政编码
+    string province = 7; // 省份/直辖市
+    string city = 8; // 城市
+    string region = 9; // 区
+    string detail_address = 10; // 详细地址(街道)
+  }
+
+  // 购物车中促销信息的封装
+  message CartPromotionItem {
+    string promotion_message = 2; // 促销活动信息
+    string reduce_amount = 3; // 促销活动减去的金额，针对每个商品
+    int32 real_stock = 4; // 剩余库存-锁定库存
+    int32 integration = 5; // 购买商品赠送积分
+    int32 growth = 6; // 购买商品赠送成长值
+  }
+
+  // 优惠券领取历史详情（包括优惠券信息和关联关系）
+  message CouponHistoryDetail {
 
   }
+
+  CartPromotionItem cart_promotion_items = 1; // 包含优惠信息的购物车信息
+  MemberReceiveAddress member_receive_address = 2; // 用户收货地址列表
+  CouponHistoryDetail coupon_history_details = 3; // 用户可用优惠券列表
+  IntegrationConsumeSetting integration_consume_setting = 4; // 积分使用规则
   uint32 member_integration = 5; // 会员持有的积分
   CalcAmount calc_amount = 6; // 计算的金额
 }
