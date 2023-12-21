@@ -98,13 +98,26 @@ func (r CartItemRepo) GetByDBOption(ctx context.Context, pageNum uint32, pageSiz
 	return res, uint32(pageTotal), nil
 }
 
+// SecurityGetByIDS 根据会员id和主键ID查询购物车表
+func (r CartItemRepo) SecurityGetByIDS(ctx context.Context, memberID uint64, cartIDs []uint64) (entity.CartItems, error) {
+	res := make([]*entity.CartItem, 0)
+	tx := r.GenericDao.DB.WithContext(ctx)
+	tx = tx.Where("delete_status = 0")
+	tx = tx.Where("member_id = ?", memberID)
+	tx = tx.Where("id in ?", cartIDs)
+	if err := tx.Find(&res).Error; err != nil {
+		return nil, err
+	}
+	return res, nil
+}
+
 // GetEffectCartItemByMemberID 根据会员id查询购物车
 func (r CartItemRepo) GetEffectCartItemByMemberID(ctx context.Context, memberID uint64) (entity.CartItems, error) {
 	res := make([]*entity.CartItem, 0)
-	if err := r.GenericDao.DB.WithContext(ctx).
-		Where("delete_status = 0").
-		Where("member_id = ?", memberID).
-		Find(&res).Error; err != nil {
+	tx := r.GenericDao.DB.WithContext(ctx)
+	tx = tx.Where("delete_status = 0")
+	tx = tx.Where("member_id = ?", memberID) // member_id一定要的，防止越权
+	if err := tx.Find(&res).Error; err != nil {
 		return nil, err
 	}
 	return res, nil

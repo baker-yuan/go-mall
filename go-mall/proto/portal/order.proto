@@ -34,11 +34,11 @@ message GenerateConfirmOrderRsp {
 
   // 用户收货地址列表
   message MemberReceiveAddress {
-    int64 id = 1; // ID
-    int64 member_id = 2; // 会员ID
+    uint64 id = 1; // ID
+    uint64 member_id = 2; // 会员ID
     string name = 3; // 收货人名称
     string phone_number = 4; // 电话号码
-    int32 default_status = 5; // 是否为默认
+    uint32 default_status = 5; // 是否为默认
     string post_code = 6; // 邮政编码
     string province = 7; // 省份/直辖市
     string city = 8; // 城市
@@ -61,7 +61,7 @@ message GenerateConfirmOrderRsp {
   }
 
   CartPromotionItem cart_promotion_items = 1; // 包含优惠信息的购物车信息
-  MemberReceiveAddress member_receive_address = 2; // 用户收货地址列表
+  repeated MemberReceiveAddress member_receive_address = 2; // 用户收货地址列表
   CouponHistoryDetail coupon_history_details = 3; // 用户可用优惠券列表
   IntegrationConsumeSetting integration_consume_setting = 4; // 积分使用规则
   uint32 member_integration = 5; // 会员持有的积分

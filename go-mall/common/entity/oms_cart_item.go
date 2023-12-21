@@ -1,5 +1,10 @@
 package entity
 
+import (
+	"github.com/emirpasic/gods/maps/treemap"
+	"github.com/emirpasic/gods/utils"
+)
+
 // CartItem 购物车表
 type CartItem struct {
 	ID uint64 `gorm:"column:id;type:bigint;primary_key;auto_increment;comment:主键"`
@@ -44,4 +49,21 @@ func (c CartItems) GetMemberIDs() []uint64 {
 		res = append(res, item.MemberID)
 	}
 	return res
+}
+
+// GroupBySpu 以spu为单位对购物车中商品进行分组
+func (c CartItems) GroupBySpu() *treemap.Map {
+	productCartMap := treemap.NewWith(utils.Int64Comparator)
+	for _, item := range c {
+		if val, found := productCartMap.Get(item.ProductID); found {
+			// 如果已经有这个ProductID的列表，就添加到列表中
+			productCartItemList := val.(CartItems)
+			productCartItemList = append(productCartItemList, item)
+			productCartMap.Put(item.ProductID, productCartItemList)
+		} else {
+			// 否则，创建一个新的列表并添加到map中
+			productCartMap.Put(item.ProductID, CartItems{item})
+		}
+	}
+	return productCartMap
 }

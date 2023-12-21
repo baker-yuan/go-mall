@@ -72,6 +72,8 @@ func Run(cfg *config.Config) {
 		memberRepo                = repo.NewMemberRepo(conn)
 		cartItemRepo              = repo.NewCartItemRepo(conn)
 		homeAdvertiseRepo         = repo.NewHomeAdvertiseRepo(conn)
+		orderRepo                 = repo.NewOrderRepo(conn)
+		memberReceiveAddressRepo  = repo.NewMemberReceiveAddressRepo(conn)
 	)
 	homeUseCase := usecase.NewHome(productCategoryRepo, homeAdvertiseRepo, brandRepo)
 	productUseCase := usecase.NewProduct(
@@ -86,12 +88,15 @@ func Run(cfg *config.Config) {
 
 	cartItemUseCase := usecase.NewCartItem(cartItemRepo, memberRepo, productRepo, brandRepo)
 
+	orderUseCase := usecase.NewOrder(orderRepo, memberRepo, memberReceiveAddressRepo)
+
 	// grpc服务
 	grpcSrvImpl := grpcsrv.New(
 		homeUseCase,
 		productUseCase,
 		memberUseCase,
 		cartItemUseCase,
+		orderUseCase,
 	)
 	grpcServer, err := configGrpc(customLog, grpcSrvImpl, cfg, jwtTokenUtil, cfg.HTTP.IP, cfg.HTTP.Port)
 	if err != nil {

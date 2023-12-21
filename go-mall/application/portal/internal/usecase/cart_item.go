@@ -96,10 +96,14 @@ func (c CartItemUseCase) CartItemList(ctx context.Context, memberID uint64) ([]*
 	return res, nil
 }
 
-// CartItemListPromotion 获取当前会员的购物车列表,包括促销信息
-func (c CartItemUseCase) CartItemListPromotion(ctx context.Context, memberID uint64, req *pb.CartItemListPromotionReq) (*pb.CartItemListPromotionRsp, error) {
-	//TODO implement me
-	panic("implement me")
+// CartItemListPromotion 获取当前会员的购物车列表，包括促销信息
+func (c CartItemUseCase) CartItemListPromotion(ctx context.Context, memberID uint64, cartIDs []uint64) (*pb.CartItemListPromotionRsp, error) {
+	cartItems, err := c.cartItemRepo.SecurityGetByIDS(ctx, memberID, cartIDs)
+	if err != nil {
+		return nil, err
+	}
+
+	return nil, err
 }
 
 // CartItemUpdateQuantity 修改购物车中指定商品的数量

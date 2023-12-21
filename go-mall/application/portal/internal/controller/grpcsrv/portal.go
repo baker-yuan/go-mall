@@ -30,6 +30,7 @@ type PortalApiImpl struct {
 	product         usecase.IProductUseCase
 	memberUseCase   usecase.IMemberUseCase
 	cartItemUseCase usecase.ICartItemUseCase
+	orderUseCase    usecase.IOrderUseCase
 }
 
 func New(
@@ -37,11 +38,13 @@ func New(
 	product usecase.IProductUseCase,
 	memberUseCase usecase.IMemberUseCase,
 	cartItemUseCase usecase.ICartItemUseCase,
+	orderUseCase usecase.IOrderUseCase,
 ) PortalApi {
 	return &PortalApiImpl{
 		home:            home,
 		product:         product,
 		memberUseCase:   memberUseCase,
 		cartItemUseCase: cartItemUseCase,
+		orderUseCase:    orderUseCase,
 	}
 }

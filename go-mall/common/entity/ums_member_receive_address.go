@@ -21,3 +21,5 @@ type MemberReceiveAddress struct {
 func (a MemberReceiveAddress) TableName() string {
 	return "ums_member_receive_address"
 }
+
+type MemberReceiveAddresses []*MemberReceiveAddress

@@ -3,6 +3,7 @@ package usecase
 import (
 	"context"
 
+	portal_entity "github.com/baker-yuan/go-mall/application/portal/internal/entity"
 	"github.com/baker-yuan/go-mall/common/db"
 	"github.com/baker-yuan/go-mall/common/entity"
 	pb "github.com/baker-yuan/go-mall/proto/mall"
@@ -152,7 +153,7 @@ type (
 		// CartItemList 获取当前会员的购物车列表
 		CartItemList(ctx context.Context, memberID uint64) ([]*pb.CartItem, error)
 		// CartItemListPromotion 获取当前会员的购物车列表,包括促销信息
-		CartItemListPromotion(ctx context.Context, memberID uint64, req *pb.CartItemListPromotionReq) (*pb.CartItemListPromotionRsp, error)
+		CartItemListPromotion(ctx context.Context, memberID uint64, cartIDs []uint64) (*pb.CartItemListPromotionRsp, error)
 		// CartItemUpdateQuantity 修改购物车中指定商品的数量
 		CartItemUpdateQuantity(ctx context.Context, memberID uint64, req *pb.CartItemUpdateQuantityReq) error
 		// CartItemGetCartProduct 获取购物车中指定商品的规格,用于重选规格
@@ -177,6 +178,9 @@ type (
 		GetByID(ctx context.Context, id uint64) (*entity.CartItem, error)
 		// GetByDBOption 根据动态条件查询购物车表
 		GetByDBOption(ctx context.Context, pageNum uint32, pageSize uint32, opts ...db.DBOption) ([]*entity.CartItem, uint32, error)
+
+		// SecurityGetByIDS 根据会员id和主键ID查询购物车表
+		SecurityGetByIDS(ctx context.Context, memberID uint64, cartIDs []uint64) (entity.CartItems, error)
 		// GetEffectCartItemByMemberID 根据会员id查询购物车
 		GetEffectCartItemByMemberID(ctx context.Context, memberID uint64) (entity.CartItems, error)
 
@@ -204,5 +208,81 @@ type (
 	}
 )
 
-// GetRecommendBrandList 获取推荐品牌
-//GetRecommendBrandList(ctx context.Context, offset uint32, limit uint32) ([]*entity.Brand, error)
+// Order 订单表
+type (
+	// IOrderUseCase 业务逻辑
+	IOrderUseCase interface {
+		// GenerateConfirmOrder 根据用户购物车信息生成确认单信息
+		GenerateConfirmOrder(ctx context.Context, memberID uint64, req *pb.GenerateConfirmOrderReq) (*pb.GenerateConfirmOrderRsp, error)
+		// GenerateOrder 根据提交信息生成订单
+		GenerateOrder(ctx context.Context, req *pb.GenerateOrderReq) (*pb.GenerateOrderRsp, error)
+		// PaySuccess 支付成功后的回调
+		PaySuccess(ctx context.Context, req *pb.PaySuccessReq) (*pb.PaySuccessRsp, error)
+		// CancelTimeOutOrder PaySuccess 自动取消超时订单
+		CancelTimeOutOrder(ctx context.Context, req *pb.CancelTimeOutOrderReq) (*pb.CancelTimeOutOrderRsp, error)
+		// CancelOrder 取消单个超时订单
+		CancelOrder(ctx context.Context, req *pb.CancelOrderReq) (*pb.CancelOrderRsp, error)
+		// OrderList 按状态分页获取用户订单列表
+		OrderList(ctx context.Context, req *pb.OrderListReq) (*pb.OrderListRsp, error)
+		// OrderDetail 根据ID获取订单详情
+		OrderDetail(ctx context.Context, req *pb.OrderDetailReq) (*pb.OrderDetailRsp, error)
+		// CancelUserOrder 用户取消订单
+		CancelUserOrder(ctx context.Context, req *pb.CancelUserOrderReq) (*pb.CancelUserOrderRsp, error)
+		// ConfirmReceiveOrder 用户确认收货
+		ConfirmReceiveOrder(ctx context.Context, req *pb.ConfirmReceiveOrderReq) (*pb.ConfirmReceiveOrderRsp, error)
+		// DeleteOrder 用户删除订单
+		DeleteOrder(ctx context.Context, req *pb.DeleteOrderReq) (*pb.DeleteOrderRsp, error)
+	}
+
+	// IOrderRepo 数据存储操作
+	IOrderRepo interface {
+		// Create 创建订单表
+		Create(ctx context.Context, order *entity.Order) error
+		// DeleteByID 根据主键ID删除订单表
+		DeleteByID(ctx context.Context, id uint64) error
+		// Update 修改订单表
+		Update(ctx context.Context, order *entity.Order) error
+		// GetByID 根据主键ID查询订单表
+		GetByID(ctx context.Context, id uint64) (*entity.Order, error)
+		// GetByDBOption 根据动态条件查询订单表
+		GetByDBOption(ctx context.Context, pageNum uint32, pageSize uint32, opts ...db.DBOption) ([]*entity.Order, uint32, error)
+	}
+)
+
+// MemberReceiveAddress 会员收货地址表
+type (
+	// IMemberReceiveAddressUseCase 业务逻辑
+	IMemberReceiveAddressUseCase interface {
+	}
+
+	// IMemberReceiveAddressRepo 数据存储操作
+	IMemberReceiveAddressRepo interface {
+		// Create 创建会员收货地址表
+		Create(ctx context.Context, memberReceiveAddress *entity.MemberReceiveAddress) error
+		// DeleteByID 根据主键ID删除会员收货地址表
+		DeleteByID(ctx context.Context, id uint64) error
+		// Update 修改会员收货地址表
+		Update(ctx context.Context, memberReceiveAddress *entity.MemberReceiveAddress) error
+		// GetByID 根据主键ID查询会员收货地址表
+		GetByID(ctx context.Context, id uint64) (*entity.MemberReceiveAddress, error)
+		// GetByDBOption 根据动态条件查询会员收货地址表
+		GetByDBOption(ctx context.Context, pageNum uint32, pageSize uint32, opts ...db.DBOption) ([]*entity.MemberReceiveAddress, uint32, error)
+
+		// GetByMemberID 根据会员ID查找
+		GetByMemberID(ctx context.Context, memberID uint64) (entity.MemberReceiveAddresses, error)
+	}
+)
+
+// MemberReceiveAddress 促销管理
+type (
+	// IPromotionUseCase 业务逻辑
+	IPromotionUseCase interface {
+		// CalcCartPromotion 计算购物车中的促销活动信息
+		// cartItems 购物车
+		CalcCartPromotion(ctx context.Context, cartItems entity.CartItems) (portal_entity.CartPromotionItems, error)
+	}
+
+	// IPromotionRepo 数据存储操作
+	IPromotionRepo interface {
+	}
+)
