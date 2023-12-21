@@ -1,9 +1,5 @@
 package entity
 
-import (
-	"github.com/baker-yuan/go-mall/common/util"
-)
-
 // CartItem 购物车表
 type CartItem struct {
 	ID uint64 `gorm:"column:id;type:bigint;primary_key;auto_increment;comment:主键"`
@@ -60,16 +56,30 @@ func (c CartItems) GetProductIDs() []uint64 {
 }
 
 // GroupCartItemBySpu 以spu为单位对购物车中商品进行分组 key=商品id value=购物车集合
-func (c CartItems) GroupCartItemBySpu() *util.TreeMap[uint64, CartItems] {
-	productCartMap := util.NewTreeMap[uint64, CartItems]()
+//func (c CartItems) GroupCartItemBySpu() *util.TreeMap[uint64, CartItems] {
+//	productCartMap := util.NewTreeMap[uint64, CartItems]()
+//	for _, cartItem := range c {
+//		productID := cartItem.ProductID
+//		productCartItemList, exists := productCartMap.Get(productID)
+//		if !exists {
+//			productCartItemList = CartItems{}
+//		}
+//		productCartItemList = append(productCartItemList, cartItem)
+//		productCartMap.Insert(productID, productCartItemList)
+//	}
+//	return productCartMap
+//}
+
+func (c CartItems) GroupCartItemBySpu() map[uint64]CartItems {
+	productCartMap := make(map[uint64]CartItems)
 	for _, cartItem := range c {
 		productID := cartItem.ProductID
-		productCartItemList, exists := productCartMap.Get(productID)
+		productCartItemList, exists := productCartMap[productID]
 		if !exists {
 			productCartItemList = CartItems{}
 		}
 		productCartItemList = append(productCartItemList, cartItem)
-		productCartMap.Insert(productID, productCartItemList)
+		productCartMap[productID] = productCartItemList
 	}
 	return productCartMap
 }

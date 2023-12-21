@@ -33,11 +33,10 @@ func (c PromotionUseCase) CalcCartPromotion(ctx context.Context, cartItems entit
 		return nil, err
 	}
 	// 3.根据商品促销类型计算商品促销优惠价格
-	for kv := range productCartMap.Range() {
-		productID := kv.Key
-		v := kv.Value
-
-	}
+	//for kv := range productCartMap.Range() {
+	//	productID := kv.Key
+	//	v := kv.Value
+	//}
 
 	return nil, nil
 }
