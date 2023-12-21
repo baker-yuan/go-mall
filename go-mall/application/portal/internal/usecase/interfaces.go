@@ -59,6 +59,8 @@ type (
 	IProductRepo interface {
 		// GetByID 根据主键ID查询商品
 		GetByID(ctx context.Context, id uint64) (*entity.Product, error)
+		// GetByIDs 根据主键ID查询商品
+		GetByIDs(ctx context.Context, ids []uint64) (entity.Products, error)
 
 		// SearchProduct 综合搜索商品
 		SearchProduct(ctx context.Context, req *pb.SearchProductReq) (entity.Products, error)
@@ -101,6 +103,8 @@ type (
 	ISkuStockRepo interface {
 		// GetByProductID 根据商品ID查询sku的库存
 		GetByProductID(ctx context.Context, productID uint64) (entity.SkuStocks, error)
+		// GetByProductIDs 根据商品ID查询sku的库存
+		GetByProductIDs(ctx context.Context, productIDs []uint64) (entity.SkuStocks, error)
 	}
 )
 
@@ -231,7 +235,7 @@ type (
 		// ConfirmReceiveOrder 用户确认收货
 		ConfirmReceiveOrder(ctx context.Context, req *pb.ConfirmReceiveOrderReq) (*pb.ConfirmReceiveOrderRsp, error)
 		// DeleteOrder 用户删除订单
-		DeleteOrder(ctx context.Context, req *pb.DeleteOrderReq) (*pb.DeleteOrderRsp, error)
+		DeleteOrder(ctx context.Context, req *pb.PortalDeleteOrderReq) (*pb.PortalDeleteOrderRsp, error)
 	}
 
 	// IOrderRepo 数据存储操作
@@ -284,5 +288,53 @@ type (
 
 	// IPromotionRepo 数据存储操作
 	IPromotionRepo interface {
+	}
+)
+
+// ProductLadder 商品阶梯价格表
+type (
+	// IProductLadderUseCase 业务逻辑
+	IProductLadderUseCase interface {
+	}
+
+	// IProductLadderRepo 数据存储操作
+	IProductLadderRepo interface {
+		// Create 创建商品阶梯价格表
+		Create(ctx context.Context, productLadder *entity.ProductLadder) error
+		// DeleteByID 根据主键ID删除商品阶梯价格表
+		DeleteByID(ctx context.Context, id uint64) error
+		// Update 修改商品阶梯价格表
+		Update(ctx context.Context, productLadder *entity.ProductLadder) error
+		// GetByID 根据主键ID查询商品阶梯价格表
+		GetByID(ctx context.Context, id uint64) (*entity.ProductLadder, error)
+		// GetByDBOption 根据动态条件查询商品阶梯价格表
+		GetByDBOption(ctx context.Context, pageNum uint32, pageSize uint32, opts ...db.DBOption) ([]*entity.ProductLadder, uint32, error)
+
+		// GetByProductIDs 根据商品ID查询商品阶梯价格
+		GetByProductIDs(ctx context.Context, productIDs []uint64) (entity.ProductLadders, error)
+	}
+)
+
+// ProductFullReduction 商品满减表
+type (
+	// IProductFullReductionUseCase 业务逻辑
+	IProductFullReductionUseCase interface {
+	}
+
+	// IProductFullReductionRepo 数据存储操作
+	IProductFullReductionRepo interface {
+		// Create 创建商品满减表
+		Create(ctx context.Context, productFullReduction *entity.ProductFullReduction) error
+		// DeleteByID 根据主键ID删除商品满减表
+		DeleteByID(ctx context.Context, id uint64) error
+		// Update 修改商品满减表
+		Update(ctx context.Context, productFullReduction *entity.ProductFullReduction) error
+		// GetByID 根据主键ID查询商品满减表
+		GetByID(ctx context.Context, id uint64) (*entity.ProductFullReduction, error)
+		// GetByDBOption 根据动态条件查询商品满减表
+		GetByDBOption(ctx context.Context, pageNum uint32, pageSize uint32, opts ...db.DBOption) ([]*entity.ProductFullReduction, uint32, error)
+
+		// GetByProductIDs 根据商品ID查询商品满减表
+		GetByProductIDs(ctx context.Context, productIDs []uint64) (entity.ProductFullReductions, error)
 	}
 )

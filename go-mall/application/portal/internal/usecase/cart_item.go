@@ -14,15 +14,24 @@ type CartItemUseCase struct {
 	memberRepo   IMemberRepo   // 操作会员
 	productRepo  IProductRepo  // 操作商品
 	brandRepo    IBrandRepo    // 操作品牌
+
+	promotionUseCase IPromotionUseCase
 }
 
 // NewCartItem 创建购物车表管理Service实现类
-func NewCartItem(cartItemRepo ICartItemRepo, memberRepo IMemberRepo, productRepo IProductRepo, brandRepo IBrandRepo) *CartItemUseCase {
+func NewCartItem(
+	cartItemRepo ICartItemRepo,
+	memberRepo IMemberRepo,
+	productRepo IProductRepo,
+	brandRepo IBrandRepo,
+	promotionUseCase IPromotionUseCase,
+) *CartItemUseCase {
 	return &CartItemUseCase{
-		cartItemRepo: cartItemRepo,
-		memberRepo:   memberRepo,
-		productRepo:  productRepo,
-		brandRepo:    brandRepo,
+		cartItemRepo:     cartItemRepo,
+		memberRepo:       memberRepo,
+		productRepo:      productRepo,
+		brandRepo:        brandRepo,
+		promotionUseCase: promotionUseCase,
 	}
 }
 
@@ -103,7 +112,15 @@ func (c CartItemUseCase) CartItemListPromotion(ctx context.Context, memberID uin
 		return nil, err
 	}
 
-	return nil, err
+	promotions, err := c.promotionUseCase.CalcCartPromotion(ctx, cartItems)
+	if err != nil {
+		return nil, err
+	}
+
+	// todo
+	assembler.CartPromotionItemToModel(promotions)
+
+	return nil, nil
 }
 
 // CartItemUpdateQuantity 修改购物车中指定商品的数量

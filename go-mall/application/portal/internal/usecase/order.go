@@ -95,6 +95,6 @@ func (c OrderUseCase) ConfirmReceiveOrder(context.Context, *pb.ConfirmReceiveOrd
 }
 
 // DeleteOrder 用户删除订单
-func (c OrderUseCase) DeleteOrder(context.Context, *pb.DeleteOrderReq) (*pb.DeleteOrderRsp, error) {
+func (c OrderUseCase) DeleteOrder(context.Context, *pb.PortalDeleteOrderReq) (*pb.PortalDeleteOrderRsp, error) {
 	return nil, nil
 }

@@ -54,7 +54,7 @@ type PortalOrderApiClient interface {
 	// 用户确认收货
 	ConfirmReceiveOrder(ctx context.Context, in *ConfirmReceiveOrderReq, opts ...grpc.CallOption) (*ConfirmReceiveOrderRsp, error)
 	// 用户删除订单
-	DeleteOrder(ctx context.Context, in *DeleteOrderReq, opts ...grpc.CallOption) (*DeleteOrderRsp, error)
+	DeleteOrder(ctx context.Context, in *PortalDeleteOrderReq, opts ...grpc.CallOption) (*PortalDeleteOrderRsp, error)
 }
 
 type portalOrderApiClient struct {
@@ -146,8 +146,8 @@ func (c *portalOrderApiClient) ConfirmReceiveOrder(ctx context.Context, in *Conf
 	return out, nil
 }
 
-func (c *portalOrderApiClient) DeleteOrder(ctx context.Context, in *DeleteOrderReq, opts ...grpc.CallOption) (*DeleteOrderRsp, error) {
-	out := new(DeleteOrderRsp)
+func (c *portalOrderApiClient) DeleteOrder(ctx context.Context, in *PortalDeleteOrderReq, opts ...grpc.CallOption) (*PortalDeleteOrderRsp, error) {
+	out := new(PortalDeleteOrderRsp)
 	err := c.cc.Invoke(ctx, PortalOrderApi_DeleteOrder_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -178,7 +178,7 @@ type PortalOrderApiServer interface {
 	// 用户确认收货
 	ConfirmReceiveOrder(context.Context, *ConfirmReceiveOrderReq) (*ConfirmReceiveOrderRsp, error)
 	// 用户删除订单
-	DeleteOrder(context.Context, *DeleteOrderReq) (*DeleteOrderRsp, error)
+	DeleteOrder(context.Context, *PortalDeleteOrderReq) (*PortalDeleteOrderRsp, error)
 	mustEmbedUnimplementedPortalOrderApiServer()
 }
 
@@ -213,7 +213,7 @@ func (UnimplementedPortalOrderApiServer) CancelUserOrder(context.Context, *Cance
 func (UnimplementedPortalOrderApiServer) ConfirmReceiveOrder(context.Context, *ConfirmReceiveOrderReq) (*ConfirmReceiveOrderRsp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ConfirmReceiveOrder not implemented")
 }
-func (UnimplementedPortalOrderApiServer) DeleteOrder(context.Context, *DeleteOrderReq) (*DeleteOrderRsp, error) {
+func (UnimplementedPortalOrderApiServer) DeleteOrder(context.Context, *PortalDeleteOrderReq) (*PortalDeleteOrderRsp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteOrder not implemented")
 }
 func (UnimplementedPortalOrderApiServer) mustEmbedUnimplementedPortalOrderApiServer() {}
@@ -392,7 +392,7 @@ func _PortalOrderApi_ConfirmReceiveOrder_Handler(srv interface{}, ctx context.Co
 }
 
 func _PortalOrderApi_DeleteOrder_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(DeleteOrderReq)
+	in := new(PortalDeleteOrderReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -404,7 +404,7 @@ func _PortalOrderApi_DeleteOrder_Handler(srv interface{}, ctx context.Context, d
 		FullMethod: PortalOrderApi_DeleteOrder_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(PortalOrderApiServer).DeleteOrder(ctx, req.(*DeleteOrderReq))
+		return srv.(PortalOrderApiServer).DeleteOrder(ctx, req.(*PortalDeleteOrderReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }

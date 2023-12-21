@@ -1,8 +1,7 @@
 package entity
 
 import (
-	"github.com/emirpasic/gods/maps/treemap"
-	"github.com/emirpasic/gods/utils"
+	"github.com/baker-yuan/go-mall/common/util"
 )
 
 // CartItem 购物车表
@@ -51,19 +50,26 @@ func (c CartItems) GetMemberIDs() []uint64 {
 	return res
 }
 
-// GroupBySpu 以spu为单位对购物车中商品进行分组
-func (c CartItems) GroupBySpu() *treemap.Map {
-	productCartMap := treemap.NewWith(utils.Int64Comparator)
+// GetProductIDs 获取商品ID集合
+func (c CartItems) GetProductIDs() []uint64 {
+	res := make([]uint64, 0)
 	for _, item := range c {
-		if val, found := productCartMap.Get(item.ProductID); found {
-			// 如果已经有这个ProductID的列表，就添加到列表中
-			productCartItemList := val.(CartItems)
-			productCartItemList = append(productCartItemList, item)
-			productCartMap.Put(item.ProductID, productCartItemList)
-		} else {
-			// 否则，创建一个新的列表并添加到map中
-			productCartMap.Put(item.ProductID, CartItems{item})
+		res = append(res, item.ProductID)
+	}
+	return res
+}
+
+// GroupCartItemBySpu 以spu为单位对购物车中商品进行分组 key=商品id value=购物车集合
+func (c CartItems) GroupCartItemBySpu() *util.TreeMap[uint64, CartItems] {
+	productCartMap := util.NewTreeMap[uint64, CartItems]()
+	for _, cartItem := range c {
+		productID := cartItem.ProductID
+		productCartItemList, exists := productCartMap.Get(productID)
+		if !exists {
+			productCartItemList = CartItems{}
 		}
+		productCartItemList = append(productCartItemList, cartItem)
+		productCartMap.Insert(productID, productCartItemList)
 	}
 	return productCartMap
 }

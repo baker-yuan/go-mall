@@ -14,3 +14,5 @@ type ProductFullReduction struct {
 func (c ProductFullReduction) TableName() string {
 	return "pms_product_full_reduction"
 }
+
+type ProductFullReductions []*ProductFullReduction

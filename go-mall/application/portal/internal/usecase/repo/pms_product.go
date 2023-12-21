@@ -28,6 +28,15 @@ func (r ProductRepo) GetByID(ctx context.Context, id uint64) (*entity.Product, e
 	return r.GenericDao.GetByID(ctx, id)
 }
 
+// GetByIDs 根据主键ID查询商品
+func (r ProductRepo) GetByIDs(ctx context.Context, ids []uint64) (entity.Products, error) {
+	res := make([]*entity.Product, 0)
+	if err := r.GenericDao.DB.WithContext(ctx).Where("id in ?", ids).Find(&res).Error; err != nil {
+		return nil, err
+	}
+	return res, nil
+}
+
 // SearchProduct 综合搜索商品
 func (r ProductRepo) SearchProduct(ctx context.Context, req *pb.SearchProductReq) (entity.Products, error) {
 	var (

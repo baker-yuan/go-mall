@@ -86,7 +86,9 @@ func Run(cfg *config.Config) {
 
 	memberUseCase := usecase.NewMember(cfg, passwordEncoder, jwtTokenUtil, memberRepo)
 
-	cartItemUseCase := usecase.NewCartItem(cartItemRepo, memberRepo, productRepo, brandRepo)
+	promotionUseCase := usecase.NewPromotion()
+
+	cartItemUseCase := usecase.NewCartItem(cartItemRepo, memberRepo, productRepo, brandRepo, promotionUseCase)
 
 	orderUseCase := usecase.NewOrder(orderRepo, memberRepo, memberReceiveAddressRepo)
 

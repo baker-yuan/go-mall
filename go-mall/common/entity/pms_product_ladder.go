@@ -15,3 +15,5 @@ type ProductLadder struct {
 func (c ProductLadder) TableName() string {
 	return "pms_product_ladder"
 }
+
+type ProductLadders []*ProductLadder

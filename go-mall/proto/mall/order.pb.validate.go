@@ -199,33 +199,38 @@ func (m *GenerateConfirmOrderRsp) validate(all bool) error {
 		}
 	}
 
-	if all {
-		switch v := interface{}(m.GetMemberReceiveAddress()).(type) {
-		case interface{ ValidateAll() error }:
-			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, GenerateConfirmOrderRspValidationError{
-					field:  "MemberReceiveAddress",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
+	for idx, item := range m.GetMemberReceiveAddress() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, GenerateConfirmOrderRspValidationError{
+						field:  fmt.Sprintf("MemberReceiveAddress[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, GenerateConfirmOrderRspValidationError{
+						field:  fmt.Sprintf("MemberReceiveAddress[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
 			}
-		case interface{ Validate() error }:
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
 			if err := v.Validate(); err != nil {
-				errors = append(errors, GenerateConfirmOrderRspValidationError{
-					field:  "MemberReceiveAddress",
+				return GenerateConfirmOrderRspValidationError{
+					field:  fmt.Sprintf("MemberReceiveAddress[%v]", idx),
 					reason: "embedded message failed validation",
 					cause:  err,
-				})
+				}
 			}
 		}
-	} else if v, ok := interface{}(m.GetMemberReceiveAddress()).(interface{ Validate() error }); ok {
-		if err := v.Validate(); err != nil {
-			return GenerateConfirmOrderRspValidationError{
-				field:  "MemberReceiveAddress",
-				reason: "embedded message failed validation",
-				cause:  err,
-			}
-		}
+
 	}
 
 	if all {
@@ -2070,22 +2075,22 @@ var _ interface {
 	ErrorName() string
 } = ConfirmReceiveOrderRspValidationError{}
 
-// Validate checks the field values on DeleteOrderReq with the rules defined in
-// the proto definition for this message. If any rules are violated, the first
-// error encountered is returned, or nil if there are no violations.
-func (m *DeleteOrderReq) Validate() error {
+// Validate checks the field values on PortalDeleteOrderReq with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *PortalDeleteOrderReq) Validate() error {
 	return m.validate(false)
 }
 
-// ValidateAll checks the field values on DeleteOrderReq with the rules defined
-// in the proto definition for this message. If any rules are violated, the
-// result is a list of violation errors wrapped in DeleteOrderReqMultiError,
-// or nil if none found.
-func (m *DeleteOrderReq) ValidateAll() error {
+// ValidateAll checks the field values on PortalDeleteOrderReq with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// PortalDeleteOrderReqMultiError, or nil if none found.
+func (m *PortalDeleteOrderReq) ValidateAll() error {
 	return m.validate(true)
 }
 
-func (m *DeleteOrderReq) validate(all bool) error {
+func (m *PortalDeleteOrderReq) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
@@ -2093,19 +2098,19 @@ func (m *DeleteOrderReq) validate(all bool) error {
 	var errors []error
 
 	if len(errors) > 0 {
-		return DeleteOrderReqMultiError(errors)
+		return PortalDeleteOrderReqMultiError(errors)
 	}
 
 	return nil
 }
 
-// DeleteOrderReqMultiError is an error wrapping multiple validation errors
-// returned by DeleteOrderReq.ValidateAll() if the designated constraints
-// aren't met.
-type DeleteOrderReqMultiError []error
+// PortalDeleteOrderReqMultiError is an error wrapping multiple validation
+// errors returned by PortalDeleteOrderReq.ValidateAll() if the designated
+// constraints aren't met.
+type PortalDeleteOrderReqMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
-func (m DeleteOrderReqMultiError) Error() string {
+func (m PortalDeleteOrderReqMultiError) Error() string {
 	var msgs []string
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
@@ -2114,11 +2119,11 @@ func (m DeleteOrderReqMultiError) Error() string {
 }
 
 // AllErrors returns a list of validation violation errors.
-func (m DeleteOrderReqMultiError) AllErrors() []error { return m }
+func (m PortalDeleteOrderReqMultiError) AllErrors() []error { return m }
 
-// DeleteOrderReqValidationError is the validation error returned by
-// DeleteOrderReq.Validate if the designated constraints aren't met.
-type DeleteOrderReqValidationError struct {
+// PortalDeleteOrderReqValidationError is the validation error returned by
+// PortalDeleteOrderReq.Validate if the designated constraints aren't met.
+type PortalDeleteOrderReqValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -2126,22 +2131,24 @@ type DeleteOrderReqValidationError struct {
 }
 
 // Field function returns field value.
-func (e DeleteOrderReqValidationError) Field() string { return e.field }
+func (e PortalDeleteOrderReqValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e DeleteOrderReqValidationError) Reason() string { return e.reason }
+func (e PortalDeleteOrderReqValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e DeleteOrderReqValidationError) Cause() error { return e.cause }
+func (e PortalDeleteOrderReqValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e DeleteOrderReqValidationError) Key() bool { return e.key }
+func (e PortalDeleteOrderReqValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e DeleteOrderReqValidationError) ErrorName() string { return "DeleteOrderReqValidationError" }
+func (e PortalDeleteOrderReqValidationError) ErrorName() string {
+	return "PortalDeleteOrderReqValidationError"
+}
 
 // Error satisfies the builtin error interface
-func (e DeleteOrderReqValidationError) Error() string {
+func (e PortalDeleteOrderReqValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -2153,14 +2160,14 @@ func (e DeleteOrderReqValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sDeleteOrderReq.%s: %s%s",
+		"invalid %sPortalDeleteOrderReq.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = DeleteOrderReqValidationError{}
+var _ error = PortalDeleteOrderReqValidationError{}
 
 var _ interface {
 	Field() string
@@ -2168,24 +2175,24 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = DeleteOrderReqValidationError{}
+} = PortalDeleteOrderReqValidationError{}
 
-// Validate checks the field values on DeleteOrderRsp with the rules defined in
-// the proto definition for this message. If any rules are violated, the first
-// error encountered is returned, or nil if there are no violations.
-func (m *DeleteOrderRsp) Validate() error {
+// Validate checks the field values on PortalDeleteOrderRsp with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *PortalDeleteOrderRsp) Validate() error {
 	return m.validate(false)
 }
 
-// ValidateAll checks the field values on DeleteOrderRsp with the rules defined
-// in the proto definition for this message. If any rules are violated, the
-// result is a list of violation errors wrapped in DeleteOrderRspMultiError,
-// or nil if none found.
-func (m *DeleteOrderRsp) ValidateAll() error {
+// ValidateAll checks the field values on PortalDeleteOrderRsp with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// PortalDeleteOrderRspMultiError, or nil if none found.
+func (m *PortalDeleteOrderRsp) ValidateAll() error {
 	return m.validate(true)
 }
 
-func (m *DeleteOrderRsp) validate(all bool) error {
+func (m *PortalDeleteOrderRsp) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
@@ -2193,19 +2200,19 @@ func (m *DeleteOrderRsp) validate(all bool) error {
 	var errors []error
 
 	if len(errors) > 0 {
-		return DeleteOrderRspMultiError(errors)
+		return PortalDeleteOrderRspMultiError(errors)
 	}
 
 	return nil
 }
 
-// DeleteOrderRspMultiError is an error wrapping multiple validation errors
-// returned by DeleteOrderRsp.ValidateAll() if the designated constraints
-// aren't met.
-type DeleteOrderRspMultiError []error
+// PortalDeleteOrderRspMultiError is an error wrapping multiple validation
+// errors returned by PortalDeleteOrderRsp.ValidateAll() if the designated
+// constraints aren't met.
+type PortalDeleteOrderRspMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
-func (m DeleteOrderRspMultiError) Error() string {
+func (m PortalDeleteOrderRspMultiError) Error() string {
 	var msgs []string
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
@@ -2214,11 +2221,11 @@ func (m DeleteOrderRspMultiError) Error() string {
 }
 
 // AllErrors returns a list of validation violation errors.
-func (m DeleteOrderRspMultiError) AllErrors() []error { return m }
+func (m PortalDeleteOrderRspMultiError) AllErrors() []error { return m }
 
-// DeleteOrderRspValidationError is the validation error returned by
-// DeleteOrderRsp.Validate if the designated constraints aren't met.
-type DeleteOrderRspValidationError struct {
+// PortalDeleteOrderRspValidationError is the validation error returned by
+// PortalDeleteOrderRsp.Validate if the designated constraints aren't met.
+type PortalDeleteOrderRspValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -2226,22 +2233,24 @@ type DeleteOrderRspValidationError struct {
 }
 
 // Field function returns field value.
-func (e DeleteOrderRspValidationError) Field() string { return e.field }
+func (e PortalDeleteOrderRspValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e DeleteOrderRspValidationError) Reason() string { return e.reason }
+func (e PortalDeleteOrderRspValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e DeleteOrderRspValidationError) Cause() error { return e.cause }
+func (e PortalDeleteOrderRspValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e DeleteOrderRspValidationError) Key() bool { return e.key }
+func (e PortalDeleteOrderRspValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e DeleteOrderRspValidationError) ErrorName() string { return "DeleteOrderRspValidationError" }
+func (e PortalDeleteOrderRspValidationError) ErrorName() string {
+	return "PortalDeleteOrderRspValidationError"
+}
 
 // Error satisfies the builtin error interface
-func (e DeleteOrderRspValidationError) Error() string {
+func (e PortalDeleteOrderRspValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -2253,14 +2262,14 @@ func (e DeleteOrderRspValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sDeleteOrderRsp.%s: %s%s",
+		"invalid %sPortalDeleteOrderRsp.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = DeleteOrderRspValidationError{}
+var _ error = PortalDeleteOrderRspValidationError{}
 
 var _ interface {
 	Field() string
@@ -2268,7 +2277,7 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = DeleteOrderRspValidationError{}
+} = PortalDeleteOrderRspValidationError{}
 
 // Validate checks the field values on GenerateConfirmOrderRsp_CalcAmount with
 // the rules defined in the proto definition for this message. If any rules

@@ -66,7 +66,7 @@ func (s PortalApiImpl) ConfirmReceiveOrder(ctx context.Context, req *pb.ConfirmR
 }
 
 // DeleteOrder 用户删除订单
-func (s PortalApiImpl) DeleteOrder(ctx context.Context, req *pb.DeleteOrderReq) (*pb.DeleteOrderRsp, error) {
+func (s PortalApiImpl) DeleteOrder(ctx context.Context, req *pb.PortalDeleteOrderReq) (*pb.PortalDeleteOrderRsp, error) {
 	//TODO implement me
 	panic("implement me")
 }

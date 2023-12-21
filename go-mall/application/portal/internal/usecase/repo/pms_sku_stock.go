@@ -34,3 +34,16 @@ func (r SkuStockRepo) GetByProductID(ctx context.Context, productID uint64) (ent
 	}
 	return res, nil
 }
+
+// GetByProductIDs 根据商品ID查询sku的库存
+func (r SkuStockRepo) GetByProductIDs(ctx context.Context, productIDs []uint64) (entity.SkuStocks, error) {
+	var (
+		res = make([]*entity.SkuStock, 0)
+	)
+	if err := r.GenericDao.DB.WithContext(ctx).
+		Where("product_id in ?", productIDs).
+		Order("id desc").Find(&res).Error; err != nil {
+		return nil, err
+	}
+	return res, nil
+}

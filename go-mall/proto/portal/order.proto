@@ -139,11 +139,11 @@ message ConfirmReceiveOrderRsp {
 }
 
 // 用户删除订单
-message DeleteOrderReq {
+message PortalDeleteOrderReq {
 
 }
 
-message DeleteOrderRsp {
+message PortalDeleteOrderRsp {
 
 }
 
@@ -220,7 +220,7 @@ service PortalOrderApi {
   }
 
   // 用户删除订单
-  rpc DeleteOrder(DeleteOrderReq) returns (DeleteOrderRsp) {
+  rpc DeleteOrder(PortalDeleteOrderReq) returns (PortalDeleteOrderRsp) {
     option (google.api.http) = {
       post: "/order/deleteOrder"
       body: "*"
