@@ -11,7 +11,7 @@ import (
 // CartItemAdd 添加商品到购物车
 func (s PortalApiImpl) CartItemAdd(ctx context.Context, req *pb.CartItemAddReq) (*pb.CartItemAddRsp, error) {
 	res := &pb.CartItemAddRsp{}
-	memberID, err := util.GetUserID(ctx)
+	memberID, err := util.CtxUtils.GetUserID(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -23,7 +23,7 @@ func (s PortalApiImpl) CartItemAdd(ctx context.Context, req *pb.CartItemAddReq) 
 
 // CartItemList 获取当前会员的购物车列表
 func (s PortalApiImpl) CartItemList(ctx context.Context, req *pb.CartItemListReq) (*pb.CartItemListRsp, error) {
-	memberID, err := util.GetUserID(ctx)
+	memberID, err := util.CtxUtils.GetUserID(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -48,7 +48,7 @@ func (s PortalApiImpl) CartItemListPromotion(ctx context.Context, req *pb.CartIt
 // CartItemUpdateQuantity 修改购物车中指定商品的数量
 func (s PortalApiImpl) CartItemUpdateQuantity(ctx context.Context, req *pb.CartItemUpdateQuantityReq) (*pb.CartItemUpdateQuantityRsp, error) {
 	res := &pb.CartItemUpdateQuantityRsp{}
-	memberID, err := util.GetUserID(ctx)
+	memberID, err := util.CtxUtils.GetUserID(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -73,7 +73,7 @@ func (s PortalApiImpl) CartItemUpdateAttr(ctx context.Context, req *pb.CartItemU
 // CartItemDelete 删除购物车中的指定商品
 func (s PortalApiImpl) CartItemDelete(ctx context.Context, req *pb.CartItemDeleteReq) (*pb.CartItemDeleteRsp, error) {
 	res := &pb.CartItemDeleteRsp{}
-	memberID, err := util.GetUserID(ctx)
+	memberID, err := util.CtxUtils.GetUserID(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -86,7 +86,7 @@ func (s PortalApiImpl) CartItemDelete(ctx context.Context, req *pb.CartItemDelet
 // CartItemClear 清空当前会员的购物车
 func (s PortalApiImpl) CartItemClear(ctx context.Context, req *pb.CartItemClearReq) (*pb.CartItemClearRsp, error) {
 	res := &pb.CartItemClearRsp{}
-	memberID, err := util.GetUserID(ctx)
+	memberID, err := util.CtxUtils.GetUserID(ctx)
 	if err != nil {
 		return nil, err
 	}

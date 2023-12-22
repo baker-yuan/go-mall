@@ -19,8 +19,8 @@ type CartItem struct {
 	ProductSkuID   uint64 `gorm:"column:product_sku_id;type:bigint;unsigned;not null;default:0;comment:商品sku id"` // pms_sku_stock#id
 	ProductSkuCode string `gorm:"column:product_sku_code;type:varchar(200);not null;default:'';comment:商品sku条码"`  // pms_sku_stock#sku_code
 	// 价格数量
-	Price    float64 `gorm:"column:price;type:decimal(10,2);not null;default:0.00;comment:添加到购物车的价格"`
-	Quantity uint32  `gorm:"column:quantity;type:int(10);unsigned;not null;default:0;comment:购买数量"`
+	Price    string `gorm:"column:price;type:decimal(10,2);not null;default:0.00;comment:添加到购物车的价格"`
+	Quantity uint32 `gorm:"column:quantity;type:int(10);unsigned;not null;default:0;comment:购买数量"`
 	// 状态
 	CreateDate   uint32 `gorm:"column:create_date;type:int(10);unsigned;not null;default:0;comment:创建时间"`
 	ModifyDate   uint32 `gorm:"column:modify_date;type:int(10);unsigned;not null;default:0;comment:修改时间"`

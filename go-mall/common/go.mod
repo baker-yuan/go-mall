@@ -4,9 +4,9 @@ go 1.20
 
 require (
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
-	github.com/emirpasic/gods v1.18.1
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.18.1
 	github.com/rs/zerolog v1.31.0
+	github.com/shopspring/decimal v1.3.1
 	golang.org/x/crypto v0.14.0
 	golang.org/x/exp v0.0.0-20231219180239-dc181d75b848
 	google.golang.org/grpc v1.59.0

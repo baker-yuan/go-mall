@@ -5,6 +5,7 @@ import (
 
 	portal_entity "github.com/baker-yuan/go-mall/application/portal/internal/entity"
 	"github.com/baker-yuan/go-mall/common/entity"
+	"github.com/baker-yuan/go-mall/common/util"
 )
 
 // PromotionUseCase 促销管理Service实现类
@@ -23,6 +24,8 @@ func NewPromotion() *PromotionUseCase {
 // CalcCartPromotion 计算购物车中的促销活动信息
 // cartItems 购物车
 func (c PromotionUseCase) CalcCartPromotion(ctx context.Context, cartItems entity.CartItems) (portal_entity.CartPromotionItems, error) {
+	cartPromotionItems := make([]*portal_entity.CartPromotionItem, 0)
+
 	// 1.先根据productId对CartItem进行分组，以spu为单位进行计算优惠
 	// key=商品id value=购物车集合
 	productCartMap := cartItems.GroupCartItemBySpu()
@@ -38,11 +41,45 @@ func (c PromotionUseCase) CalcCartPromotion(ctx context.Context, cartItems entit
 	//	v := kv.Value
 	//}
 
-	return nil, nil
+	for productID, cartItemList := range productCartMap {
+		promotionProduct := promotionProducts.GetByProductID(productID)
+		if promotionProduct == nil {
+			continue
+		}
+		// 促销类型：0->没有促销使用原价;1->使用促销价；2->使用会员价；3->使用阶梯价格；4->使用满减价格；5->限时购
+		promotionType := promotionProduct.PromotionType
+		if promotionType == 1 {
+			// 单品促销
+			for _, cartItem := range cartItemList {
+				cartPromotionItem := &portal_entity.CartPromotionItem{}
+
+				cartPromotionItem.PromotionMessage = "单品促销"
+				// 商品原价-促销价
+				skuStock := c.getOriginalPrice(promotionProduct, cartItem.ProductSkuID)
+				originalPrice := skuStock.Price
+				// 单品促销使用原价
+				cartPromotionItem.Price = originalPrice
+				reduceAmount, _ := util.DecimalUtils.SubtractDecimal(originalPrice, skuStock.PromotionPrice)
+				cartPromotionItem.ReduceAmount = reduceAmount
+				cartPromotionItem.RealStock = skuStock.Stock - skuStock.LockStock
+				cartPromotionItem.Integration = promotionProduct.GiftPoint
+				cartPromotionItem.Growth = promotionProduct.GiftGrowth
+				cartPromotionItems = append(cartPromotionItems, cartPromotionItem)
+			}
+		} else if promotionType == 3 {
+			// 打折优惠
+		} else if promotionType == 4 {
+			// 满减
+		} else {
+			// 无优惠
+		}
+	}
+
+	return cartPromotionItems, nil
 }
 
 // 查询所有商品的优惠相关信息
-func (c PromotionUseCase) getPromotionProductList(ctx context.Context, cartItems entity.CartItems) ([]*portal_entity.PromotionProduct, error) {
+func (c PromotionUseCase) getPromotionProductList(ctx context.Context, cartItems entity.CartItems) (portal_entity.PromotionProducts, error) {
 	productIDs := cartItems.GetProductIDs()
 	// 查询产品信息
 	products, err := c.productRepo.GetByIDs(ctx, productIDs)
@@ -102,4 +139,14 @@ func (c PromotionUseCase) getPromotionProductList(ctx context.Context, cartItems
 		res = append(res, v)
 	}
 	return res, nil
+}
+
+// 获取商品的原价
+func (c PromotionUseCase) getOriginalPrice(promotionProduct *portal_entity.PromotionProduct, productSkuID uint64) *entity.SkuStock {
+	for _, skuStock := range promotionProduct.SkuStocks {
+		if skuStock.ID == productSkuID {
+			return skuStock
+		}
+	}
+	return nil
 }

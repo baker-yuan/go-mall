@@ -11,6 +11,6 @@ func ProductCategoryEntityToModel(category *entity.ProductCategory) *pb.ProductC
 		Id:       category.ID,
 		ParentId: category.ParentID,
 		Name:     category.Name,
-		Icon:     util.GetFullUrl(category.Icon),
+		Icon:     util.ImgUtils.GetFullUrl(category.Icon),
 	}
 }

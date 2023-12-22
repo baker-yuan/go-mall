@@ -20,7 +20,7 @@ func (s PortalApiImpl) MemberLogin(ctx context.Context, req *pb.MemberLoginReq) 
 
 // MemberInfo 获取会员信息
 func (s PortalApiImpl) MemberInfo(ctx context.Context, req *pb.MemberInfoReq) (*pb.MemberInfoRsp, error) {
-	memberID, err := util.GetUserID(ctx)
+	memberID, err := util.CtxUtils.GetUserID(ctx)
 	if err != nil {
 		return nil, err
 	}

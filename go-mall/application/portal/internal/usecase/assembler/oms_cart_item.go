@@ -36,7 +36,7 @@ func CartItemEntityToModel(cartItem *entity.CartItem, memberMap map[uint64]*enti
 		// 商品信息
 		ProductId:         cartItem.ProductID,
 		ProductName:       cartItem.ProductName,
-		ProductPic:        util.GetFullUrl(cartItem.ProductPic),
+		ProductPic:        util.ImgUtils.GetFullUrl(cartItem.ProductPic),
 		ProductSubTitle:   cartItem.ProductSubTitle,
 		ProductSn:         cartItem.ProductSN,
 		ProductBrand:      cartItem.ProductBrand,

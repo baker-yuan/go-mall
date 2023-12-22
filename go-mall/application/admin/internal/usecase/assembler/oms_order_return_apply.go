@@ -12,7 +12,7 @@ func OrderReturnApplyEntityToModel(orderReturnApply *entity.OrderReturnApply) *p
 		Id:      orderReturnApply.ID,
 		OrderId: orderReturnApply.OrderID,
 		// 商品信息
-		ProductPic:       util.GetFullUrl(orderReturnApply.ProductPic),
+		ProductPic:       util.ImgUtils.GetFullUrl(orderReturnApply.ProductPic),
 		ProductName:      orderReturnApply.ProductName,
 		ProductBrand:     orderReturnApply.ProductBrand,
 		ProductId:        orderReturnApply.ProductID,
@@ -29,7 +29,7 @@ func OrderReturnApplyEntityToModel(orderReturnApply *entity.OrderReturnApply) *p
 		ReturnPhone:    orderReturnApply.ReturnPhone,
 		Reason:         orderReturnApply.Reason,
 		Description:    orderReturnApply.Description,
-		ProofPics:      util.GetFullUrls(orderReturnApply.ProofPics),
+		ProofPics:      util.ImgUtils.GetFullUrls(orderReturnApply.ProofPics),
 		//
 		ReturnAmount:     orderReturnApply.ReturnAmount,
 		CompanyAddressId: orderReturnApply.CompanyAddressID,

@@ -7,11 +7,11 @@ type CartPromotionItem struct {
 	// 购物车信息
 	g_entity.CartItem
 	// 促销字段
-	PromotionMessage string  // 促销活动信息
-	ReduceAmount     float64 // 促销活动减去的金额，针对每个商品
-	RealStock        uint32  // 剩余库存-锁定库存
-	Integration      uint32  // 购买商品赠送积分
-	Growth           uint32  // 购买商品赠送成长值
+	PromotionMessage string // 促销活动信息
+	ReduceAmount     string // 促销活动减去的金额，针对每个商品
+	RealStock        uint32 // 剩余库存-锁定库存
+	Integration      uint32 // 购买商品赠送积分
+	Growth           uint32 // 购买商品赠送成长值
 }
 
 type CartPromotionItems []*CartPromotionItem

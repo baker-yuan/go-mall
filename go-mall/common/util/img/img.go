@@ -1,24 +1,28 @@
-package util
+package img
 
 import "strings"
 
+// ImgUtils url路径处理结构定义
+type ImgUtils struct {
+}
+
 var baseUrl string
 
-func InitBaseUrl(base string) {
+func (c ImgUtils) InitBaseUrl(base string) {
 	baseUrl = base
 }
 
 // GetFullUrls 获取完整路径
-func GetFullUrls(paths []string) []string {
+func (c ImgUtils) GetFullUrls(paths []string) []string {
 	res := make([]string, 0)
 	for _, path := range paths {
-		res = append(res, GetFullUrl(path))
+		res = append(res, c.GetFullUrl(path))
 	}
 	return res
 }
 
 // GetFullUrl 获取完整路径
-func GetFullUrl(path string) string {
+func (c ImgUtils) GetFullUrl(path string) string {
 	if len(path) == 0 {
 		return ""
 	}
@@ -26,7 +30,7 @@ func GetFullUrl(path string) string {
 }
 
 // GetRelativeUrl 获取相对路径
-func GetRelativeUrl(url string) string {
+func (c ImgUtils) GetRelativeUrl(url string) string {
 	if strings.HasPrefix(url, baseUrl) {
 		return strings.TrimPrefix(url, baseUrl)
 	}
@@ -34,10 +38,10 @@ func GetRelativeUrl(url string) string {
 }
 
 // GetRelativeUrls 获取相对路径
-func GetRelativeUrls(urls []string) []string {
+func (c ImgUtils) GetRelativeUrls(urls []string) []string {
 	res := make([]string, 0)
 	for _, url := range urls {
-		res = append(res, GetRelativeUrl(url))
+		res = append(res, c.GetRelativeUrl(url))
 	}
 	return res
 }

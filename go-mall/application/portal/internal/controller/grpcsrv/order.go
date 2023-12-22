@@ -9,7 +9,7 @@ import (
 
 // GenerateConfirmOrder 根据购物车信息生成确认单
 func (s PortalApiImpl) GenerateConfirmOrder(ctx context.Context, req *pb.GenerateConfirmOrderReq) (*pb.GenerateConfirmOrderRsp, error) {
-	memberID, err := util.GetUserID(ctx)
+	memberID, err := util.CtxUtils.GetUserID(ctx)
 	if err != nil {
 		return nil, err
 	}

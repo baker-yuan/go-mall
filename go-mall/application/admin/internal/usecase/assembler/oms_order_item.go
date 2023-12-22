@@ -23,7 +23,7 @@ func OrderItemToModel(orderItem *entity.OrderItem) *pb.OrderItem {
 		OrderSn: orderItem.OrderSN,
 		// 商品信息
 		ProductId:         orderItem.ProductID,
-		ProductPic:        util.GetFullUrl(orderItem.ProductPic),
+		ProductPic:        util.ImgUtils.GetFullUrl(orderItem.ProductPic),
 		ProductName:       orderItem.ProductName,
 		ProductBrand:      orderItem.ProductBrand,
 		ProductPrice:      orderItem.ProductPrice,

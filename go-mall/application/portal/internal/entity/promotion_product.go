@@ -9,3 +9,15 @@ type PromotionProduct struct {
 	ProductLadders        g_entity.ProductLadders        // 商品打折信息
 	ProductFullReductions g_entity.ProductFullReductions // 商品满减信息
 }
+
+type PromotionProducts []*PromotionProduct
+
+// GetByProductID 根据productID过滤数据
+func (p PromotionProducts) GetByProductID(productID uint64) *PromotionProduct {
+	for _, item := range p {
+		if item.ID == productID {
+			return item
+		}
+	}
+	return nil
+}

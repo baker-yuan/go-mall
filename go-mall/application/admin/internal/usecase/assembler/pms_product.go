@@ -44,8 +44,8 @@ func ProductEntityToModel(product *entity.Product, categoryNames map[uint64]stri
 
 		// 属性信息
 		ProductAttributeCategoryId: product.ProductAttributeCategoryID,
-		Pic:                        util.GetFullUrl(product.Pic),
-		AlbumPics:                  util.GetFullUrls(product.AlbumPics),
+		Pic:                        util.ImgUtils.GetFullUrl(product.Pic),
+		AlbumPics:                  util.ImgUtils.GetFullUrls(product.AlbumPics),
 		DetailHtml:                 product.DetailHTML,
 		DetailMobileHtml:           product.DetailMobileHTML,
 
@@ -102,8 +102,8 @@ func AddOrUpdateProductParamToEntity(param *pb.AddOrUpdateProductParam) *entity.
 
 		// 属性信息
 		ProductAttributeCategoryID: param.ProductAttributeCategoryId,
-		Pic:                        util.GetRelativeUrl(param.Pic),
-		AlbumPics:                  util.GetRelativeUrls(param.AlbumPics),
+		Pic:                        util.ImgUtils.GetRelativeUrl(param.Pic),
+		AlbumPics:                  util.ImgUtils.GetRelativeUrls(param.AlbumPics),
 		DetailHTML:                 param.DetailHtml,
 		DetailMobileHTML:           param.DetailMobileHtml,
 		VerifyStatus:               uint8(param.VerifyStatus),

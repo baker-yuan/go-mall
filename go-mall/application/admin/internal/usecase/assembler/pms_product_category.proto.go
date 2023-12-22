@@ -11,7 +11,7 @@ func ProductCategoryEntityToModel(category *entity.ProductCategory) *pb.ProductC
 		Id:          category.ID,
 		ParentId:    category.ParentID,
 		Name:        category.Name,
-		Icon:        util.GetFullUrl(category.Icon),
+		Icon:        util.ImgUtils.GetFullUrl(category.Icon),
 		ProductUnit: category.ProductUnit,
 		Sort:        category.Sort,
 		//
@@ -31,7 +31,7 @@ func AddOrUpdateProductCategoryParamToEntity(param *pb.AddOrUpdateProductCategor
 	return &entity.ProductCategory{
 		ParentID:    param.ParentId,
 		Name:        param.Name,
-		Icon:        util.GetRelativeUrl(param.Icon),
+		Icon:        util.ImgUtils.GetRelativeUrl(param.Icon),
 		ProductUnit: param.ProductUnit,
 		Sort:        param.Sort,
 		// 状态

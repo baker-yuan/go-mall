@@ -46,7 +46,7 @@ func Run(cfg *config.Config) {
 	db.InitTransaction(conn)
 
 	// oss url 前缀
-	util.InitBaseUrl(cfg.Oss.BaseUrl)
+	util.ImgUtils.InitBaseUrl(cfg.Oss.BaseUrl)
 
 	// 全字段更新，初始化那些字段不更新，那些字段需要更新
 	if err := repo.InitField(conn); err != nil {

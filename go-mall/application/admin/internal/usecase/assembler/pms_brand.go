@@ -12,8 +12,8 @@ func BrandEntityToModel(brand *entity.Brand) *pb.Brand {
 		Id:          brand.ID,
 		Name:        brand.Name,
 		FirstLetter: brand.FirstLetter,
-		Logo:        util.GetFullUrl(brand.Logo),
-		BigPic:      util.GetFullUrl(brand.BigPic),
+		Logo:        util.ImgUtils.GetFullUrl(brand.Logo),
+		BigPic:      util.ImgUtils.GetFullUrl(brand.BigPic),
 		BrandStory:  brand.BrandStory,
 		Sort:        brand.Sort,
 		// status
@@ -30,8 +30,8 @@ func AddOrUpdateBrandParamToEntity(param *pb.AddOrUpdateBrandParam) *entity.Bran
 	return &entity.Brand{
 		Name:        param.Name,
 		FirstLetter: param.FirstLetter,
-		Logo:        util.GetRelativeUrl(param.Logo),
-		BigPic:      util.GetRelativeUrl(param.BigPic),
+		Logo:        util.ImgUtils.GetRelativeUrl(param.Logo),
+		BigPic:      util.ImgUtils.GetRelativeUrl(param.BigPic),
 		BrandStory:  param.BrandStory,
 		Sort:        param.Sort,
 		// status

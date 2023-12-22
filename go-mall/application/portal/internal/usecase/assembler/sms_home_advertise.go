@@ -18,7 +18,7 @@ func HomeAdvertisesEntityToDetail(homeAdvertises []*entity.HomeAdvertise) []*pb.
 // HomeAdvertiseEntityToDetail entity转pb
 func HomeAdvertiseEntityToDetail(homeAdvertise *entity.HomeAdvertise) *pb.HomeContentRsp_HomeAdvertise {
 	return &pb.HomeContentRsp_HomeAdvertise{
-		Pic: util.GetFullUrl(homeAdvertise.Pic),
+		Pic: util.ImgUtils.GetFullUrl(homeAdvertise.Pic),
 		Url: homeAdvertise.URL,
 	}
 }

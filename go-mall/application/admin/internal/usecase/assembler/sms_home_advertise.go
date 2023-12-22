@@ -11,7 +11,7 @@ func HomeAdvertiseEntityToModel(homeAdvertise *entity.HomeAdvertise) *pb.HomeAdv
 	return &pb.HomeAdvertise{
 		Id:   homeAdvertise.ID,
 		Name: homeAdvertise.Name,
-		Pic:  util.GetFullUrl(homeAdvertise.Pic),
+		Pic:  util.ImgUtils.GetFullUrl(homeAdvertise.Pic),
 		Url:  homeAdvertise.URL,
 		Sort: homeAdvertise.Sort,
 		Note: homeAdvertise.Note,
@@ -32,7 +32,7 @@ func HomeAdvertiseEntityToModel(homeAdvertise *entity.HomeAdvertise) *pb.HomeAdv
 func AddOrUpdateHomeAdvertiseParamToEntity(param *pb.AddOrUpdateHomeAdvertiseParam) *entity.HomeAdvertise {
 	return &entity.HomeAdvertise{
 		Name: param.Name,
-		Pic:  util.GetRelativeUrl(param.Pic),
+		Pic:  util.ImgUtils.GetRelativeUrl(param.Pic),
 		URL:  param.Url,
 		Sort: param.Sort,
 		Note: param.Note,

@@ -9,7 +9,7 @@ import (
 func ProductEntityToProductListItem(product *entity.Product) *pb.SearchProductRsp_Product {
 	return &pb.SearchProductRsp_Product{
 		Id:       product.ID,
-		Pic:      util.GetFullUrl(product.Pic),
+		Pic:      util.ImgUtils.GetFullUrl(product.Pic),
 		Name:     product.Name,
 		SubTitle: product.SubTitle,
 		Price:    product.Price,
@@ -20,8 +20,8 @@ func ProductEntityToProductListItem(product *entity.Product) *pb.SearchProductRs
 func ProductEntityToDetail(product *entity.Product) *pb.ProductDetailRsp_Product {
 	return &pb.ProductDetailRsp_Product{
 		Id:            product.ID,
-		AlbumPics:     util.GetFullUrls(product.AlbumPics),
-		Pic:           util.GetFullUrl(product.Pic),
+		AlbumPics:     util.ImgUtils.GetFullUrls(product.AlbumPics),
+		Pic:           util.ImgUtils.GetFullUrl(product.Pic),
 		Name:          product.Name,
 		SubTitle:      product.SubTitle,
 		Price:         product.Price,

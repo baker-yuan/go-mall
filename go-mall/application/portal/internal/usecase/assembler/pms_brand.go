@@ -10,6 +10,6 @@ func BrandEntityToDetail(brand *entity.Brand) *pb.ProductDetailRsp_Brand {
 	return &pb.ProductDetailRsp_Brand{
 		Name:        brand.Name,
 		FirstLetter: brand.FirstLetter,
-		Logo:        util.GetFullUrl(brand.Logo),
+		Logo:        util.ImgUtils.GetFullUrl(brand.Logo),
 	}
 }

@@ -27,15 +27,15 @@ type Order struct {
 	ReceiverRegion        string `gorm:"column:receiver_region;type:varchar(32);not null;default:'';comment:区"`
 	ReceiverDetailAddress string `gorm:"column:receiver_detail_address;type:varchar(200);not null;default:'';comment:详细地址"`
 	// 费用信息
-	TotalAmount       float64 `gorm:"column:total_amount;type:decimal(10,2);not null;default:0.00;comment:订单总金额"`
-	FreightAmount     float64 `gorm:"column:freight_amount;type:decimal(10,2);not null;default:0.00;comment:运费金额"`
-	CouponID          uint64  `gorm:"column:coupon_id;type:bigint;unsigned;not null;default:0;comment:优惠券id"`
-	CouponAmount      float64 `gorm:"column:coupon_amount;type:decimal(10,2);not null;default:0.00;comment:优惠券抵扣金额"`
-	UseIntegration    uint32  `gorm:"column:use_integration;type:int(10);unsigned;not null;default:0;comment:下单时使用的积分"`
-	IntegrationAmount float64 `gorm:"column:integration_amount;type:decimal(10,2);not null;default:0.00;comment:积分抵扣金额"`
-	PromotionAmount   float64 `gorm:"column:promotion_amount;type:decimal(10,2);not null;default:0.00;comment:促销优化金额（促销价、满减、阶梯价）"`
-	DiscountAmount    float64 `gorm:"column:discount_amount;type:decimal(10,2);not null;default:0.00;comment:管理员后台调整订单使用的折扣金额"`
-	PayAmount         float64 `gorm:"column:pay_amount;type:decimal(10,2);not null;default:0.00;comment:应付金额（实际支付金额）"`
+	TotalAmount       string `gorm:"column:total_amount;type:decimal(10,2);not null;default:0.00;comment:订单总金额"`
+	FreightAmount     string `gorm:"column:freight_amount;type:decimal(10,2);not null;default:0.00;comment:运费金额"`
+	CouponID          uint64 `gorm:"column:coupon_id;type:bigint;unsigned;not null;default:0;comment:优惠券id"`
+	CouponAmount      string `gorm:"column:coupon_amount;type:decimal(10,2);not null;default:0.00;comment:优惠券抵扣金额"`
+	UseIntegration    uint32 `gorm:"column:use_integration;type:int(10);unsigned;not null;default:0;comment:下单时使用的积分"`
+	IntegrationAmount string `gorm:"column:integration_amount;type:decimal(10,2);not null;default:0.00;comment:积分抵扣金额"`
+	PromotionAmount   string `gorm:"column:promotion_amount;type:decimal(10,2);not null;default:0.00;comment:促销优化金额（促销价、满减、阶梯价）"`
+	DiscountAmount    string `gorm:"column:discount_amount;type:decimal(10,2);not null;default:0.00;comment:管理员后台调整订单使用的折扣金额"`
+	PayAmount         string `gorm:"column:pay_amount;type:decimal(10,2);not null;default:0.00;comment:应付金额（实际支付金额）"`
 	// 发票信息
 	BillType          uint8  `gorm:"column:bill_type;type:tinyint(4);unsigned;not null;default:0;comment:发票类型：0->不开发票；1->电子发票；2->纸质发票"`
 	BillHeader        string `gorm:"column:bill_header;type:varchar(200);not null;default:'';comment:发票抬头"`

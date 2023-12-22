@@ -10,8 +10,8 @@ type SkuStock struct {
 	SpData    string `gorm:"column:sp_data;type:varchar(500);not null;default:'';comment:商品销售属性，json格式"` // [{"key":"颜色","value":"黑色"},{"key":"容量","value":"32G"}]
 	ProductID uint64 `gorm:"column:product_id;type:bigint;unsigned;not null;default:0;comment:产品ID"`     // pms_product#id
 	// 价格
-	Price          float64 `gorm:"column:price;type:decimal(10,2);not null;default:0.00;comment:价格"`
-	PromotionPrice float64 `gorm:"column:promotion_price;type:decimal(10,2);not null;default:0.00;comment:单品促销价格"`
+	Price          string `gorm:"column:price;type:decimal(10,2);not null;default:0.00;comment:价格"`
+	PromotionPrice string `gorm:"column:promotion_price;type:decimal(10,2);not null;default:0.00;comment:单品促销价格"`
 	// 库存
 	Stock     uint32 `gorm:"column:stock;type:int(10);unsigned;not null;default:0;comment:库存"`
 	LockStock uint32 `gorm:"column:lock_stock;type:int(10);unsigned;not null;default:0;comment:锁定库存"`
