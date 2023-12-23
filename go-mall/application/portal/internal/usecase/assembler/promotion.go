@@ -2,6 +2,7 @@ package assembler
 
 import (
 	"github.com/baker-yuan/go-mall/application/portal/internal/entity"
+	"github.com/baker-yuan/go-mall/common/util"
 	pb "github.com/baker-yuan/go-mall/proto/mall"
 )
 
@@ -16,7 +17,7 @@ func CartPromotionItemToModel(cartPromotionItems []*entity.CartPromotionItem) []
 			// 商品信息
 			ProductId:         cartPromotionItem.ProductID,
 			ProductName:       cartPromotionItem.ProductName,
-			ProductPic:        cartPromotionItem.ProductPic,
+			ProductPic:        util.ImgUtils.GetFullUrl(cartPromotionItem.ProductPic),
 			ProductSubTitle:   cartPromotionItem.ProductSubTitle,
 			ProductSn:         cartPromotionItem.ProductSN,
 			ProductBrand:      cartPromotionItem.ProductBrand,
@@ -26,14 +27,14 @@ func CartPromotionItemToModel(cartPromotionItems []*entity.CartPromotionItem) []
 			ProductSkuCode: cartPromotionItem.ProductSkuCode,
 			ProductAttr:    cartPromotionItem.ProductAttr,
 			// 价格数量
-			Price:    cartPromotionItem.Price,
+			Price:    util.DecimalUtils.TrimTrailingZeros(cartPromotionItem.Price),
 			Quantity: cartPromotionItem.Quantity,
 			// 冗余字段
 			MemberNickname: cartPromotionItem.MemberNickname,
 
 			// 二、扩展字段
 			PromotionMessage: cartPromotionItem.PromotionMessage,
-			ReduceAmount:     cartPromotionItem.ReduceAmount,
+			ReduceAmount:     util.DecimalUtils.TrimTrailingZeros(cartPromotionItem.ReduceAmount),
 			RealStock:        cartPromotionItem.RealStock,
 			Integration:      cartPromotionItem.Integration,
 			Growth:           cartPromotionItem.Growth,

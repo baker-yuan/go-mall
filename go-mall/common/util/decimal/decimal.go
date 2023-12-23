@@ -87,6 +87,15 @@ func (c DecimalUtils) CompareDecimal(a, b string) (int, error) {
 	return decA.Cmp(decB), nil
 }
 
+// TrimTrailingZeros 从表示为字符串的十进制数中去除末尾的零。
+func (c DecimalUtils) TrimTrailingZeros(decimalStr string) string {
+	dec, err := decimal.NewFromString(decimalStr)
+	if err != nil {
+		return ""
+	}
+	return dec.String()
+}
+
 // SubtractPrices 接受两个字符串类型的价格，执行减法操作，并返回结果字符串
 //func SubtractPrices(originalPriceStr, promotionPriceStr string) (string, error) {
 //	originalPrice, _, err := big.NewFloat(0).Parse(originalPriceStr, 10)

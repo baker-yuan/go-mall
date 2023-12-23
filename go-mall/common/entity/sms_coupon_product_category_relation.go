@@ -15,3 +15,13 @@ type CouponProductCategoryRelation struct {
 func (r CouponProductCategoryRelation) TableName() string {
 	return "sms_coupon_product_category_relation"
 }
+
+type CouponProductCategoryRelations []*CouponProductCategoryRelation
+
+func (r CouponProductCategoryRelations) GetProductCategoryIDs() []uint64 {
+	productCategoryIDs := make([]uint64, 0)
+	for _, categoryRelation := range r {
+		productCategoryIDs = append(productCategoryIDs, categoryRelation.ProductCategoryID)
+	}
+	return productCategoryIDs
+}

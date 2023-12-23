@@ -2,7 +2,6 @@ package repo
 
 import (
 	"context"
-	"errors"
 
 	db "github.com/baker-yuan/go-mall/common/db"
 	"github.com/baker-yuan/go-mall/common/entity"
@@ -50,50 +49,11 @@ func initJsonDynamicConfigField(db *gorm.DB) error {
 	return nil
 }
 
-// Create 创建JSON动态配置
-func (r JsonDynamicConfigRepo) Create(ctx context.Context, jsonDynamicConfig *entity.JsonDynamicConfig) error {
-	if jsonDynamicConfig.ID > 0 {
-		return errors.New("illegal argument jsonDynamicConfig id exist")
+// GetByBizType 根据业务类型查询JSON动态配置
+func (r JsonDynamicConfigRepo) GetByBizType(ctx context.Context, bizType entity.BizType) (string, error) {
+	res := &entity.JsonDynamicConfig{}
+	if err := r.GenericDao.DB.WithContext(ctx).Where("biz_type = ?", bizType).Find(&res).Error; err != nil {
+		return "", err
 	}
-	return r.GenericDao.Create(ctx, jsonDynamicConfig)
-}
-
-// DeleteByID 根据主键ID删除JSON动态配置
-func (r JsonDynamicConfigRepo) DeleteByID(ctx context.Context, id uint64) error {
-	return r.GenericDao.DeleteByID(ctx, id)
-}
-
-// Update 修改JSON动态配置
-func (r JsonDynamicConfigRepo) Update(ctx context.Context, jsonDynamicConfig *entity.JsonDynamicConfig) error {
-	if jsonDynamicConfig.ID == 0 {
-		return errors.New("illegal argument jsonDynamicConfig exist")
-	}
-	return r.GenericDao.DB.WithContext(ctx).Select(updateJsonDynamicConfigField).Updates(jsonDynamicConfig).Error
-}
-
-// GetByID 根据主键ID查询JSON动态配置
-func (r JsonDynamicConfigRepo) GetByID(ctx context.Context, id uint64) (*entity.JsonDynamicConfig, error) {
-	return r.GenericDao.GetByID(ctx, id)
-}
-
-// GetByDBOption 根据动态条件查询JSON动态配置
-func (r JsonDynamicConfigRepo) GetByDBOption(ctx context.Context, pageNum uint32, pageSize uint32, opts ...db.DBOption) ([]*entity.JsonDynamicConfig, uint32, error) {
-	var (
-		res       = make([]*entity.JsonDynamicConfig, 0)
-		pageTotal = int64(0)
-		offset    = (pageNum - 1) * pageSize
-	)
-
-	session := r.GenericDao.DB.WithContext(ctx)
-	for _, opt := range opts {
-		session = opt(session)
-	}
-
-	session = session.Offset(int(offset)).Limit(int(pageSize)).Order("id desc").Find(&res).
-		Offset(-1).Limit(-1).Count(&pageTotal)
-
-	if err := session.Error; err != nil {
-		return nil, 0, err
-	}
-	return res, uint32(pageTotal), nil
+	return res.Content, nil
 }

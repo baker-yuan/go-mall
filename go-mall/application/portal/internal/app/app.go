@@ -63,17 +63,24 @@ func Run(cfg *config.Config) {
 	)
 
 	var (
-		productCategoryRepo       = repo.NewProductCategoryRepo(conn)
-		productRepo               = repo.NewProductRepo(conn)
-		brandRepo                 = repo.NewBrandRepo(conn)
-		productAttributeRepo      = repo.NewProductAttributeRepo(conn)
-		productAttributeValueRepo = repo.NewProductAttributeValueRepo(conn)
-		skuStockRepo              = repo.NewSkuStockRepo(conn)
-		memberRepo                = repo.NewMemberRepo(conn)
-		cartItemRepo              = repo.NewCartItemRepo(conn)
-		homeAdvertiseRepo         = repo.NewHomeAdvertiseRepo(conn)
-		orderRepo                 = repo.NewOrderRepo(conn)
-		memberReceiveAddressRepo  = repo.NewMemberReceiveAddressRepo(conn)
+		productCategoryRepo               = repo.NewProductCategoryRepo(conn)
+		productRepo                       = repo.NewProductRepo(conn)
+		brandRepo                         = repo.NewBrandRepo(conn)
+		productAttributeRepo              = repo.NewProductAttributeRepo(conn)
+		productAttributeValueRepo         = repo.NewProductAttributeValueRepo(conn)
+		skuStockRepo                      = repo.NewSkuStockRepo(conn)
+		memberRepo                        = repo.NewMemberRepo(conn)
+		cartItemRepo                      = repo.NewCartItemRepo(conn)
+		homeAdvertiseRepo                 = repo.NewHomeAdvertiseRepo(conn)
+		orderRepo                         = repo.NewOrderRepo(conn)
+		memberReceiveAddressRepo          = repo.NewMemberReceiveAddressRepo(conn)
+		jsonDynamicConfigRepo             = repo.NewJsonDynamicConfigRepo(conn)
+		productLadderRepo                 = repo.NewProductLadderRepo(conn)
+		productFullReductionRepo          = repo.NewProductFullReductionRepo(conn)
+		couponRepo                        = repo.NewCouponRepo(conn)
+		couponHistoryRepo                 = repo.NewCouponHistoryRepo(conn)
+		couponProductCategoryRelationRepo = repo.NewCouponProductCategoryRelationRepo(conn)
+		couponProductRelationRepo         = repo.NewCouponProductRelationRepo(conn)
 	)
 	homeUseCase := usecase.NewHome(productCategoryRepo, homeAdvertiseRepo, brandRepo)
 	productUseCase := usecase.NewProduct(
@@ -86,11 +93,20 @@ func Run(cfg *config.Config) {
 
 	memberUseCase := usecase.NewMember(cfg, passwordEncoder, jwtTokenUtil, memberRepo)
 
-	promotionUseCase := usecase.NewPromotion()
+	promotionUseCase := usecase.NewPromotion(productRepo, skuStockRepo, productLadderRepo, productFullReductionRepo)
 
 	cartItemUseCase := usecase.NewCartItem(cartItemRepo, memberRepo, productRepo, brandRepo, promotionUseCase)
 
-	orderUseCase := usecase.NewOrder(orderRepo, memberRepo, memberReceiveAddressRepo, cartItemUseCase)
+	couponUseCase := usecase.NewCoupon(couponRepo, couponHistoryRepo, couponProductCategoryRelationRepo, couponProductRelationRepo)
+
+	orderUseCase := usecase.NewOrder(
+		orderRepo,
+		memberRepo,
+		memberReceiveAddressRepo,
+		jsonDynamicConfigRepo,
+		cartItemUseCase,
+		couponUseCase,
+	)
 
 	// grpc服务
 	grpcSrvImpl := grpcsrv.New(
@@ -169,6 +185,7 @@ func configGrpc(customLog *logger.Logger, grpcSrvImpl grpcsrv.PortalApi, cfg *co
 	pb.RegisterPortalMemberApiServer(grpcServer, grpcSrvImpl)
 	pb.RegisterPortalCartItemApiServer(grpcServer, grpcSrvImpl)
 	pb.RegisterPortalOrderApiServer(grpcServer, grpcSrvImpl)
+	pb.RegisterPortalCouponApiServer(grpcServer, grpcSrvImpl)
 
 	// gRPC-Gateway mux
 	gwmux := runtime.NewServeMux(
@@ -189,6 +206,9 @@ func configGrpc(customLog *logger.Logger, grpcSrvImpl grpcsrv.PortalApi, cfg *co
 		return nil, err
 	}
 	if err := pb.RegisterPortalOrderApiHandlerFromEndpoint(context.Background(), gwmux, addr, dops); err != nil {
+		return nil, err
+	}
+	if err := pb.RegisterPortalCouponApiHandlerFromEndpoint(context.Background(), gwmux, addr, dops); err != nil {
 		return nil, err
 	}
 

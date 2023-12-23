@@ -9,6 +9,7 @@ import "google/api/annotations.proto";
 import "google/protobuf/wrappers.proto";
 
 import "portal/cart_item.proto";
+import "portal/coupon.proto";
 
 
 // 根据购物车信息生成确认单
@@ -19,19 +20,18 @@ message GenerateConfirmOrderReq {
 message GenerateConfirmOrderRsp {
   // 计算的金额
   message CalcAmount {
-    double total_amount = 1; // 订单商品总金额
-    double freight_amount = 2; // 运费
-    double promotion_amount = 3; // 活动优惠
-    double pay_amount = 4; // 应付金额
+    string total_amount = 1; // 订单商品总金额
+    string freight_amount = 2; // 运费
+    string promotion_amount = 3; // 活动优惠
+    string pay_amount = 4; // 应付金额
   }
 
   // 积分使用规则
   message IntegrationConsumeSetting {
-    int64 id = 1; //
-    int32 deduction_per_amount = 2; // 每一元需要抵扣的积分数量
-    int32 max_percent_per_order = 3; // 每笔订单最高抵用百分比
-    int32 use_unit = 4; // 每次使用积分最小单位100
-    int32 coupon_status = 5; // 是否可以和优惠券同用；0->不可以；1->可以
+    uint32 deduction_per_amount = 2; // 每一元需要抵扣的积分数量
+    uint32 max_percent_per_order = 3; // 每笔订单最高抵用百分比
+    uint32 use_unit = 4; // 每次使用积分最小单位100
+    uint32 coupon_status = 5; // 是否可以和优惠券同用；0->不可以；1->可以
   }
 
   // 用户收货地址列表
@@ -49,14 +49,9 @@ message GenerateConfirmOrderRsp {
   }
 
 
-  // 优惠券领取历史详情（包括优惠券信息和关联关系）
-  message CouponHistoryDetail {
-
-  }
-
   repeated CartItemListPromotion cart_promotion_items = 1; // 包含优惠信息的购物车信息
-  repeated MemberReceiveAddress member_receive_address = 2; // 用户收货地址列表
-  CouponHistoryDetail coupon_history_details = 3; // 用户可用优惠券列表
+  repeated MemberReceiveAddress member_receive_addresses = 2; // 用户收货地址列表
+  repeated CouponHistoryDetail coupon_history_details = 3; // 用户可用优惠券列表
   IntegrationConsumeSetting integration_consume_setting = 4; // 积分使用规则
   uint32 member_integration = 5; // 会员持有的积分
   CalcAmount calc_amount = 6; // 计算的金额

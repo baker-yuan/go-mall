@@ -22,8 +22,18 @@ type PromotionUseCase struct {
 }
 
 // NewPromotion 创建促销管理管理Service实现类
-func NewPromotion() *PromotionUseCase {
-	return &PromotionUseCase{}
+func NewPromotion(
+	productRepo IProductRepo,
+	skuStockRepo ISkuStockRepo,
+	productLadderRepo IProductLadderRepo,
+	productFullReductionRepo IProductFullReductionRepo,
+) *PromotionUseCase {
+	return &PromotionUseCase{
+		productRepo:              productRepo,
+		skuStockRepo:             skuStockRepo,
+		productLadderRepo:        productLadderRepo,
+		productFullReductionRepo: productFullReductionRepo,
+	}
 }
 
 // CalcCartPromotion 计算购物车中的促销活动信息
@@ -91,7 +101,7 @@ func (c PromotionUseCase) CalcCartPromotion(ctx context.Context, cartItems entit
 					cartPromotionItems = append(cartPromotionItems, cartPromotionItem)
 				}
 			} else {
-				c.handleNoReduce(cartPromotionItems, cartItemList, promotionProduct)
+				cartPromotionItems = append(cartPromotionItems, c.handleNoReduce(cartItemList, promotionProduct)...)
 			}
 		} else if promotionType == pb.PromotionType_PROMOTION_TYPE_FULL_REDUCTION_PRICE {
 			// 满减
@@ -115,11 +125,11 @@ func (c PromotionUseCase) CalcCartPromotion(ctx context.Context, cartItems entit
 					cartPromotionItems = append(cartPromotionItems, cartPromotionItem)
 				}
 			} else {
-				c.handleNoReduce(cartPromotionItems, cartItemList, promotionProduct)
+				cartPromotionItems = append(cartPromotionItems, c.handleNoReduce(cartItemList, promotionProduct)...)
 			}
 		} else {
 			// 无优惠
-			c.handleNoReduce(cartPromotionItems, cartItemList, promotionProduct)
+			cartPromotionItems = append(cartPromotionItems, c.handleNoReduce(cartItemList, promotionProduct)...)
 		}
 	}
 
@@ -127,7 +137,8 @@ func (c PromotionUseCase) CalcCartPromotion(ctx context.Context, cartItems entit
 }
 
 // handleNoReduce 对没满足优惠条件的商品进行处理
-func (c PromotionUseCase) handleNoReduce(cartPromotionItems []*portal_entity.CartPromotionItem, cartItems entity.CartItems, promotionProduct *portal_entity.PromotionProduct) {
+func (c PromotionUseCase) handleNoReduce(cartItems entity.CartItems, promotionProduct *portal_entity.PromotionProduct) []*portal_entity.CartPromotionItem {
+	cartPromotionItems := make([]*portal_entity.CartPromotionItem, 0)
 	for _, cartItem := range cartItems {
 		cartPromotionItem, _ := util.CopyProperties[*portal_entity.CartPromotionItem](cartItem)
 		cartPromotionItem.PromotionMessage = "无优惠"
@@ -140,6 +151,7 @@ func (c PromotionUseCase) handleNoReduce(cartPromotionItems []*portal_entity.Car
 		cartPromotionItem.Growth = promotionProduct.GiftGrowth
 		cartPromotionItems = append(cartPromotionItems, cartPromotionItem)
 	}
+	return cartPromotionItems
 }
 
 // getProductLadder 根据购买商品数量获取满足条件的打折优惠策略
@@ -186,35 +198,32 @@ func (c PromotionUseCase) getPromotionProductList(ctx context.Context, cartItems
 	res := make([]*portal_entity.PromotionProduct, 0)
 
 	// 创建一个以 product_id 为键的 map
-	promotionProducts := make(map[uint64]*portal_entity.PromotionProduct)
+	temp := make(map[uint64]*portal_entity.PromotionProduct)
 	// 产品
 	for _, product := range products {
-		promotionProducts[product.ID] = &portal_entity.PromotionProduct{Product: product}
+		temp[product.ID] = &portal_entity.PromotionProduct{Product: product}
 	}
 	// 将SKU库存信息添加到对应的产品中
 	for _, stock := range skuStocks {
-		if product, ok := promotionProducts[stock.ProductID]; ok {
+		if product, ok := temp[stock.ProductID]; ok {
 			product.SkuStocks = append(product.SkuStocks, stock)
-			promotionProducts[stock.ProductID] = product
 		}
 	}
 	// 将产品阶梯价格信息添加到对应的产品中
 	for _, ladder := range productLadders {
-		if product, ok := promotionProducts[ladder.ProductID]; ok {
+		if product, ok := temp[ladder.ProductID]; ok {
 			product.ProductLadders = append(product.ProductLadders, ladder)
-			promotionProducts[ladder.ProductID] = product
 		}
 	}
 
 	// 将产品满减信息添加到对应的产品中
 	for _, reduction := range fullReductions {
-		if product, ok := promotionProducts[reduction.ProductID]; ok {
+		if product, ok := temp[reduction.ProductID]; ok {
 			product.ProductFullReductions = append(product.ProductFullReductions, reduction)
-			promotionProducts[reduction.ProductID] = product
 		}
 	}
 
-	for _, v := range promotionProducts {
+	for _, v := range temp {
 		res = append(res, v)
 	}
 	return res, nil
@@ -299,13 +308,7 @@ func (c PromotionUseCase) getProductFullReduction(totalAmount string, productFul
 
 // getFullReductionPromotionMessage 获取满减促销消息
 func (c PromotionUseCase) getFullReductionPromotionMessage(fullReduction *entity.ProductFullReduction) string {
-	return fmt.Sprintf("满减优惠：满%s元，减%s元", fullReduction.FullPrice, fullReduction.ReducePrice)
-}
-
-// formatBigFloat 格式化big.Float为字符串，去除尾部多余的0
-func formatBigFloat(f *big.Float) string {
-	// 将big.Float转换为字符串
-	s := f.Text('f', -1)
-	// 去除尾部多余的0
-	return strings.TrimRight(strings.TrimRight(s, "0"), ".")
+	return fmt.Sprintf("满减优惠：满%s元，减%s元",
+		util.DecimalUtils.TrimTrailingZeros(fullReduction.FullPrice),
+		util.DecimalUtils.TrimTrailingZeros(fullReduction.ReducePrice))
 }

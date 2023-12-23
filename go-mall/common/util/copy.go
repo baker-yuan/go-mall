@@ -17,3 +17,9 @@ func CopyProperties[Dst any](src interface{}) (Dst, error) {
 	}
 	return dst, nil
 }
+
+// Unmarshal 反序列化
+func Unmarshal[T any](str string) (T, error) {
+	var t T
+	return t, json.Unmarshal([]byte(str), &t)
+}

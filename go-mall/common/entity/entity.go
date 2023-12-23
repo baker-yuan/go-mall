@@ -192,7 +192,7 @@ func Init(db *gorm.DB) error {
 		},
 		{
 			TableName: "优惠券和商品的关系表",
-			StructPtr: &SmsCouponProductRelation{},
+			StructPtr: &CouponProductRelation{},
 		},
 		{
 			TableName: "优惠券和商品分类关系表",

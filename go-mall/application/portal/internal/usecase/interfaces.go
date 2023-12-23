@@ -347,15 +347,113 @@ type (
 
 	// IJsonDynamicConfigRepo 数据存储操作
 	IJsonDynamicConfigRepo interface {
-		// Create 创建JSON动态配置
-		Create(ctx context.Context, jsonDynamicConfig *entity.JsonDynamicConfig) error
-		// DeleteByID 根据主键ID删除JSON动态配置
+		// GetByBizType 根据业务类型查询JSON动态配置
+		GetByBizType(ctx context.Context, bizType entity.BizType) (string, error)
+	}
+)
+
+// Coupon 优惠券表
+type (
+	// ICouponUseCase 业务逻辑
+	ICouponUseCase interface {
+		// CouponAdd 领取指定优惠券
+		CouponAdd(ctx context.Context, req *pb.CouponAddReq) (*pb.CouponAddRsp, error)
+		// CouponListHistory 获取会员优惠券历史列表
+		CouponListHistory(ctx context.Context, req *pb.CouponListHistoryReq) (*pb.CouponListHistoryRsp, error)
+		// CouponList 获取会员优惠券列表
+		CouponList(ctx context.Context, req *pb.CouponListReq) (*pb.CouponListRsp, error)
+		// CouponListCart 根据购物车信息获取可用优惠券
+		// canUse 是否可用
+		CouponListCart(ctx context.Context, memberID uint64, cartPromotionItems []*pb.CartItemListPromotion, canUse bool) ([]*portal_entity.CouponHistoryDetail, error)
+		// CouponListByProduct 获取当前商品相关优惠券
+		CouponListByProduct(ctx context.Context, req *pb.CouponListByProductReq) (*pb.CouponListByProductRsp, error)
+	}
+
+	// ICouponRepo 数据存储操作
+	ICouponRepo interface {
+		// Create 创建优惠券表
+		Create(ctx context.Context, coupon *entity.Coupon) error
+		// DeleteByID 根据主键ID删除优惠券表
 		DeleteByID(ctx context.Context, id uint64) error
-		// Update 修改JSON动态配置
-		Update(ctx context.Context, jsonDynamicConfig *entity.JsonDynamicConfig) error
-		// GetByID 根据主键ID查询JSON动态配置
-		GetByID(ctx context.Context, id uint64) (*entity.JsonDynamicConfig, error)
-		// GetByDBOption 根据动态条件查询JSON动态配置
-		GetByDBOption(ctx context.Context, pageNum uint32, pageSize uint32, opts ...db.DBOption) ([]*entity.JsonDynamicConfig, uint32, error)
+		// Update 修改优惠券表
+		Update(ctx context.Context, coupon *entity.Coupon) error
+		// GetByID 根据主键ID查询优惠券表
+		GetByID(ctx context.Context, id uint64) (*entity.Coupon, error)
+		// GetByDBOption 根据动态条件查询优惠券表
+		GetByDBOption(ctx context.Context, pageNum uint32, pageSize uint32, opts ...db.DBOption) ([]*entity.Coupon, uint32, error)
+
+		// GetByIDs 根据主键ID查询优惠券表
+		GetByIDs(ctx context.Context, ids []uint64) (entity.Coupons, error)
+	}
+)
+
+// CouponHistory 优惠券使用、领取历史表
+type (
+	// ICouponHistoryUseCase 业务逻辑
+	ICouponHistoryUseCase interface {
+	}
+
+	// ICouponHistoryRepo 数据存储操作
+	ICouponHistoryRepo interface {
+		// Create 创建优惠券使用、领取历史表
+		Create(ctx context.Context, couponHistory *entity.CouponHistory) error
+		// DeleteByID 根据主键ID删除优惠券使用、领取历史表
+		DeleteByID(ctx context.Context, id uint64) error
+		// Update 修改优惠券使用、领取历史表
+		Update(ctx context.Context, couponHistory *entity.CouponHistory) error
+		// GetByID 根据主键ID查询优惠券使用、领取历史表
+		GetByID(ctx context.Context, id uint64) (*entity.CouponHistory, error)
+		// GetByDBOption 根据动态条件查询优惠券使用、领取历史表
+		GetByDBOption(ctx context.Context, pageNum uint32, pageSize uint32, opts ...db.DBOption) ([]*entity.CouponHistory, uint32, error)
+		// GetNoUseCouponHistory 查询未使用的优惠券
+		GetNoUseCouponHistory(ctx context.Context, memberID uint64) (entity.CouponHistories, error)
+	}
+)
+
+// CouponProductCategoryRelation 优惠券和商品分类关系表
+type (
+	// ICouponProductCategoryRelationUseCase 业务逻辑
+	ICouponProductCategoryRelationUseCase interface {
+	}
+
+	// ICouponProductCategoryRelationRepo 数据存储操作
+	ICouponProductCategoryRelationRepo interface {
+		// Create 创建优惠券和商品分类关系表
+		Create(ctx context.Context, couponProductCategoryRelation *entity.CouponProductCategoryRelation) error
+		// DeleteByID 根据主键ID删除优惠券和商品分类关系表
+		DeleteByID(ctx context.Context, id uint64) error
+		// Update 修改优惠券和商品分类关系表
+		Update(ctx context.Context, couponProductCategoryRelation *entity.CouponProductCategoryRelation) error
+		// GetByID 根据主键ID查询优惠券和商品分类关系表
+		GetByID(ctx context.Context, id uint64) (*entity.CouponProductCategoryRelation, error)
+		// GetByDBOption 根据动态条件查询优惠券和商品分类关系表
+		GetByDBOption(ctx context.Context, pageNum uint32, pageSize uint32, opts ...db.DBOption) ([]*entity.CouponProductCategoryRelation, uint32, error)
+
+		// GetByCouponID 根据主键ID查询优惠券和商品分类关系表
+		GetByCouponID(ctx context.Context, couponIDs []uint64) (entity.CouponProductCategoryRelations, error)
+	}
+)
+
+// CouponProductRelation 优惠券和商品的关系表
+type (
+	// ICouponProductRelationUseCase 业务逻辑
+	ICouponProductRelationUseCase interface {
+	}
+
+	// ICouponProductRelationRepo 数据存储操作
+	ICouponProductRelationRepo interface {
+		// Create 创建优惠券和商品的关系表
+		Create(ctx context.Context, couponProductRelation *entity.CouponProductRelation) error
+		// DeleteByID 根据主键ID删除优惠券和商品的关系表
+		DeleteByID(ctx context.Context, id uint64) error
+		// Update 修改优惠券和商品的关系表
+		Update(ctx context.Context, couponProductRelation *entity.CouponProductRelation) error
+		// GetByID 根据主键ID查询优惠券和商品的关系表
+		GetByID(ctx context.Context, id uint64) (*entity.CouponProductRelation, error)
+		// GetByDBOption 根据动态条件查询优惠券和商品的关系表
+		GetByDBOption(ctx context.Context, pageNum uint32, pageSize uint32, opts ...db.DBOption) ([]*entity.CouponProductRelation, uint32, error)
+
+		// GetByCouponID 根据优惠券ID查询优惠券和商品的关系表
+		GetByCouponID(ctx context.Context, couponIDs []uint64) (entity.CouponProductRelations, error)
 	}
 )

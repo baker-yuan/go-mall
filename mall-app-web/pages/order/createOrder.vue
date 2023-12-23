@@ -186,14 +186,14 @@
 			},
 		},
 		methods: {
-			//生成确认单信息
+			// 生成确认单信息
 			async loadData() {
-				generateConfirmOrder(JSON.stringify(this.cartIds)).then(response => {
-					this.memberReceiveAddressList = response.data.memberReceiveAddressList;
+				generateConfirmOrder({ cartIds: this.cartIds }).then(response => {
+					this.memberReceiveAddressList = response.data.memberReceiveAddresses;
 					this.currentAddress = this.getDefaultAddress();
-					this.cartPromotionItemList = response.data.cartPromotionItemList;
+					this.cartPromotionItemList = response.data.cartPromotionItems;
 					this.couponList = [];
-					for (let item of response.data.couponHistoryDetailList) {
+					for (let item of response.data.couponHistoryDetails) {
 						this.couponList.push(item.coupon);
 					}
 					this.calcAmount = response.data.calcAmount;
