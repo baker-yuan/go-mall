@@ -95,6 +95,10 @@ func Init(db *gorm.DB) error {
 			TableName: "商品操作记录表",
 			StructPtr: &ProductOperateLog{},
 		},
+		{
+			TableName: "JSON动态配置",
+			StructPtr: &JsonDynamicConfig{},
+		},
 	}
 
 	cmsSchemas := []tableSchema{

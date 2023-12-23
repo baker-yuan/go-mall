@@ -170,33 +170,38 @@ func (m *GenerateConfirmOrderRsp) validate(all bool) error {
 
 	var errors []error
 
-	if all {
-		switch v := interface{}(m.GetCartPromotionItems()).(type) {
-		case interface{ ValidateAll() error }:
-			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, GenerateConfirmOrderRspValidationError{
-					field:  "CartPromotionItems",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
+	for idx, item := range m.GetCartPromotionItems() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, GenerateConfirmOrderRspValidationError{
+						field:  fmt.Sprintf("CartPromotionItems[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, GenerateConfirmOrderRspValidationError{
+						field:  fmt.Sprintf("CartPromotionItems[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
 			}
-		case interface{ Validate() error }:
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
 			if err := v.Validate(); err != nil {
-				errors = append(errors, GenerateConfirmOrderRspValidationError{
-					field:  "CartPromotionItems",
+				return GenerateConfirmOrderRspValidationError{
+					field:  fmt.Sprintf("CartPromotionItems[%v]", idx),
 					reason: "embedded message failed validation",
 					cause:  err,
-				})
+				}
 			}
 		}
-	} else if v, ok := interface{}(m.GetCartPromotionItems()).(interface{ Validate() error }); ok {
-		if err := v.Validate(); err != nil {
-			return GenerateConfirmOrderRspValidationError{
-				field:  "CartPromotionItems",
-				reason: "embedded message failed validation",
-				cause:  err,
-			}
-		}
+
 	}
 
 	for idx, item := range m.GetMemberReceiveAddress() {
@@ -2641,122 +2646,6 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = GenerateConfirmOrderRsp_MemberReceiveAddressValidationError{}
-
-// Validate checks the field values on
-// GenerateConfirmOrderRsp_CartPromotionItem with the rules defined in the
-// proto definition for this message. If any rules are violated, the first
-// error encountered is returned, or nil if there are no violations.
-func (m *GenerateConfirmOrderRsp_CartPromotionItem) Validate() error {
-	return m.validate(false)
-}
-
-// ValidateAll checks the field values on
-// GenerateConfirmOrderRsp_CartPromotionItem with the rules defined in the
-// proto definition for this message. If any rules are violated, the result is
-// a list of violation errors wrapped in
-// GenerateConfirmOrderRsp_CartPromotionItemMultiError, or nil if none found.
-func (m *GenerateConfirmOrderRsp_CartPromotionItem) ValidateAll() error {
-	return m.validate(true)
-}
-
-func (m *GenerateConfirmOrderRsp_CartPromotionItem) validate(all bool) error {
-	if m == nil {
-		return nil
-	}
-
-	var errors []error
-
-	// no validation rules for PromotionMessage
-
-	// no validation rules for ReduceAmount
-
-	// no validation rules for RealStock
-
-	// no validation rules for Integration
-
-	// no validation rules for Growth
-
-	if len(errors) > 0 {
-		return GenerateConfirmOrderRsp_CartPromotionItemMultiError(errors)
-	}
-
-	return nil
-}
-
-// GenerateConfirmOrderRsp_CartPromotionItemMultiError is an error wrapping
-// multiple validation errors returned by
-// GenerateConfirmOrderRsp_CartPromotionItem.ValidateAll() if the designated
-// constraints aren't met.
-type GenerateConfirmOrderRsp_CartPromotionItemMultiError []error
-
-// Error returns a concatenation of all the error messages it wraps.
-func (m GenerateConfirmOrderRsp_CartPromotionItemMultiError) Error() string {
-	var msgs []string
-	for _, err := range m {
-		msgs = append(msgs, err.Error())
-	}
-	return strings.Join(msgs, "; ")
-}
-
-// AllErrors returns a list of validation violation errors.
-func (m GenerateConfirmOrderRsp_CartPromotionItemMultiError) AllErrors() []error { return m }
-
-// GenerateConfirmOrderRsp_CartPromotionItemValidationError is the validation
-// error returned by GenerateConfirmOrderRsp_CartPromotionItem.Validate if the
-// designated constraints aren't met.
-type GenerateConfirmOrderRsp_CartPromotionItemValidationError struct {
-	field  string
-	reason string
-	cause  error
-	key    bool
-}
-
-// Field function returns field value.
-func (e GenerateConfirmOrderRsp_CartPromotionItemValidationError) Field() string { return e.field }
-
-// Reason function returns reason value.
-func (e GenerateConfirmOrderRsp_CartPromotionItemValidationError) Reason() string { return e.reason }
-
-// Cause function returns cause value.
-func (e GenerateConfirmOrderRsp_CartPromotionItemValidationError) Cause() error { return e.cause }
-
-// Key function returns key value.
-func (e GenerateConfirmOrderRsp_CartPromotionItemValidationError) Key() bool { return e.key }
-
-// ErrorName returns error name.
-func (e GenerateConfirmOrderRsp_CartPromotionItemValidationError) ErrorName() string {
-	return "GenerateConfirmOrderRsp_CartPromotionItemValidationError"
-}
-
-// Error satisfies the builtin error interface
-func (e GenerateConfirmOrderRsp_CartPromotionItemValidationError) Error() string {
-	cause := ""
-	if e.cause != nil {
-		cause = fmt.Sprintf(" | caused by: %v", e.cause)
-	}
-
-	key := ""
-	if e.key {
-		key = "key for "
-	}
-
-	return fmt.Sprintf(
-		"invalid %sGenerateConfirmOrderRsp_CartPromotionItem.%s: %s%s",
-		key,
-		e.field,
-		e.reason,
-		cause)
-}
-
-var _ error = GenerateConfirmOrderRsp_CartPromotionItemValidationError{}
-
-var _ interface {
-	Field() string
-	Reason() string
-	Key() bool
-	Cause() error
-	ErrorName() string
-} = GenerateConfirmOrderRsp_CartPromotionItemValidationError{}
 
 // Validate checks the field values on
 // GenerateConfirmOrderRsp_CouponHistoryDetail with the rules defined in the

@@ -73,6 +73,20 @@ func (c DecimalUtils) DivideDecimal(a, b string) (string, error) {
 	return result.StringFixed(2), nil
 }
 
+// CompareDecimal 比较两个表示十进制数的字符串参数。
+// 如果 a > b 返回 1，如果 a < b 返回 -1，如果 a == b 返回 0。
+func (c DecimalUtils) CompareDecimal(a, b string) (int, error) {
+	decA, err := decimal.NewFromString(a)
+	if err != nil {
+		return 0, err
+	}
+	decB, err := decimal.NewFromString(b)
+	if err != nil {
+		return 0, err
+	}
+	return decA.Cmp(decB), nil
+}
+
 // SubtractPrices 接受两个字符串类型的价格，执行减法操作，并返回结果字符串
 //func SubtractPrices(originalPriceStr, promotionPriceStr string) (string, error) {
 //	originalPrice, _, err := big.NewFloat(0).Parse(originalPriceStr, 10)

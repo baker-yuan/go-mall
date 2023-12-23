@@ -13,10 +13,10 @@ message OrderReturnApply {
   string product_name = 4; // 商品名称
   string product_brand = 5; // 商品品牌
   uint64 product_id = 6; // 退货商品id
-  double product_real_price = 7; // 商品实际支付单价
+  string product_real_price = 7; // 商品实际支付单价
   string product_attr = 8; // 商品销售属性：颜色：红色；尺码：xl;
   uint32 product_count = 9; // 退货数量
-  double product_price = 10; // 商品单价
+  string product_price = 10; // 商品单价
   //
   uint32 status = 11; // 申请状态：0->待处理；1->退货中；2->已完成；3->已拒绝
   string order_sn = 12; // 订单编号
@@ -28,7 +28,7 @@ message OrderReturnApply {
   string description = 18; // 描述
   repeated string proof_pics = 19; // 凭证图片，json字符串数组
   //
-  double return_amount = 20; // 退款金额
+  string return_amount = 20; // 退款金额
   uint64 company_address_id = 21; // 收货地址表id
   // 商家-处理人
   string handle_man = 22; // 处理人员

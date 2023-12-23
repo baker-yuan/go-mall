@@ -3,6 +3,7 @@ module github.com/baker-yuan/go-mall/common
 go 1.20
 
 require (
+    github.com/baker-yuan/go-mall/proto v0.0.0-00010101000000-000000000000
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.18.1
 	github.com/rs/zerolog v1.31.0
@@ -27,4 +28,7 @@ require (
 	google.golang.org/genproto/googleapis/api v0.0.0-20231106174013-bbf56f31fb17 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20231030173426-d783a09b4405 // indirect
 	google.golang.org/protobuf v1.31.0 // indirect
+)
+replace (
+	github.com/baker-yuan/go-mall/proto => ../proto
 )

@@ -80,20 +80,20 @@ func parseJWT(r *http.Request, jwtTokenUtil *pkg_jwt.JWT, tokenHeader string, to
 	}
 
 	// 用户信息放入上下文
-	ctx := util.SetUserID(r.Context(), token.UserInfo.UserID)
+	ctx := util.CtxUtils.SetUserID(r.Context(), token.UserInfo.UserID)
 	return token, ctx, nil
 }
 
 // CustomAnnotator 将 HTTP 上下文中的用户名添加到 gRPC 上下文的元数据中
 func CustomAnnotator(ctx context.Context, req *http.Request) metadata.MD {
 	// 从HTTP context中获取用户名
-	userID, err := util.GetUserID(ctx)
+	userID, err := util.CtxUtils.GetUserID(ctx)
 	if err != nil {
 		return nil
 	}
 
 	// 创建gRPC metadata并添加用户名
-	md := metadata.Pairs(string(util.UserIDKey), fmt.Sprintf("%d", userID))
+	md := metadata.Pairs(string(util.CtxUtils.GetUserIDKey()), fmt.Sprintf("%d", userID))
 	return md
 }
 
@@ -132,7 +132,7 @@ func JWTAuthInterceptor(jwtTokenUtil *pkg_jwt.JWT, whitelist []string, tokenHead
 		}
 
 		// 将用户名设置到 gRPC 上下文中
-		newCtx := util.SetUserID(ctx, token.UserInfo.UserID)
+		newCtx := util.CtxUtils.SetUserID(ctx, token.UserInfo.UserID)
 
 		// 调用 RPC 方法
 		return handler(newCtx, req)

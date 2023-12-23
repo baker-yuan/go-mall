@@ -30,24 +30,24 @@ type OrderItem struct {
 	OrderId uint64 `protobuf:"varint,2,opt,name=order_id,json=orderId,proto3" json:"order_id,omitempty"` // 订单id，对应 oms_order#id
 	OrderSn string `protobuf:"bytes,3,opt,name=order_sn,json=orderSn,proto3" json:"order_sn,omitempty"`  // 订单编号
 	// 商品信息
-	ProductId         uint64  `protobuf:"varint,4,opt,name=product_id,json=productId,proto3" json:"product_id,omitempty"`                            // 商品id
-	ProductPic        string  `protobuf:"bytes,5,opt,name=product_pic,json=productPic,proto3" json:"product_pic,omitempty"`                          // 商品图片
-	ProductName       string  `protobuf:"bytes,6,opt,name=product_name,json=productName,proto3" json:"product_name,omitempty"`                       // 商品名称
-	ProductBrand      string  `protobuf:"bytes,7,opt,name=product_brand,json=productBrand,proto3" json:"product_brand,omitempty"`                    // 商品品牌
-	ProductPrice      float64 `protobuf:"fixed64,8,opt,name=product_price,json=productPrice,proto3" json:"product_price,omitempty"`                  // 销售价格
-	ProductSn         string  `protobuf:"bytes,9,opt,name=product_sn,json=productSn,proto3" json:"product_sn,omitempty"`                             // 商品条码
-	ProductAttr       string  `protobuf:"bytes,10,opt,name=product_attr,json=productAttr,proto3" json:"product_attr,omitempty"`                      // 商品销售属性
-	ProductQuantity   uint32  `protobuf:"varint,11,opt,name=product_quantity,json=productQuantity,proto3" json:"product_quantity,omitempty"`         // 购买数量
-	ProductCategoryId uint64  `protobuf:"varint,12,opt,name=product_category_id,json=productCategoryId,proto3" json:"product_category_id,omitempty"` // 商品分类id
-	ProductSkuId      uint64  `protobuf:"varint,13,opt,name=product_sku_id,json=productSkuId,proto3" json:"product_sku_id,omitempty"`                // 商品sku编号
-	ProductSkuCode    string  `protobuf:"bytes,14,opt,name=product_sku_code,json=productSkuCode,proto3" json:"product_sku_code,omitempty"`           // 商品sku条码
-	PromotionName     string  `protobuf:"bytes,15,opt,name=promotion_name,json=promotionName,proto3" json:"promotion_name,omitempty"`                // 商品促销名称
-	PromotionAmount   float64 `protobuf:"fixed64,16,opt,name=promotion_amount,json=promotionAmount,proto3" json:"promotion_amount,omitempty"`        // 商品促销分解金额
-	CouponAmount      float64 `protobuf:"fixed64,17,opt,name=coupon_amount,json=couponAmount,proto3" json:"coupon_amount,omitempty"`                 // 优惠券优惠分解金额
-	IntegrationAmount float64 `protobuf:"fixed64,18,opt,name=integration_amount,json=integrationAmount,proto3" json:"integration_amount,omitempty"`  // 积分优惠分解金额
-	RealAmount        float64 `protobuf:"fixed64,19,opt,name=real_amount,json=realAmount,proto3" json:"real_amount,omitempty"`                       // 该商品经过优惠后的分解金额
-	GiftIntegration   uint32  `protobuf:"varint,20,opt,name=gift_integration,json=giftIntegration,proto3" json:"gift_integration,omitempty"`         // 商品赠送积分
-	GiftGrowth        uint32  `protobuf:"varint,21,opt,name=gift_growth,json=giftGrowth,proto3" json:"gift_growth,omitempty"`                        // 商品赠送成长值
+	ProductId         uint64 `protobuf:"varint,4,opt,name=product_id,json=productId,proto3" json:"product_id,omitempty"`                            // 商品id
+	ProductPic        string `protobuf:"bytes,5,opt,name=product_pic,json=productPic,proto3" json:"product_pic,omitempty"`                          // 商品图片
+	ProductName       string `protobuf:"bytes,6,opt,name=product_name,json=productName,proto3" json:"product_name,omitempty"`                       // 商品名称
+	ProductBrand      string `protobuf:"bytes,7,opt,name=product_brand,json=productBrand,proto3" json:"product_brand,omitempty"`                    // 商品品牌
+	ProductPrice      string `protobuf:"bytes,8,opt,name=product_price,json=productPrice,proto3" json:"product_price,omitempty"`                    // 销售价格
+	ProductSn         string `protobuf:"bytes,9,opt,name=product_sn,json=productSn,proto3" json:"product_sn,omitempty"`                             // 商品条码
+	ProductAttr       string `protobuf:"bytes,10,opt,name=product_attr,json=productAttr,proto3" json:"product_attr,omitempty"`                      // 商品销售属性
+	ProductQuantity   uint32 `protobuf:"varint,11,opt,name=product_quantity,json=productQuantity,proto3" json:"product_quantity,omitempty"`         // 购买数量
+	ProductCategoryId uint64 `protobuf:"varint,12,opt,name=product_category_id,json=productCategoryId,proto3" json:"product_category_id,omitempty"` // 商品分类id
+	ProductSkuId      uint64 `protobuf:"varint,13,opt,name=product_sku_id,json=productSkuId,proto3" json:"product_sku_id,omitempty"`                // 商品sku编号
+	ProductSkuCode    string `protobuf:"bytes,14,opt,name=product_sku_code,json=productSkuCode,proto3" json:"product_sku_code,omitempty"`           // 商品sku条码
+	PromotionName     string `protobuf:"bytes,15,opt,name=promotion_name,json=promotionName,proto3" json:"promotion_name,omitempty"`                // 商品促销名称
+	PromotionAmount   string `protobuf:"bytes,16,opt,name=promotion_amount,json=promotionAmount,proto3" json:"promotion_amount,omitempty"`          // 商品促销分解金额
+	CouponAmount      string `protobuf:"bytes,17,opt,name=coupon_amount,json=couponAmount,proto3" json:"coupon_amount,omitempty"`                   // 优惠券优惠分解金额
+	IntegrationAmount string `protobuf:"bytes,18,opt,name=integration_amount,json=integrationAmount,proto3" json:"integration_amount,omitempty"`    // 积分优惠分解金额
+	RealAmount        string `protobuf:"bytes,19,opt,name=real_amount,json=realAmount,proto3" json:"real_amount,omitempty"`                         // 该商品经过优惠后的分解金额
+	GiftIntegration   uint32 `protobuf:"varint,20,opt,name=gift_integration,json=giftIntegration,proto3" json:"gift_integration,omitempty"`         // 商品赠送积分
+	GiftGrowth        uint32 `protobuf:"varint,21,opt,name=gift_growth,json=giftGrowth,proto3" json:"gift_growth,omitempty"`                        // 商品赠送成长值
 }
 
 func (x *OrderItem) Reset() {
@@ -131,11 +131,11 @@ func (x *OrderItem) GetProductBrand() string {
 	return ""
 }
 
-func (x *OrderItem) GetProductPrice() float64 {
+func (x *OrderItem) GetProductPrice() string {
 	if x != nil {
 		return x.ProductPrice
 	}
-	return 0
+	return ""
 }
 
 func (x *OrderItem) GetProductSn() string {
@@ -187,32 +187,32 @@ func (x *OrderItem) GetPromotionName() string {
 	return ""
 }
 
-func (x *OrderItem) GetPromotionAmount() float64 {
+func (x *OrderItem) GetPromotionAmount() string {
 	if x != nil {
 		return x.PromotionAmount
 	}
-	return 0
+	return ""
 }
 
-func (x *OrderItem) GetCouponAmount() float64 {
+func (x *OrderItem) GetCouponAmount() string {
 	if x != nil {
 		return x.CouponAmount
 	}
-	return 0
+	return ""
 }
 
-func (x *OrderItem) GetIntegrationAmount() float64 {
+func (x *OrderItem) GetIntegrationAmount() string {
 	if x != nil {
 		return x.IntegrationAmount
 	}
-	return 0
+	return ""
 }
 
-func (x *OrderItem) GetRealAmount() float64 {
+func (x *OrderItem) GetRealAmount() string {
 	if x != nil {
 		return x.RealAmount
 	}
-	return 0
+	return ""
 }
 
 func (x *OrderItem) GetGiftIntegration() uint32 {
@@ -249,7 +249,7 @@ var file_model_oms_order_item_proto_rawDesc = []byte{
 	0x6f, 0x64, 0x75, 0x63, 0x74, 0x5f, 0x62, 0x72, 0x61, 0x6e, 0x64, 0x18, 0x07, 0x20, 0x01, 0x28,
 	0x09, 0x52, 0x0c, 0x70, 0x72, 0x6f, 0x64, 0x75, 0x63, 0x74, 0x42, 0x72, 0x61, 0x6e, 0x64, 0x12,
 	0x23, 0x0a, 0x0d, 0x70, 0x72, 0x6f, 0x64, 0x75, 0x63, 0x74, 0x5f, 0x70, 0x72, 0x69, 0x63, 0x65,
-	0x18, 0x08, 0x20, 0x01, 0x28, 0x01, 0x52, 0x0c, 0x70, 0x72, 0x6f, 0x64, 0x75, 0x63, 0x74, 0x50,
+	0x18, 0x08, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0c, 0x70, 0x72, 0x6f, 0x64, 0x75, 0x63, 0x74, 0x50,
 	0x72, 0x69, 0x63, 0x65, 0x12, 0x1d, 0x0a, 0x0a, 0x70, 0x72, 0x6f, 0x64, 0x75, 0x63, 0x74, 0x5f,
 	0x73, 0x6e, 0x18, 0x09, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x70, 0x72, 0x6f, 0x64, 0x75, 0x63,
 	0x74, 0x53, 0x6e, 0x12, 0x21, 0x0a, 0x0c, 0x70, 0x72, 0x6f, 0x64, 0x75, 0x63, 0x74, 0x5f, 0x61,
@@ -269,14 +269,14 @@ var file_model_oms_order_item_proto_rawDesc = []byte{
 	0x61, 0x6d, 0x65, 0x18, 0x0f, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0d, 0x70, 0x72, 0x6f, 0x6d, 0x6f,
 	0x74, 0x69, 0x6f, 0x6e, 0x4e, 0x61, 0x6d, 0x65, 0x12, 0x29, 0x0a, 0x10, 0x70, 0x72, 0x6f, 0x6d,
 	0x6f, 0x74, 0x69, 0x6f, 0x6e, 0x5f, 0x61, 0x6d, 0x6f, 0x75, 0x6e, 0x74, 0x18, 0x10, 0x20, 0x01,
-	0x28, 0x01, 0x52, 0x0f, 0x70, 0x72, 0x6f, 0x6d, 0x6f, 0x74, 0x69, 0x6f, 0x6e, 0x41, 0x6d, 0x6f,
+	0x28, 0x09, 0x52, 0x0f, 0x70, 0x72, 0x6f, 0x6d, 0x6f, 0x74, 0x69, 0x6f, 0x6e, 0x41, 0x6d, 0x6f,
 	0x75, 0x6e, 0x74, 0x12, 0x23, 0x0a, 0x0d, 0x63, 0x6f, 0x75, 0x70, 0x6f, 0x6e, 0x5f, 0x61, 0x6d,
-	0x6f, 0x75, 0x6e, 0x74, 0x18, 0x11, 0x20, 0x01, 0x28, 0x01, 0x52, 0x0c, 0x63, 0x6f, 0x75, 0x70,
+	0x6f, 0x75, 0x6e, 0x74, 0x18, 0x11, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0c, 0x63, 0x6f, 0x75, 0x70,
 	0x6f, 0x6e, 0x41, 0x6d, 0x6f, 0x75, 0x6e, 0x74, 0x12, 0x2d, 0x0a, 0x12, 0x69, 0x6e, 0x74, 0x65,
 	0x67, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x5f, 0x61, 0x6d, 0x6f, 0x75, 0x6e, 0x74, 0x18, 0x12,
-	0x20, 0x01, 0x28, 0x01, 0x52, 0x11, 0x69, 0x6e, 0x74, 0x65, 0x67, 0x72, 0x61, 0x74, 0x69, 0x6f,
+	0x20, 0x01, 0x28, 0x09, 0x52, 0x11, 0x69, 0x6e, 0x74, 0x65, 0x67, 0x72, 0x61, 0x74, 0x69, 0x6f,
 	0x6e, 0x41, 0x6d, 0x6f, 0x75, 0x6e, 0x74, 0x12, 0x1f, 0x0a, 0x0b, 0x72, 0x65, 0x61, 0x6c, 0x5f,
-	0x61, 0x6d, 0x6f, 0x75, 0x6e, 0x74, 0x18, 0x13, 0x20, 0x01, 0x28, 0x01, 0x52, 0x0a, 0x72, 0x65,
+	0x61, 0x6d, 0x6f, 0x75, 0x6e, 0x74, 0x18, 0x13, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0a, 0x72, 0x65,
 	0x61, 0x6c, 0x41, 0x6d, 0x6f, 0x75, 0x6e, 0x74, 0x12, 0x29, 0x0a, 0x10, 0x67, 0x69, 0x66, 0x74,
 	0x5f, 0x69, 0x6e, 0x74, 0x65, 0x67, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x18, 0x14, 0x20, 0x01,
 	0x28, 0x0d, 0x52, 0x0f, 0x67, 0x69, 0x66, 0x74, 0x49, 0x6e, 0x74, 0x65, 0x67, 0x72, 0x61, 0x74,

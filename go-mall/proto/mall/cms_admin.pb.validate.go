@@ -7765,3 +7765,862 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = DeleteSubjectReqValidationError{}
+
+// Validate checks the field values on AddOrUpdateJsonDynamicConfigParam with
+// the rules defined in the proto definition for this message. If any rules
+// are violated, the first error encountered is returned, or nil if there are
+// no violations.
+func (m *AddOrUpdateJsonDynamicConfigParam) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on AddOrUpdateJsonDynamicConfigParam
+// with the rules defined in the proto definition for this message. If any
+// rules are violated, the result is a list of violation errors wrapped in
+// AddOrUpdateJsonDynamicConfigParamMultiError, or nil if none found.
+func (m *AddOrUpdateJsonDynamicConfigParam) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *AddOrUpdateJsonDynamicConfigParam) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Id
+
+	// no validation rules for BizType
+
+	// no validation rules for BizDesc
+
+	// no validation rules for Content
+
+	// no validation rules for JsonSchema
+
+	if len(errors) > 0 {
+		return AddOrUpdateJsonDynamicConfigParamMultiError(errors)
+	}
+
+	return nil
+}
+
+// AddOrUpdateJsonDynamicConfigParamMultiError is an error wrapping multiple
+// validation errors returned by
+// AddOrUpdateJsonDynamicConfigParam.ValidateAll() if the designated
+// constraints aren't met.
+type AddOrUpdateJsonDynamicConfigParamMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m AddOrUpdateJsonDynamicConfigParamMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m AddOrUpdateJsonDynamicConfigParamMultiError) AllErrors() []error { return m }
+
+// AddOrUpdateJsonDynamicConfigParamValidationError is the validation error
+// returned by AddOrUpdateJsonDynamicConfigParam.Validate if the designated
+// constraints aren't met.
+type AddOrUpdateJsonDynamicConfigParamValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e AddOrUpdateJsonDynamicConfigParamValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e AddOrUpdateJsonDynamicConfigParamValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e AddOrUpdateJsonDynamicConfigParamValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e AddOrUpdateJsonDynamicConfigParamValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e AddOrUpdateJsonDynamicConfigParamValidationError) ErrorName() string {
+	return "AddOrUpdateJsonDynamicConfigParamValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e AddOrUpdateJsonDynamicConfigParamValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sAddOrUpdateJsonDynamicConfigParam.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = AddOrUpdateJsonDynamicConfigParamValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = AddOrUpdateJsonDynamicConfigParamValidationError{}
+
+// Validate checks the field values on GetJsonDynamicConfigsParam with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *GetJsonDynamicConfigsParam) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on GetJsonDynamicConfigsParam with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// GetJsonDynamicConfigsParamMultiError, or nil if none found.
+func (m *GetJsonDynamicConfigsParam) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *GetJsonDynamicConfigsParam) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if m.GetPageNum() < 0 {
+		err := GetJsonDynamicConfigsParamValidationError{
+			field:  "PageNum",
+			reason: "value must be greater than or equal to 0",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if m.GetPageSize() < 0 {
+		err := GetJsonDynamicConfigsParamValidationError{
+			field:  "PageSize",
+			reason: "value must be greater than or equal to 0",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if len(errors) > 0 {
+		return GetJsonDynamicConfigsParamMultiError(errors)
+	}
+
+	return nil
+}
+
+// GetJsonDynamicConfigsParamMultiError is an error wrapping multiple
+// validation errors returned by GetJsonDynamicConfigsParam.ValidateAll() if
+// the designated constraints aren't met.
+type GetJsonDynamicConfigsParamMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m GetJsonDynamicConfigsParamMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m GetJsonDynamicConfigsParamMultiError) AllErrors() []error { return m }
+
+// GetJsonDynamicConfigsParamValidationError is the validation error returned
+// by GetJsonDynamicConfigsParam.Validate if the designated constraints aren't met.
+type GetJsonDynamicConfigsParamValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e GetJsonDynamicConfigsParamValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e GetJsonDynamicConfigsParamValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e GetJsonDynamicConfigsParamValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e GetJsonDynamicConfigsParamValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e GetJsonDynamicConfigsParamValidationError) ErrorName() string {
+	return "GetJsonDynamicConfigsParamValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e GetJsonDynamicConfigsParamValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sGetJsonDynamicConfigsParam.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = GetJsonDynamicConfigsParamValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = GetJsonDynamicConfigsParamValidationError{}
+
+// Validate checks the field values on JsonDynamicConfigsData with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *JsonDynamicConfigsData) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on JsonDynamicConfigsData with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// JsonDynamicConfigsDataMultiError, or nil if none found.
+func (m *JsonDynamicConfigsData) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *JsonDynamicConfigsData) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	for idx, item := range m.GetData() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, JsonDynamicConfigsDataValidationError{
+						field:  fmt.Sprintf("Data[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, JsonDynamicConfigsDataValidationError{
+						field:  fmt.Sprintf("Data[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return JsonDynamicConfigsDataValidationError{
+					field:  fmt.Sprintf("Data[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	// no validation rules for PageTotal
+
+	// no validation rules for PageSize
+
+	// no validation rules for PageNum
+
+	if len(errors) > 0 {
+		return JsonDynamicConfigsDataMultiError(errors)
+	}
+
+	return nil
+}
+
+// JsonDynamicConfigsDataMultiError is an error wrapping multiple validation
+// errors returned by JsonDynamicConfigsData.ValidateAll() if the designated
+// constraints aren't met.
+type JsonDynamicConfigsDataMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m JsonDynamicConfigsDataMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m JsonDynamicConfigsDataMultiError) AllErrors() []error { return m }
+
+// JsonDynamicConfigsDataValidationError is the validation error returned by
+// JsonDynamicConfigsData.Validate if the designated constraints aren't met.
+type JsonDynamicConfigsDataValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e JsonDynamicConfigsDataValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e JsonDynamicConfigsDataValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e JsonDynamicConfigsDataValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e JsonDynamicConfigsDataValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e JsonDynamicConfigsDataValidationError) ErrorName() string {
+	return "JsonDynamicConfigsDataValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e JsonDynamicConfigsDataValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sJsonDynamicConfigsData.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = JsonDynamicConfigsDataValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = JsonDynamicConfigsDataValidationError{}
+
+// Validate checks the field values on GetJsonDynamicConfigsRsp with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *GetJsonDynamicConfigsRsp) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on GetJsonDynamicConfigsRsp with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// GetJsonDynamicConfigsRspMultiError, or nil if none found.
+func (m *GetJsonDynamicConfigsRsp) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *GetJsonDynamicConfigsRsp) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Code
+
+	// no validation rules for Message
+
+	if all {
+		switch v := interface{}(m.GetData()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, GetJsonDynamicConfigsRspValidationError{
+					field:  "Data",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, GetJsonDynamicConfigsRspValidationError{
+					field:  "Data",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetData()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return GetJsonDynamicConfigsRspValidationError{
+				field:  "Data",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if len(errors) > 0 {
+		return GetJsonDynamicConfigsRspMultiError(errors)
+	}
+
+	return nil
+}
+
+// GetJsonDynamicConfigsRspMultiError is an error wrapping multiple validation
+// errors returned by GetJsonDynamicConfigsRsp.ValidateAll() if the designated
+// constraints aren't met.
+type GetJsonDynamicConfigsRspMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m GetJsonDynamicConfigsRspMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m GetJsonDynamicConfigsRspMultiError) AllErrors() []error { return m }
+
+// GetJsonDynamicConfigsRspValidationError is the validation error returned by
+// GetJsonDynamicConfigsRsp.Validate if the designated constraints aren't met.
+type GetJsonDynamicConfigsRspValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e GetJsonDynamicConfigsRspValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e GetJsonDynamicConfigsRspValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e GetJsonDynamicConfigsRspValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e GetJsonDynamicConfigsRspValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e GetJsonDynamicConfigsRspValidationError) ErrorName() string {
+	return "GetJsonDynamicConfigsRspValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e GetJsonDynamicConfigsRspValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sGetJsonDynamicConfigsRsp.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = GetJsonDynamicConfigsRspValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = GetJsonDynamicConfigsRspValidationError{}
+
+// Validate checks the field values on GetJsonDynamicConfigReq with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *GetJsonDynamicConfigReq) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on GetJsonDynamicConfigReq with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// GetJsonDynamicConfigReqMultiError, or nil if none found.
+func (m *GetJsonDynamicConfigReq) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *GetJsonDynamicConfigReq) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Id
+
+	if len(errors) > 0 {
+		return GetJsonDynamicConfigReqMultiError(errors)
+	}
+
+	return nil
+}
+
+// GetJsonDynamicConfigReqMultiError is an error wrapping multiple validation
+// errors returned by GetJsonDynamicConfigReq.ValidateAll() if the designated
+// constraints aren't met.
+type GetJsonDynamicConfigReqMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m GetJsonDynamicConfigReqMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m GetJsonDynamicConfigReqMultiError) AllErrors() []error { return m }
+
+// GetJsonDynamicConfigReqValidationError is the validation error returned by
+// GetJsonDynamicConfigReq.Validate if the designated constraints aren't met.
+type GetJsonDynamicConfigReqValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e GetJsonDynamicConfigReqValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e GetJsonDynamicConfigReqValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e GetJsonDynamicConfigReqValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e GetJsonDynamicConfigReqValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e GetJsonDynamicConfigReqValidationError) ErrorName() string {
+	return "GetJsonDynamicConfigReqValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e GetJsonDynamicConfigReqValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sGetJsonDynamicConfigReq.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = GetJsonDynamicConfigReqValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = GetJsonDynamicConfigReqValidationError{}
+
+// Validate checks the field values on GetJsonDynamicConfigRsp with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *GetJsonDynamicConfigRsp) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on GetJsonDynamicConfigRsp with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// GetJsonDynamicConfigRspMultiError, or nil if none found.
+func (m *GetJsonDynamicConfigRsp) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *GetJsonDynamicConfigRsp) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Code
+
+	// no validation rules for Message
+
+	if all {
+		switch v := interface{}(m.GetData()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, GetJsonDynamicConfigRspValidationError{
+					field:  "Data",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, GetJsonDynamicConfigRspValidationError{
+					field:  "Data",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetData()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return GetJsonDynamicConfigRspValidationError{
+				field:  "Data",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if len(errors) > 0 {
+		return GetJsonDynamicConfigRspMultiError(errors)
+	}
+
+	return nil
+}
+
+// GetJsonDynamicConfigRspMultiError is an error wrapping multiple validation
+// errors returned by GetJsonDynamicConfigRsp.ValidateAll() if the designated
+// constraints aren't met.
+type GetJsonDynamicConfigRspMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m GetJsonDynamicConfigRspMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m GetJsonDynamicConfigRspMultiError) AllErrors() []error { return m }
+
+// GetJsonDynamicConfigRspValidationError is the validation error returned by
+// GetJsonDynamicConfigRsp.Validate if the designated constraints aren't met.
+type GetJsonDynamicConfigRspValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e GetJsonDynamicConfigRspValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e GetJsonDynamicConfigRspValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e GetJsonDynamicConfigRspValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e GetJsonDynamicConfigRspValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e GetJsonDynamicConfigRspValidationError) ErrorName() string {
+	return "GetJsonDynamicConfigRspValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e GetJsonDynamicConfigRspValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sGetJsonDynamicConfigRsp.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = GetJsonDynamicConfigRspValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = GetJsonDynamicConfigRspValidationError{}
+
+// Validate checks the field values on DeleteJsonDynamicConfigReq with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *DeleteJsonDynamicConfigReq) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on DeleteJsonDynamicConfigReq with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// DeleteJsonDynamicConfigReqMultiError, or nil if none found.
+func (m *DeleteJsonDynamicConfigReq) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *DeleteJsonDynamicConfigReq) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Id
+
+	if len(errors) > 0 {
+		return DeleteJsonDynamicConfigReqMultiError(errors)
+	}
+
+	return nil
+}
+
+// DeleteJsonDynamicConfigReqMultiError is an error wrapping multiple
+// validation errors returned by DeleteJsonDynamicConfigReq.ValidateAll() if
+// the designated constraints aren't met.
+type DeleteJsonDynamicConfigReqMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m DeleteJsonDynamicConfigReqMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m DeleteJsonDynamicConfigReqMultiError) AllErrors() []error { return m }
+
+// DeleteJsonDynamicConfigReqValidationError is the validation error returned
+// by DeleteJsonDynamicConfigReq.Validate if the designated constraints aren't met.
+type DeleteJsonDynamicConfigReqValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e DeleteJsonDynamicConfigReqValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e DeleteJsonDynamicConfigReqValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e DeleteJsonDynamicConfigReqValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e DeleteJsonDynamicConfigReqValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e DeleteJsonDynamicConfigReqValidationError) ErrorName() string {
+	return "DeleteJsonDynamicConfigReqValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e DeleteJsonDynamicConfigReqValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sDeleteJsonDynamicConfigReq.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = DeleteJsonDynamicConfigReqValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = DeleteJsonDynamicConfigReqValidationError{}

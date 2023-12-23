@@ -27,11 +27,11 @@ type MemberPrice struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Id              uint64  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`                                                   // 主键
-	ProductId       uint64  `protobuf:"varint,2,opt,name=product_id,json=productId,proto3" json:"product_id,omitempty"`                    // 商品id
-	MemberLevelId   uint64  `protobuf:"varint,3,opt,name=member_level_id,json=memberLevelId,proto3" json:"member_level_id,omitempty"`      // 会员等级id
-	MemberPrice     float64 `protobuf:"fixed64,4,opt,name=member_price,json=memberPrice,proto3" json:"member_price,omitempty"`             // 会员价格
-	MemberLevelName string  `protobuf:"bytes,5,opt,name=member_level_name,json=memberLevelName,proto3" json:"member_level_name,omitempty"` // 会员等级名称
+	Id              uint64 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`                                                   // 主键
+	ProductId       uint64 `protobuf:"varint,2,opt,name=product_id,json=productId,proto3" json:"product_id,omitempty"`                    // 商品id
+	MemberLevelId   uint64 `protobuf:"varint,3,opt,name=member_level_id,json=memberLevelId,proto3" json:"member_level_id,omitempty"`      // 会员等级id
+	MemberPrice     string `protobuf:"bytes,4,opt,name=member_price,json=memberPrice,proto3" json:"member_price,omitempty"`               // 会员价格
+	MemberLevelName string `protobuf:"bytes,5,opt,name=member_level_name,json=memberLevelName,proto3" json:"member_level_name,omitempty"` // 会员等级名称
 }
 
 func (x *MemberPrice) Reset() {
@@ -87,11 +87,11 @@ func (x *MemberPrice) GetMemberLevelId() uint64 {
 	return 0
 }
 
-func (x *MemberPrice) GetMemberPrice() float64 {
+func (x *MemberPrice) GetMemberPrice() string {
 	if x != nil {
 		return x.MemberPrice
 	}
-	return 0
+	return ""
 }
 
 func (x *MemberPrice) GetMemberLevelName() string {
@@ -114,7 +114,7 @@ var file_model_pms_member_price_proto_rawDesc = []byte{
 	0x65, 0x76, 0x65, 0x6c, 0x5f, 0x69, 0x64, 0x18, 0x03, 0x20, 0x01, 0x28, 0x04, 0x52, 0x0d, 0x6d,
 	0x65, 0x6d, 0x62, 0x65, 0x72, 0x4c, 0x65, 0x76, 0x65, 0x6c, 0x49, 0x64, 0x12, 0x21, 0x0a, 0x0c,
 	0x6d, 0x65, 0x6d, 0x62, 0x65, 0x72, 0x5f, 0x70, 0x72, 0x69, 0x63, 0x65, 0x18, 0x04, 0x20, 0x01,
-	0x28, 0x01, 0x52, 0x0b, 0x6d, 0x65, 0x6d, 0x62, 0x65, 0x72, 0x50, 0x72, 0x69, 0x63, 0x65, 0x12,
+	0x28, 0x09, 0x52, 0x0b, 0x6d, 0x65, 0x6d, 0x62, 0x65, 0x72, 0x50, 0x72, 0x69, 0x63, 0x65, 0x12,
 	0x2a, 0x0a, 0x11, 0x6d, 0x65, 0x6d, 0x62, 0x65, 0x72, 0x5f, 0x6c, 0x65, 0x76, 0x65, 0x6c, 0x5f,
 	0x6e, 0x61, 0x6d, 0x65, 0x18, 0x05, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0f, 0x6d, 0x65, 0x6d, 0x62,
 	0x65, 0x72, 0x4c, 0x65, 0x76, 0x65, 0x6c, 0x4e, 0x61, 0x6d, 0x65, 0x42, 0x08, 0x5a, 0x06, 0x2e,

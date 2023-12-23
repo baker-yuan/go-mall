@@ -8,6 +8,8 @@ import "validate/validate.proto";
 import "google/api/annotations.proto";
 import "google/protobuf/wrappers.proto";
 
+import "portal/cart_item.proto";
+
 
 // 根据购物车信息生成确认单
 message GenerateConfirmOrderReq {
@@ -46,21 +48,13 @@ message GenerateConfirmOrderRsp {
     string detail_address = 10; // 详细地址(街道)
   }
 
-  // 购物车中促销信息的封装
-  message CartPromotionItem {
-    string promotion_message = 2; // 促销活动信息
-    string reduce_amount = 3; // 促销活动减去的金额，针对每个商品
-    int32 real_stock = 4; // 剩余库存-锁定库存
-    int32 integration = 5; // 购买商品赠送积分
-    int32 growth = 6; // 购买商品赠送成长值
-  }
 
   // 优惠券领取历史详情（包括优惠券信息和关联关系）
   message CouponHistoryDetail {
 
   }
 
-  CartPromotionItem cart_promotion_items = 1; // 包含优惠信息的购物车信息
+  repeated CartItemListPromotion cart_promotion_items = 1; // 包含优惠信息的购物车信息
   repeated MemberReceiveAddress member_receive_address = 2; // 用户收货地址列表
   CouponHistoryDetail coupon_history_details = 3; // 用户可用优惠券列表
   IntegrationConsumeSetting integration_consume_setting = 4; // 积分使用规则

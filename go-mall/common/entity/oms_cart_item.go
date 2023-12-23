@@ -13,11 +13,10 @@ type CartItem struct {
 	ProductSN         string `gorm:"column:product_sn;type:varchar(200);not null;default:'';comment:商品货号"`             // pms_product#product_sn
 	ProductBrand      string `gorm:"column:product_brand;type:varchar(200);not null;default:'';comment:商品品牌"`          // pms_brand#id
 	ProductCategoryID uint64 `gorm:"column:product_category_id;type:bigint;unsigned;not null;default:0;comment:商品分类"`  // pms_product_category#id
-	// 商品属性
-	ProductAttr string `gorm:"column:product_attr;type:varchar(500);not null;default:'';comment:商品销售属性"` // [{'key':'颜色','value':'颜色'},{'key':'容量','value':'4G'}]
 	// 商品sku
 	ProductSkuID   uint64 `gorm:"column:product_sku_id;type:bigint;unsigned;not null;default:0;comment:商品sku id"` // pms_sku_stock#id
 	ProductSkuCode string `gorm:"column:product_sku_code;type:varchar(200);not null;default:'';comment:商品sku条码"`  // pms_sku_stock#sku_code
+	ProductAttr    string `gorm:"column:product_attr;type:varchar(500);not null;default:'';comment:商品销售属性"`       // [{'key':'颜色','value':'颜色'},{'key':'容量','value':'4G'}]
 	// 价格数量
 	Price    string `gorm:"column:price;type:decimal(10,2);not null;default:0.00;comment:添加到购物车的价格"`
 	Quantity uint32 `gorm:"column:quantity;type:int(10);unsigned;not null;default:0;comment:购买数量"`
@@ -82,4 +81,13 @@ func (c CartItems) GroupCartItemBySpu() map[uint64]CartItems {
 		productCartMap[productID] = productCartItemList
 	}
 	return productCartMap
+}
+
+// GetCartItemCount 获取购物车中指定商品的数量
+func (c CartItems) GetCartItemCount() uint32 {
+	count := uint32(0)
+	for _, item := range c {
+		count += item.Quantity
+	}
+	return count
 }

@@ -57,6 +57,11 @@ const (
 	CmsAdminApi_GetPrefrenceAreas_FullMethodName                = "/admin.CmsAdminApi/GetPrefrenceAreas"
 	CmsAdminApi_GetPrefrenceArea_FullMethodName                 = "/admin.CmsAdminApi/GetPrefrenceArea"
 	CmsAdminApi_DeletePrefrenceArea_FullMethodName              = "/admin.CmsAdminApi/DeletePrefrenceArea"
+	CmsAdminApi_CreateJsonDynamicConfig_FullMethodName          = "/admin.CmsAdminApi/CreateJsonDynamicConfig"
+	CmsAdminApi_UpdateJsonDynamicConfig_FullMethodName          = "/admin.CmsAdminApi/UpdateJsonDynamicConfig"
+	CmsAdminApi_GetJsonDynamicConfigs_FullMethodName            = "/admin.CmsAdminApi/GetJsonDynamicConfigs"
+	CmsAdminApi_GetJsonDynamicConfig_FullMethodName             = "/admin.CmsAdminApi/GetJsonDynamicConfig"
+	CmsAdminApi_DeleteJsonDynamicConfig_FullMethodName          = "/admin.CmsAdminApi/DeleteJsonDynamicConfig"
 )
 
 // CmsAdminApiClient is the client API for CmsAdminApi service.
@@ -147,6 +152,17 @@ type CmsAdminApiClient interface {
 	GetPrefrenceArea(ctx context.Context, in *GetPrefrenceAreaReq, opts ...grpc.CallOption) (*GetPrefrenceAreaRsp, error)
 	// 删除优选专区
 	DeletePrefrenceArea(ctx context.Context, in *DeletePrefrenceAreaReq, opts ...grpc.CallOption) (*CommonRsp, error)
+	// START ======================================= json配置 ======================================= START
+	// 添加JSON动态配置
+	CreateJsonDynamicConfig(ctx context.Context, in *AddOrUpdateJsonDynamicConfigParam, opts ...grpc.CallOption) (*CommonRsp, error)
+	// 修改JSON动态配置
+	UpdateJsonDynamicConfig(ctx context.Context, in *AddOrUpdateJsonDynamicConfigParam, opts ...grpc.CallOption) (*CommonRsp, error)
+	// 分页查询JSON动态配置
+	GetJsonDynamicConfigs(ctx context.Context, in *GetJsonDynamicConfigsParam, opts ...grpc.CallOption) (*GetJsonDynamicConfigsRsp, error)
+	// 根据id获取JSON动态配置
+	GetJsonDynamicConfig(ctx context.Context, in *GetJsonDynamicConfigReq, opts ...grpc.CallOption) (*GetJsonDynamicConfigRsp, error)
+	// 删除JSON动态配置
+	DeleteJsonDynamicConfig(ctx context.Context, in *DeleteJsonDynamicConfigReq, opts ...grpc.CallOption) (*CommonRsp, error)
 }
 
 type cmsAdminApiClient struct {
@@ -499,6 +515,51 @@ func (c *cmsAdminApiClient) DeletePrefrenceArea(ctx context.Context, in *DeleteP
 	return out, nil
 }
 
+func (c *cmsAdminApiClient) CreateJsonDynamicConfig(ctx context.Context, in *AddOrUpdateJsonDynamicConfigParam, opts ...grpc.CallOption) (*CommonRsp, error) {
+	out := new(CommonRsp)
+	err := c.cc.Invoke(ctx, CmsAdminApi_CreateJsonDynamicConfig_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *cmsAdminApiClient) UpdateJsonDynamicConfig(ctx context.Context, in *AddOrUpdateJsonDynamicConfigParam, opts ...grpc.CallOption) (*CommonRsp, error) {
+	out := new(CommonRsp)
+	err := c.cc.Invoke(ctx, CmsAdminApi_UpdateJsonDynamicConfig_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *cmsAdminApiClient) GetJsonDynamicConfigs(ctx context.Context, in *GetJsonDynamicConfigsParam, opts ...grpc.CallOption) (*GetJsonDynamicConfigsRsp, error) {
+	out := new(GetJsonDynamicConfigsRsp)
+	err := c.cc.Invoke(ctx, CmsAdminApi_GetJsonDynamicConfigs_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *cmsAdminApiClient) GetJsonDynamicConfig(ctx context.Context, in *GetJsonDynamicConfigReq, opts ...grpc.CallOption) (*GetJsonDynamicConfigRsp, error) {
+	out := new(GetJsonDynamicConfigRsp)
+	err := c.cc.Invoke(ctx, CmsAdminApi_GetJsonDynamicConfig_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *cmsAdminApiClient) DeleteJsonDynamicConfig(ctx context.Context, in *DeleteJsonDynamicConfigReq, opts ...grpc.CallOption) (*CommonRsp, error) {
+	out := new(CommonRsp)
+	err := c.cc.Invoke(ctx, CmsAdminApi_DeleteJsonDynamicConfig_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // CmsAdminApiServer is the server API for CmsAdminApi service.
 // All implementations must embed UnimplementedCmsAdminApiServer
 // for forward compatibility
@@ -587,6 +648,17 @@ type CmsAdminApiServer interface {
 	GetPrefrenceArea(context.Context, *GetPrefrenceAreaReq) (*GetPrefrenceAreaRsp, error)
 	// 删除优选专区
 	DeletePrefrenceArea(context.Context, *DeletePrefrenceAreaReq) (*CommonRsp, error)
+	// START ======================================= json配置 ======================================= START
+	// 添加JSON动态配置
+	CreateJsonDynamicConfig(context.Context, *AddOrUpdateJsonDynamicConfigParam) (*CommonRsp, error)
+	// 修改JSON动态配置
+	UpdateJsonDynamicConfig(context.Context, *AddOrUpdateJsonDynamicConfigParam) (*CommonRsp, error)
+	// 分页查询JSON动态配置
+	GetJsonDynamicConfigs(context.Context, *GetJsonDynamicConfigsParam) (*GetJsonDynamicConfigsRsp, error)
+	// 根据id获取JSON动态配置
+	GetJsonDynamicConfig(context.Context, *GetJsonDynamicConfigReq) (*GetJsonDynamicConfigRsp, error)
+	// 删除JSON动态配置
+	DeleteJsonDynamicConfig(context.Context, *DeleteJsonDynamicConfigReq) (*CommonRsp, error)
 	mustEmbedUnimplementedCmsAdminApiServer()
 }
 
@@ -707,6 +779,21 @@ func (UnimplementedCmsAdminApiServer) GetPrefrenceArea(context.Context, *GetPref
 }
 func (UnimplementedCmsAdminApiServer) DeletePrefrenceArea(context.Context, *DeletePrefrenceAreaReq) (*CommonRsp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeletePrefrenceArea not implemented")
+}
+func (UnimplementedCmsAdminApiServer) CreateJsonDynamicConfig(context.Context, *AddOrUpdateJsonDynamicConfigParam) (*CommonRsp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateJsonDynamicConfig not implemented")
+}
+func (UnimplementedCmsAdminApiServer) UpdateJsonDynamicConfig(context.Context, *AddOrUpdateJsonDynamicConfigParam) (*CommonRsp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateJsonDynamicConfig not implemented")
+}
+func (UnimplementedCmsAdminApiServer) GetJsonDynamicConfigs(context.Context, *GetJsonDynamicConfigsParam) (*GetJsonDynamicConfigsRsp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetJsonDynamicConfigs not implemented")
+}
+func (UnimplementedCmsAdminApiServer) GetJsonDynamicConfig(context.Context, *GetJsonDynamicConfigReq) (*GetJsonDynamicConfigRsp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetJsonDynamicConfig not implemented")
+}
+func (UnimplementedCmsAdminApiServer) DeleteJsonDynamicConfig(context.Context, *DeleteJsonDynamicConfigReq) (*CommonRsp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteJsonDynamicConfig not implemented")
 }
 func (UnimplementedCmsAdminApiServer) mustEmbedUnimplementedCmsAdminApiServer() {}
 
@@ -1405,6 +1492,96 @@ func _CmsAdminApi_DeletePrefrenceArea_Handler(srv interface{}, ctx context.Conte
 	return interceptor(ctx, in, info, handler)
 }
 
+func _CmsAdminApi_CreateJsonDynamicConfig_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AddOrUpdateJsonDynamicConfigParam)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CmsAdminApiServer).CreateJsonDynamicConfig(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: CmsAdminApi_CreateJsonDynamicConfig_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CmsAdminApiServer).CreateJsonDynamicConfig(ctx, req.(*AddOrUpdateJsonDynamicConfigParam))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _CmsAdminApi_UpdateJsonDynamicConfig_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AddOrUpdateJsonDynamicConfigParam)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CmsAdminApiServer).UpdateJsonDynamicConfig(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: CmsAdminApi_UpdateJsonDynamicConfig_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CmsAdminApiServer).UpdateJsonDynamicConfig(ctx, req.(*AddOrUpdateJsonDynamicConfigParam))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _CmsAdminApi_GetJsonDynamicConfigs_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetJsonDynamicConfigsParam)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CmsAdminApiServer).GetJsonDynamicConfigs(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: CmsAdminApi_GetJsonDynamicConfigs_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CmsAdminApiServer).GetJsonDynamicConfigs(ctx, req.(*GetJsonDynamicConfigsParam))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _CmsAdminApi_GetJsonDynamicConfig_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetJsonDynamicConfigReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CmsAdminApiServer).GetJsonDynamicConfig(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: CmsAdminApi_GetJsonDynamicConfig_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CmsAdminApiServer).GetJsonDynamicConfig(ctx, req.(*GetJsonDynamicConfigReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _CmsAdminApi_DeleteJsonDynamicConfig_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteJsonDynamicConfigReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CmsAdminApiServer).DeleteJsonDynamicConfig(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: CmsAdminApi_DeleteJsonDynamicConfig_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CmsAdminApiServer).DeleteJsonDynamicConfig(ctx, req.(*DeleteJsonDynamicConfigReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // CmsAdminApi_ServiceDesc is the grpc.ServiceDesc for CmsAdminApi service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -1563,6 +1740,26 @@ var CmsAdminApi_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DeletePrefrenceArea",
 			Handler:    _CmsAdminApi_DeletePrefrenceArea_Handler,
+		},
+		{
+			MethodName: "CreateJsonDynamicConfig",
+			Handler:    _CmsAdminApi_CreateJsonDynamicConfig_Handler,
+		},
+		{
+			MethodName: "UpdateJsonDynamicConfig",
+			Handler:    _CmsAdminApi_UpdateJsonDynamicConfig_Handler,
+		},
+		{
+			MethodName: "GetJsonDynamicConfigs",
+			Handler:    _CmsAdminApi_GetJsonDynamicConfigs_Handler,
+		},
+		{
+			MethodName: "GetJsonDynamicConfig",
+			Handler:    _CmsAdminApi_GetJsonDynamicConfig_Handler,
+		},
+		{
+			MethodName: "DeleteJsonDynamicConfig",
+			Handler:    _CmsAdminApi_DeleteJsonDynamicConfig_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

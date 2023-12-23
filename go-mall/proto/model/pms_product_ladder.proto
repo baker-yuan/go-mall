@@ -10,6 +10,6 @@ message ProductLadder {
   uint64 id = 1; // 主键
   uint64 product_id = 2; // 商品id
   uint32 count = 3; // 满足的商品数量
-  double discount = 4; // 折扣
-  double price = 5; // 折后价格
+  string discount = 4; // 折扣
+  string price = 5; // 折后价格
 }

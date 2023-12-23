@@ -22,6 +22,7 @@ import "model/cms_prefrence_area_product_relation.proto";
 import "model/cms_subject_product_relation.proto";
 import "model/cms_subject.proto";
 import "model/cms_prefrence_area.proto";
+import "model/cms_json_dynamic_config.proto";
 
 option go_package = ".;mall";
 
@@ -385,11 +386,11 @@ message AddOrUpdateProductParam {
   uint64 brand_id = 5; // 品牌id
   string description = 6; // 商品描述
   string product_sn = 7; // 货号
-  double price = 8; // 价格
-  double original_price = 9; // 市场价
+  string price = 8; // 价格
+  string original_price = 9; // 市场价
   uint32 stock = 10; // 库存
   string unit = 11; // 单位
-  double weight = 12; // 商品重量，默认为克
+  string weight = 12; // 商品重量，默认为克
   uint32 sort = 13; // 排序
 
   // 促销信息
@@ -405,8 +406,8 @@ message AddOrUpdateProductParam {
   string detail_desc = 23; // 详情描述
   string keywords = 24; // 关键字
   string note = 25; // 备注
-  uint32 promotion_type = 26; // 促销类型：0->没有促销使用原价;1->使用促销价；2->使用会员价；3->使用阶梯价格；4->使用满减价格；5->限时购
-  double promotion_price = 27; // 促销价格
+  model.PromotionType promotion_type = 26; // 促销类型：0->没有促销使用原价;1->使用促销价；2->使用会员价；3->使用阶梯价格；4->使用满减价格；5->限时购
+  string promotion_price = 27; // 促销价格
   uint32 promotion_start_time = 28; // 促销开始时间
   uint32 promotion_end_time = 29; // 促销结束时间
 
@@ -535,6 +536,60 @@ message DeleteSubjectReq {
 }
 
 // END ======================================= 专题 ======================================= END
+
+
+// START ======================================= json配置 ======================================= START
+// 添加或更新JSON动态配置参数
+message AddOrUpdateJsonDynamicConfigParam {
+  uint64 id = 1; // 主键
+  string biz_type = 2; // 业务类型
+  string biz_desc = 3; // 业务描述
+  string content = 4; // 内容
+  string json_schema = 5; // json内容约束
+}
+
+// 分页查询JSON动态配置
+message GetJsonDynamicConfigsParam {
+
+  uint32 page_num = 10 [(validate.rules).uint32.gte = 0];   // 页面大小
+  uint32 page_size = 11 [(validate.rules).uint32.gte = 0];  // 页码
+}
+
+// 分页查询JSON动态配置
+message JsonDynamicConfigsData {
+  repeated model.JsonDynamicConfig data = 1;    // JSON动态配置
+  uint32 page_total = 2;                         // 数据总数
+  uint32 page_size = 3;                          // 页码
+  uint32 page_num = 4;                           // 页面大小
+}
+message GetJsonDynamicConfigsRsp {
+  uint32 code = 1;          // 状态码
+  string message = 2;       // 提示信息
+
+  JsonDynamicConfigsData data = 3; //
+}
+
+// 根据id获取JSON动态配置
+message GetJsonDynamicConfigReq {
+  uint64 id = 1;
+}
+
+// 根据id获取JSON动态配置
+message GetJsonDynamicConfigRsp {
+  uint32 code = 1;          // 状态码
+  string message = 2;       // 提示信息
+
+  model.JsonDynamicConfig data = 3;    // 数据
+}
+
+// 删除JSON动态配置
+message DeleteJsonDynamicConfigReq {
+  uint64 id = 1;
+}
+
+// END ======================================= json配置 ======================================= END
+
+
 
 // 商品分类管理
 service CmsAdminApi {
@@ -841,6 +896,47 @@ service CmsAdminApi {
     };
   }
   // END ======================================= 优选专区 ======================================= END
+
+
+
+  // START ======================================= json配置 ======================================= START
+  // 添加JSON动态配置
+  rpc CreateJsonDynamicConfig (AddOrUpdateJsonDynamicConfigParam) returns (CommonRsp) {
+    option (google.api.http) = {
+      post: "/jsonDynamicConfigs"
+      body: "*"
+    };
+  }
+
+  // 修改JSON动态配置
+  rpc UpdateJsonDynamicConfig (AddOrUpdateJsonDynamicConfigParam) returns (CommonRsp) {
+    option (google.api.http) = {
+      put: "/jsonDynamicConfigs/{id}"
+      body: "*"
+    };
+  }
+
+  // 分页查询JSON动态配置
+  rpc GetJsonDynamicConfigs (GetJsonDynamicConfigsParam) returns (GetJsonDynamicConfigsRsp) {
+    option (google.api.http) = {
+      get: "/jsonDynamicConfigs"
+    };
+  }
+
+  // 根据id获取JSON动态配置
+  rpc GetJsonDynamicConfig (GetJsonDynamicConfigReq) returns (GetJsonDynamicConfigRsp) {
+    option (google.api.http) = {
+      get: "/jsonDynamicConfigs/{id}"
+    };
+  }
+
+  // 删除JSON动态配置
+  rpc DeleteJsonDynamicConfig (DeleteJsonDynamicConfigReq) returns (CommonRsp) {
+    option (google.api.http) = {
+      delete: "/jsonDynamicConfigs/{id}"
+    };
+  }
+  // END ======================================= json配置 ======================================= END
 }
 
 

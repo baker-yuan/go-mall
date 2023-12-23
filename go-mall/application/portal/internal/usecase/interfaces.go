@@ -157,7 +157,7 @@ type (
 		// CartItemList 获取当前会员的购物车列表
 		CartItemList(ctx context.Context, memberID uint64) ([]*pb.CartItem, error)
 		// CartItemListPromotion 获取当前会员的购物车列表,包括促销信息
-		CartItemListPromotion(ctx context.Context, memberID uint64, cartIDs []uint64) (*pb.CartItemListPromotionRsp, error)
+		CartItemListPromotion(ctx context.Context, memberID uint64, cartIDs []uint64) ([]*pb.CartItemListPromotion, error)
 		// CartItemUpdateQuantity 修改购物车中指定商品的数量
 		CartItemUpdateQuantity(ctx context.Context, memberID uint64, req *pb.CartItemUpdateQuantityReq) error
 		// CartItemGetCartProduct 获取购物车中指定商品的规格,用于重选规格
@@ -336,5 +336,26 @@ type (
 
 		// GetByProductIDs 根据商品ID查询商品满减表
 		GetByProductIDs(ctx context.Context, productIDs []uint64) (entity.ProductFullReductions, error)
+	}
+)
+
+// JsonDynamicConfig JSON动态配置
+type (
+	// IJsonDynamicConfigUseCase 业务逻辑
+	IJsonDynamicConfigUseCase interface {
+	}
+
+	// IJsonDynamicConfigRepo 数据存储操作
+	IJsonDynamicConfigRepo interface {
+		// Create 创建JSON动态配置
+		Create(ctx context.Context, jsonDynamicConfig *entity.JsonDynamicConfig) error
+		// DeleteByID 根据主键ID删除JSON动态配置
+		DeleteByID(ctx context.Context, id uint64) error
+		// Update 修改JSON动态配置
+		Update(ctx context.Context, jsonDynamicConfig *entity.JsonDynamicConfig) error
+		// GetByID 根据主键ID查询JSON动态配置
+		GetByID(ctx context.Context, id uint64) (*entity.JsonDynamicConfig, error)
+		// GetByDBOption 根据动态条件查询JSON动态配置
+		GetByDBOption(ctx context.Context, pageNum uint32, pageSize uint32, opts ...db.DBOption) ([]*entity.JsonDynamicConfig, uint32, error)
 	}
 )

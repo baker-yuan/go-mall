@@ -487,12 +487,12 @@ type SearchProductRsp_Product struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Id       uint64  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`                            // 主键
-	Pic      string  `protobuf:"bytes,31,opt,name=pic,proto3" json:"pic,omitempty"`                          // 图片
-	Name     string  `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`                         // 商品名称
-	SubTitle string  `protobuf:"bytes,4,opt,name=sub_title,json=subTitle,proto3" json:"sub_title,omitempty"` // 副标题
-	Price    float64 `protobuf:"fixed64,8,opt,name=price,proto3" json:"price,omitempty"`                     // 价格
-	Sale     uint32  `protobuf:"varint,38,opt,name=sale,proto3" json:"sale,omitempty"`                       // 销量
+	Id       uint64 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`                            // 主键
+	Pic      string `protobuf:"bytes,31,opt,name=pic,proto3" json:"pic,omitempty"`                          // 图片
+	Name     string `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`                         // 商品名称
+	SubTitle string `protobuf:"bytes,4,opt,name=sub_title,json=subTitle,proto3" json:"sub_title,omitempty"` // 副标题
+	Price    string `protobuf:"bytes,8,opt,name=price,proto3" json:"price,omitempty"`                       // 价格
+	Sale     uint32 `protobuf:"varint,38,opt,name=sale,proto3" json:"sale,omitempty"`                       // 销量
 }
 
 func (x *SearchProductRsp_Product) Reset() {
@@ -555,11 +555,11 @@ func (x *SearchProductRsp_Product) GetSubTitle() string {
 	return ""
 }
 
-func (x *SearchProductRsp_Product) GetPrice() float64 {
+func (x *SearchProductRsp_Product) GetPrice() string {
 	if x != nil {
 		return x.Price
 	}
-	return 0
+	return ""
 }
 
 func (x *SearchProductRsp_Product) GetSale() uint32 {
@@ -574,16 +574,16 @@ type ProductDetailRsp_Product struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Id            uint64   `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`                                             // 主键
-	AlbumPics     []string `protobuf:"bytes,32,rep,name=album_pics,json=albumPics,proto3" json:"album_pics,omitempty"`              // 画册图片，连产品图片限制为5张
-	Pic           string   `protobuf:"bytes,31,opt,name=pic,proto3" json:"pic,omitempty"`                                           // 图片
-	Name          string   `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`                                          // 商品名称
-	SubTitle      string   `protobuf:"bytes,4,opt,name=sub_title,json=subTitle,proto3" json:"sub_title,omitempty"`                  // 副标题
-	Price         float64  `protobuf:"fixed64,8,opt,name=price,proto3" json:"price,omitempty"`                                      // 价格
-	OriginalPrice float64  `protobuf:"fixed64,9,opt,name=original_price,json=originalPrice,proto3" json:"original_price,omitempty"` // 市场价
-	Sale          uint32   `protobuf:"varint,38,opt,name=sale,proto3" json:"sale,omitempty"`                                        // 销量
-	Stock         uint32   `protobuf:"varint,10,opt,name=stock,proto3" json:"stock,omitempty"`                                      // 库存
-	ServiceIds    string   `protobuf:"bytes,21,opt,name=service_ids,json=serviceIds,proto3" json:"service_ids,omitempty"`           // 以逗号分割的产品服务：1->无忧退货；2->快速退款；3->免费包邮
+	Id            uint64   `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`                                           // 主键
+	AlbumPics     []string `protobuf:"bytes,32,rep,name=album_pics,json=albumPics,proto3" json:"album_pics,omitempty"`            // 画册图片，连产品图片限制为5张
+	Pic           string   `protobuf:"bytes,31,opt,name=pic,proto3" json:"pic,omitempty"`                                         // 图片
+	Name          string   `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`                                        // 商品名称
+	SubTitle      string   `protobuf:"bytes,4,opt,name=sub_title,json=subTitle,proto3" json:"sub_title,omitempty"`                // 副标题
+	Price         string   `protobuf:"bytes,8,opt,name=price,proto3" json:"price,omitempty"`                                      // 价格
+	OriginalPrice string   `protobuf:"bytes,9,opt,name=original_price,json=originalPrice,proto3" json:"original_price,omitempty"` // 市场价
+	Sale          uint32   `protobuf:"varint,38,opt,name=sale,proto3" json:"sale,omitempty"`                                      // 销量
+	Stock         uint32   `protobuf:"varint,10,opt,name=stock,proto3" json:"stock,omitempty"`                                    // 库存
+	ServiceIds    string   `protobuf:"bytes,21,opt,name=service_ids,json=serviceIds,proto3" json:"service_ids,omitempty"`         // 以逗号分割的产品服务：1->无忧退货；2->快速退款；3->免费包邮
 }
 
 func (x *ProductDetailRsp_Product) Reset() {
@@ -653,18 +653,18 @@ func (x *ProductDetailRsp_Product) GetSubTitle() string {
 	return ""
 }
 
-func (x *ProductDetailRsp_Product) GetPrice() float64 {
+func (x *ProductDetailRsp_Product) GetPrice() string {
 	if x != nil {
 		return x.Price
 	}
-	return 0
+	return ""
 }
 
-func (x *ProductDetailRsp_Product) GetOriginalPrice() float64 {
+func (x *ProductDetailRsp_Product) GetOriginalPrice() string {
 	if x != nil {
 		return x.OriginalPrice
 	}
-	return 0
+	return ""
 }
 
 func (x *ProductDetailRsp_Product) GetSale() uint32 {
@@ -969,8 +969,8 @@ type ProductDetailRsp_SkuStock struct {
 	SpData    string `protobuf:"bytes,11,opt,name=sp_data,json=spData,proto3" json:"sp_data,omitempty"`          // 商品销售属性，json格式
 	ProductId uint64 `protobuf:"varint,2,opt,name=product_id,json=productId,proto3" json:"product_id,omitempty"` // 产品ID
 	// 价格
-	Price          float64 `protobuf:"fixed64,4,opt,name=price,proto3" json:"price,omitempty"`                                         // 价格
-	PromotionPrice float64 `protobuf:"fixed64,9,opt,name=promotion_price,json=promotionPrice,proto3" json:"promotion_price,omitempty"` // 单品促销价格
+	Price          string `protobuf:"bytes,4,opt,name=price,proto3" json:"price,omitempty"`                                         // 价格
+	PromotionPrice string `protobuf:"bytes,9,opt,name=promotion_price,json=promotionPrice,proto3" json:"promotion_price,omitempty"` // 单品促销价格
 	// 库存
 	Stock     uint32 `protobuf:"varint,5,opt,name=stock,proto3" json:"stock,omitempty"`                           // 库存
 	LowStock  uint32 `protobuf:"varint,6,opt,name=low_stock,json=lowStock,proto3" json:"low_stock,omitempty"`     // 预警库存
@@ -1051,18 +1051,18 @@ func (x *ProductDetailRsp_SkuStock) GetProductId() uint64 {
 	return 0
 }
 
-func (x *ProductDetailRsp_SkuStock) GetPrice() float64 {
+func (x *ProductDetailRsp_SkuStock) GetPrice() string {
 	if x != nil {
 		return x.Price
 	}
-	return 0
+	return ""
 }
 
-func (x *ProductDetailRsp_SkuStock) GetPromotionPrice() float64 {
+func (x *ProductDetailRsp_SkuStock) GetPromotionPrice() string {
 	if x != nil {
 		return x.PromotionPrice
 	}
-	return 0
+	return ""
 }
 
 func (x *ProductDetailRsp_SkuStock) GetStock() uint32 {
@@ -1247,7 +1247,7 @@ var file_portal_product_proto_rawDesc = []byte{
 	0x12, 0x12, 0x0a, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04,
 	0x6e, 0x61, 0x6d, 0x65, 0x12, 0x1b, 0x0a, 0x09, 0x73, 0x75, 0x62, 0x5f, 0x74, 0x69, 0x74, 0x6c,
 	0x65, 0x18, 0x04, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x73, 0x75, 0x62, 0x54, 0x69, 0x74, 0x6c,
-	0x65, 0x12, 0x14, 0x0a, 0x05, 0x70, 0x72, 0x69, 0x63, 0x65, 0x18, 0x08, 0x20, 0x01, 0x28, 0x01,
+	0x65, 0x12, 0x14, 0x0a, 0x05, 0x70, 0x72, 0x69, 0x63, 0x65, 0x18, 0x08, 0x20, 0x01, 0x28, 0x09,
 	0x52, 0x05, 0x70, 0x72, 0x69, 0x63, 0x65, 0x12, 0x12, 0x0a, 0x04, 0x73, 0x61, 0x6c, 0x65, 0x18,
 	0x26, 0x20, 0x01, 0x28, 0x0d, 0x52, 0x04, 0x73, 0x61, 0x6c, 0x65, 0x22, 0x12, 0x0a, 0x10, 0x43,
 	0x61, 0x74, 0x65, 0x67, 0x6f, 0x72, 0x79, 0x54, 0x72, 0x65, 0x65, 0x49, 0x74, 0x65, 0x6d, 0x22,
@@ -1310,9 +1310,9 @@ var file_portal_product_proto_rawDesc = []byte{
 	0x6d, 0x65, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x12, 0x1b,
 	0x0a, 0x09, 0x73, 0x75, 0x62, 0x5f, 0x74, 0x69, 0x74, 0x6c, 0x65, 0x18, 0x04, 0x20, 0x01, 0x28,
 	0x09, 0x52, 0x08, 0x73, 0x75, 0x62, 0x54, 0x69, 0x74, 0x6c, 0x65, 0x12, 0x14, 0x0a, 0x05, 0x70,
-	0x72, 0x69, 0x63, 0x65, 0x18, 0x08, 0x20, 0x01, 0x28, 0x01, 0x52, 0x05, 0x70, 0x72, 0x69, 0x63,
+	0x72, 0x69, 0x63, 0x65, 0x18, 0x08, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x70, 0x72, 0x69, 0x63,
 	0x65, 0x12, 0x25, 0x0a, 0x0e, 0x6f, 0x72, 0x69, 0x67, 0x69, 0x6e, 0x61, 0x6c, 0x5f, 0x70, 0x72,
-	0x69, 0x63, 0x65, 0x18, 0x09, 0x20, 0x01, 0x28, 0x01, 0x52, 0x0d, 0x6f, 0x72, 0x69, 0x67, 0x69,
+	0x69, 0x63, 0x65, 0x18, 0x09, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0d, 0x6f, 0x72, 0x69, 0x67, 0x69,
 	0x6e, 0x61, 0x6c, 0x50, 0x72, 0x69, 0x63, 0x65, 0x12, 0x12, 0x0a, 0x04, 0x73, 0x61, 0x6c, 0x65,
 	0x18, 0x26, 0x20, 0x01, 0x28, 0x0d, 0x52, 0x04, 0x73, 0x61, 0x6c, 0x65, 0x12, 0x14, 0x0a, 0x05,
 	0x73, 0x74, 0x6f, 0x63, 0x6b, 0x18, 0x0a, 0x20, 0x01, 0x28, 0x0d, 0x52, 0x05, 0x73, 0x74, 0x6f,
@@ -1368,9 +1368,9 @@ var file_portal_product_proto_rawDesc = []byte{
 	0x61, 0x74, 0x61, 0x12, 0x1d, 0x0a, 0x0a, 0x70, 0x72, 0x6f, 0x64, 0x75, 0x63, 0x74, 0x5f, 0x69,
 	0x64, 0x18, 0x02, 0x20, 0x01, 0x28, 0x04, 0x52, 0x09, 0x70, 0x72, 0x6f, 0x64, 0x75, 0x63, 0x74,
 	0x49, 0x64, 0x12, 0x14, 0x0a, 0x05, 0x70, 0x72, 0x69, 0x63, 0x65, 0x18, 0x04, 0x20, 0x01, 0x28,
-	0x01, 0x52, 0x05, 0x70, 0x72, 0x69, 0x63, 0x65, 0x12, 0x27, 0x0a, 0x0f, 0x70, 0x72, 0x6f, 0x6d,
+	0x09, 0x52, 0x05, 0x70, 0x72, 0x69, 0x63, 0x65, 0x12, 0x27, 0x0a, 0x0f, 0x70, 0x72, 0x6f, 0x6d,
 	0x6f, 0x74, 0x69, 0x6f, 0x6e, 0x5f, 0x70, 0x72, 0x69, 0x63, 0x65, 0x18, 0x09, 0x20, 0x01, 0x28,
-	0x01, 0x52, 0x0e, 0x70, 0x72, 0x6f, 0x6d, 0x6f, 0x74, 0x69, 0x6f, 0x6e, 0x50, 0x72, 0x69, 0x63,
+	0x09, 0x52, 0x0e, 0x70, 0x72, 0x6f, 0x6d, 0x6f, 0x74, 0x69, 0x6f, 0x6e, 0x50, 0x72, 0x69, 0x63,
 	0x65, 0x12, 0x14, 0x0a, 0x05, 0x73, 0x74, 0x6f, 0x63, 0x6b, 0x18, 0x05, 0x20, 0x01, 0x28, 0x0d,
 	0x52, 0x05, 0x73, 0x74, 0x6f, 0x63, 0x6b, 0x12, 0x1b, 0x0a, 0x09, 0x6c, 0x6f, 0x77, 0x5f, 0x73,
 	0x74, 0x6f, 0x63, 0x6b, 0x18, 0x06, 0x20, 0x01, 0x28, 0x0d, 0x52, 0x08, 0x6c, 0x6f, 0x77, 0x53,

@@ -594,6 +594,146 @@ var _ interface {
 	ErrorName() string
 } = CartItemListPromotionReqValidationError{}
 
+// Validate checks the field values on CartItemListPromotion with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *CartItemListPromotion) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on CartItemListPromotion with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// CartItemListPromotionMultiError, or nil if none found.
+func (m *CartItemListPromotion) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *CartItemListPromotion) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for MemberId
+
+	// no validation rules for ProductId
+
+	// no validation rules for ProductName
+
+	// no validation rules for ProductPic
+
+	// no validation rules for ProductSubTitle
+
+	// no validation rules for ProductSn
+
+	// no validation rules for ProductBrand
+
+	// no validation rules for ProductCategoryId
+
+	// no validation rules for ProductSkuId
+
+	// no validation rules for ProductSkuCode
+
+	// no validation rules for ProductAttr
+
+	// no validation rules for Price
+
+	// no validation rules for Quantity
+
+	// no validation rules for MemberNickname
+
+	// no validation rules for PromotionMessage
+
+	// no validation rules for ReduceAmount
+
+	// no validation rules for RealStock
+
+	// no validation rules for Integration
+
+	// no validation rules for Growth
+
+	if len(errors) > 0 {
+		return CartItemListPromotionMultiError(errors)
+	}
+
+	return nil
+}
+
+// CartItemListPromotionMultiError is an error wrapping multiple validation
+// errors returned by CartItemListPromotion.ValidateAll() if the designated
+// constraints aren't met.
+type CartItemListPromotionMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m CartItemListPromotionMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m CartItemListPromotionMultiError) AllErrors() []error { return m }
+
+// CartItemListPromotionValidationError is the validation error returned by
+// CartItemListPromotion.Validate if the designated constraints aren't met.
+type CartItemListPromotionValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e CartItemListPromotionValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e CartItemListPromotionValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e CartItemListPromotionValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e CartItemListPromotionValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e CartItemListPromotionValidationError) ErrorName() string {
+	return "CartItemListPromotionValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e CartItemListPromotionValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sCartItemListPromotion.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = CartItemListPromotionValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = CartItemListPromotionValidationError{}
+
 // Validate checks the field values on CartItemListPromotionRsp with the rules
 // defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.
@@ -615,6 +755,44 @@ func (m *CartItemListPromotionRsp) validate(all bool) error {
 	}
 
 	var errors []error
+
+	// no validation rules for Code
+
+	// no validation rules for Message
+
+	for idx, item := range m.GetData() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, CartItemListPromotionRspValidationError{
+						field:  fmt.Sprintf("Data[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, CartItemListPromotionRspValidationError{
+						field:  fmt.Sprintf("Data[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return CartItemListPromotionRspValidationError{
+					field:  fmt.Sprintf("Data[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
 
 	if len(errors) > 0 {
 		return CartItemListPromotionRspMultiError(errors)

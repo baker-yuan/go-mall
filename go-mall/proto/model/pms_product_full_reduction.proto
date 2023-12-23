@@ -9,6 +9,6 @@ option go_package = ".;mall";
 message ProductFullReduction {
   uint64 id = 1; // 主键
   uint64 product_id = 2; // 商品id
-  double full_price = 3; // 商品满足金额
-  double reduce_price = 4; // 商品减少金额
+  string full_price = 3; // 商品满足金额
+  string reduce_price = 4; // 商品减少金额
 }

@@ -14,8 +14,8 @@ message SkuStock {
   string sp_data = 11; // 商品销售属性，json格式
   uint64 product_id = 2; // 产品ID
   // 价格
-  double price = 4; // 价格
-  double promotion_price = 9; // 单品促销价格
+  string price = 4; // 价格
+  string promotion_price = 9; // 单品促销价格
   // 库存
   uint32 stock = 5; // 库存
   uint32 low_stock = 6; // 预警库存

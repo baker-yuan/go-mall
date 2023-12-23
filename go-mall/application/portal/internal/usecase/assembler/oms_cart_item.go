@@ -15,9 +15,9 @@ func CartItemModelToEntity(cartItemPb *pb.CartItemAddReq) *entity.CartItem {
 		// 商品信息
 		ProductID: cartItemPb.ProductId,
 		// 商品属性
-		ProductAttr:    cartItemPb.ProductAttr,
 		ProductSkuID:   cartItemPb.ProductSkuId,
 		ProductSkuCode: cartItemPb.ProductSkuCode,
+		ProductAttr:    cartItemPb.ProductAttr,
 		// 价格数量
 		Quantity: cartItemPb.Quantity,
 	}
@@ -42,9 +42,9 @@ func CartItemEntityToModel(cartItem *entity.CartItem, memberMap map[uint64]*enti
 		ProductBrand:      cartItem.ProductBrand,
 		ProductCategoryId: cartItem.ProductCategoryID,
 		// 商品属性
-		ProductAttr:    cartItem.ProductAttr,
 		ProductSkuId:   cartItem.ProductSkuID,
 		ProductSkuCode: cartItem.ProductSkuCode,
+		ProductAttr:    cartItem.ProductAttr,
 		// 价格数量
 		Price:    cartItem.Price,
 		Quantity: cartItem.Quantity,

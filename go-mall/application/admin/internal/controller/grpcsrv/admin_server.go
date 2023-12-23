@@ -28,6 +28,7 @@ type AdminApiImpl struct {
 	skuStock                 usecase.ISkuStockUseCase
 	subject                  usecase.ISubjectUseCase
 	prefrenceArea            usecase.IPrefrenceAreaUseCase
+	jsonDynamicConfig        usecase.IJsonDynamicConfigUseCase
 	//
 	orderReturnReason usecase.IOrderReturnReasonUseCase
 	order             usecase.IOrderUseCase
@@ -45,6 +46,7 @@ func New(category usecase.IProductCategoryUseCase,
 	skuStock usecase.ISkuStockUseCase,
 	subject usecase.ISubjectUseCase,
 	prefrenceArea usecase.IPrefrenceAreaUseCase,
+	jsonDynamicConfig usecase.IJsonDynamicConfigUseCase,
 	//
 	orderReturnReason usecase.IOrderReturnReasonUseCase,
 	order usecase.IOrderUseCase,
@@ -62,6 +64,7 @@ func New(category usecase.IProductCategoryUseCase,
 		skuStock:                 skuStock,
 		subject:                  subject,
 		prefrenceArea:            prefrenceArea,
+		jsonDynamicConfig:        jsonDynamicConfig,
 		//
 		orderReturnReason: orderReturnReason,
 		order:             order,

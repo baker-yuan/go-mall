@@ -20,11 +20,11 @@ message Product {
   uint64 brand_id = 5; // 品牌id
   string description = 6; // 商品描述
   string product_sn = 7; // 货号
-  double price = 8; // 价格
-  double original_price = 9; // 市场价
+  string price = 8; // 价格
+  string original_price = 9; // 市场价
   uint32 stock = 10; // 库存
   string unit = 11; // 单位
-  double weight = 12; // 商品重量，默认为克
+  string weight = 12; // 商品重量，默认为克
   uint32 sort = 13; // 排序
 
   // 促销信息
@@ -40,8 +40,8 @@ message Product {
   string detail_desc = 23; // 详情描述
   string keywords = 24; // 关键字
   string note = 25; // 备注
-  uint32 promotion_type = 26; // 促销类型：0->没有促销使用原价;1->使用促销价；2->使用会员价；3->使用阶梯价格；4->使用满减价格；5->限时购
-  double promotion_price = 27; // 促销价格
+  PromotionType promotion_type = 26; // 促销类型：0->没有促销使用原价;1->使用促销价；2->使用会员价；3->使用阶梯价格；4->使用满减价格；5->限时购
+  string promotion_price = 27; // 促销价格
   uint32 promotion_start_time = 28; // 促销开始时间
   uint32 promotion_end_time = 29; // 促销结束时间
 
@@ -75,4 +75,14 @@ message Product {
   repeated model.ProductAttributeValue product_attribute_values = 54; // 商品参数及自定义规格属性
   repeated model.SubjectProductRelation subject_product_relations = 55; // 专题和商品关系
   repeated model.PrefrenceAreaProductRelation prefrence_area_product_relations = 56; // 优选专区和商品的关系
+}
+
+// 促销类型
+enum PromotionType {
+  PROMOTION_TYPE_NONE = 0; // 没有促销使用原价
+  PROMOTION_TYPE_PROMOTIONAL_PRICE = 1; // 使用促销价
+  PROMOTION_TYPE_MEMBER_PRICE = 2; // 使用会员价
+  PROMOTION_TYPE_TIERED_PRICE = 3; // 使用阶梯价格
+  PROMOTION_TYPE_FULL_REDUCTION_PRICE = 4; // 使用满减价格
+  PROMOTION_TYPE_FLASH_SALE = 5; // 限时购
 }

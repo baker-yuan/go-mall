@@ -54,7 +54,7 @@ func Run(cfg *config.Config) {
 		customLog.Fatal(fmt.Errorf("app - Run - repo.InitField: %w", err))
 	}
 	// oss url 前缀
-	util.InitBaseUrl(cfg.Oss.BaseUrl)
+	util.ImgUtils.InitBaseUrl(cfg.Oss.BaseUrl)
 
 	var (
 		productCategoryRepo                  = repo.NewProductCategoryRepo(conn)
@@ -80,6 +80,7 @@ func Run(cfg *config.Config) {
 		orderReturnApplyRepo    = repo.NewOrderReturnApplyRepo(conn)
 		companyAddressRepo      = repo.NewCompanyAddressRepo(conn)
 		homeAdvertiseRepo       = repo.NewHomeAdvertiseRepo(conn)
+		jsonDynamicConfigRepo   = repo.NewJsonDynamicConfigRepo(conn)
 	)
 
 	// 业务逻辑
@@ -122,6 +123,8 @@ func Run(cfg *config.Config) {
 
 	homeAdvertiseUseCase := usecase.NewHomeAdvertise(homeAdvertiseRepo)
 
+	jsonDynamicConfigUseCase := usecase.NewJsonDynamicConfig(jsonDynamicConfigRepo)
+
 	// grpc服务
 	grpcSrvImpl := grpcsrv.New(
 		categoryUseCase,
@@ -132,6 +135,7 @@ func Run(cfg *config.Config) {
 		skuStockUseCase,
 		subjectUseCase,
 		prefrenceAreaUseCase,
+		jsonDynamicConfigUseCase,
 		//
 		orderReturnReasonUseCase,
 		orderUseCase,

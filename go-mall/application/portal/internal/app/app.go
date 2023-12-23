@@ -90,7 +90,7 @@ func Run(cfg *config.Config) {
 
 	cartItemUseCase := usecase.NewCartItem(cartItemRepo, memberRepo, productRepo, brandRepo, promotionUseCase)
 
-	orderUseCase := usecase.NewOrder(orderRepo, memberRepo, memberReceiveAddressRepo)
+	orderUseCase := usecase.NewOrder(orderRepo, memberRepo, memberReceiveAddressRepo, cartItemUseCase)
 
 	// grpc服务
 	grpcSrvImpl := grpcsrv.New(

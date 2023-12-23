@@ -12,14 +12,21 @@ type OrderUseCase struct {
 	orderRepo                IOrderRepo                // 操作订单表
 	memberRepo               IMemberRepo               // 操作会员表
 	memberReceiveAddressRepo IMemberReceiveAddressRepo // 操作会员收货地址表
+	cartItemUseCase          ICartItemUseCase          // 购物车
 }
 
 // NewOrder 创建订单表管理Service实现类
-func NewOrder(orderRepo IOrderRepo, memberRepo IMemberRepo, memberReceiveAddressRepo IMemberReceiveAddressRepo) *OrderUseCase {
+func NewOrder(
+	orderRepo IOrderRepo,
+	memberRepo IMemberRepo,
+	memberReceiveAddressRepo IMemberReceiveAddressRepo,
+	cartItemUseCase ICartItemUseCase,
+) *OrderUseCase {
 	return &OrderUseCase{
 		orderRepo:                orderRepo,
 		memberRepo:               memberRepo,
 		memberReceiveAddressRepo: memberReceiveAddressRepo,
+		cartItemUseCase:          cartItemUseCase,
 	}
 }
 
@@ -28,13 +35,16 @@ func (c OrderUseCase) GenerateConfirmOrder(ctx context.Context, memberID uint64,
 	var (
 		res = &pb.GenerateConfirmOrderRsp{}
 	)
-
+	// 获取用户信息
 	member, err := c.memberRepo.GetByID(ctx, memberID)
 	if err != nil {
 		return nil, err
 	}
 	// 获取购物车信息
-
+	cartPromotionItems, err := c.cartItemUseCase.CartItemListPromotion(ctx, memberID, req.GetCartIds())
+	if err != nil {
+		return nil, err
+	}
 	// 获取用户收货地址列表
 	memberReceiveAddress, err := c.memberReceiveAddressRepo.GetByMemberID(ctx, memberID)
 	if err != nil {
@@ -46,11 +56,13 @@ func (c OrderUseCase) GenerateConfirmOrder(ctx context.Context, memberID uint64,
 	memberIntegration := member.Integration
 
 	// 获取积分使用规则
+	integrationConsumeSetting :=
 
 	// 计算总金额、活动优惠、应付金额
 
-	res.MemberIntegration = memberIntegration
+	res.CartPromotionItems = cartPromotionItems
 	res.MemberReceiveAddress = assembler.MemberReceiveAddressEntityToDetail(memberReceiveAddress)
+	res.MemberIntegration = memberIntegration
 	return res, nil
 }
 

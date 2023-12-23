@@ -31,15 +31,15 @@ message Order {
   string receiver_region = 20; // 区
   string receiver_detail_address = 21; // 详细地址
   // 费用信息
-  double total_amount = 22; // 订单总金额
-  double freight_amount = 23; // 运费金额
+  string total_amount = 22; // 订单总金额
+  string freight_amount = 23; // 运费金额
   uint64 coupon_id = 24; // 优惠券id
-  double coupon_amount = 25; // 优惠券抵扣金额
+  string coupon_amount = 25; // 优惠券抵扣金额
   uint32 use_integration = 26; // 下单时使用的积分
-  double integration_amount = 27; // 积分抵扣金额
-  double promotion_amount = 28; // 促销优化金额（促销价、满减、阶梯价）
-  double discount_amount = 29; // 管理员后台调整订单使用的折扣金额
-  double pay_amount = 30; // 应付金额（实际支付金额）
+  string integration_amount = 27; // 积分抵扣金额
+  string promotion_amount = 28; // 促销优化金额（促销价、满减、阶梯价）
+  string discount_amount = 29; // 管理员后台调整订单使用的折扣金额
+  string pay_amount = 30; // 应付金额（实际支付金额）
   // 发票信息
   uint32 bill_type = 31; // 发票类型：0->不开发票；1->电子发票；2->纸质发票
   string bill_header = 32; // 发票抬头

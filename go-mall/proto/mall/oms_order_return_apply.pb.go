@@ -29,14 +29,14 @@ type OrderReturnApply struct {
 	Id      uint64 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`                          // 主键
 	OrderId uint64 `protobuf:"varint,2,opt,name=order_id,json=orderId,proto3" json:"order_id,omitempty"` // 订单id
 	// 商品信息
-	ProductPic       string  `protobuf:"bytes,3,opt,name=product_pic,json=productPic,proto3" json:"product_pic,omitempty"`                       // 商品图片
-	ProductName      string  `protobuf:"bytes,4,opt,name=product_name,json=productName,proto3" json:"product_name,omitempty"`                    // 商品名称
-	ProductBrand     string  `protobuf:"bytes,5,opt,name=product_brand,json=productBrand,proto3" json:"product_brand,omitempty"`                 // 商品品牌
-	ProductId        uint64  `protobuf:"varint,6,opt,name=product_id,json=productId,proto3" json:"product_id,omitempty"`                         // 退货商品id
-	ProductRealPrice float64 `protobuf:"fixed64,7,opt,name=product_real_price,json=productRealPrice,proto3" json:"product_real_price,omitempty"` // 商品实际支付单价
-	ProductAttr      string  `protobuf:"bytes,8,opt,name=product_attr,json=productAttr,proto3" json:"product_attr,omitempty"`                    // 商品销售属性：颜色：红色；尺码：xl;
-	ProductCount     uint32  `protobuf:"varint,9,opt,name=product_count,json=productCount,proto3" json:"product_count,omitempty"`                // 退货数量
-	ProductPrice     float64 `protobuf:"fixed64,10,opt,name=product_price,json=productPrice,proto3" json:"product_price,omitempty"`              // 商品单价
+	ProductPic       string `protobuf:"bytes,3,opt,name=product_pic,json=productPic,proto3" json:"product_pic,omitempty"`                     // 商品图片
+	ProductName      string `protobuf:"bytes,4,opt,name=product_name,json=productName,proto3" json:"product_name,omitempty"`                  // 商品名称
+	ProductBrand     string `protobuf:"bytes,5,opt,name=product_brand,json=productBrand,proto3" json:"product_brand,omitempty"`               // 商品品牌
+	ProductId        uint64 `protobuf:"varint,6,opt,name=product_id,json=productId,proto3" json:"product_id,omitempty"`                       // 退货商品id
+	ProductRealPrice string `protobuf:"bytes,7,opt,name=product_real_price,json=productRealPrice,proto3" json:"product_real_price,omitempty"` // 商品实际支付单价
+	ProductAttr      string `protobuf:"bytes,8,opt,name=product_attr,json=productAttr,proto3" json:"product_attr,omitempty"`                  // 商品销售属性：颜色：红色；尺码：xl;
+	ProductCount     uint32 `protobuf:"varint,9,opt,name=product_count,json=productCount,proto3" json:"product_count,omitempty"`              // 退货数量
+	ProductPrice     string `protobuf:"bytes,10,opt,name=product_price,json=productPrice,proto3" json:"product_price,omitempty"`              // 商品单价
 	Status         uint32   `protobuf:"varint,11,opt,name=status,proto3" json:"status,omitempty"`                                      // 申请状态：0->待处理；1->退货中；2->已完成；3->已拒绝
 	OrderSn        string   `protobuf:"bytes,12,opt,name=order_sn,json=orderSn,proto3" json:"order_sn,omitempty"`                      // 订单编号
 	CreateTime     uint32   `protobuf:"varint,13,opt,name=create_time,json=createTime,proto3" json:"create_time,omitempty"`            // 申请时间
@@ -46,8 +46,8 @@ type OrderReturnApply struct {
 	Reason         string   `protobuf:"bytes,17,opt,name=reason,proto3" json:"reason,omitempty"`                                       // 原因
 	Description    string   `protobuf:"bytes,18,opt,name=description,proto3" json:"description,omitempty"`                             // 描述
 	ProofPics      []string `protobuf:"bytes,19,rep,name=proof_pics,json=proofPics,proto3" json:"proof_pics,omitempty"`                // 凭证图片，json字符串数组
-	ReturnAmount     float64 `protobuf:"fixed64,20,opt,name=return_amount,json=returnAmount,proto3" json:"return_amount,omitempty"`              // 退款金额
-	CompanyAddressId uint64  `protobuf:"varint,21,opt,name=company_address_id,json=companyAddressId,proto3" json:"company_address_id,omitempty"` // 收货地址表id
+	ReturnAmount     string `protobuf:"bytes,20,opt,name=return_amount,json=returnAmount,proto3" json:"return_amount,omitempty"`                // 退款金额
+	CompanyAddressId uint64 `protobuf:"varint,21,opt,name=company_address_id,json=companyAddressId,proto3" json:"company_address_id,omitempty"` // 收货地址表id
 	// 商家-处理人
 	HandleMan  string `protobuf:"bytes,22,opt,name=handle_man,json=handleMan,proto3" json:"handle_man,omitempty"`     // 处理人员
 	HandleTime uint32 `protobuf:"varint,23,opt,name=handle_time,json=handleTime,proto3" json:"handle_time,omitempty"` // 处理时间
@@ -133,11 +133,11 @@ func (x *OrderReturnApply) GetProductId() uint64 {
 	return 0
 }
 
-func (x *OrderReturnApply) GetProductRealPrice() float64 {
+func (x *OrderReturnApply) GetProductRealPrice() string {
 	if x != nil {
 		return x.ProductRealPrice
 	}
-	return 0
+	return ""
 }
 
 func (x *OrderReturnApply) GetProductAttr() string {
@@ -154,11 +154,11 @@ func (x *OrderReturnApply) GetProductCount() uint32 {
 	return 0
 }
 
-func (x *OrderReturnApply) GetProductPrice() float64 {
+func (x *OrderReturnApply) GetProductPrice() string {
 	if x != nil {
 		return x.ProductPrice
 	}
-	return 0
+	return ""
 }
 
 func (x *OrderReturnApply) GetStatus() uint32 {
@@ -224,11 +224,11 @@ func (x *OrderReturnApply) GetProofPics() []string {
 	return nil
 }
 
-func (x *OrderReturnApply) GetReturnAmount() float64 {
+func (x *OrderReturnApply) GetReturnAmount() string {
 	if x != nil {
 		return x.ReturnAmount
 	}
-	return 0
+	return ""
 }
 
 func (x *OrderReturnApply) GetCompanyAddressId() uint64 {
@@ -308,7 +308,7 @@ var file_model_oms_order_return_apply_proto_rawDesc = []byte{
 	0x42, 0x72, 0x61, 0x6e, 0x64, 0x12, 0x1d, 0x0a, 0x0a, 0x70, 0x72, 0x6f, 0x64, 0x75, 0x63, 0x74,
 	0x5f, 0x69, 0x64, 0x18, 0x06, 0x20, 0x01, 0x28, 0x04, 0x52, 0x09, 0x70, 0x72, 0x6f, 0x64, 0x75,
 	0x63, 0x74, 0x49, 0x64, 0x12, 0x2c, 0x0a, 0x12, 0x70, 0x72, 0x6f, 0x64, 0x75, 0x63, 0x74, 0x5f,
-	0x72, 0x65, 0x61, 0x6c, 0x5f, 0x70, 0x72, 0x69, 0x63, 0x65, 0x18, 0x07, 0x20, 0x01, 0x28, 0x01,
+	0x72, 0x65, 0x61, 0x6c, 0x5f, 0x70, 0x72, 0x69, 0x63, 0x65, 0x18, 0x07, 0x20, 0x01, 0x28, 0x09,
 	0x52, 0x10, 0x70, 0x72, 0x6f, 0x64, 0x75, 0x63, 0x74, 0x52, 0x65, 0x61, 0x6c, 0x50, 0x72, 0x69,
 	0x63, 0x65, 0x12, 0x21, 0x0a, 0x0c, 0x70, 0x72, 0x6f, 0x64, 0x75, 0x63, 0x74, 0x5f, 0x61, 0x74,
 	0x74, 0x72, 0x18, 0x08, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0b, 0x70, 0x72, 0x6f, 0x64, 0x75, 0x63,
@@ -316,7 +316,7 @@ var file_model_oms_order_return_apply_proto_rawDesc = []byte{
 	0x5f, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x18, 0x09, 0x20, 0x01, 0x28, 0x0d, 0x52, 0x0c, 0x70, 0x72,
 	0x6f, 0x64, 0x75, 0x63, 0x74, 0x43, 0x6f, 0x75, 0x6e, 0x74, 0x12, 0x23, 0x0a, 0x0d, 0x70, 0x72,
 	0x6f, 0x64, 0x75, 0x63, 0x74, 0x5f, 0x70, 0x72, 0x69, 0x63, 0x65, 0x18, 0x0a, 0x20, 0x01, 0x28,
-	0x01, 0x52, 0x0c, 0x70, 0x72, 0x6f, 0x64, 0x75, 0x63, 0x74, 0x50, 0x72, 0x69, 0x63, 0x65, 0x12,
+	0x09, 0x52, 0x0c, 0x70, 0x72, 0x6f, 0x64, 0x75, 0x63, 0x74, 0x50, 0x72, 0x69, 0x63, 0x65, 0x12,
 	0x16, 0x0a, 0x06, 0x73, 0x74, 0x61, 0x74, 0x75, 0x73, 0x18, 0x0b, 0x20, 0x01, 0x28, 0x0d, 0x52,
 	0x06, 0x73, 0x74, 0x61, 0x74, 0x75, 0x73, 0x12, 0x19, 0x0a, 0x08, 0x6f, 0x72, 0x64, 0x65, 0x72,
 	0x5f, 0x73, 0x6e, 0x18, 0x0c, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x6f, 0x72, 0x64, 0x65, 0x72,
@@ -335,7 +335,7 @@ var file_model_oms_order_return_apply_proto_rawDesc = []byte{
 	0x65, 0x73, 0x63, 0x72, 0x69, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x1d, 0x0a, 0x0a, 0x70, 0x72,
 	0x6f, 0x6f, 0x66, 0x5f, 0x70, 0x69, 0x63, 0x73, 0x18, 0x13, 0x20, 0x03, 0x28, 0x09, 0x52, 0x09,
 	0x70, 0x72, 0x6f, 0x6f, 0x66, 0x50, 0x69, 0x63, 0x73, 0x12, 0x23, 0x0a, 0x0d, 0x72, 0x65, 0x74,
-	0x75, 0x72, 0x6e, 0x5f, 0x61, 0x6d, 0x6f, 0x75, 0x6e, 0x74, 0x18, 0x14, 0x20, 0x01, 0x28, 0x01,
+	0x75, 0x72, 0x6e, 0x5f, 0x61, 0x6d, 0x6f, 0x75, 0x6e, 0x74, 0x18, 0x14, 0x20, 0x01, 0x28, 0x09,
 	0x52, 0x0c, 0x72, 0x65, 0x74, 0x75, 0x72, 0x6e, 0x41, 0x6d, 0x6f, 0x75, 0x6e, 0x74, 0x12, 0x2c,
 	0x0a, 0x12, 0x63, 0x6f, 0x6d, 0x70, 0x61, 0x6e, 0x79, 0x5f, 0x61, 0x64, 0x64, 0x72, 0x65, 0x73,
 	0x73, 0x5f, 0x69, 0x64, 0x18, 0x15, 0x20, 0x01, 0x28, 0x04, 0x52, 0x10, 0x63, 0x6f, 0x6d, 0x70,

@@ -218,6 +218,36 @@
       ]
     },
     {
+      "path": "/cms",
+      "name": "cms",
+      "redirect": "/cms/jsonCfg",
+      "meta": {
+        "icon": "Postcard",
+        "title": "内容",
+        "isLink": "",
+        "isHide": false,
+        "isFull": false,
+        "isAffix": false,
+        "isKeepAlive": true
+      },
+      "children": [
+        {
+          "path": "/cms/jsonCfg",
+          "name": "flash",
+          "component": "/cms/jsonConfig/index",
+          "meta": {
+            "icon": "Lightning",
+            "title": "Json动态配置",
+            "isLink": "",
+            "isHide": false,
+            "isFull": false,
+            "isAffix": false,
+            "isKeepAlive": false
+          }
+        }
+      ]
+    },
+    {
       "path": "/about/index",
       "name": "about",
       "component": "/about/index",

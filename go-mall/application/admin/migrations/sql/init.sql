@@ -1103,3 +1103,7 @@ values  (1, 1, '大梨', '18033441849', 0, '518000', '广东省', '深圳市', '
         (4, 1, '大梨', '18033441849', 1, '518000', '广东省', '深圳市', '福田区', '东晓街道'),
         (5, 11, '小李', '18961511111', 1, '518000', '广东省', '深圳市', '福田区', '东晓街道'),
         (6, 11, '小李', '18961511111', 0, '518000', '广东省', '深圳市', '福田区', '清水河街道');
+
+
+insert into go_mall_admin.cms_json_dynamic_config (id, biz_type, biz_desc, content, json_schema, created_at, updated_at)
+values  (1, 'ums_integration_consume_setting', '积分消费设置', '{"deductionPerAmount":100,"maxPercentPerOrder":50,"useUnit":100,"couponStatus":1}', '{}', 0, 0);

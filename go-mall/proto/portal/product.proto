@@ -28,7 +28,7 @@ message SearchProductRsp {
     string pic = 31; // 图片
     string name = 3; // 商品名称
     string sub_title = 4; // 副标题
-    double price = 8; // 价格
+    string price = 8; // 价格
     uint32 sale = 38; // 销量
   }
 
@@ -72,8 +72,8 @@ message ProductDetailRsp {
     string pic = 31; // 图片
     string name = 3; // 商品名称
     string sub_title = 4; // 副标题
-    double price = 8; // 价格
-    double original_price = 9; // 市场价
+    string price = 8; // 价格
+    string original_price = 9; // 市场价
     uint32 sale = 38; // 销量
     uint32 stock = 10; // 库存
     string service_ids = 21; // 以逗号分割的产品服务：1->无忧退货；2->快速退款；3->免费包邮
@@ -117,8 +117,8 @@ message ProductDetailRsp {
     string sp_data = 11; // 商品销售属性，json格式
     uint64 product_id = 2; // 产品ID
     // 价格
-    double price = 4; // 价格
-    double promotion_price = 9; // 单品促销价格
+    string price = 4; // 价格
+    string promotion_price = 9; // 单品促销价格
     // 库存
     uint32 stock = 5; // 库存
     uint32 low_stock = 6; // 预警库存

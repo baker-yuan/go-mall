@@ -62,6 +62,10 @@ func (c CtxUtils) getFromGrpcContext(ctx context.Context, key contextKey) (uint6
 	return userID, true
 }
 
+func (c CtxUtils) GetUserIDKey() string {
+	return string(UserIDKey)
+}
+
 func strToUint64(strNum string, defaultNum ...uint64) uint64 {
 	num, err := strconv.ParseUint(strNum, 10, 64)
 	if err != nil {

@@ -524,3 +524,18 @@ export namespace HomeAdvertise {
   // 分页查询首页轮播广告表
   export interface ReqHomeAdvertiseListParams extends ReqPage {}
 }
+
+// JSON动态配置管理模块
+export namespace JsonDynamicConfig {
+  // JSON动态配置模型
+  export interface JsonDynamicConfigModel {
+    id: number; //
+    bizType: number; // 业务类型
+    bizDesc: string; // 业务描述
+    content: string; // 内容
+    jsonSchema: string; // json内容约束
+  }
+
+  // 分页查询JSON动态配置
+  export interface ReqJsonDynamicConfigListParams extends ReqPage {}
+}

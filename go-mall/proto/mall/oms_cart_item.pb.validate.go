@@ -75,11 +75,11 @@ func (m *CartItem) validate(all bool) error {
 
 	// no validation rules for ProductCategoryId
 
-	// no validation rules for ProductAttr
-
 	// no validation rules for ProductSkuId
 
 	// no validation rules for ProductSkuCode
+
+	// no validation rules for ProductAttr
 
 	// no validation rules for Price
 

@@ -708,3 +708,34 @@ type (
 		GetByDBOption(ctx context.Context, pageNum uint32, pageSize uint32, opts ...db.DBOption) ([]*entity.HomeAdvertise, uint32, error)
 	}
 )
+
+// JsonDynamicConfig JSON动态配置
+type (
+	// IJsonDynamicConfigUseCase 业务逻辑
+	IJsonDynamicConfigUseCase interface {
+		// CreateJsonDynamicConfig 添加JSON动态配置
+		CreateJsonDynamicConfig(ctx context.Context, param *pb.AddOrUpdateJsonDynamicConfigParam) error
+		// UpdateJsonDynamicConfig 修改JSON动态配置
+		UpdateJsonDynamicConfig(ctx context.Context, param *pb.AddOrUpdateJsonDynamicConfigParam) error
+		// GetJsonDynamicConfigs 分页查询JSON动态配置
+		GetJsonDynamicConfigs(ctx context.Context, param *pb.GetJsonDynamicConfigsParam) ([]*pb.JsonDynamicConfig, uint32, error)
+		// GetJsonDynamicConfig 根据id获取JSON动态配置
+		GetJsonDynamicConfig(ctx context.Context, id uint64) (*pb.JsonDynamicConfig, error)
+		// DeleteJsonDynamicConfig 删除JSON动态配置
+		DeleteJsonDynamicConfig(ctx context.Context, id uint64) error
+	}
+
+	// IJsonDynamicConfigRepo 数据存储操作
+	IJsonDynamicConfigRepo interface {
+		// Create 创建JSON动态配置
+		Create(ctx context.Context, jsonDynamicConfig *entity.JsonDynamicConfig) error
+		// DeleteByID 根据主键ID删除JSON动态配置
+		DeleteByID(ctx context.Context, id uint64) error
+		// Update 修改JSON动态配置
+		Update(ctx context.Context, jsonDynamicConfig *entity.JsonDynamicConfig) error
+		// GetByID 根据主键ID查询JSON动态配置
+		GetByID(ctx context.Context, id uint64) (*entity.JsonDynamicConfig, error)
+		// GetByDBOption 根据动态条件查询JSON动态配置
+		GetByDBOption(ctx context.Context, pageNum uint32, pageSize uint32, opts ...db.DBOption) ([]*entity.JsonDynamicConfig, uint32, error)
+	}
+)
