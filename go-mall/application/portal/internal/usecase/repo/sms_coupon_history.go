@@ -108,3 +108,20 @@ func (r CouponHistoryRepo) GetNoUseCouponHistory(ctx context.Context, memberID u
 	}
 	return res, nil
 }
+
+// GetNoUseFirstByMemberIDAndCouponID 根据会员ID，优惠券id
+func (r CouponHistoryRepo) GetNoUseFirstByMemberIDAndCouponID(ctx context.Context, memberID uint64, couponID uint64) (*entity.CouponHistory, error) {
+	res := &entity.CouponHistory{}
+	if err := r.GenericDao.DB.WithContext(ctx).
+		Limit(1).
+		Where("member_id = ?", memberID).
+		Where("coupon_id = ?", couponID).
+		Order("id asc").
+		Find(&res).Error; err != nil {
+		return nil, err
+	}
+	if res.ID == 0 {
+		return nil, nil
+	}
+	return res, nil
+}

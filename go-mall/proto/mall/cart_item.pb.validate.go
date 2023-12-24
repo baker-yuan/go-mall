@@ -616,6 +616,8 @@ func (m *CartItemListPromotion) validate(all bool) error {
 
 	var errors []error
 
+	// no validation rules for Id
+
 	// no validation rules for MemberId
 
 	// no validation rules for ProductId

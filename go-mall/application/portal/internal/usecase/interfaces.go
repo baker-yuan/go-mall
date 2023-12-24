@@ -101,6 +101,11 @@ type (
 
 	// ISkuStockRepo 数据存储操作
 	ISkuStockRepo interface {
+		// GetByID 根据主键ID查询sku的库存
+		GetByID(ctx context.Context, id uint64) (*entity.SkuStock, error)
+		// Update 修改sku的库存
+		Update(ctx context.Context, skuStock *entity.SkuStock) error
+
 		// GetByProductID 根据商品ID查询sku的库存
 		GetByProductID(ctx context.Context, productID uint64) (entity.SkuStocks, error)
 		// GetByProductIDs 根据商品ID查询sku的库存
@@ -145,6 +150,8 @@ type (
 		GetByUsername(ctx context.Context, username string) (*entity.Member, error)
 		// GetByMemberID 根据用户id查询会员表
 		GetByMemberID(ctx context.Context, memberID uint64) (*entity.Member, error)
+		// UpdateIntegration 根据会员id修改会员积分
+		UpdateIntegration(ctx context.Context, memberID uint64, integration uint32) error
 	}
 )
 
@@ -219,7 +226,7 @@ type (
 		// GenerateConfirmOrder 根据用户购物车信息生成确认单信息
 		GenerateConfirmOrder(ctx context.Context, memberID uint64, req *pb.GenerateConfirmOrderReq) (*pb.GenerateConfirmOrderRsp, error)
 		// GenerateOrder 根据提交信息生成订单
-		GenerateOrder(ctx context.Context, req *pb.GenerateOrderReq) (*pb.GenerateOrderRsp, error)
+		GenerateOrder(ctx context.Context, memberID uint64, req *pb.GenerateOrderReq) (*pb.GenerateOrderRsp, error)
 		// PaySuccess 支付成功后的回调
 		PaySuccess(ctx context.Context, req *pb.PaySuccessReq) (*pb.PaySuccessRsp, error)
 		// CancelTimeOutOrder PaySuccess 自动取消超时订单
@@ -253,6 +260,30 @@ type (
 	}
 )
 
+// OrderItem 订单商品信息表
+type (
+	// IOrderItemUseCase 业务逻辑
+	IOrderItemUseCase interface {
+	}
+
+	// IOrderItemRepo 数据存储操作
+	IOrderItemRepo interface {
+		// Create 创建订单商品信息表
+		Create(ctx context.Context, orderItem *entity.OrderItem) error
+		// DeleteByID 根据主键ID删除订单商品信息表
+		DeleteByID(ctx context.Context, id uint64) error
+		// Update 修改订单商品信息表
+		Update(ctx context.Context, orderItem *entity.OrderItem) error
+		// GetByID 根据主键ID查询订单商品信息表
+		GetByID(ctx context.Context, id uint64) (*entity.OrderItem, error)
+		// GetByDBOption 根据动态条件查询订单商品信息表
+		GetByDBOption(ctx context.Context, pageNum uint32, pageSize uint32, opts ...db.DBOption) ([]*entity.OrderItem, uint32, error)
+
+		// Creates 创建订单商品信息表
+		Creates(ctx context.Context, orderItems []*entity.OrderItem) error
+	}
+)
+
 // MemberReceiveAddress 会员收货地址表
 type (
 	// IMemberReceiveAddressUseCase 业务逻辑
@@ -272,6 +303,8 @@ type (
 		// GetByDBOption 根据动态条件查询会员收货地址表
 		GetByDBOption(ctx context.Context, pageNum uint32, pageSize uint32, opts ...db.DBOption) ([]*entity.MemberReceiveAddress, uint32, error)
 
+		// SecurityGetByID 根据主键ID查询会员收货地址表
+		SecurityGetByID(ctx context.Context, memberID uint64, id uint64) (*entity.MemberReceiveAddress, error)
 		// GetByMemberID 根据会员ID查找
 		GetByMemberID(ctx context.Context, memberID uint64) (entity.MemberReceiveAddresses, error)
 	}
@@ -407,6 +440,9 @@ type (
 		GetByDBOption(ctx context.Context, pageNum uint32, pageSize uint32, opts ...db.DBOption) ([]*entity.CouponHistory, uint32, error)
 		// GetNoUseCouponHistory 查询未使用的优惠券
 		GetNoUseCouponHistory(ctx context.Context, memberID uint64) (entity.CouponHistories, error)
+
+		// GetNoUseFirstByMemberIDAndCouponID 根据会员ID，优惠券id
+		GetNoUseFirstByMemberIDAndCouponID(ctx context.Context, memberID uint64, couponID uint64) (*entity.CouponHistory, error)
 	}
 )
 

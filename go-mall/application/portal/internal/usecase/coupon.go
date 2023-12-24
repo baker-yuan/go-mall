@@ -188,73 +188,49 @@ func (s CouponUseCase) getDetailList(ctx context.Context, memberID uint64) ([]*p
 
 func (s CouponUseCase) calcTotalAmount(cartItemListPromotions []*pb.CartItemListPromotion) (string, error) {
 	decimalUtils := util.DecimalUtils
-	total := "0.00"
+	total := decimalUtils.NewBigDecimal("0.00")
 	for _, item := range cartItemListPromotions {
 		// 计算实际价格
-		realPrice, err := decimalUtils.SubtractDecimal(item.Price, item.ReduceAmount)
-		if err != nil {
-			return "", err
-		}
+		realPrice := decimalUtils.NewBigDecimal(item.Price).Subtract(decimalUtils.NewBigDecimal(item.ReduceAmount))
 		// 计算总价
-		totalForItem, err := decimalUtils.MultiplyDecimal(realPrice, fmt.Sprintf("%d", item.Quantity))
-		if err != nil {
-			return "", err
-		}
-		total, err = decimalUtils.AddDecimal(total, totalForItem)
-		if err != nil {
-			return "", err
-		}
+		totalForItem := realPrice.Multiply(decimalUtils.NewBigDecimal(fmt.Sprintf("%d", item.Quantity)))
+		total = total.Add(totalForItem)
 	}
-	return total, nil
+	return total.ToString()
 }
 
 func (s CouponUseCase) calcTotalAmountByProductCategoryID(cartItemListPromotions []*pb.CartItemListPromotion, productCategoryIDs []uint64) (string, error) {
 	decimalUtils := util.DecimalUtils
-	total := "0.00"
+	total := decimalUtils.NewBigDecimal("0.00")
 	for _, item := range cartItemListPromotions {
 		// 检查商品是否属于指定分类
 		if util.SliceExist[uint64](productCategoryIDs, item.ProductCategoryId) {
 			// 计算实际价格
-			realPrice, err := decimalUtils.SubtractDecimal(item.Price, item.ReduceAmount)
-			if err != nil {
-				return "", err
-			}
+			realPrice := decimalUtils.NewBigDecimal(item.Price).Subtract(decimalUtils.NewBigDecimal(item.ReduceAmount))
 			// 计算总价
-			totalForItem, err := decimalUtils.MultiplyDecimal(realPrice, fmt.Sprintf("%d", item.Quantity))
-			if err != nil {
-				return "", err
-			}
-			total, err = decimalUtils.AddDecimal(total, totalForItem)
-			if err != nil {
-				return "", err
-			}
+			totalForItem := realPrice.Multiply(decimalUtils.NewBigDecimal(fmt.Sprintf("%d", item.Quantity)))
+			// 将商品总价加到总金额中
+			total = total.Add(totalForItem)
 		}
 	}
-	return total, nil
+	return total.ToString()
 }
 
 // calcTotalAmountByProductID 计算指定商品的总价
 func (s CouponUseCase) calcTotalAmountByProductID(cartItemListPromotions []*pb.CartItemListPromotion, productIDs []uint64) (string, error) {
 	decimalUtils := util.DecimalUtils
-	total := "0"
+	total := decimalUtils.NewBigDecimal("0")
 	for _, item := range cartItemListPromotions {
 		// 检查商品是否属于指定的产品 ID
 		if util.SliceExist[uint64](productIDs, item.ProductId) {
 			// 计算实际价格
-			realPrice, err := decimalUtils.SubtractDecimal(item.Price, item.ReduceAmount)
-			if err != nil {
-				return "", err
-			}
+			realPrice := decimalUtils.NewBigDecimal(item.Price).Subtract(decimalUtils.NewBigDecimal(item.ReduceAmount))
 			// 计算总价
-			totalForItem, err := decimalUtils.MultiplyDecimal(realPrice, fmt.Sprintf("%d", item.Quantity))
-			if err != nil {
-				return "", err
-			}
-			total, err = decimalUtils.AddDecimal(total, totalForItem)
-			if err != nil {
-				return "", err
-			}
+			totalForItem := realPrice.Multiply(decimalUtils.NewBigDecimal(fmt.Sprintf("%d", item.Quantity)))
+			// 将商品总价加到总金额中
+			total = total.Add(totalForItem)
 		}
 	}
-	return total, nil
+	return total.ToString()
+
 }

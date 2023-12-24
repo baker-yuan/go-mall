@@ -98,6 +98,18 @@ func (r MemberReceiveAddressRepo) GetByDBOption(ctx context.Context, pageNum uin
 	return res, uint32(pageTotal), nil
 }
 
+// SecurityGetByID 根据主键ID查询会员收货地址表
+func (r MemberReceiveAddressRepo) SecurityGetByID(ctx context.Context, memberID uint64, id uint64) (*entity.MemberReceiveAddress, error) {
+	res := &entity.MemberReceiveAddress{}
+	tx := r.GenericDao.DB.WithContext(ctx)
+	tx = tx.Where("member_id = ?", memberID)
+	tx = tx.Where("id = ?", id)
+	if err := tx.Find(&res).Error; err != nil {
+		return nil, err
+	}
+	return res, nil
+}
+
 // GetByMemberID 根据会员ID查找
 func (r MemberReceiveAddressRepo) GetByMemberID(ctx context.Context, memberID uint64) (entity.MemberReceiveAddresses, error) {
 	var (

@@ -14,6 +14,12 @@ const (
 	// 登录
 	NeedLogin                codes.Code = 1000
 	PasswordDecryptionFailed codes.Code = 1001
+
+	// 购物车下单
+	RetGenOrderMemberReceiveAddressIDCheckFail = 2000
+	RetGenOrderNoStock                         = 2001
+	RetGenOrderCouponNotUse                    = 2002
+	RetGenOrderIntegrationAmountNotUse         = 2003
 )
 
 // customError 自定义错误结构体
@@ -106,6 +112,23 @@ var customErrorMap = map[codes.Code]customError{
 	PasswordDecryptionFailed: {
 		HTTPStatus: http.StatusOK,
 		Message:    "密码错误",
+	},
+	//
+	RetGenOrderMemberReceiveAddressIDCheckFail: {
+		HTTPStatus: http.StatusOK,
+		Message:    "请选择收货地址~~~",
+	},
+	RetGenOrderNoStock: {
+		HTTPStatus: http.StatusOK,
+		Message:    "库存不足，无法下单~~~",
+	},
+	RetGenOrderCouponNotUse: {
+		HTTPStatus: http.StatusOK,
+		Message:    "该优惠券不可用~~~",
+	},
+	RetGenOrderIntegrationAmountNotUse: {
+		HTTPStatus: http.StatusOK,
+		Message:    "积分不可用~~~",
 	},
 }
 

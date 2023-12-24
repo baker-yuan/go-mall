@@ -147,10 +147,6 @@ func Init(db *gorm.DB) error {
 			StructPtr: &OrderOperateHistory{},
 		},
 		{
-			TableName: "订单设置表",
-			StructPtr: &OrderSetting{},
-		},
-		{
 			TableName: "退货原因表",
 			StructPtr: &OrderReturnReason{},
 		},

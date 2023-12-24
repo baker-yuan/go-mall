@@ -20,6 +20,7 @@ type BizType string
 
 const (
 	IntegrationConsumeSetting BizType = "ums_integration_consume_setting" // 积分消费设置
+	OrderSetting              BizType = "oms_order_setting"               // 订单设置表，用于对订单的一些超时操作进行设置
 )
 
 // UmsIntegrationConsumeSetting 积分消费设置
@@ -28,4 +29,14 @@ type UmsIntegrationConsumeSetting struct {
 	MaxPercentPerOrder uint32 // 每笔订单最高抵用百分比
 	UseUnit            uint32 // 每次使用积分最小单位100
 	CouponStatus       uint8  // 是否可以和优惠券同用；0->不可以；1->可以
+}
+
+// OmsOrderSetting 订单设置表
+// 用于对订单的一些超时操作进行设置。
+type OmsOrderSetting struct {
+	FlashOrderOvertime  uint32 // 秒杀订单超时关闭时间(分)
+	NormalOrderOvertime uint32 // 正常订单超时时间(分)
+	ConfirmOvertime     uint32 // 发货后自动确认收货时间（天）
+	FinishOvertime      uint32 // 自动完成交易时间，不能申请售后（天）
+	CommentOvertime     uint32 // 订单完成后自动好评时间（天）
 }

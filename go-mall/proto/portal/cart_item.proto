@@ -48,7 +48,8 @@ message CartItemListPromotionReq {
 
 // 购物车中促销信息的封装
 message CartItemListPromotion {
-  // 一、订单信息
+  // 一、订单信息 CartPromotionItem
+  uint64 id = 1;
   // 用户信息
   uint64 member_id = 2; // 会员id
   // 商品信息

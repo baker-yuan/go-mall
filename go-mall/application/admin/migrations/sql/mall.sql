@@ -1347,3 +1347,23 @@ INSERT INTO `ums_role_resource_relation` VALUES (247, 1, 31);
 INSERT INTO `ums_role_resource_relation` VALUES (248, 1, 32);
 
 SET FOREIGN_KEY_CHECKS = 1;
+
+
+insert into go_mall_admin.oms_order_setting (id, flash_order_overtime, normal_order_overtime, confirm_overtime, finish_overtime, comment_overtime)
+values  (1, 60, 120, 15, 7, 7);
+
+CREATE TABLE `oms_order_setting`
+(
+    `id`                    bigint NOT NULL AUTO_INCREMENT,
+    `flash_order_overtime`  int    NOT NULL DEFAULT '0' COMMENT '秒杀订单超时关闭时间(分)',
+    `normal_order_overtime` int    NOT NULL DEFAULT '0' COMMENT '正常订单超时时间(分)',
+    `confirm_overtime`      int    NOT NULL DEFAULT '0' COMMENT '发货后自动确认收货时间（天）',
+    `finish_overtime`       int    NOT NULL DEFAULT '0' COMMENT '自动完成交易时间，不能申请售后（天）',
+    `comment_overtime`      int    NOT NULL DEFAULT '0' COMMENT '订单完成后自动好评时间（天）',
+    `created_at`            int    NOT NULL DEFAULT '0' COMMENT '创建时间',
+    `updated_at`            int    NOT NULL DEFAULT '0' COMMENT '修改时间',
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB
+  AUTO_INCREMENT = 2
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_unicode_ci COMMENT ='订单设置表';

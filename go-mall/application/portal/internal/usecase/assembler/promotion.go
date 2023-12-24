@@ -12,6 +12,7 @@ func CartPromotionItemToModel(cartPromotionItems []*entity.CartPromotionItem) []
 	for _, cartPromotionItem := range cartPromotionItems {
 		item := &pb.CartItemListPromotion{
 			// 一、订单信息
+			Id: cartPromotionItem.ID,
 			// 用户信息
 			MemberId: cartPromotionItem.MemberID, // 会员id
 			// 商品信息

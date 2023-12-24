@@ -73,6 +73,7 @@ func Run(cfg *config.Config) {
 		cartItemRepo                      = repo.NewCartItemRepo(conn)
 		homeAdvertiseRepo                 = repo.NewHomeAdvertiseRepo(conn)
 		orderRepo                         = repo.NewOrderRepo(conn)
+		orderItemRepo                     = repo.NewOrderItemRepo(conn)
 		memberReceiveAddressRepo          = repo.NewMemberReceiveAddressRepo(conn)
 		jsonDynamicConfigRepo             = repo.NewJsonDynamicConfigRepo(conn)
 		productLadderRepo                 = repo.NewProductLadderRepo(conn)
@@ -101,9 +102,13 @@ func Run(cfg *config.Config) {
 
 	orderUseCase := usecase.NewOrder(
 		orderRepo,
+		orderItemRepo,
+		cartItemRepo,
 		memberRepo,
 		memberReceiveAddressRepo,
 		jsonDynamicConfigRepo,
+		skuStockRepo,
+		couponHistoryRepo,
 		cartItemUseCase,
 		couponUseCase,
 	)

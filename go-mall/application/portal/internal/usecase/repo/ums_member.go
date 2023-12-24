@@ -125,3 +125,11 @@ func (r MemberRepo) GetByMemberID(ctx context.Context, memberID uint64) (*entity
 	}
 	return &res, nil
 }
+
+// UpdateIntegration 根据会员id修改会员积分
+func (r MemberRepo) UpdateIntegration(ctx context.Context, memberID uint64, integration uint32) error {
+	return r.GenericDao.DB.WithContext(ctx).
+		Model(&entity.Member{}).
+		Where("id = ?", memberID).
+		Update("integration", integration).Error
+}

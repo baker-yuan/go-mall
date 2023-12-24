@@ -828,8 +828,7 @@ values  (5, 12, '后台管理员', UNIX_TIMESTAMP('2018-10-12 14:01:29'), 2, '�
         (42, 75, '后台管理员', UNIX_TIMESTAMP('2023-05-11 15:36:11'), 2, '完成发货'),
         (43, 76, '后台管理员', UNIX_TIMESTAMP('2023-05-11 15:37:34'), 2, '完成发货');
 
-insert into go_mall_admin.oms_order_setting (id, flash_order_overtime, normal_order_overtime, confirm_overtime, finish_overtime, comment_overtime)
-values  (1, 60, 120, 15, 7, 7);
+
 
 insert into go_mall_admin.oms_order_return_reason (id, name, sort, status, create_time)
 values  (1, '质量问题', 1, 1, UNIX_TIMESTAMP('2018-10-17 10:00:45')),
@@ -1106,4 +1105,5 @@ values  (1, 1, '大梨', '18033441849', 0, '518000', '广东省', '深圳市', '
 
 
 insert into go_mall_admin.cms_json_dynamic_config (id, biz_type, biz_desc, content, json_schema, created_at, updated_at)
-values  (1, 'ums_integration_consume_setting', '积分消费设置', '{"deductionPerAmount":100,"maxPercentPerOrder":50,"useUnit":100,"couponStatus":1}', '{}', 0, 0);
+values  (1, 'ums_integration_consume_setting', '积分消费设置', '{"deductionPerAmount":100,"maxPercentPerOrder":50,"useUnit":100,"couponStatus":1}', '{}', 0, 0),
+    (2, 'oms_order_setting', '积分消费设置', '{"flashOrderOvertime":60,"normalOrderOvertime":120,"confirmOvertime":15,"finishOvertime":7,"commentOvertime":7}', '{}', 0, 0);

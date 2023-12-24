@@ -10,6 +10,7 @@ import (
 	portal_entity "github.com/baker-yuan/go-mall/application/portal/internal/entity"
 	"github.com/baker-yuan/go-mall/common/entity"
 	"github.com/baker-yuan/go-mall/common/util"
+	"github.com/baker-yuan/go-mall/common/util/decimal"
 	pb "github.com/baker-yuan/go-mall/proto/mall"
 )
 
@@ -71,7 +72,9 @@ func (c PromotionUseCase) CalcCartPromotion(ctx context.Context, cartItems entit
 				originalPrice := skuStock.Price
 				// 单品促销使用原价
 				cartPromotionItem.Price = originalPrice
-				reduceAmount, _ := util.DecimalUtils.SubtractDecimal(originalPrice, skuStock.PromotionPrice)
+				reduceAmount, _ := util.DecimalUtils.NewBigDecimal(originalPrice).
+					Subtract(util.DecimalUtils.NewBigDecimal(skuStock.PromotionPrice)).
+					ToString()
 				cartPromotionItem.ReduceAmount = reduceAmount
 				cartPromotionItem.RealStock = skuStock.Stock - skuStock.LockStock
 				cartPromotionItem.Integration = promotionProduct.GiftPoint
@@ -89,11 +92,9 @@ func (c PromotionUseCase) CalcCartPromotion(ctx context.Context, cartItems entit
 					cartPromotionItem.PromotionMessage = message
 					// 商品原价-折扣*商品原价
 					skuStock := c.getOriginalPrice(promotionProduct, cartItem.ProductSkuID)
-					originalPrice := skuStock.Price
-					cartPromotionItem.Price = originalPrice
-
-					multiply, _ := util.DecimalUtils.MultiplyDecimal(ladder.Discount, originalPrice)
-					reduceAmount, _ := util.DecimalUtils.SubtractDecimal(originalPrice, multiply)
+					cartPromotionItem.Price = skuStock.Price
+					originalPrice := util.DecimalUtils.NewBigDecimal(skuStock.Price)
+					reduceAmount, _ := originalPrice.Subtract(util.DecimalUtils.NewBigDecimal(ladder.Discount).Multiply(originalPrice)).ToString()
 					cartPromotionItem.ReduceAmount = reduceAmount
 					cartPromotionItem.RealStock = skuStock.Stock - skuStock.LockStock
 					cartPromotionItem.Integration = promotionProduct.GiftPoint
@@ -114,11 +115,9 @@ func (c PromotionUseCase) CalcCartPromotion(ctx context.Context, cartItems entit
 					cartPromotionItem.PromotionMessage = message
 					// (商品原价/总价)*满减金额
 					skuStock := c.getOriginalPrice(promotionProduct, cartItem.ProductSkuID)
-					originalPrice := skuStock.Price
-					ratioStr, _ := decimalUtils.DivideDecimal(originalPrice, totalAmount)
-					reduceAmount, _ := decimalUtils.MultiplyDecimal(ratioStr, fullReduction.ReducePrice)
+					originalPrice := decimalUtils.NewBigDecimal(skuStock.Price)
+					reduceAmount, _ := originalPrice.Divide(totalAmount).Multiply(decimalUtils.NewBigDecimal(fullReduction.ReducePrice)).ToString()
 					cartPromotionItem.ReduceAmount = reduceAmount
-
 					cartPromotionItem.RealStock = skuStock.Stock - skuStock.LockStock
 					cartPromotionItem.Integration = promotionProduct.GiftPoint
 					cartPromotionItem.Growth = promotionProduct.GiftGrowth
@@ -259,9 +258,9 @@ func (c PromotionUseCase) getLadderPromotionMessage(ladder *entity.ProductLadder
 }
 
 // getCartItemAmount 获取购物车中指定商品的总价
-func (c PromotionUseCase) getCartItemAmount(cartItems entity.CartItems, promotionProducts portal_entity.PromotionProducts) (string, error) {
+func (c PromotionUseCase) getCartItemAmount(cartItems entity.CartItems, promotionProducts portal_entity.PromotionProducts) (*decimal.BigDecimal, error) {
 	decimalUtils := util.DecimalUtils
-	amount := "0.00"
+	amount := decimalUtils.NewBigDecimal("0.00")
 	for _, cartItem := range cartItems {
 		// 计算出商品原价
 		promotionProduct := promotionProducts.GetByProductID(cartItem.ProductID)
@@ -273,20 +272,14 @@ func (c PromotionUseCase) getCartItemAmount(cartItems entity.CartItems, promotio
 			continue // 如果找不到原始价格，跳过当前商品项
 		}
 		// 计算商品项总价
-		itemTotal, err := decimalUtils.MultiplyDecimal(skuStock.Price, fmt.Sprintf("%d", cartItem.Quantity))
-		if err != nil {
-			return "", err
-		}
+		itemTotal := decimalUtils.NewBigDecimal(skuStock.Price).Multiply(decimalUtils.NewBigDecimal(fmt.Sprintf("%d", cartItem.Quantity)))
 		// 累加到总金额中
-		amount, err = decimalUtils.AddDecimal(amount, itemTotal)
-		if err != nil {
-			return "", err
-		}
+		amount = amount.Add(itemTotal)
 	}
 	return amount, nil
 }
 
-func (c PromotionUseCase) getProductFullReduction(totalAmount string, productFullReductions []*entity.ProductFullReduction) (*entity.ProductFullReduction, error) {
+func (c PromotionUseCase) getProductFullReduction(totalAmount *decimal.BigDecimal, productFullReductions []*entity.ProductFullReduction) (*entity.ProductFullReduction, error) {
 	decimalUtils := util.DecimalUtils
 	// 按条件从高到低排序
 	sort.Slice(productFullReductions, func(i, j int) bool {
@@ -295,7 +288,7 @@ func (c PromotionUseCase) getProductFullReduction(totalAmount string, productFul
 	})
 	// 遍历排序后的列表，找到满足条件的满减优惠策略
 	for _, fullReduction := range productFullReductions {
-		result, err := decimalUtils.CompareDecimal(totalAmount, fullReduction.FullPrice)
+		result, err := totalAmount.Compare(decimalUtils.NewBigDecimal(fullReduction.FullPrice))
 		if err != nil {
 			return nil, err
 		}
