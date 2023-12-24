@@ -6,11 +6,11 @@ import (
 	pb "github.com/baker-yuan/go-mall/proto/mall"
 )
 
-func CartPromotionItemToModel(cartPromotionItems []*entity.CartPromotionItem) []*pb.CartItemListPromotion {
-	res := make([]*pb.CartItemListPromotion, 0)
+func CartPromotionItemToModel(cartPromotionItems []*entity.CartPromotionItem) []*pb.CartPromotionItem {
+	res := make([]*pb.CartPromotionItem, 0)
 
 	for _, cartPromotionItem := range cartPromotionItems {
-		item := &pb.CartItemListPromotion{
+		item := &pb.CartPromotionItem{
 			// 一、订单信息
 			Id: cartPromotionItem.ID,
 			// 用户信息

@@ -271,7 +271,6 @@ func (c OrderUseCase) GenerateOrder(ctx context.Context, memberID uint64, orderP
 	// 生成订单号
 	order.OrderSN = c.generateOrderSN(order)
 	// 设置自动收货天数
-
 	cfg, err := c.jsonDynamicConfigRepo.GetByBizType(ctx, entity.OrderSetting)
 	orderSetting, err := util.Unmarshal[entity.OmsOrderSetting](cfg)
 	order.AutoConfirmDay = orderSetting.ConfirmOvertime
@@ -358,7 +357,7 @@ func (c OrderUseCase) DeleteOrder(context.Context, *pb.PortalDeleteOrderReq) (*p
 }
 
 // calcCartAmount 计算购物车中商品的价格
-func (c OrderUseCase) calcCartAmount(cartItemListPromotions []*pb.CartItemListPromotion) (*pb.GenerateConfirmOrderRsp_CalcAmount, error) {
+func (c OrderUseCase) calcCartAmount(cartItemListPromotions []*pb.CartPromotionItem) (*pb.GenerateConfirmOrderRsp_CalcAmount, error) {
 	decimalUtils := util.DecimalUtils
 	calcAmount := &pb.GenerateConfirmOrderRsp_CalcAmount{
 		FreightAmount: "0.00",
@@ -395,7 +394,7 @@ func (c OrderUseCase) calcCartAmount(cartItemListPromotions []*pb.CartItemListPr
 }
 
 // hasStock 判断下单商品是否都有库存
-func (c OrderUseCase) hasStock(cartItemListPromotions []*pb.CartItemListPromotion) bool {
+func (c OrderUseCase) hasStock(cartItemListPromotions []*pb.CartPromotionItem) bool {
 	for _, cartItemListPromotion := range cartItemListPromotions {
 		// 判断真实库存是否为空
 		// 判断真实库存是否小于0
@@ -410,7 +409,7 @@ func (c OrderUseCase) hasStock(cartItemListPromotions []*pb.CartItemListPromotio
 // getUseCoupon 获取该用户可以使用的优惠券
 // cartItemListPromotions 购物车优惠列表
 // couponID 使用优惠券id
-func (c OrderUseCase) getUseCoupon(ctx context.Context, cartItemListPromotions []*pb.CartItemListPromotion,
+func (c OrderUseCase) getUseCoupon(ctx context.Context, cartItemListPromotions []*pb.CartPromotionItem,
 	memberID uint64, couponID uint64) (*portal_entity.CouponHistoryDetail, error) {
 	// 根据购物车信息获取可用优惠券
 	couponHistoryDetails, err := c.couponUseCase.CouponListCart(ctx, memberID, cartItemListPromotions, true)
@@ -563,7 +562,7 @@ func (c OrderUseCase) handleRealAmount(orderItems []*entity.OrderItem) {
 }
 
 // lockStock 锁定下单商品的所有库存
-func (c OrderUseCase) lockStock(ctx context.Context, cartItemListPromotions []*pb.CartItemListPromotion) error {
+func (c OrderUseCase) lockStock(ctx context.Context, cartItemListPromotions []*pb.CartPromotionItem) error {
 	for _, cartPromotionItem := range cartItemListPromotions {
 		skuStock, err := c.skuStockRepo.GetByID(ctx, cartPromotionItem.ProductSkuId)
 		if err != nil {
@@ -576,7 +575,7 @@ func (c OrderUseCase) lockStock(ctx context.Context, cartItemListPromotions []*p
 }
 
 // deleteCartItemList 批量删除购物车中的商品
-func (c OrderUseCase) deleteCartItemList(ctx context.Context, cartPromotionItems []*pb.CartItemListPromotion, memberID uint64) error {
+func (c OrderUseCase) deleteCartItemList(ctx context.Context, cartPromotionItems []*pb.CartPromotionItem, memberID uint64) error {
 	ids := make([]uint64, 0)
 	for _, cartPromotionItem := range cartPromotionItems {
 		ids = append(ids, cartPromotionItem.Id)

@@ -106,7 +106,7 @@ func (c CartItemUseCase) CartItemList(ctx context.Context, memberID uint64) ([]*
 }
 
 // CartItemListPromotion 获取当前会员的购物车列表，包括促销信息
-func (c CartItemUseCase) CartItemListPromotion(ctx context.Context, memberID uint64, cartIDs []uint64) ([]*pb.CartItemListPromotion, error) {
+func (c CartItemUseCase) CartItemListPromotion(ctx context.Context, memberID uint64, cartIDs []uint64) ([]*pb.CartPromotionItem, error) {
 	cartItems, err := c.cartItemRepo.SecurityGetByIDS(ctx, memberID, cartIDs)
 	if err != nil {
 		return nil, err

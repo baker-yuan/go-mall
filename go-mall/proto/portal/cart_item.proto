@@ -47,8 +47,8 @@ message CartItemListPromotionReq {
 }
 
 // 购物车中促销信息的封装
-message CartItemListPromotion {
-  // 一、订单信息 CartPromotionItem
+message CartPromotionItem {
+  // 一、订单信息 CartItem
   uint64 id = 1;
   // 用户信息
   uint64 member_id = 2; // 会员id
@@ -82,7 +82,7 @@ message CartItemListPromotionRsp {
   uint32 code = 1;      // 状态码
   string message = 2;   // 提示信息
 
-  repeated CartItemListPromotion data = 3;
+  repeated CartPromotionItem data = 3;
 }
 
 // 修改购物车中指定商品的数量

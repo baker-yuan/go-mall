@@ -164,7 +164,7 @@ type (
 		// CartItemList 获取当前会员的购物车列表
 		CartItemList(ctx context.Context, memberID uint64) ([]*pb.CartItem, error)
 		// CartItemListPromotion 获取当前会员的购物车列表,包括促销信息
-		CartItemListPromotion(ctx context.Context, memberID uint64, cartIDs []uint64) ([]*pb.CartItemListPromotion, error)
+		CartItemListPromotion(ctx context.Context, memberID uint64, cartIDs []uint64) ([]*pb.CartPromotionItem, error)
 		// CartItemUpdateQuantity 修改购物车中指定商品的数量
 		CartItemUpdateQuantity(ctx context.Context, memberID uint64, req *pb.CartItemUpdateQuantityReq) error
 		// CartItemGetCartProduct 获取购物车中指定商品的规格,用于重选规格
@@ -397,7 +397,7 @@ type (
 		CouponList(ctx context.Context, req *pb.CouponListReq) (*pb.CouponListRsp, error)
 		// CouponListCart 根据购物车信息获取可用优惠券
 		// canUse 是否可用
-		CouponListCart(ctx context.Context, memberID uint64, cartPromotionItems []*pb.CartItemListPromotion, canUse bool) ([]*portal_entity.CouponHistoryDetail, error)
+		CouponListCart(ctx context.Context, memberID uint64, cartPromotionItems []*pb.CartPromotionItem, canUse bool) ([]*portal_entity.CouponHistoryDetail, error)
 		// CouponListByProduct 获取当前商品相关优惠券
 		CouponListByProduct(ctx context.Context, req *pb.CouponListByProductReq) (*pb.CouponListByProductRsp, error)
 	}

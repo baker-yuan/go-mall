@@ -52,7 +52,7 @@ func (s CouponUseCase) CouponList(ctx context.Context, req *pb.CouponListReq) (*
 }
 
 // CouponListCart 根据购物车信息获取可用优惠券
-func (s CouponUseCase) CouponListCart(ctx context.Context, memberID uint64, cartPromotionItems []*pb.CartItemListPromotion, canUse bool) ([]*portal_entity.CouponHistoryDetail, error) {
+func (s CouponUseCase) CouponListCart(ctx context.Context, memberID uint64, cartPromotionItems []*pb.CartPromotionItem, canUse bool) ([]*portal_entity.CouponHistoryDetail, error) {
 	// 获取该用户所有优惠券
 	allList, err := s.getDetailList(ctx, memberID)
 	if err != nil {
@@ -186,7 +186,7 @@ func (s CouponUseCase) getDetailList(ctx context.Context, memberID uint64) ([]*p
 	return res, nil
 }
 
-func (s CouponUseCase) calcTotalAmount(cartItemListPromotions []*pb.CartItemListPromotion) (string, error) {
+func (s CouponUseCase) calcTotalAmount(cartItemListPromotions []*pb.CartPromotionItem) (string, error) {
 	decimalUtils := util.DecimalUtils
 	total := decimalUtils.NewBigDecimal("0.00")
 	for _, item := range cartItemListPromotions {
@@ -199,7 +199,7 @@ func (s CouponUseCase) calcTotalAmount(cartItemListPromotions []*pb.CartItemList
 	return total.ToString()
 }
 
-func (s CouponUseCase) calcTotalAmountByProductCategoryID(cartItemListPromotions []*pb.CartItemListPromotion, productCategoryIDs []uint64) (string, error) {
+func (s CouponUseCase) calcTotalAmountByProductCategoryID(cartItemListPromotions []*pb.CartPromotionItem, productCategoryIDs []uint64) (string, error) {
 	decimalUtils := util.DecimalUtils
 	total := decimalUtils.NewBigDecimal("0.00")
 	for _, item := range cartItemListPromotions {
@@ -217,7 +217,7 @@ func (s CouponUseCase) calcTotalAmountByProductCategoryID(cartItemListPromotions
 }
 
 // calcTotalAmountByProductID 计算指定商品的总价
-func (s CouponUseCase) calcTotalAmountByProductID(cartItemListPromotions []*pb.CartItemListPromotion, productIDs []uint64) (string, error) {
+func (s CouponUseCase) calcTotalAmountByProductID(cartItemListPromotions []*pb.CartPromotionItem, productIDs []uint64) (string, error) {
 	decimalUtils := util.DecimalUtils
 	total := decimalUtils.NewBigDecimal("0")
 	for _, item := range cartItemListPromotions {
