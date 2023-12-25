@@ -1,9 +1,11 @@
 package entity
 
 import (
+	"database/sql/driver"
 	"fmt"
 	"time"
 
+	"github.com/shopspring/decimal"
 	"gorm.io/gorm"
 )
 
@@ -25,6 +27,26 @@ func (bt *BaseTime) BeforeCreate(tx *gorm.DB) (err error) {
 func (bt *BaseTime) BeforeUpdate(tx *gorm.DB) (err error) {
 	bt.UpdatedAt = uint32(time.Now().Unix())
 	return
+}
+
+// BigDecimal 是一个包装了 shopspring/decimal.Decimal 的自定义类型
+type BigDecimal struct {
+	decimal.Decimal
+}
+
+// Scan 实现了 sql.Scanner 接口
+func (bd *BigDecimal) Scan(value interface{}) error {
+	return bd.Decimal.Scan(value)
+}
+
+// Value 实现了 driver.Valuer 接口
+func (bd BigDecimal) Value() (driver.Value, error) {
+	return bd.Decimal.Value()
+}
+
+// Add returns d + d2.
+func (bd BigDecimal) Add(d2 BigDecimal) BigDecimal {
+	return BigDecimal{Decimal: bd.Decimal.Add(d2.Decimal)}
 }
 
 // Init 初始化

@@ -97,6 +97,16 @@ func (c DecimalUtils) TrimTrailingZeros(decimalStr string) string {
 	return dec.String()
 }
 
+// ToDecimalFixed2 将字符串转换为 Decimal 类型，并保留两位小数
+func (c DecimalUtils) ToDecimalFixed2(input string) decimal.Decimal {
+	value, err := decimal.NewFromString(input)
+	if err != nil {
+		return decimal.Zero
+	}
+	roundedValue := value.Round(2)
+	return roundedValue
+}
+
 // BigDecimal 结构体用于链式操作浮点数
 type BigDecimal struct {
 	value decimal.Decimal // 浮点数

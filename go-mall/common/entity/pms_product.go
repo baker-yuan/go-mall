@@ -2,6 +2,7 @@ package entity
 
 import (
 	pb "github.com/baker-yuan/go-mall/proto/mall"
+	"github.com/shopspring/decimal"
 )
 
 // Product 商品信息表
@@ -15,12 +16,15 @@ type Product struct {
 	BrandID           uint64 `gorm:"column:brand_id;type:bigint;unsigned;not null;default:0;comment:品牌id"` // pms_brand#id
 	Description       string `gorm:"column:description;type:text;not null;comment:商品描述"`
 	ProductSN         string `gorm:"column:product_sn;type:varchar(64);not null;default:'';comment:货号"`
-	Price             string `gorm:"column:price;type:decimal(10,2);not null;default:0.00;comment:价格"`
-	OriginalPrice     string `gorm:"column:original_price;type:decimal(10,2);not null;default:0.00;comment:市场价"`
-	Stock             uint32 `gorm:"column:stock;type:int(10);unsigned;not null;default:0;comment:库存"`
 	Unit              string `gorm:"column:unit;type:varchar(16);not null;default:'';comment:单位"`
 	Weight            string `gorm:"column:weight;type:decimal(10,2);not null;default:0.00;comment:商品重量，默认为克"`
 	Sort              uint32 `gorm:"column:sort;type:int(10);unsigned;not null;default:0;comment:排序"`
+
+	// 价格-库存 真实的价格库存取的是pms_sku_stock的
+	Price         decimal.Decimal `gorm:"column:price;type:decimal(10,2);not null;default:0.00;comment:价格"`
+	OriginalPrice decimal.Decimal `gorm:"column:original_price;type:decimal(10,2);not null;default:0.00;comment:市场价"`
+	Stock         uint32          `gorm:"column:stock;type:int(10);unsigned;not null;default:0;comment:库存"`
+	LowStock      uint32          `gorm:"column:low_stock;type:int(10);unsigned;not null;default:0;comment:库存预警值"`
 
 	// 促销信息
 	GiftPoint          uint32           `gorm:"column:gift_point;type:int(10);unsigned;not null;default:0;comment:赠送的积分"`
@@ -54,7 +58,6 @@ type Product struct {
 	// 其他
 	FeightTemplateID  uint64 `gorm:"column:feight_template_id;type:bigint;unsigned;not null;default:0;comment:运费模版id"`
 	Sale              uint32 `gorm:"column:sale;type:int(10);unsigned;not null;default:0;comment:销量"`
-	LowStock          uint32 `gorm:"column:low_stock;type:int(10);unsigned;not null;default:0;comment:库存预警值"`
 	PromotionPerLimit uint32 `gorm:"column:promotion_per_limit;type:int(10);unsigned;not null;default:0;comment:活动限购数量"`
 
 	// 冗余字段
