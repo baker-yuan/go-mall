@@ -12,7 +12,7 @@ func ProductEntityToProductListItem(product *entity.Product) *pb.SearchProductRs
 		Pic:      util.ImgUtils.GetFullUrl(product.Pic),
 		Name:     product.Name,
 		SubTitle: product.SubTitle,
-		Price:    product.Price,
+		Price:    product.Price.String(),
 		Sale:     product.Sale,
 	}
 }
@@ -24,8 +24,8 @@ func ProductEntityToDetail(product *entity.Product) *pb.ProductDetailRsp_Product
 		Pic:           util.ImgUtils.GetFullUrl(product.Pic),
 		Name:          product.Name,
 		SubTitle:      product.SubTitle,
-		Price:         product.Price,
-		OriginalPrice: product.OriginalPrice,
+		Price:         product.Price.String(),
+		OriginalPrice: product.OriginalPrice.String(),
 		Sale:          product.Sale,
 		Stock:         product.Stock,
 		ServiceIds:    product.ServiceIDs,

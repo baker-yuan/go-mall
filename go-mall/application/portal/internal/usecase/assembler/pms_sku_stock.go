@@ -16,8 +16,8 @@ func SkuStocksToDetail(skuStocks entity.SkuStocks) []*pb.ProductDetailRsp_SkuSto
 			SpData:    skuStock.SpData,
 			ProductId: skuStock.ProductID,
 			// 价格
-			Price:          skuStock.Price,
-			PromotionPrice: skuStock.PromotionPrice,
+			Price:          skuStock.Price.String(),
+			PromotionPrice: skuStock.PromotionPrice.String(),
 			// 库存
 			Stock:     skuStock.Stock,
 			LowStock:  skuStock.LowStock,

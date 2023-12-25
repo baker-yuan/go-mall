@@ -46,7 +46,7 @@ func CartItemEntityToModel(cartItem *entity.CartItem, memberMap map[uint64]*enti
 		ProductSkuCode: cartItem.ProductSkuCode,
 		ProductAttr:    cartItem.ProductAttr,
 		// 价格数量
-		Price:    cartItem.Price,
+		Price:    cartItem.Price.String(),
 		Quantity: cartItem.Quantity,
 		// 状态
 		CreateDate:   cartItem.CreateDate,

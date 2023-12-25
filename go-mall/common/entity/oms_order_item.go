@@ -1,5 +1,7 @@
 package entity
 
+import "github.com/shopspring/decimal"
+
 // OrderItem 订单商品信息表
 // 订单中包含的商品信息，一个订单中会有多个订单商品信息。
 type OrderItem struct {
@@ -20,11 +22,11 @@ type OrderItem struct {
 	ProductSkuCode    string `gorm:"column:product_sku_code;type:varchar(50);not null;default:'';comment:商品sku条码"`
 	PromotionName     string `gorm:"column:promotion_name;type:varchar(200);not null;default:'';comment:商品促销名称"`
 	// 价格&价格优惠&最终价格 RealAmount = ProductPrice - PromotionAmount - CouponAmount - IntegrationAmount
-	ProductPrice      string `gorm:"column:product_price;type:decimal(10,2);not null;default:0.00;comment:销售价格"`
-	PromotionAmount   string `gorm:"column:promotion_amount;type:decimal(10,2);not null;default:0.00;comment:商品促销分解金额"`
-	CouponAmount      string `gorm:"column:coupon_amount;type:decimal(10,2);not null;default:0.00;comment:优惠券优惠分解金额"`
-	IntegrationAmount string `gorm:"column:integration_amount;type:decimal(10,2);not null;default:0.00;comment:积分优惠分解金额"`
-	RealAmount        string `gorm:"column:real_amount;type:decimal(10,2);not null;default:0.00;comment:该商品经过优惠后的分解金额"`
+	ProductPrice      decimal.Decimal `gorm:"column:product_price;type:decimal(10,2);not null;default:0.00;comment:销售价格"`
+	PromotionAmount   decimal.Decimal `gorm:"column:promotion_amount;type:decimal(10,2);not null;default:0.00;comment:商品促销分解金额"`
+	CouponAmount      decimal.Decimal `gorm:"column:coupon_amount;type:decimal(10,2);not null;default:0.00;comment:优惠券优惠分解金额"`
+	IntegrationAmount decimal.Decimal `gorm:"column:integration_amount;type:decimal(10,2);not null;default:0.00;comment:积分优惠分解金额"`
+	RealAmount        decimal.Decimal `gorm:"column:real_amount;type:decimal(10,2);not null;default:0.00;comment:该商品经过优惠后的分解金额"`
 	// 其他奖励
 	GiftIntegration uint32 `gorm:"column:gift_integration;type:int(10);unsigned;not null;default:0;comment:商品赠送积分"`
 	GiftGrowth      uint32 `gorm:"column:gift_growth;type:int(10);unsigned;not null;default:0;comment:商品赠送成长值"`

@@ -2,12 +2,12 @@ package usecase
 
 import (
 	"context"
-	"fmt"
 	"time"
 
 	portal_entity "github.com/baker-yuan/go-mall/application/portal/internal/entity"
 	"github.com/baker-yuan/go-mall/common/util"
 	pb "github.com/baker-yuan/go-mall/proto/mall"
+	"github.com/shopspring/decimal"
 )
 
 // CouponUseCase 优惠券表管理Service实现类
@@ -64,7 +64,6 @@ func (s CouponUseCase) CouponListCart(ctx context.Context, memberID uint64, cart
 	disableList := make([]*portal_entity.CouponHistoryDetail, 0)
 
 	now := time.Now()
-	decimalUtils := util.DecimalUtils
 
 	for _, couponHistoryDetail := range allList {
 		// 条件
@@ -77,9 +76,8 @@ func (s CouponUseCase) CouponListCart(ctx context.Context, memberID uint64, cart
 			// 0->全场通用
 			// 判断是否满足优惠起点
 			// 计算购物车商品的总价
-			totalAmount, _ := s.calcTotalAmount(cartPromotionItems)
-			compare, _ := decimalUtils.CompareDecimal(totalAmount, minPoint)
-			if now.Before(endTime) && compare >= 0 {
+			totalAmount := s.calcTotalAmount(cartPromotionItems)
+			if now.Before(endTime) && totalAmount.Cmp(minPoint) >= 0 {
 				enableList = append(enableList, couponHistoryDetail)
 			} else {
 				disableList = append(disableList, couponHistoryDetail)
@@ -88,10 +86,8 @@ func (s CouponUseCase) CouponListCart(ctx context.Context, memberID uint64, cart
 			// 1->指定分类
 			// 计算指定分类商品的总价
 			productCategoryIDs := couponHistoryDetail.CategoryRelations.GetProductCategoryIDs()
-			totalAmount, _ := s.calcTotalAmountByProductCategoryID(cartPromotionItems, productCategoryIDs)
-			compare1, _ := decimalUtils.CompareDecimal(totalAmount, "0.00")
-			compare2, _ := decimalUtils.CompareDecimal(totalAmount, minPoint)
-			if now.Before(endTime) && compare1 > 0 && compare2 >= 0 {
+			totalAmount := s.calcTotalAmountByProductCategoryID(cartPromotionItems, productCategoryIDs)
+			if now.Before(endTime) && totalAmount.Cmp(decimal.Zero) > 0 && totalAmount.Cmp(minPoint) >= 0 {
 				enableList = append(enableList, couponHistoryDetail)
 			} else {
 				disableList = append(disableList, couponHistoryDetail)
@@ -100,10 +96,8 @@ func (s CouponUseCase) CouponListCart(ctx context.Context, memberID uint64, cart
 			// 2->指定商品
 			// 计算指定商品的总价
 			productIDs := couponHistoryDetail.ProductRelations.GetProductIDs()
-			totalAmount, _ := s.calcTotalAmountByProductID(cartPromotionItems, productIDs)
-			compare1, _ := decimalUtils.CompareDecimal(totalAmount, "0.00")
-			compare2, _ := decimalUtils.CompareDecimal(totalAmount, minPoint)
-			if now.Before(endTime) && compare1 > 0 && compare2 >= 0 {
+			totalAmount := s.calcTotalAmountByProductID(cartPromotionItems, productIDs)
+			if now.Before(endTime) && totalAmount.Cmp(decimal.Zero) > 0 && totalAmount.Cmp(minPoint) >= 0 {
 				enableList = append(enableList, couponHistoryDetail)
 			} else {
 				disableList = append(disableList, couponHistoryDetail)
@@ -186,51 +180,54 @@ func (s CouponUseCase) getDetailList(ctx context.Context, memberID uint64) ([]*p
 	return res, nil
 }
 
-func (s CouponUseCase) calcTotalAmount(cartItemListPromotions []*pb.CartPromotionItem) (string, error) {
-	decimalUtils := util.DecimalUtils
-	total := decimalUtils.NewBigDecimal("0.00")
+func (s CouponUseCase) calcTotalAmount(cartItemListPromotions []*pb.CartPromotionItem) decimal.Decimal {
+	total := decimal.Zero
 	for _, item := range cartItemListPromotions {
+		price, _ := decimal.NewFromString(item.Price)
+		reduceAmount, _ := decimal.NewFromString(item.ReduceAmount)
 		// 计算实际价格
-		realPrice := decimalUtils.NewBigDecimal(item.Price).Subtract(decimalUtils.NewBigDecimal(item.ReduceAmount))
+		realPrice := price.Sub(reduceAmount)
 		// 计算总价
-		totalForItem := realPrice.Multiply(decimalUtils.NewBigDecimal(fmt.Sprintf("%d", item.Quantity)))
+		totalForItem := realPrice.Mul(decimal.NewFromInt32(int32(item.Quantity)))
 		total = total.Add(totalForItem)
 	}
-	return total.ToString()
+	return total
 }
 
-func (s CouponUseCase) calcTotalAmountByProductCategoryID(cartItemListPromotions []*pb.CartPromotionItem, productCategoryIDs []uint64) (string, error) {
-	decimalUtils := util.DecimalUtils
-	total := decimalUtils.NewBigDecimal("0.00")
+func (s CouponUseCase) calcTotalAmountByProductCategoryID(cartItemListPromotions []*pb.CartPromotionItem, productCategoryIDs []uint64) decimal.Decimal {
+	total := decimal.Zero
 	for _, item := range cartItemListPromotions {
 		// 检查商品是否属于指定分类
 		if util.SliceExist[uint64](productCategoryIDs, item.ProductCategoryId) {
+			price, _ := decimal.NewFromString(item.Price)
+			reduceAmount, _ := decimal.NewFromString(item.ReduceAmount)
 			// 计算实际价格
-			realPrice := decimalUtils.NewBigDecimal(item.Price).Subtract(decimalUtils.NewBigDecimal(item.ReduceAmount))
+			realPrice := price.Sub(reduceAmount)
 			// 计算总价
-			totalForItem := realPrice.Multiply(decimalUtils.NewBigDecimal(fmt.Sprintf("%d", item.Quantity)))
+			totalForItem := realPrice.Mul(decimal.NewFromInt32(int32(item.Quantity)))
 			// 将商品总价加到总金额中
 			total = total.Add(totalForItem)
 		}
 	}
-	return total.ToString()
+	return total
 }
 
 // calcTotalAmountByProductID 计算指定商品的总价
-func (s CouponUseCase) calcTotalAmountByProductID(cartItemListPromotions []*pb.CartPromotionItem, productIDs []uint64) (string, error) {
-	decimalUtils := util.DecimalUtils
-	total := decimalUtils.NewBigDecimal("0")
+func (s CouponUseCase) calcTotalAmountByProductID(cartItemListPromotions []*pb.CartPromotionItem, productIDs []uint64) decimal.Decimal {
+	total := decimal.Zero
 	for _, item := range cartItemListPromotions {
 		// 检查商品是否属于指定的产品 ID
 		if util.SliceExist[uint64](productIDs, item.ProductId) {
+			price, _ := decimal.NewFromString(item.Price)
+			reduceAmount, _ := decimal.NewFromString(item.ReduceAmount)
 			// 计算实际价格
-			realPrice := decimalUtils.NewBigDecimal(item.Price).Subtract(decimalUtils.NewBigDecimal(item.ReduceAmount))
+			realPrice := price.Sub(reduceAmount)
 			// 计算总价
-			totalForItem := realPrice.Multiply(decimalUtils.NewBigDecimal(fmt.Sprintf("%d", item.Quantity)))
+			totalForItem := realPrice.Mul(decimal.NewFromInt32(int32(item.Quantity)))
 			// 将商品总价加到总金额中
 			total = total.Add(totalForItem)
 		}
 	}
-	return total.ToString()
+	return total
 
 }

@@ -11,8 +11,8 @@ import (
 	"github.com/baker-yuan/go-mall/common/entity"
 	"github.com/baker-yuan/go-mall/common/retcode"
 	"github.com/baker-yuan/go-mall/common/util"
-	"github.com/baker-yuan/go-mall/common/util/decimal"
 	pb "github.com/baker-yuan/go-mall/proto/mall"
+	"github.com/shopspring/decimal"
 )
 
 // OrderUseCase 订单表管理Service实现类
@@ -140,12 +140,12 @@ func (c OrderUseCase) GenerateOrder(ctx context.Context, memberID uint64, orderP
 			ProductAttr:       cartPromotionItem.ProductAttr,
 			ProductBrand:      cartPromotionItem.ProductBrand,
 			ProductSN:         cartPromotionItem.ProductSn,
-			ProductPrice:      cartPromotionItem.Price,
+			ProductPrice:      util.DecimalUtils.ToDecimalFixed2(cartPromotionItem.Price),
 			ProductQuantity:   cartPromotionItem.Quantity,
 			ProductSkuID:      cartPromotionItem.ProductSkuId,
 			ProductSkuCode:    cartPromotionItem.ProductSkuCode,
 			ProductCategoryID: cartPromotionItem.ProductCategoryId,
-			PromotionAmount:   cartPromotionItem.ReduceAmount,
+			PromotionAmount:   util.DecimalUtils.ToDecimalFixed2(cartPromotionItem.ReduceAmount),
 			PromotionName:     cartPromotionItem.PromotionMessage,
 			GiftIntegration:   cartPromotionItem.Integration,
 			GiftGrowth:        cartPromotionItem.Growth,
@@ -161,7 +161,7 @@ func (c OrderUseCase) GenerateOrder(ctx context.Context, memberID uint64, orderP
 	if orderParam.CouponId == 0 {
 		// 不用优惠券
 		for _, orderItem := range orderItems {
-			orderItem.CouponAmount = "0.00"
+			orderItem.CouponAmount = decimal.Zero
 		}
 	} else {
 		// 使用优惠券
@@ -177,22 +177,20 @@ func (c OrderUseCase) GenerateOrder(ctx context.Context, memberID uint64, orderP
 	if orderParam.UseIntegration == 0 {
 		// 不使用积分
 		for _, orderItem := range orderItems {
-			orderItem.IntegrationAmount = "0.00"
+			orderItem.IntegrationAmount = decimal.Zero
 		}
 	} else {
 		// 使用积分
 		totalAmount := c.calcTotalAmount(orderItems)
-		integrationAmount, _ := c.getUseIntegrationAmount(ctx, orderParam.UseIntegration, totalAmount, currentMember, orderParam.CouponId != 0)
-		compare, _ := integrationAmount.Compare(util.DecimalUtils.NewBigDecimal("0.00"))
-		if compare == 0 {
+		integrationAmount := c.getUseIntegrationAmount(ctx, orderParam.UseIntegration, totalAmount, currentMember, orderParam.CouponId != 0)
+		if integrationAmount.IsZero() {
 			return nil, retcode.NewError(retcode.RetGenOrderIntegrationAmountNotUse)
 		} else {
 			// 可用情况下分摊到可用商品中
 			for _, orderItem := range orderItems {
-				perAmount, _ := util.DecimalUtils.NewBigDecimal(orderItem.ProductPrice).
-					DivideV2(totalAmount, 3, decimal.RoundHalfEven).
-					Multiply(integrationAmount).ToString()
-				orderItem.IntegrationAmount = perAmount
+				orderItem.IntegrationAmount = orderItem.ProductPrice.
+					Div(totalAmount).RoundBank(3).
+					Mul(integrationAmount)
 			}
 		}
 	}
@@ -207,35 +205,30 @@ func (c OrderUseCase) GenerateOrder(ctx context.Context, memberID uint64, orderP
 
 	order := &entity.Order{}
 
-	order.DiscountAmount = "0.00"
-	totalAmount, _ := c.calcTotalAmount(orderItems).ToString()
-	order.TotalAmount = totalAmount
-	order.FreightAmount = "0.00"
+	order.DiscountAmount = decimal.Zero
+	order.TotalAmount = c.calcTotalAmount(orderItems)
+	order.FreightAmount = decimal.Zero
 
-	promotionAmount, _ := c.calcPromotionAmount(orderItems)
-	order.PromotionAmount = promotionAmount
+	order.PromotionAmount = c.calcPromotionAmount(orderItems)
 
 	order.PromotionInfo = c.getOrderPromotionInfo(orderItems)
 
 	if orderParam.CouponId == 0 {
-		order.CouponAmount = "0.00"
+		order.CouponAmount = decimal.Zero
 	} else {
 		order.CouponID = orderParam.CouponId
-		couponAmount, _ := c.calcCouponAmount(orderItems)
-		order.CouponAmount = couponAmount
+		order.CouponAmount = c.calcCouponAmount(orderItems)
 	}
 
 	if orderParam.UseIntegration == 0 {
 		order.Integration = 0
-		order.IntegrationAmount = "0.00"
+		order.IntegrationAmount = decimal.Zero
 	} else {
 		order.Integration = orderParam.UseIntegration
-		integrationAmount, _ := c.calcIntegrationAmount(orderItems)
-		order.IntegrationAmount = integrationAmount
+		order.IntegrationAmount = c.calcIntegrationAmount(orderItems)
 	}
 
-	payAmount, _ := c.calcPayAmount(order)
-	order.PayAmount = payAmount
+	order.PayAmount = c.calcPayAmount(order)
 	// 转化为订单信息并插入数据库
 	order.MemberID = currentMember.ID
 	order.MemberUsername = currentMember.Username
@@ -452,11 +445,7 @@ func (c OrderUseCase) calcPerCouponAmount(orderItems []*entity.OrderItem, coupon
 	totalAmount := c.calcTotalAmount(orderItems)
 	for _, orderItem := range orderItems {
 		// (商品价格/可用商品总价)*优惠券面额
-		productPrice := util.DecimalUtils.NewBigDecimal(orderItem.ProductPrice)
-		couponAmount, _ := productPrice.
-			DivideV2(totalAmount, 3, decimal.RoundHalfEven).
-			Multiply(util.DecimalUtils.NewBigDecimal(coupon.Amount)).
-			ToString()
+		couponAmount := orderItem.ProductPrice.Div(totalAmount).RoundBank(int32(3)).Mul(coupon.Amount)
 		orderItem.CouponAmount = couponAmount
 	}
 }
@@ -474,7 +463,7 @@ func (c OrderUseCase) getCouponOrderItemByRelation(couponHistoryDetail *portal_e
 			if util.SliceExist[uint64](categoryIdList, orderItem.ProductCategoryID) {
 				result = append(result, orderItem)
 			} else {
-				orderItem.CouponAmount = "0.00"
+				orderItem.CouponAmount = decimal.Zero
 			}
 		}
 	} else if tpe == 1 {
@@ -483,7 +472,7 @@ func (c OrderUseCase) getCouponOrderItemByRelation(couponHistoryDetail *portal_e
 			if util.SliceExist[uint64](productIdList, orderItem.ProductID) {
 				result = append(result, orderItem)
 			} else {
-				orderItem.CouponAmount = "0.00"
+				orderItem.CouponAmount = decimal.Zero
 			}
 		}
 	}
@@ -491,13 +480,11 @@ func (c OrderUseCase) getCouponOrderItemByRelation(couponHistoryDetail *portal_e
 }
 
 // calcTotalAmount 计算总金额
-func (c OrderUseCase) calcTotalAmount(orderItems []*entity.OrderItem) *decimal.BigDecimal {
-	totalAmount := util.DecimalUtils.NewBigDecimal("0.00") // 初始化总金额为0
+func (c OrderUseCase) calcTotalAmount(orderItems []*entity.OrderItem) decimal.Decimal {
+	totalAmount := decimal.Zero // 初始化总金额为0
 	for _, item := range orderItems {
 		// 对每个订单项的价格和数量进行乘法运算
-		productPrice := util.DecimalUtils.NewBigDecimal(item.ProductPrice)
-		productQuantity := util.DecimalUtils.NewBigDecimal(fmt.Sprintf("%d", item.ProductQuantity))
-		itemAmount := productPrice.Multiply(productQuantity)
+		itemAmount := item.ProductPrice.Mul(decimal.NewFromInt32(int32(item.ProductQuantity)))
 		// 将结果累加到总金额中
 		totalAmount = totalAmount.Add(itemAmount)
 	}
@@ -510,13 +497,12 @@ func (c OrderUseCase) calcTotalAmount(orderItems []*entity.OrderItem) *decimal.B
 // totalAmount 订单总金额
 // currentMember 使用的用户
 // hasCoupon 是否已经使用优惠券
-func (c OrderUseCase) getUseIntegrationAmount(ctx context.Context, useIntegration uint32, totalAmount *decimal.BigDecimal, currentMember *entity.Member, hasCoupon bool) (*decimal.BigDecimal, error) {
-	decimalUtils := util.DecimalUtils
-	zeroAmount := decimalUtils.NewBigDecimal("0.00")
+func (c OrderUseCase) getUseIntegrationAmount(ctx context.Context, useIntegration uint32, totalAmount decimal.Decimal, currentMember *entity.Member, hasCoupon bool) decimal.Decimal {
+	zeroAmount := decimal.Zero
 
 	// 判断用户是否有这么多积分
 	if useIntegration > currentMember.Integration {
-		return zeroAmount, nil
+		return zeroAmount
 	}
 
 	// 根据积分使用规则判断是否可用
@@ -525,38 +511,35 @@ func (c OrderUseCase) getUseIntegrationAmount(ctx context.Context, useIntegratio
 	integrationConsumeSetting, _ := util.Unmarshal[entity.UmsIntegrationConsumeSetting](cfg)
 	if hasCoupon && integrationConsumeSetting.CouponStatus == 0 {
 		// 不可与优惠券共用
-		return zeroAmount, nil
+		return zeroAmount
 	}
 
 	// 是否达到最低使用积分门槛
 	if useIntegration >= integrationConsumeSetting.UseUnit {
-		return zeroAmount, nil
+		return zeroAmount
 	}
 
 	// 是否超过订单抵用最高百分比
-	integrationAmount := decimalUtils.NewUint32BigDecimal(useIntegration).
-		Divide(decimalUtils.NewUint32BigDecimal(integrationConsumeSetting.UseUnit))
-	maxPercentBD := decimalUtils.NewUint32BigDecimal(integrationConsumeSetting.MaxPercentPerOrder).
-		Divide(decimalUtils.NewBigDecimal("100"))
-	maxAmount := totalAmount.Multiply(maxPercentBD)
-
-	compare, _ := integrationAmount.Compare(maxAmount)
-	if compare > 0 {
-		return zeroAmount, nil
+	integrationAmount := decimal.NewFromInt32(int32(useIntegration)).
+		Div(decimal.NewFromInt32(int32(integrationConsumeSetting.UseUnit)))
+	maxPercentBD := decimal.NewFromInt32(int32(integrationConsumeSetting.MaxPercentPerOrder)).
+		Div(decimal.NewFromInt32(100))
+	maxAmount := totalAmount.Mul(maxPercentBD)
+	if integrationAmount.Cmp(maxAmount) > 0 {
+		return zeroAmount
 	}
 
-	return integrationAmount, nil
+	return integrationAmount
 }
 
 // handleRealAmount 处理订单项的实际金额
 func (c OrderUseCase) handleRealAmount(orderItems []*entity.OrderItem) {
-	decimalUtils := util.DecimalUtils
 	for _, orderItem := range orderItems {
 		// 原价 - 促销优惠 - 优惠券抵扣 - 积分抵扣
-		realAmount, _ := decimalUtils.NewBigDecimal(orderItem.ProductPrice).
-			Subtract(decimalUtils.NewBigDecimal(orderItem.PromotionAmount)).
-			Subtract(decimalUtils.NewBigDecimal(orderItem.CouponAmount)).
-			Subtract(decimalUtils.NewBigDecimal(orderItem.IntegrationAmount)).ToString()
+		realAmount := orderItem.ProductPrice.
+			Sub(orderItem.PromotionAmount).
+			Sub(orderItem.CouponAmount).
+			Sub(orderItem.IntegrationAmount)
 		orderItem.RealAmount = realAmount
 	}
 }
@@ -630,22 +613,18 @@ func (c OrderUseCase) generateOrderSN(order *entity.Order) string {
 }
 
 // calcPromotionAmount 计算订单活动优惠
-func (c OrderUseCase) calcPromotionAmount(orderItems []*entity.OrderItem) (string, error) {
-	decimalUtils := util.DecimalUtils
-	promotionAmount := decimalUtils.NewBigDecimal("0.00")
+func (c OrderUseCase) calcPromotionAmount(orderItems []*entity.OrderItem) decimal.Decimal {
+	promotionAmount := decimal.Zero
 	for _, orderItem := range orderItems {
-		if len(orderItem.PromotionAmount) != 0 {
+		if !orderItem.PromotionAmount.IsZero() {
 			// 计算单个订单项的总优惠金额
-			itemPromotion := decimalUtils.NewBigDecimal(orderItem.PromotionAmount)
-			itemQuantity := decimalUtils.NewUint32BigDecimal(orderItem.ProductQuantity)
-			totalItemPromotion := itemPromotion.Multiply(itemQuantity)
-
+			totalItemPromotion := orderItem.PromotionAmount.Mul(decimal.NewFromInt32(int32(orderItem.ProductQuantity)))
 			// 累加到总优惠金额
 			promotionAmount = promotionAmount.Add(totalItemPromotion)
 		}
 	}
 
-	return promotionAmount.ToString()
+	return promotionAmount
 }
 
 // getOrderPromotionInfo 获取订单促销信息
@@ -658,43 +637,37 @@ func (c OrderUseCase) getOrderPromotionInfo(orderItems []*entity.OrderItem) stri
 }
 
 // calcCouponAmount 计算订单优惠券金额
-func (c OrderUseCase) calcCouponAmount(orderItems []*entity.OrderItem) (string, error) {
-	decimalUtils := util.DecimalUtils
-	couponAmount := decimalUtils.NewUint32BigDecimal(0)
+func (c OrderUseCase) calcCouponAmount(orderItems []*entity.OrderItem) decimal.Decimal {
+	couponAmount := decimal.Zero
 	for _, orderItem := range orderItems {
-		if len(orderItem.CouponAmount) != 0 {
-			itemCouponAmount := decimalUtils.NewBigDecimal(orderItem.CouponAmount).
-				Multiply(decimalUtils.NewUint32BigDecimal(orderItem.ProductQuantity))
+		if !orderItem.CouponAmount.IsZero() {
+			itemCouponAmount := orderItem.CouponAmount.Mul(decimal.NewFromInt32(int32(orderItem.ProductQuantity)))
 			couponAmount = couponAmount.Add(itemCouponAmount)
 		}
 	}
-	return couponAmount.ToString()
+	return couponAmount
 }
 
 // 计算订单优惠券金额
-func (c OrderUseCase) calcIntegrationAmount(orderItems []*entity.OrderItem) (string, error) {
-	decimalUtils := util.DecimalUtils
-	integrationAmount := decimalUtils.NewBigDecimal("0")
+func (c OrderUseCase) calcIntegrationAmount(orderItems []*entity.OrderItem) decimal.Decimal {
+	integrationAmount := decimal.Zero
 	for _, orderItem := range orderItems {
-		if len(orderItem.IntegrationAmount) != 0 {
+		if !orderItem.IntegrationAmount.IsZero() {
 			// 计算单个订单项的总积分金额
-			itemIntegrationAmount := decimalUtils.NewBigDecimal(orderItem.IntegrationAmount)
-			itemQuantity := decimalUtils.NewUint32BigDecimal(orderItem.ProductQuantity)
-			totalItemIntegrationAmount := itemIntegrationAmount.Multiply(itemQuantity)
+			totalItemIntegrationAmount := orderItem.IntegrationAmount.Mul(decimal.NewFromInt32(int32(orderItem.ProductQuantity)))
 			// 累加到总积分金额
 			integrationAmount = integrationAmount.Add(totalItemIntegrationAmount)
 		}
 	}
-	return integrationAmount.ToString()
+	return integrationAmount
 }
 
 // calcPayAmount 计算订单应付金额
-func (c OrderUseCase) calcPayAmount(order *entity.Order) (string, error) {
-	decimalUtils := util.DecimalUtils
+func (c OrderUseCase) calcPayAmount(order *entity.Order) decimal.Decimal {
 	// 总金额 + 运费 - 促销优惠 - 优惠券优惠 - 积分抵扣
-	payAmount := decimalUtils.NewBigDecimal(order.TotalAmount).Add(decimalUtils.NewBigDecimal(order.FreightAmount)).
-		Subtract(decimalUtils.NewBigDecimal(order.PromotionAmount)).
-		Subtract(decimalUtils.NewBigDecimal(order.CouponAmount)).
-		Subtract(decimalUtils.NewBigDecimal(order.IntegrationAmount))
-	return payAmount.ToString()
+	payAmount := order.TotalAmount.Add(order.FreightAmount).
+		Sub(order.PromotionAmount).
+		Sub(order.CouponAmount).
+		Sub(order.IntegrationAmount)
+	return payAmount
 }

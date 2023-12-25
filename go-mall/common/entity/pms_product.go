@@ -9,16 +9,16 @@ import (
 // 商品信息主要包括四部分：商品的基本信息、商品的促销信息、商品的属性信息、商品的关联，商品表是整个商品的基本信息部分。
 type Product struct {
 	// 基本信息
-	ID                uint64 `gorm:"column:id;type:bigint;primary_key;auto_increment;comment:主键"`
-	ProductCategoryID uint64 `gorm:"column:product_category_id;type:bigint;unsigned;not null;default:0;comment:商品分类id"` // pms_product_category#id
-	Name              string `gorm:"column:name;type:varchar(200);not null;default:'';comment:商品名称"`
-	SubTitle          string `gorm:"column:sub_title;type:varchar(255);not null;default:'';comment:副标题"`
-	BrandID           uint64 `gorm:"column:brand_id;type:bigint;unsigned;not null;default:0;comment:品牌id"` // pms_brand#id
-	Description       string `gorm:"column:description;type:text;not null;comment:商品描述"`
-	ProductSN         string `gorm:"column:product_sn;type:varchar(64);not null;default:'';comment:货号"`
-	Unit              string `gorm:"column:unit;type:varchar(16);not null;default:'';comment:单位"`
-	Weight            string `gorm:"column:weight;type:decimal(10,2);not null;default:0.00;comment:商品重量，默认为克"`
-	Sort              uint32 `gorm:"column:sort;type:int(10);unsigned;not null;default:0;comment:排序"`
+	ID                uint64          `gorm:"column:id;type:bigint;primary_key;auto_increment;comment:主键"`
+	ProductCategoryID uint64          `gorm:"column:product_category_id;type:bigint;unsigned;not null;default:0;comment:商品分类id"` // pms_product_category#id
+	Name              string          `gorm:"column:name;type:varchar(200);not null;default:'';comment:商品名称"`
+	SubTitle          string          `gorm:"column:sub_title;type:varchar(255);not null;default:'';comment:副标题"`
+	BrandID           uint64          `gorm:"column:brand_id;type:bigint;unsigned;not null;default:0;comment:品牌id"` // pms_brand#id
+	Description       string          `gorm:"column:description;type:text;not null;comment:商品描述"`
+	ProductSN         string          `gorm:"column:product_sn;type:varchar(64);not null;default:'';comment:货号"`
+	Unit              string          `gorm:"column:unit;type:varchar(16);not null;default:'';comment:单位"`
+	Weight            decimal.Decimal `gorm:"column:weight;type:decimal(10,2);not null;default:0.00;comment:商品重量，默认为克"`
+	Sort              uint32          `gorm:"column:sort;type:int(10);unsigned;not null;default:0;comment:排序"`
 
 	// 价格-库存 真实的价格库存取的是pms_sku_stock的
 	Price         decimal.Decimal `gorm:"column:price;type:decimal(10,2);not null;default:0.00;comment:价格"`
@@ -40,7 +40,7 @@ type Product struct {
 	Keywords           string           `gorm:"column:keywords;type:varchar(255);not null;default:'';comment:关键字"`
 	Note               string           `gorm:"column:note;type:varchar(255);not null;default:'';comment:备注"`
 	PromotionType      pb.PromotionType `gorm:"column:promotion_type;type:tinyint(4);unsigned;not null;default:0;comment:促销类型：0->没有促销使用原价;1->使用促销价；2->使用会员价；3->使用阶梯价格；4->使用满减价格；5->限时购"`
-	PromotionPrice     string           `gorm:"column:promotion_price;type:decimal(10,2);not null;default:0.00;comment:促销价格"`
+	PromotionPrice     decimal.Decimal  `gorm:"column:promotion_price;type:decimal(10,2);not null;default:0.00;comment:促销价格"`
 	PromotionStartTime uint32           `gorm:"column:promotion_start_time;type:int(10);unsigned;not null;default:0;comment:促销开始时间"`
 	PromotionEndTime   uint32           `gorm:"column:promotion_end_time;type:int(10);unsigned;not null;default:0;comment:促销结束时间"`
 

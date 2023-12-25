@@ -2,6 +2,7 @@ package assembler
 
 import (
 	"github.com/baker-yuan/go-mall/common/entity"
+	"github.com/baker-yuan/go-mall/common/util"
 	pb "github.com/baker-yuan/go-mall/proto/mall"
 )
 
@@ -19,8 +20,8 @@ func ProductFullReductionToModel(productFullReduction *entity.ProductFullReducti
 	return &pb.ProductFullReduction{
 		Id:          productFullReduction.ID,
 		ProductId:   productFullReduction.ProductID,
-		FullPrice:   productFullReduction.FullPrice,
-		ReducePrice: productFullReduction.ReducePrice,
+		FullPrice:   productFullReduction.FullPrice.String(),
+		ReducePrice: productFullReduction.ReducePrice.String(),
 	}
 }
 
@@ -38,7 +39,7 @@ func ProductFullReductionToEntity(productFullReductionPb *pb.ProductFullReductio
 	return &entity.ProductFullReduction{
 		ID:          productFullReductionPb.Id,
 		ProductID:   productFullReductionPb.ProductId,
-		FullPrice:   productFullReductionPb.FullPrice,
-		ReducePrice: productFullReductionPb.ReducePrice,
+		FullPrice:   util.DecimalUtils.ToDecimalFixed2(productFullReductionPb.FullPrice),
+		ReducePrice: util.DecimalUtils.ToDecimalFixed2(productFullReductionPb.ReducePrice),
 	}
 }

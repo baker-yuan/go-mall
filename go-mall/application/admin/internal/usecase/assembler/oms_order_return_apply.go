@@ -16,10 +16,10 @@ func OrderReturnApplyEntityToModel(orderReturnApply *entity.OrderReturnApply) *p
 		ProductName:      orderReturnApply.ProductName,
 		ProductBrand:     orderReturnApply.ProductBrand,
 		ProductId:        orderReturnApply.ProductID,
-		ProductRealPrice: orderReturnApply.ProductRealPrice,
+		ProductRealPrice: orderReturnApply.ProductRealPrice.String(),
 		ProductAttr:      orderReturnApply.ProductAttr,
 		ProductCount:     orderReturnApply.ProductCount,
-		ProductPrice:     orderReturnApply.ProductPrice,
+		ProductPrice:     orderReturnApply.ProductPrice.String(),
 		//
 		Status:         uint32(orderReturnApply.Status),
 		OrderSn:        orderReturnApply.OrderSN,
@@ -31,7 +31,7 @@ func OrderReturnApplyEntityToModel(orderReturnApply *entity.OrderReturnApply) *p
 		Description:    orderReturnApply.Description,
 		ProofPics:      util.ImgUtils.GetFullUrls(orderReturnApply.ProofPics),
 		//
-		ReturnAmount:     orderReturnApply.ReturnAmount,
+		ReturnAmount:     orderReturnApply.ReturnAmount.String(),
 		CompanyAddressId: orderReturnApply.CompanyAddressID,
 		// 商家-处理人
 		HandleMan:  orderReturnApply.HandleMan,

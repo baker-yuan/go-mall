@@ -2,6 +2,7 @@ package assembler
 
 import (
 	"github.com/baker-yuan/go-mall/common/entity"
+	"github.com/baker-yuan/go-mall/common/util"
 	pb "github.com/baker-yuan/go-mall/proto/mall"
 )
 
@@ -24,8 +25,8 @@ func SkuStockToModel(skuStockEntity *entity.SkuStock) *pb.SkuStock {
 		SpData:    skuStockEntity.SpData,
 		ProductId: skuStockEntity.ProductID,
 		// 价格
-		Price:          skuStockEntity.Price,
-		PromotionPrice: skuStockEntity.PromotionPrice,
+		Price:          skuStockEntity.Price.String(),
+		PromotionPrice: skuStockEntity.PromotionPrice.String(),
 		// 库存
 		Stock:     skuStockEntity.Stock,
 		LowStock:  skuStockEntity.LowStock,
@@ -48,12 +49,12 @@ func SkuStockToEntity(skuStockPb *pb.SkuStock) *entity.SkuStock {
 		ID:             skuStockPb.Id,
 		ProductID:      skuStockPb.ProductId,
 		SkuCode:        skuStockPb.SkuCode,
-		Price:          skuStockPb.Price,
+		Price:          util.DecimalUtils.ToDecimalFixed2(skuStockPb.Price),
 		Stock:          skuStockPb.Stock,
 		LowStock:       skuStockPb.LowStock,
 		Pic:            skuStockPb.Pic,
 		Sale:           skuStockPb.Sale,
-		PromotionPrice: skuStockPb.PromotionPrice,
+		PromotionPrice: util.DecimalUtils.ToDecimalFixed2(skuStockPb.PromotionPrice),
 		LockStock:      skuStockPb.LockStock,
 		SpData:         skuStockPb.SpData,
 	}

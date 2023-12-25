@@ -28,14 +28,14 @@ func CartPromotionItemToModel(cartPromotionItems []*entity.CartPromotionItem) []
 			ProductSkuCode: cartPromotionItem.ProductSkuCode,
 			ProductAttr:    cartPromotionItem.ProductAttr,
 			// 价格数量
-			Price:    util.DecimalUtils.TrimTrailingZeros(cartPromotionItem.Price),
+			Price:    cartPromotionItem.Price.String(),
 			Quantity: cartPromotionItem.Quantity,
 			// 冗余字段
 			MemberNickname: cartPromotionItem.MemberNickname,
 
 			// 二、扩展字段
 			PromotionMessage: cartPromotionItem.PromotionMessage,
-			ReduceAmount:     util.DecimalUtils.TrimTrailingZeros(cartPromotionItem.ReduceAmount),
+			ReduceAmount:     cartPromotionItem.ReduceAmount.String(),
 			RealStock:        cartPromotionItem.RealStock,
 			Integration:      cartPromotionItem.Integration,
 			Growth:           cartPromotionItem.Growth,

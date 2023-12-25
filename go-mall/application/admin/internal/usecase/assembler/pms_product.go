@@ -21,7 +21,7 @@ func ProductEntityToModel(product *entity.Product, categoryNames map[uint64]stri
 		OriginalPrice:     product.OriginalPrice.String(),
 		Stock:             product.Stock,
 		Unit:              product.Unit,
-		Weight:            product.Weight,
+		Weight:            product.Weight.String(),
 		Sort:              product.Sort,
 
 		// 促销信息
@@ -38,7 +38,7 @@ func ProductEntityToModel(product *entity.Product, categoryNames map[uint64]stri
 		Keywords:           product.Keywords,
 		Note:               product.Note,
 		PromotionType:      product.PromotionType,
-		PromotionPrice:     product.PromotionPrice,
+		PromotionPrice:     product.PromotionPrice.String(),
 		PromotionStartTime: uint32(int32(product.PromotionStartTime)),
 		PromotionEndTime:   uint32(int32(product.PromotionEndTime)),
 
@@ -79,7 +79,7 @@ func AddOrUpdateProductParamToEntity(param *pb.AddOrUpdateProductParam) *entity.
 		OriginalPrice:     util.DecimalUtils.ToDecimalFixed2(param.OriginalPrice),
 		Stock:             param.Stock,
 		Unit:              param.Unit,
-		Weight:            param.Weight,
+		Weight:            util.DecimalUtils.ToDecimalFixed2(param.Weight),
 		Sort:              param.Sort,
 
 		// 促销信息
@@ -96,7 +96,7 @@ func AddOrUpdateProductParamToEntity(param *pb.AddOrUpdateProductParam) *entity.
 		Keywords:           param.Keywords,
 		Note:               param.Note,
 		PromotionType:      param.PromotionType,
-		PromotionPrice:     param.PromotionPrice,
+		PromotionPrice:     util.DecimalUtils.ToDecimalFixed2(param.PromotionPrice),
 		PromotionStartTime: param.PromotionStartTime,
 		PromotionEndTime:   param.PromotionEndTime,
 

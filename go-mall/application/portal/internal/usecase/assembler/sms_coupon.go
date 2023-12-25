@@ -32,7 +32,7 @@ func CouponHistoryDetailToModel(couponHistoryDetails []*portal_entity.CouponHist
 		item.Coupon = &pb.CouponHistoryDetail_Coupon{
 			Id:      detail.Coupon.ID,
 			Name:    detail.Coupon.Name,
-			Amount:  detail.Coupon.Amount,
+			Amount:  detail.Coupon.Amount.String(),
 			Note:    detail.Coupon.Note,
 			Code:    detail.Coupon.Code,
 			Type:    uint32(detail.Coupon.Type),

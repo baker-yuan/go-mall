@@ -2,6 +2,7 @@ package assembler
 
 import (
 	"github.com/baker-yuan/go-mall/common/entity"
+	"github.com/baker-yuan/go-mall/common/util"
 	pb "github.com/baker-yuan/go-mall/proto/mall"
 )
 
@@ -20,7 +21,7 @@ func MemberPriceToModel(memberPrice *entity.MemberPrice) *pb.MemberPrice {
 		Id:              memberPrice.ID,
 		ProductId:       memberPrice.ProductID,
 		MemberLevelId:   memberPrice.MemberLevelID,
-		MemberPrice:     memberPrice.MemberPrice,
+		MemberPrice:     memberPrice.MemberPrice.String(),
 		MemberLevelName: memberPrice.MemberLevelName,
 	}
 }
@@ -40,7 +41,7 @@ func MemberPriceToEntity(memberPricePb *pb.MemberPrice) *entity.MemberPrice {
 		ID:              memberPricePb.Id,
 		ProductID:       memberPricePb.ProductId,
 		MemberLevelID:   memberPricePb.MemberLevelId,
-		MemberPrice:     memberPricePb.MemberPrice,
+		MemberPrice:     util.DecimalUtils.ToDecimalFixed2(memberPricePb.MemberPrice),
 		MemberLevelName: memberPricePb.MemberLevelName,
 	}
 }

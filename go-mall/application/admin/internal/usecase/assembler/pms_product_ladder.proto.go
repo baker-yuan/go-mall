@@ -2,6 +2,7 @@ package assembler
 
 import (
 	"github.com/baker-yuan/go-mall/common/entity"
+	"github.com/baker-yuan/go-mall/common/util"
 	pb "github.com/baker-yuan/go-mall/proto/mall"
 )
 
@@ -20,8 +21,8 @@ func ProductLadderToModel(productLadder *entity.ProductLadder) *pb.ProductLadder
 		Id:        productLadder.ID,
 		ProductId: productLadder.ProductID,
 		Count:     productLadder.Count,
-		Discount:  productLadder.Discount,
-		Price:     productLadder.Price,
+		Discount:  productLadder.Discount.String(),
+		Price:     productLadder.Price.String(),
 	}
 }
 
@@ -40,7 +41,7 @@ func ProductLadderToEntity(productLadderPb *pb.ProductLadder) *entity.ProductLad
 		ID:        productLadderPb.Id,
 		ProductID: productLadderPb.ProductId,
 		Count:     productLadderPb.Count,
-		Discount:  productLadderPb.Discount,
-		Price:     productLadderPb.Price,
+		Discount:  util.DecimalUtils.ToDecimalFixed2(productLadderPb.Discount),
+		Price:     util.DecimalUtils.ToDecimalFixed2(productLadderPb.Price),
 	}
 }
