@@ -46,7 +46,7 @@ func initCartItemField(db *gorm.DB) error {
 	for _, v := range columnTypes {
 		columns = append(columns, v.Name())
 	}
-	updateCartItemField = util.SliceRemove[string](columns, notUpdateCartItemField...)
+	updateCartItemField = util.NewSliceUtils[string]().SliceRemove(columns, notUpdateCartItemField...)
 	return nil
 }
 
@@ -58,22 +58,12 @@ func (r CartItemRepo) Create(ctx context.Context, cartItem *entity.CartItem) err
 	return r.GenericDao.Create(ctx, cartItem)
 }
 
-// DeleteByID 根据主键ID删除购物车表
-func (r CartItemRepo) DeleteByID(ctx context.Context, id uint64) error {
-	return r.GenericDao.DeleteByID(ctx, id)
-}
-
 // Update 修改购物车表
 func (r CartItemRepo) Update(ctx context.Context, cartItem *entity.CartItem) error {
 	if cartItem.ID == 0 {
 		return errors.New("illegal argument cartItem exist")
 	}
 	return r.GenericDao.DB.WithContext(ctx).Select(updateCartItemField).Updates(cartItem).Error
-}
-
-// GetByID 根据主键ID查询购物车表
-func (r CartItemRepo) GetByID(ctx context.Context, id uint64) (*entity.CartItem, error) {
-	return r.GenericDao.GetByID(ctx, id)
 }
 
 // GetByDBOption 根据动态条件查询购物车表
@@ -98,12 +88,12 @@ func (r CartItemRepo) GetByDBOption(ctx context.Context, pageNum uint32, pageSiz
 	return res, uint32(pageTotal), nil
 }
 
-// SecurityGetByIDS 根据会员id和主键ID查询购物车表
-func (r CartItemRepo) SecurityGetByIDS(ctx context.Context, memberID uint64, cartIDs []uint64) (entity.CartItems, error) {
+// SecurityGetByIDs 根据会员id和主键ID查询购物车表
+func (r CartItemRepo) SecurityGetByIDs(ctx context.Context, memberID uint64, cartIDs []uint64) (entity.CartItems, error) {
 	res := make([]*entity.CartItem, 0)
 	tx := r.GenericDao.DB.WithContext(ctx)
-	tx = tx.Where("delete_status = 0")
 	tx = tx.Where("member_id = ?", memberID)
+	tx = tx.Where("delete_status = 0")
 	tx = tx.Where("id in ?", cartIDs)
 	if err := tx.Find(&res).Error; err != nil {
 		return nil, err
@@ -115,8 +105,8 @@ func (r CartItemRepo) SecurityGetByIDS(ctx context.Context, memberID uint64, car
 func (r CartItemRepo) GetEffectCartItemByMemberID(ctx context.Context, memberID uint64) (entity.CartItems, error) {
 	res := make([]*entity.CartItem, 0)
 	tx := r.GenericDao.DB.WithContext(ctx)
+	tx = tx.Where("member_id = ?", memberID)
 	tx = tx.Where("delete_status = 0")
-	tx = tx.Where("member_id = ?", memberID) // member_id一定要的，防止越权
 	if err := tx.Find(&res).Error; err != nil {
 		return nil, err
 	}

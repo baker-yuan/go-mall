@@ -46,7 +46,7 @@ func initPrefrenceAreaProductRelationField(db *gorm.DB) error {
 	for _, v := range columnTypes {
 		columns = append(columns, v.Name())
 	}
-	updatePrefrenceAreaProductRelationField = util.SliceRemove[string](columns, notUpdatePrefrenceAreaProductRelationField...)
+	updatePrefrenceAreaProductRelationField = util.NewSliceUtils[string]().SliceRemove(columns, notUpdatePrefrenceAreaProductRelationField...)
 	return nil
 }
 

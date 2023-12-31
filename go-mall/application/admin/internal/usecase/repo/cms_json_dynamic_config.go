@@ -46,7 +46,7 @@ func initJsonDynamicConfigField(db *gorm.DB) error {
 	for _, v := range columnTypes {
 		columns = append(columns, v.Name())
 	}
-	updateJsonDynamicConfigField = util.SliceRemove[string](columns, notUpdateJsonDynamicConfigField...)
+	updateJsonDynamicConfigField = util.NewSliceUtils[string]().SliceRemove(columns, notUpdateJsonDynamicConfigField...)
 	return nil
 }
 

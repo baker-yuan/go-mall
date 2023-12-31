@@ -46,7 +46,7 @@ func initOrderOperateHistoryField(db *gorm.DB) error {
 	for _, v := range columnTypes {
 		columns = append(columns, v.Name())
 	}
-	updateOrderOperateHistoryField = util.SliceRemove[string](columns, notUpdateOrderOperateHistoryField...)
+	updateOrderOperateHistoryField = util.NewSliceUtils[string]().SliceRemove(columns, notUpdateOrderOperateHistoryField...)
 	return nil
 }
 

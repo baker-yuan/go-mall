@@ -14,7 +14,7 @@ import "portal/coupon.proto";
 
 // 根据购物车信息生成确认单
 message GenerateConfirmOrderReq {
-  repeated uint64 cart_ids = 1 [(validate.rules).repeated.min_items = 1];
+  repeated uint64 cart_ids = 1 [(validate.rules).repeated.min_items = 1]; // 购物车id集合
 }
 
 message GenerateConfirmOrderRsp {

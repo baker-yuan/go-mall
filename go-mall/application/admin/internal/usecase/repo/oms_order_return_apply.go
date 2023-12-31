@@ -46,7 +46,7 @@ func initOrderReturnApplyField(db *gorm.DB) error {
 	for _, v := range columnTypes {
 		columns = append(columns, v.Name())
 	}
-	updateOrderReturnApplyField = util.SliceRemove[string](columns, notUpdateOrderReturnApplyField...)
+	updateOrderReturnApplyField = util.NewSliceUtils[string]().SliceRemove(columns, notUpdateOrderReturnApplyField...)
 	return nil
 }
 

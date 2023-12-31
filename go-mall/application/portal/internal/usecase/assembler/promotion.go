@@ -8,7 +8,6 @@ import (
 
 func CartPromotionItemToModel(cartPromotionItems []*entity.CartPromotionItem) []*pb.CartPromotionItem {
 	res := make([]*pb.CartPromotionItem, 0)
-
 	for _, cartPromotionItem := range cartPromotionItems {
 		item := &pb.CartPromotionItem{
 			// 一、订单信息
@@ -40,9 +39,7 @@ func CartPromotionItemToModel(cartPromotionItems []*entity.CartPromotionItem) []
 			Integration:      cartPromotionItem.Integration,
 			Growth:           cartPromotionItem.Growth,
 		}
-
 		res = append(res, item)
 	}
-
 	return res
 }

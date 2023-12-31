@@ -46,7 +46,7 @@ func initProductAttributeValueField(db *gorm.DB) error {
 	for _, v := range columnTypes {
 		columns = append(columns, v.Name())
 	}
-	updateProductAttributeValueField = util.SliceRemove[string](columns, notUpdateProductAttributeValueField...)
+	updateProductAttributeValueField = util.NewSliceUtils[string]().SliceRemove(columns, notUpdateProductAttributeValueField...)
 	return nil
 }
 

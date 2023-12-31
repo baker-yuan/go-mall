@@ -46,7 +46,7 @@ func initPrefrenceAreaField(db *gorm.DB) error {
 	for _, v := range columnTypes {
 		columns = append(columns, v.Name())
 	}
-	updatePrefrenceAreaField = util.SliceRemove[string](columns, notUpdatePrefrenceAreaField...)
+	updatePrefrenceAreaField = util.NewSliceUtils[string]().SliceRemove(columns, notUpdatePrefrenceAreaField...)
 	return nil
 }
 

@@ -46,7 +46,7 @@ func initCouponProductCategoryRelationField(db *gorm.DB) error {
 	for _, v := range columnTypes {
 		columns = append(columns, v.Name())
 	}
-	updateCouponProductCategoryRelationField = util.SliceRemove[string](columns, notUpdateCouponProductCategoryRelationField...)
+	updateCouponProductCategoryRelationField = util.NewSliceUtils[string]().SliceRemove(columns, notUpdateCouponProductCategoryRelationField...)
 	return nil
 }
 

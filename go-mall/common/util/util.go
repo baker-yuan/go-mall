@@ -4,7 +4,10 @@ import (
 	"github.com/baker-yuan/go-mall/common/util/conversion"
 	"github.com/baker-yuan/go-mall/common/util/ctx"
 	"github.com/baker-yuan/go-mall/common/util/decimal"
+	"github.com/baker-yuan/go-mall/common/util/encoding"
+	"github.com/baker-yuan/go-mall/common/util/group"
 	"github.com/baker-yuan/go-mall/common/util/img"
+	"github.com/baker-yuan/go-mall/common/util/slice"
 	"github.com/baker-yuan/go-mall/common/util/str"
 )
 
@@ -17,3 +20,18 @@ var (
 	CtxUtils            ctx.CtxUtils               // 上下文处理
 	DecimalUtils        decimal.DecimalUtils       // 浮点数计算
 )
+
+// NewSliceUtils 是 SliceUtils 的构造函数，返回一个 SliceUtils 的实例。
+func NewSliceUtils[T comparable]() slice.SliceUtils[T] {
+	return slice.SliceUtils[T]{}
+}
+
+// NewGroupUtils 是 GroupUtils 的构造函数，返回一个 GroupUtils 的实例。
+func NewGroupUtils[T any, K comparable]() group.GroupUtils[T, K] {
+	return group.GroupUtils[T, K]{}
+}
+
+// NewJSONUtils 是 JSONUtils 的构造函数，返回一个 JSONUtils 的实例。
+func NewJSONUtils[T any]() encoding.JSONUtils[T] {
+	return encoding.JSONUtils[T]{}
+}

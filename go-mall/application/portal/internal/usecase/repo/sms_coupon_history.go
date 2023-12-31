@@ -46,7 +46,7 @@ func initCouponHistoryField(db *gorm.DB) error {
 	for _, v := range columnTypes {
 		columns = append(columns, v.Name())
 	}
-	updateCouponHistoryField = util.SliceRemove[string](columns, notUpdateCouponHistoryField...)
+	updateCouponHistoryField = util.NewSliceUtils[string]().SliceRemove(columns, notUpdateCouponHistoryField...)
 	return nil
 }
 

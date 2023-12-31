@@ -46,7 +46,7 @@ func initOrderReturnReasonField(db *gorm.DB) error {
 	for _, v := range columnTypes {
 		columns = append(columns, v.Name())
 	}
-	updateOrderReturnReasonField = util.SliceRemove[string](columns, notUpdateOrderReturnReasonField...)
+	updateOrderReturnReasonField = util.NewSliceUtils[string]().SliceRemove(columns, notUpdateOrderReturnReasonField...)
 	return nil
 }
 

@@ -46,7 +46,7 @@ func initSubjectField(db *gorm.DB) error {
 	for _, v := range columnTypes {
 		columns = append(columns, v.Name())
 	}
-	updateSubjectField = util.SliceRemove[string](columns, notUpdateSubjectField...)
+	updateSubjectField = util.NewSliceUtils[string]().SliceRemove(columns, notUpdateSubjectField...)
 	return nil
 }
 

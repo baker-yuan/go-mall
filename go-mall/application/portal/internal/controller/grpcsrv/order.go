@@ -19,8 +19,11 @@ func (s PortalApiImpl) GenerateConfirmOrder(ctx context.Context, req *pb.Generat
 
 // GenerateOrder 根据购物车信息生成订单
 func (s PortalApiImpl) GenerateOrder(ctx context.Context, req *pb.GenerateOrderReq) (*pb.GenerateOrderRsp, error) {
-	//TODO implement me
-	panic("implement me")
+	memberID, err := util.CtxUtils.GetUserID(ctx)
+	if err != nil {
+		return nil, err
+	}
+	return s.orderUseCase.GenerateOrder(ctx, memberID, req)
 }
 
 // PaySuccess 用户支付成功的回调

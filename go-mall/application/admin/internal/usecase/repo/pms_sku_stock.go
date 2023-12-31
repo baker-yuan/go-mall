@@ -46,7 +46,7 @@ func initSkuStockField(db *gorm.DB) error {
 	for _, v := range columnTypes {
 		columns = append(columns, v.Name())
 	}
-	updateSkuStockField = util.SliceRemove[string](columns, notUpdateSkuStockField...)
+	updateSkuStockField = util.NewSliceUtils[string]().SliceRemove(columns, notUpdateSkuStockField...)
 	return nil
 }
 

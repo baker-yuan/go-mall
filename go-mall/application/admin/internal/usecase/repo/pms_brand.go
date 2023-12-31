@@ -48,7 +48,7 @@ func initBrandField(db *gorm.DB) error {
 	for _, v := range columnTypes {
 		columns = append(columns, v.Name())
 	}
-	updateBrandField = util.SliceRemove[string](columns, notUpdateBrandField...)
+	updateBrandField = util.NewSliceUtils[string]().SliceRemove(columns, notUpdateBrandField...)
 	return nil
 }
 

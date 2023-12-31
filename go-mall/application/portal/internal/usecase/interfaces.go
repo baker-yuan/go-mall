@@ -163,7 +163,7 @@ type (
 		CartItemAdd(ctx context.Context, memberID uint64, req *pb.CartItemAddReq) error
 		// CartItemList 获取当前会员的购物车列表
 		CartItemList(ctx context.Context, memberID uint64) ([]*pb.CartItem, error)
-		// CartItemListPromotion 获取当前会员的购物车列表,包括促销信息
+		// CartItemListPromotion 获取当前会员的购物车列表，包括促销信息
 		CartItemListPromotion(ctx context.Context, memberID uint64, cartIDs []uint64) ([]*pb.CartPromotionItem, error)
 		// CartItemUpdateQuantity 修改购物车中指定商品的数量
 		CartItemUpdateQuantity(ctx context.Context, memberID uint64, req *pb.CartItemUpdateQuantityReq) error
@@ -181,17 +181,13 @@ type (
 	ICartItemRepo interface {
 		// Create 创建购物车表
 		Create(ctx context.Context, cartItem *entity.CartItem) error
-		// DeleteByID 根据主键ID删除购物车表
-		DeleteByID(ctx context.Context, id uint64) error
 		// Update 修改购物车表
 		Update(ctx context.Context, cartItem *entity.CartItem) error
-		// GetByID 根据主键ID查询购物车表
-		GetByID(ctx context.Context, id uint64) (*entity.CartItem, error)
 		// GetByDBOption 根据动态条件查询购物车表
 		GetByDBOption(ctx context.Context, pageNum uint32, pageSize uint32, opts ...db.DBOption) ([]*entity.CartItem, uint32, error)
 
-		// SecurityGetByIDS 根据会员id和主键ID查询购物车表
-		SecurityGetByIDS(ctx context.Context, memberID uint64, cartIDs []uint64) (entity.CartItems, error)
+		// SecurityGetByIDs 根据会员id和主键ID查询购物车表
+		SecurityGetByIDs(ctx context.Context, memberID uint64, cartIDs []uint64) (entity.CartItems, error)
 		// GetEffectCartItemByMemberID 根据会员id查询购物车
 		GetEffectCartItemByMemberID(ctx context.Context, memberID uint64) (entity.CartItems, error)
 

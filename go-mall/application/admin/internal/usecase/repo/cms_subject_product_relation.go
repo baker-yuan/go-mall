@@ -46,7 +46,7 @@ func initSubjectProductRelationField(db *gorm.DB) error {
 	for _, v := range columnTypes {
 		columns = append(columns, v.Name())
 	}
-	updateSubjectProductRelationField = util.SliceRemove[string](columns, notUpdateSubjectProductRelationField...)
+	updateSubjectProductRelationField = util.NewSliceUtils[string]().SliceRemove(columns, notUpdateSubjectProductRelationField...)
 	return nil
 }
 

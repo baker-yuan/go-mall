@@ -46,7 +46,7 @@ func initCompanyAddressField(db *gorm.DB) error {
 	for _, v := range columnTypes {
 		columns = append(columns, v.Name())
 	}
-	updateCompanyAddressField = util.SliceRemove[string](columns, notUpdateCompanyAddressField...)
+	updateCompanyAddressField = util.NewSliceUtils[string]().SliceRemove(columns, notUpdateCompanyAddressField...)
 	return nil
 }
 

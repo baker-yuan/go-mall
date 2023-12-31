@@ -46,7 +46,7 @@ func initProductFullReductionField(db *gorm.DB) error {
 	for _, v := range columnTypes {
 		columns = append(columns, v.Name())
 	}
-	updateProductFullReductionField = util.SliceRemove[string](columns, notUpdateProductFullReductionField...)
+	updateProductFullReductionField = util.NewSliceUtils[string]().SliceRemove(columns, notUpdateProductFullReductionField...)
 	return nil
 }
 

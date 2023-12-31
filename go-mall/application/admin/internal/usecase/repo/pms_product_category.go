@@ -47,7 +47,7 @@ func initProductCategoryField(db *gorm.DB) error {
 	for _, v := range columnTypes {
 		columns = append(columns, v.Name())
 	}
-	updateProductCategoryField = util.SliceRemove[string](columns, notUpdateProductCategoryField...)
+	updateProductCategoryField = util.NewSliceUtils[string]().SliceRemove(columns, notUpdateProductCategoryField...)
 	return nil
 }
 

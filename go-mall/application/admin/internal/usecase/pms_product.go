@@ -216,7 +216,7 @@ func (c ProductUseCase) UpdateProduct(ctx context.Context, param *pb.AddOrUpdate
 			// 获取需要删除的sku信息
 			var removeSkus []*entity.SkuStock
 			for _, item := range oriSkus {
-				if !util.SliceExist(updateSkuIds, item.ID) {
+				if !util.NewSliceUtils[uint64]().SliceExist(updateSkuIds, item.ID) {
 					removeSkus = append(removeSkus, item)
 				}
 			}

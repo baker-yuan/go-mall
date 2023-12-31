@@ -46,7 +46,7 @@ func initOrderItemField(db *gorm.DB) error {
 	for _, v := range columnTypes {
 		columns = append(columns, v.Name())
 	}
-	updateOrderItemField = util.SliceRemove[string](columns, notUpdateOrderItemField...)
+	updateOrderItemField = util.NewSliceUtils[string]().SliceRemove(columns, notUpdateOrderItemField...)
 	return nil
 }
 

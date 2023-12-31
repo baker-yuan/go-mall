@@ -48,7 +48,7 @@ func initHomeAdvertiseField(db *gorm.DB) error {
 	for _, v := range columnTypes {
 		columns = append(columns, v.Name())
 	}
-	updateHomeAdvertiseField = util.SliceRemove[string](columns, notUpdateHomeAdvertiseField...)
+	updateHomeAdvertiseField = util.NewSliceUtils[string]().SliceRemove(columns, notUpdateHomeAdvertiseField...)
 	return nil
 }
 

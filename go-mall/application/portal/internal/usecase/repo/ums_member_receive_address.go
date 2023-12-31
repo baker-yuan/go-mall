@@ -46,7 +46,7 @@ func initMemberReceiveAddressField(db *gorm.DB) error {
 	for _, v := range columnTypes {
 		columns = append(columns, v.Name())
 	}
-	updateMemberReceiveAddressField = util.SliceRemove[string](columns, notUpdateMemberReceiveAddressField...)
+	updateMemberReceiveAddressField = util.NewSliceUtils[string]().SliceRemove(columns, notUpdateMemberReceiveAddressField...)
 	return nil
 }
 

@@ -40,19 +40,20 @@ func NewPromotion(
 // CalcCartPromotion 计算购物车中的促销活动信息
 // cartItems 购物车
 func (c PromotionUseCase) CalcCartPromotion(ctx context.Context, cartItems entity.CartItems) (portal_entity.CartPromotionItems, error) {
-	cartPromotionItems := make([]*portal_entity.CartPromotionItem, 0)
-
-	// 1.先根据productId对CartItem进行分组，以spu为单位进行计算优惠
+	var (
+		cartPromotionItems = make([]*portal_entity.CartPromotionItem, 0)
+	)
+	// 1、根据productId对CartItem进行分组，以spu为单位进行计算优惠
 	// key=商品id value=购物车集合
 	productCartMap := cartItems.GroupCartItemBySpu()
 
-	// 2.查询所有商品的优惠相关信息
+	// 2、查询所有商品的优惠相关信息
 	promotionProducts, err := c.getPromotionProductList(ctx, cartItems)
 	if err != nil {
 		return nil, err
 	}
 
-	// 3.根据商品促销类型计算商品促销优惠价格
+	// 3、根据商品促销类型计算商品促销优惠价格
 	for productID, cartItemList := range productCartMap {
 		promotionProduct := promotionProducts.GetByProductID(productID)
 		if promotionProduct == nil {
@@ -63,7 +64,7 @@ func (c PromotionUseCase) CalcCartPromotion(ctx context.Context, cartItems entit
 		if promotionType == pb.PromotionType_PROMOTION_TYPE_PROMOTIONAL_PRICE {
 			// 单品促销
 			for _, cartItem := range cartItemList {
-				cartPromotionItem, _ := util.CopyProperties[*portal_entity.CartPromotionItem](cartItem)
+				cartPromotionItem, _ := util.NewJSONUtils[*portal_entity.CartPromotionItem]().CopyProperties(cartItem)
 				cartPromotionItem.PromotionMessage = "单品促销"
 				// 商品原价-促销价
 				skuStock := c.getOriginalPrice(promotionProduct, cartItem.ProductSkuID)
@@ -84,7 +85,7 @@ func (c PromotionUseCase) CalcCartPromotion(ctx context.Context, cartItems entit
 			ladder := c.getProductLadder(count, promotionProduct.ProductLadders)
 			if ladder != nil {
 				for _, cartItem := range cartItemList {
-					cartPromotionItem, _ := util.CopyProperties[*portal_entity.CartPromotionItem](cartItem)
+					cartPromotionItem, _ := util.NewJSONUtils[*portal_entity.CartPromotionItem]().CopyProperties(cartItem)
 					message := c.getLadderPromotionMessage(ladder)
 					cartPromotionItem.PromotionMessage = message
 					// 商品原价-折扣*商品原价
@@ -107,7 +108,7 @@ func (c PromotionUseCase) CalcCartPromotion(ctx context.Context, cartItems entit
 			fullReduction, _ := c.getProductFullReduction(totalAmount, promotionProduct.ProductFullReductions)
 			if fullReduction != nil {
 				for _, cartItem := range cartItemList {
-					cartPromotionItem, _ := util.CopyProperties[*portal_entity.CartPromotionItem](cartItem)
+					cartPromotionItem, _ := util.NewJSONUtils[*portal_entity.CartPromotionItem]().CopyProperties(cartItem)
 					message := c.getFullReductionPromotionMessage(fullReduction)
 					cartPromotionItem.PromotionMessage = message
 					// (商品原价/总价)*满减金额
@@ -134,7 +135,7 @@ func (c PromotionUseCase) CalcCartPromotion(ctx context.Context, cartItems entit
 func (c PromotionUseCase) handleNoReduce(cartItems entity.CartItems, promotionProduct *portal_entity.PromotionProduct) []*portal_entity.CartPromotionItem {
 	cartPromotionItems := make([]*portal_entity.CartPromotionItem, 0)
 	for _, cartItem := range cartItems {
-		cartPromotionItem, _ := util.CopyProperties[*portal_entity.CartPromotionItem](cartItem)
+		cartPromotionItem, _ := util.NewJSONUtils[*portal_entity.CartPromotionItem]().CopyProperties(cartItem)
 		cartPromotionItem.PromotionMessage = "无优惠"
 		cartPromotionItem.ReduceAmount = decimal.Zero
 		skuStock := c.getOriginalPrice(promotionProduct, cartItem.ProductSkuID)
@@ -176,20 +177,16 @@ func (c PromotionUseCase) getPromotionProductList(ctx context.Context, cartItems
 	if err != nil {
 		return nil, err
 	}
-
 	// 查询产品阶梯价格信息
 	productLadders, err := c.productLadderRepo.GetByProductIDs(ctx, productIDs)
 	if err != nil {
 		return nil, err
 	}
-
 	// 查询产品满减信息
 	fullReductions, err := c.productFullReductionRepo.GetByProductIDs(ctx, productIDs)
 	if err != nil {
 		return nil, err
 	}
-
-	res := make([]*portal_entity.PromotionProduct, 0)
 
 	// 创建一个以 product_id 为键的 map
 	temp := make(map[uint64]*portal_entity.PromotionProduct)
@@ -209,14 +206,14 @@ func (c PromotionUseCase) getPromotionProductList(ctx context.Context, cartItems
 			product.ProductLadders = append(product.ProductLadders, ladder)
 		}
 	}
-
 	// 将产品满减信息添加到对应的产品中
 	for _, reduction := range fullReductions {
 		if product, ok := temp[reduction.ProductID]; ok {
 			product.ProductFullReductions = append(product.ProductFullReductions, reduction)
 		}
 	}
-
+	// 返回value
+	res := make([]*portal_entity.PromotionProduct, 0)
 	for _, v := range temp {
 		res = append(res, v)
 	}

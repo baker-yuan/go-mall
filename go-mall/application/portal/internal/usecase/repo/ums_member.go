@@ -46,7 +46,7 @@ func initMemberField(db *gorm.DB) error {
 	for _, v := range columnTypes {
 		columns = append(columns, v.Name())
 	}
-	updateMemberField = util.SliceRemove[string](columns, notUpdateMemberField...)
+	updateMemberField = util.NewSliceUtils[string]().SliceRemove(columns, notUpdateMemberField...)
 	return nil
 }
 

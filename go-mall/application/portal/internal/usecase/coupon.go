@@ -198,7 +198,7 @@ func (s CouponUseCase) calcTotalAmountByProductCategoryID(cartItemListPromotions
 	total := decimal.Zero
 	for _, item := range cartItemListPromotions {
 		// 检查商品是否属于指定分类
-		if util.SliceExist[uint64](productCategoryIDs, item.ProductCategoryId) {
+		if util.NewSliceUtils[uint64]().SliceExist(productCategoryIDs, item.ProductCategoryId) {
 			price, _ := decimal.NewFromString(item.Price)
 			reduceAmount, _ := decimal.NewFromString(item.ReduceAmount)
 			// 计算实际价格
@@ -217,7 +217,7 @@ func (s CouponUseCase) calcTotalAmountByProductID(cartItemListPromotions []*pb.C
 	total := decimal.Zero
 	for _, item := range cartItemListPromotions {
 		// 检查商品是否属于指定的产品 ID
-		if util.SliceExist[uint64](productIDs, item.ProductId) {
+		if util.NewSliceUtils[uint64]().SliceExist(productIDs, item.ProductId) {
 			price, _ := decimal.NewFromString(item.Price)
 			reduceAmount, _ := decimal.NewFromString(item.ReduceAmount)
 			// 计算实际价格

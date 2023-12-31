@@ -97,7 +97,7 @@ func (c OrderUseCase) GenerateConfirmOrder(ctx context.Context, memberID uint64,
 
 	// 获取积分使用规则
 	cfg, _ := c.jsonDynamicConfigRepo.GetByBizType(ctx, entity.IntegrationConsumeSetting)
-	integrationConsumeSetting, err := util.Unmarshal[entity.UmsIntegrationConsumeSetting](cfg)
+	integrationConsumeSetting, err := util.NewJSONUtils[entity.UmsIntegrationConsumeSetting]().Unmarshal(cfg)
 	res.IntegrationConsumeSetting = assembler.IntegrationConsumeSettingEntityToDetail(integrationConsumeSetting)
 
 	// 计算总金额、活动优惠、应付金额
@@ -265,7 +265,7 @@ func (c OrderUseCase) GenerateOrder(ctx context.Context, memberID uint64, orderP
 	order.OrderSN = c.generateOrderSN(order)
 	// 设置自动收货天数
 	cfg, err := c.jsonDynamicConfigRepo.GetByBizType(ctx, entity.OrderSetting)
-	orderSetting, err := util.Unmarshal[entity.OmsOrderSetting](cfg)
+	orderSetting, err := util.NewJSONUtils[entity.OmsOrderSetting]().Unmarshal(cfg)
 	order.AutoConfirmDay = orderSetting.ConfirmOvertime
 
 	// TODO: 2018/9/3 bill_*,delivery_*
@@ -460,7 +460,7 @@ func (c OrderUseCase) getCouponOrderItemByRelation(couponHistoryDetail *portal_e
 	if tpe == 0 {
 		categoryIdList := couponHistoryDetail.CategoryRelations.GetProductCategoryIDs()
 		for _, orderItem := range orderItems {
-			if util.SliceExist[uint64](categoryIdList, orderItem.ProductCategoryID) {
+			if util.NewSliceUtils[uint64]().SliceExist(categoryIdList, orderItem.ProductCategoryID) {
 				result = append(result, orderItem)
 			} else {
 				orderItem.CouponAmount = decimal.Zero
@@ -469,7 +469,7 @@ func (c OrderUseCase) getCouponOrderItemByRelation(couponHistoryDetail *portal_e
 	} else if tpe == 1 {
 		productIdList := couponHistoryDetail.ProductRelations.GetProductIDs()
 		for _, orderItem := range orderItems {
-			if util.SliceExist[uint64](productIdList, orderItem.ProductID) {
+			if util.NewSliceUtils[uint64]().SliceExist(productIdList, orderItem.ProductID) {
 				result = append(result, orderItem)
 			} else {
 				orderItem.CouponAmount = decimal.Zero
@@ -508,7 +508,7 @@ func (c OrderUseCase) getUseIntegrationAmount(ctx context.Context, useIntegratio
 	// 根据积分使用规则判断是否可用
 	// 是否可与优惠券共用
 	cfg, _ := c.jsonDynamicConfigRepo.GetByBizType(ctx, entity.IntegrationConsumeSetting)
-	integrationConsumeSetting, _ := util.Unmarshal[entity.UmsIntegrationConsumeSetting](cfg)
+	integrationConsumeSetting, _ := util.NewJSONUtils[entity.UmsIntegrationConsumeSetting]().Unmarshal(cfg)
 	if hasCoupon && integrationConsumeSetting.CouponStatus == 0 {
 		// 不可与优惠券共用
 		return zeroAmount
