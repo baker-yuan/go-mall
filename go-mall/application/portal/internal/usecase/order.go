@@ -158,6 +158,7 @@ func (c OrderUseCase) GenerateOrder(ctx context.Context, memberID uint64, orderP
 		}
 		orderItems = append(orderItems, orderItem)
 	}
+
 	// 判断购物车中商品是否都有库存
 	if !c.hasStock(cartPromotionItems) {
 		return nil, retcode.NewError(retcode.RetGenOrderNoStock)
@@ -201,11 +202,6 @@ func (c OrderUseCase) GenerateOrder(ctx context.Context, memberID uint64, orderP
 
 	// 计算order_item的实付金额
 	c.handleRealAmount(orderItems)
-
-	// 进行库存锁定
-	if err := c.lockStock(ctx, cartPromotionItems); err != nil {
-		return nil, err
-	}
 
 	// 根据商品合计、运费、活动优惠、优惠券、积分计算应付金额
 	order := &entity.Order{}
@@ -281,6 +277,10 @@ func (c OrderUseCase) GenerateOrder(ctx context.Context, memberID uint64, orderP
 
 	// 事务执行
 	err = db2.Transaction(ctx, func(ctx context.Context) error {
+		// 进行库存锁定
+		if err := c.lockStock(ctx, cartPromotionItems); err != nil {
+			return err
+		}
 
 		// 插入order表和order_item表
 		// 创建订单

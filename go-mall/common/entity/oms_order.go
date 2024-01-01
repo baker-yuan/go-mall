@@ -10,10 +10,11 @@ type Order struct {
 	MemberID uint64 `gorm:"column:member_id;type:bigint;unsigned;not null;default:0;comment:会员id"`
 	OrderSN  string `gorm:"column:order_sn;type:varchar(64);not null;default:'';comment:订单编号"`
 	Note     string `gorm:"column:note;type:varchar(500);not null;default:'';comment:订单备注"`
-	//
+	// 优惠
+	CouponID      uint64 `gorm:"column:coupon_id;type:bigint;unsigned;not null;default:0;comment:优惠券id"`
+	PromotionInfo string `gorm:"column:promotion_info;type:varchar(100);not null;default:'';comment:活动信息"`
+	// 积分成长值
 	UseIntegration uint32 `gorm:"column:use_integration;type:int(10);unsigned;not null;default:0;comment:下单时使用的积分"`
-	CouponID       uint64 `gorm:"column:coupon_id;type:bigint;unsigned;not null;default:0;comment:优惠券id"`
-	PromotionInfo  string `gorm:"column:promotion_info;type:varchar(100);not null;default:'';comment:活动信息"`
 	Integration    uint32 `gorm:"column:integration;type:int(10);unsigned;not null;default:0;comment:可以获得的积分"`
 	Growth         uint32 `gorm:"column:growth;type:int(10);unsigned;not null;default:0;comment:可以活动的成长值"`
 	// 类型

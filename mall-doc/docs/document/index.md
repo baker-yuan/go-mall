@@ -71,6 +71,17 @@ https://www.bilibili.com/video/BV17t41177cr
 ```
 
 ```text
+https://www.bilibili.com/video/BV1GJ411B7wN/
+https://github.com/nodeing/niuma-template
+https://github.com/nodeing/itboma
+
+https://pinia.web3doc.top/
+https://github.com/vuejs/pinia
+
+https://github.com/Jimmylxue/blog
+```
+
+```text
 https://blog.csdn.net/weixin_44235759/article/details/134686166
 https://zhuanlan.zhihu.com/p/663307185
 https://blog.csdn.net/weixin_52834435/article/details/125136805
