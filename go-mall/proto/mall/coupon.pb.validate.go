@@ -1308,8 +1308,6 @@ func (m *CouponHistoryDetail_Coupon) validate(all bool) error {
 
 	// no validation rules for UseType
 
-	// no validation rules for StartTime
-
 	// no validation rules for EndTime
 
 	if len(errors) > 0 {

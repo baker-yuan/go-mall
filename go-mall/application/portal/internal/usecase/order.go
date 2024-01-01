@@ -7,6 +7,7 @@ import (
 
 	portal_entity "github.com/baker-yuan/go-mall/application/portal/internal/entity"
 	"github.com/baker-yuan/go-mall/application/portal/internal/usecase/assembler"
+	db2 "github.com/baker-yuan/go-mall/common/db"
 	"github.com/baker-yuan/go-mall/common/entity"
 	"github.com/baker-yuan/go-mall/common/retcode"
 	"github.com/baker-yuan/go-mall/common/util"
@@ -108,6 +109,14 @@ func (c OrderUseCase) GenerateConfirmOrder(ctx context.Context, memberID uint64,
 
 // GenerateOrder 根据提交信息生成订单
 func (c OrderUseCase) GenerateOrder(ctx context.Context, memberID uint64, orderParam *pb.GenerateOrderReq) (*pb.GenerateOrderRsp, error) {
+	var (
+		res = &pb.GenerateOrderRsp{}
+	)
+	// 收货地址id为空
+	if orderParam.MemberReceiveAddressId == 0 {
+		return nil, retcode.NewError(retcode.RetGenOrderMemberReceiveAddressIDCheckFail)
+	}
+
 	// 获取用户信息
 	currentMember, err := c.memberRepo.GetByID(ctx, memberID)
 	if err != nil {
@@ -120,39 +129,37 @@ func (c OrderUseCase) GenerateOrder(ctx context.Context, memberID uint64, orderP
 		return nil, err
 	}
 
-	// 收货地址id为空
-	if orderParam.MemberReceiveAddressId == 0 {
-		return nil, retcode.NewError(retcode.RetGenOrderMemberReceiveAddressIDCheckFail)
-	}
-
 	var (
+		// 订单商品信息
 		orderItems = make([]*entity.OrderItem, 0)
 	)
-
 	for _, cartPromotionItem := range cartPromotionItems {
 		// 生成下单商品信息
 		orderItem := &entity.OrderItem{
 			// 商品信息
 			ProductID:         cartPromotionItem.ProductId,
-			ProductName:       cartPromotionItem.ProductName,
+			ProductCategoryID: cartPromotionItem.ProductCategoryId,
 			ProductPic:        cartPromotionItem.ProductPic,
-			ProductAttr:       cartPromotionItem.ProductAttr,
+			ProductName:       cartPromotionItem.ProductName,
 			ProductBrand:      cartPromotionItem.ProductBrand,
 			ProductSN:         cartPromotionItem.ProductSn,
-			ProductPrice:      util.DecimalUtils.ToDecimalFixed2(cartPromotionItem.Price),
+			ProductAttr:       cartPromotionItem.ProductAttr,
 			ProductQuantity:   cartPromotionItem.Quantity,
-			ProductSkuID:      cartPromotionItem.ProductSkuId,
-			ProductSkuCode:    cartPromotionItem.ProductSkuCode,
-			ProductCategoryID: cartPromotionItem.ProductCategoryId,
-			PromotionAmount:   util.DecimalUtils.ToDecimalFixed2(cartPromotionItem.ReduceAmount),
 			PromotionName:     cartPromotionItem.PromotionMessage,
-			GiftIntegration:   cartPromotionItem.Integration,
-			GiftGrowth:        cartPromotionItem.Growth,
+			// 价格
+			ProductPrice:    util.DecimalUtils.ToDecimalFixed2(cartPromotionItem.Price),
+			PromotionAmount: util.DecimalUtils.ToDecimalFixed2(cartPromotionItem.ReduceAmount),
+			// sku
+			ProductSkuID:   cartPromotionItem.ProductSkuId,
+			ProductSkuCode: cartPromotionItem.ProductSkuCode,
+			//
+			GiftIntegration: cartPromotionItem.Integration,
+			GiftGrowth:      cartPromotionItem.Growth,
 		}
 		orderItems = append(orderItems, orderItem)
 	}
 	// 判断购物车中商品是否都有库存
-	if c.hasStock(cartPromotionItems) {
+	if !c.hasStock(cartPromotionItems) {
 		return nil, retcode.NewError(retcode.RetGenOrderNoStock)
 	}
 
@@ -187,38 +194,40 @@ func (c OrderUseCase) GenerateOrder(ctx context.Context, memberID uint64, orderP
 		} else {
 			// 可用情况下分摊到可用商品中
 			for _, orderItem := range orderItems {
-				orderItem.IntegrationAmount = orderItem.ProductPrice.
-					Div(totalAmount).RoundBank(3).
-					Mul(integrationAmount)
+				orderItem.IntegrationAmount = orderItem.ProductPrice.Div(totalAmount).RoundBank(3).Mul(integrationAmount)
 			}
 		}
 	}
 
 	// 计算order_item的实付金额
 	c.handleRealAmount(orderItems)
+
 	// 进行库存锁定
 	if err := c.lockStock(ctx, cartPromotionItems); err != nil {
 		return nil, err
 	}
+
 	// 根据商品合计、运费、活动优惠、优惠券、积分计算应付金额
-
 	order := &entity.Order{}
-
-	order.DiscountAmount = decimal.Zero
-	order.TotalAmount = c.calcTotalAmount(orderItems)
-	order.FreightAmount = decimal.Zero
-
-	order.PromotionAmount = c.calcPromotionAmount(orderItems)
-
+	order.MemberID = currentMember.ID
+	order.MemberUsername = currentMember.Username
 	order.PromotionInfo = c.getOrderPromotionInfo(orderItems)
 
+	// 计算赠送积分
+	order.Integration = c.calcGifIntegration(orderItems)
+	// 计算赠送成长值
+	order.Growth = c.calcGiftGrowth(orderItems)
+
+	// 费用信息
+	order.TotalAmount = c.calcTotalAmount(orderItems)
+	order.FreightAmount = decimal.Zero
+	order.PromotionAmount = c.calcPromotionAmount(orderItems)
 	if orderParam.CouponId == 0 {
 		order.CouponAmount = decimal.Zero
 	} else {
 		order.CouponID = orderParam.CouponId
 		order.CouponAmount = c.calcCouponAmount(orderItems)
 	}
-
 	if orderParam.UseIntegration == 0 {
 		order.Integration = 0
 		order.IntegrationAmount = decimal.Zero
@@ -226,21 +235,27 @@ func (c OrderUseCase) GenerateOrder(ctx context.Context, memberID uint64, orderP
 		order.Integration = orderParam.UseIntegration
 		order.IntegrationAmount = c.calcIntegrationAmount(orderItems)
 	}
-
 	order.PayAmount = c.calcPayAmount(order)
-	// 转化为订单信息并插入数据库
-	order.MemberID = currentMember.ID
-	order.MemberUsername = currentMember.Username
-	order.CreateTime = uint32(time.Now().Unix())
+	order.DiscountAmount = decimal.Zero
 
+	// 类型
 	// 支付方式：0->未支付；1->支付宝；2->微信
 	order.PayType = uint8(orderParam.PayType)
 	// 订单来源：0->PC订单；1->app订单
 	order.SourceType = 1
-	// 订单状态：0->待付款；1->待发货；2->已发货；3->已完成；4->已关闭；5->无效订单
-	order.Status = 0
 	// 订单类型：0->正常订单；1->秒杀订单
 	order.OrderType = 0
+
+	// 状态
+	// 订单状态：0->待付款；1->待发货；2->已发货；3->已完成；4->已关闭；5->无效订单
+	order.Status = 0
+	// 0->未确认；1->已确认
+	order.ConfirmStatus = 0
+	order.DeleteStatus = 0
+
+	// 生成订单号
+	order.OrderSN = c.generateOrderSN(order)
+
 	// 收货人信息：姓名、电话、邮编、地址
 	address, err := c.memberReceiveAddressRepo.SecurityGetByID(ctx, memberID, orderParam.MemberReceiveAddressId)
 	if err != nil {
@@ -253,59 +268,69 @@ func (c OrderUseCase) GenerateOrder(ctx context.Context, memberID uint64, orderP
 	order.ReceiverCity = address.City
 	order.ReceiverRegion = address.Region
 	order.ReceiverDetailAddress = address.DetailAddress
-	// 0->未确认；1->已确认
-	order.ConfirmStatus = 0
-	order.DeleteStatus = 0
-	// 计算赠送积分
-	order.Integration = c.calcGifIntegration(orderItems)
-	// 计算赠送成长值
-	order.Growth = c.calcGiftGrowth(orderItems)
-	// 生成订单号
-	order.OrderSN = c.generateOrderSN(order)
+
+	// 物流
 	// 设置自动收货天数
 	cfg, err := c.jsonDynamicConfigRepo.GetByBizType(ctx, entity.OrderSetting)
 	orderSetting, err := util.NewJSONUtils[entity.OmsOrderSetting]().Unmarshal(cfg)
 	order.AutoConfirmDay = orderSetting.ConfirmOvertime
 
-	// TODO: 2018/9/3 bill_*,delivery_*
-	// 插入order表和order_item表
-	if err := c.orderRepo.Create(ctx, order); err != nil {
-		return nil, err
-	}
-	for _, orderItem := range orderItems {
-		orderItem.OrderID = order.ID
-		orderItem.OrderSN = order.OrderSN
-	}
+	// 时间
+	order.CreateTime = uint32(time.Now().Unix())
+	order.ModifyTime = uint32(time.Now().Unix())
 
-	if err := c.orderItemRepo.Creates(ctx, orderItems); err != nil {
-		return nil, err
-	}
-	//如使用优惠券更新优惠券使用状态
-	if orderParam.CouponId != 0 {
-		if err := c.updateCouponStatus(ctx, orderParam.CouponId, currentMember.ID, 1); err != nil {
-			return nil, err
+	// 事务执行
+	err = db2.Transaction(ctx, func(ctx context.Context) error {
+
+		// 插入order表和order_item表
+		// 创建订单
+		if err := c.orderRepo.Create(ctx, order); err != nil {
+			return err
 		}
-	}
-	// 如使用积分需要扣除积分
-	if orderParam.UseIntegration != 0 {
-		order.UseIntegration = orderParam.UseIntegration
-		if currentMember.Integration == 0 {
-			currentMember.Integration = 0
+		// 创建订单商品信息
+		for _, orderItem := range orderItems {
+			orderItem.OrderID = order.ID
+			orderItem.OrderSN = order.OrderSN
 		}
-		if err := c.memberRepo.UpdateIntegration(ctx, currentMember.ID, currentMember.Integration-orderParam.UseIntegration); err != nil {
-			return nil, err
+		if err := c.orderItemRepo.Creates(ctx, orderItems); err != nil {
+			return err
 		}
+
+		// 如使用优惠券更新优惠券使用状态
+		if orderParam.CouponId != 0 {
+			if err := c.updateCouponStatus(ctx, orderParam.CouponId, currentMember.ID, 1); err != nil {
+				return err
+			}
+		}
+
+		// 如使用积分需要扣除积分
+		if orderParam.UseIntegration != 0 {
+			order.UseIntegration = orderParam.UseIntegration
+			if currentMember.Integration == 0 {
+				currentMember.Integration = 0
+			}
+			if err := c.memberRepo.UpdateIntegration(ctx, currentMember.ID, currentMember.Integration-orderParam.UseIntegration); err != nil {
+				return err
+			}
+		}
+
+		// 删除购物车中的下单商品
+		if err := c.deleteCartItemList(ctx, cartPromotionItems, memberID); err != nil {
+			return err
+		}
+
+		// 发送延迟消息取消订单
+		//sendDelayMessageCancelOrder(order.getId());
+		//Map<String, Object> result = new HashMap<>();
+		//result.put("order", order);
+		//result.put("orderItemList", orderItemList);
+		return nil
+	})
+
+	res.Order = &pb.GenerateOrderRsp_Order{
+		Id: order.ID,
 	}
-	// 删除购物车中的下单商品
-	if err := c.deleteCartItemList(ctx, cartPromotionItems, memberID); err != nil {
-		return nil, err
-	}
-	// 发送延迟消息取消订单
-	//sendDelayMessageCancelOrder(order.getId());
-	//Map<String, Object> result = new HashMap<>();
-	//result.put("order", order);
-	//result.put("orderItemList", orderItemList);
-	return nil, err
+	return res, err
 }
 
 // PaySuccess 用户支付成功的回调
@@ -400,6 +425,7 @@ func (c OrderUseCase) getUseCoupon(ctx context.Context, cartItemListPromotions [
 	if err != nil {
 		return nil, err
 	}
+	// 过滤得到选择的优惠券
 	for _, couponHistoryDetail := range couponHistoryDetails {
 		if couponHistoryDetail.Coupon.ID == couponID {
 			return couponHistoryDetail, nil
@@ -410,8 +436,8 @@ func (c OrderUseCase) getUseCoupon(ctx context.Context, cartItemListPromotions [
 
 // handleCouponAmount 对优惠券优惠进行处理
 //
-// orderItems order_item列表
-// couponHistoryDetail 可用优惠券详情
+// orderItems 订单商品信息
+// couponHistoryDetail 可用优惠券
 func (c OrderUseCase) handleCouponAmount(orderItems []*entity.OrderItem, couponHistoryDetail *portal_entity.CouponHistoryDetail) {
 	coupon := couponHistoryDetail.Coupon
 	switch coupon.UseType {
@@ -420,12 +446,10 @@ func (c OrderUseCase) handleCouponAmount(orderItems []*entity.OrderItem, couponH
 		c.calcPerCouponAmount(orderItems, coupon)
 	case pb.CouponUseType_COUPON_USE_TYPE_SPECIFIC_CATEGORY:
 		// 指定分类
-		couponOrderItems, _ := c.getCouponOrderItemByRelation(couponHistoryDetail, orderItems, 0)
-		c.calcPerCouponAmount(couponOrderItems, coupon)
+		c.calcPerCouponAmount(c.getCouponOrderItemByRelation(orderItems, couponHistoryDetail, 0), coupon)
 	case pb.CouponUseType_COUPON_USE_TYPE_SPECIFIC_PRODUCT:
 		// 指定商品
-		couponOrderItems, _ := c.getCouponOrderItemByRelation(couponHistoryDetail, orderItems, 1)
-		c.calcPerCouponAmount(couponOrderItems, coupon)
+		c.calcPerCouponAmount(c.getCouponOrderItemByRelation(orderItems, couponHistoryDetail, 1), coupon)
 	}
 }
 
@@ -443,40 +467,39 @@ func (c OrderUseCase) calcPerCouponAmount(orderItems []*entity.OrderItem, coupon
 
 // getCouponOrderItemByRelation获取与优惠券有关系的下单商品
 //
-// couponHistoryDetails 优惠券详情
 // orderItems 下单商品
+// couponHistoryDetails 优惠券详情
 // tpe 使用关系类型：0->相关分类；1->指定商品
-func (c OrderUseCase) getCouponOrderItemByRelation(couponHistoryDetail *portal_entity.CouponHistoryDetail, orderItems []*entity.OrderItem, tpe int) ([]*entity.OrderItem, error) {
+func (c OrderUseCase) getCouponOrderItemByRelation(orderItems []*entity.OrderItem, couponHistoryDetail *portal_entity.CouponHistoryDetail, tpe int) []*entity.OrderItem {
 	var result []*entity.OrderItem
 	if tpe == 0 {
-		categoryIdList := couponHistoryDetail.CategoryRelations.GetProductCategoryIDs()
+		categoryIDs := couponHistoryDetail.CategoryRelations.GetProductCategoryIDs()
 		for _, orderItem := range orderItems {
-			if util.NewSliceUtils[uint64]().SliceExist(categoryIdList, orderItem.ProductCategoryID) {
+			if util.NewSliceUtils[uint64]().SliceExist(categoryIDs, orderItem.ProductCategoryID) {
 				result = append(result, orderItem)
 			} else {
 				orderItem.CouponAmount = decimal.Zero
 			}
 		}
 	} else if tpe == 1 {
-		productIdList := couponHistoryDetail.ProductRelations.GetProductIDs()
+		productIDs := couponHistoryDetail.ProductRelations.GetProductIDs()
 		for _, orderItem := range orderItems {
-			if util.NewSliceUtils[uint64]().SliceExist(productIdList, orderItem.ProductID) {
+			if util.NewSliceUtils[uint64]().SliceExist(productIDs, orderItem.ProductID) {
 				result = append(result, orderItem)
 			} else {
 				orderItem.CouponAmount = decimal.Zero
 			}
 		}
 	}
-	return result, nil
+	return result
 }
 
 // calcTotalAmount 计算总金额
 func (c OrderUseCase) calcTotalAmount(orderItems []*entity.OrderItem) decimal.Decimal {
-	totalAmount := decimal.Zero // 初始化总金额为0
+	totalAmount := decimal.Zero
 	for _, item := range orderItems {
-		// 对每个订单项的价格和数量进行乘法运算
+		// 销售价格*购买数量
 		itemAmount := item.ProductPrice.Mul(decimal.NewFromInt32(int32(item.ProductQuantity)))
-		// 将结果累加到总金额中
 		totalAmount = totalAmount.Add(itemAmount)
 	}
 	return totalAmount
@@ -511,10 +534,8 @@ func (c OrderUseCase) getUseIntegrationAmount(ctx context.Context, useIntegratio
 	}
 
 	// 是否超过订单抵用最高百分比
-	integrationAmount := decimal.NewFromInt32(int32(useIntegration)).
-		Div(decimal.NewFromInt32(int32(integrationConsumeSetting.UseUnit)))
-	maxPercentBD := decimal.NewFromInt32(int32(integrationConsumeSetting.MaxPercentPerOrder)).
-		Div(decimal.NewFromInt32(100))
+	integrationAmount := decimal.NewFromInt32(int32(useIntegration)).Div(decimal.NewFromInt32(int32(integrationConsumeSetting.UseUnit)))
+	maxPercentBD := decimal.NewFromInt32(int32(integrationConsumeSetting.MaxPercentPerOrder)).Div(decimal.NewFromInt32(100))
 	maxAmount := totalAmount.Mul(maxPercentBD)
 	if integrationAmount.Cmp(maxAmount) > 0 {
 		return zeroAmount

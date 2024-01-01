@@ -1,5 +1,7 @@
 package entity
 
+import "github.com/baker-yuan/go-mall/common/util"
+
 // CouponProductCategoryRelation 优惠券和商品分类关系表
 // 用于存储优惠券与商品分类的关系，当优惠券的使用类型为指定分类时，优惠券与商品分类需要建立关系。
 type CouponProductCategoryRelation struct {
@@ -18,10 +20,16 @@ func (r CouponProductCategoryRelation) TableName() string {
 
 type CouponProductCategoryRelations []*CouponProductCategoryRelation
 
+// GetProductCategoryIDs 获取商品分类id
 func (r CouponProductCategoryRelations) GetProductCategoryIDs() []uint64 {
-	productCategoryIDs := make([]uint64, 0)
-	for _, categoryRelation := range r {
-		productCategoryIDs = append(productCategoryIDs, categoryRelation.ProductCategoryID)
-	}
-	return productCategoryIDs
+	//productCategoryIDs := make([]uint64, 0)
+	//for _, categoryRelation := range r {
+	//	productCategoryIDs = append(productCategoryIDs, categoryRelation.ProductCategoryID)
+	//}
+	//return productCategoryIDs
+
+	extractor := util.NewFieldExtractor[*CouponProductCategoryRelation, uint64]()
+	return extractor.ExtractField(r, func(relation *CouponProductCategoryRelation) uint64 {
+		return relation.ProductCategoryID
+	})
 }

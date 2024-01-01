@@ -6,20 +6,25 @@ import "github.com/shopspring/decimal"
 // 订单表，需要注意的是订单状态：0->待付款；1->待发货；2->已发货；3->已完成；4->已关闭；5->无效订单。
 type Order struct {
 	// 基本信息
-	ID              uint64 `gorm:"column:id;type:bigint;primary_key;auto_increment;comment:订单id"`
-	OrderSN         string `gorm:"column:order_sn;type:varchar(64);not null;default:'';comment:订单编号"`
-	MemberID        uint64 `gorm:"column:member_id;type:bigint;unsigned;not null;default:0;comment:会员id"`
-	PayType         uint8  `gorm:"column:pay_type;type:tinyint(4);unsigned;not null;default:0;comment:支付方式：0->未支付；1->支付宝；2->微信"`
-	SourceType      uint8  `gorm:"column:source_type;type:tinyint(4);unsigned;not null;default:0;comment:订单来源：0->PC订单；1->app订单"`
-	OrderType       uint8  `gorm:"column:order_type;type:tinyint(4);unsigned;not null;default:0;comment:订单类型：0->正常订单；1->秒杀订单"`
+	ID       uint64 `gorm:"column:id;type:bigint;primary_key;auto_increment;comment:订单id"`
+	MemberID uint64 `gorm:"column:member_id;type:bigint;unsigned;not null;default:0;comment:会员id"`
+	OrderSN  string `gorm:"column:order_sn;type:varchar(64);not null;default:'';comment:订单编号"`
+	Note     string `gorm:"column:note;type:varchar(500);not null;default:'';comment:订单备注"`
+	//
+	UseIntegration uint32 `gorm:"column:use_integration;type:int(10);unsigned;not null;default:0;comment:下单时使用的积分"`
+	CouponID       uint64 `gorm:"column:coupon_id;type:bigint;unsigned;not null;default:0;comment:优惠券id"`
+	PromotionInfo  string `gorm:"column:promotion_info;type:varchar(100);not null;default:'';comment:活动信息"`
+	Integration    uint32 `gorm:"column:integration;type:int(10);unsigned;not null;default:0;comment:可以获得的积分"`
+	Growth         uint32 `gorm:"column:growth;type:int(10);unsigned;not null;default:0;comment:可以活动的成长值"`
+	// 类型
+	PayType    uint8 `gorm:"column:pay_type;type:tinyint(4);unsigned;not null;default:0;comment:支付方式：0->未支付；1->支付宝；2->微信"`
+	SourceType uint8 `gorm:"column:source_type;type:tinyint(4);unsigned;not null;default:0;comment:订单来源：0->PC订单；1->app订单"`
+	OrderType  uint8 `gorm:"column:order_type;type:tinyint(4);unsigned;not null;default:0;comment:订单类型：0->正常订单；1->秒杀订单"`
+	// 物流
 	DeliveryCompany string `gorm:"column:delivery_company;type:varchar(64);not null;default:'';comment:物流公司(配送方式)"`
 	DeliverySN      string `gorm:"column:delivery_sn;type:varchar(64);not null;default:'';comment:物流单号"`
-	AutoConfirmDay  uint32 `gorm:"column:auto_confirm_day;type:int(10);unsigned;not null;default:0;comment:自动确认时间（天）"`
 	ReceiveTime     uint32 `gorm:"column:receive_time;type:int(10);unsigned;not null;default:0;comment:确认收货时间"`
-	Integration     uint32 `gorm:"column:integration;type:int(10);unsigned;not null;default:0;comment:可以获得的积分"`
-	Growth          uint32 `gorm:"column:growth;type:int(10);unsigned;not null;default:0;comment:可以活动的成长值"`
-	PromotionInfo   string `gorm:"column:promotion_info;type:varchar(100);not null;default:'';comment:活动信息"`
-	Note            string `gorm:"column:note;type:varchar(500);not null;default:'';comment:订单备注"`
+	AutoConfirmDay  uint32 `gorm:"column:auto_confirm_day;type:int(10);unsigned;not null;default:0;comment:自动确认时间（天）"`
 	// 收货人信息
 	ReceiverName          string `gorm:"column:receiver_name;type:varchar(100);not null;default:'';comment:收货人姓名"`
 	ReceiverPhone         string `gorm:"column:receiver_phone;type:varchar(32);not null;default:'';comment:收货人电话"`
@@ -28,16 +33,14 @@ type Order struct {
 	ReceiverCity          string `gorm:"column:receiver_city;type:varchar(32);not null;default:'';comment:城市"`
 	ReceiverRegion        string `gorm:"column:receiver_region;type:varchar(32);not null;default:'';comment:区"`
 	ReceiverDetailAddress string `gorm:"column:receiver_detail_address;type:varchar(200);not null;default:'';comment:详细地址"`
-	// 费用信息
+	// 费用信息 payAmount = totalAmount + freightAmount - promotionAmount - couponAmount - integrationAmount
 	TotalAmount       decimal.Decimal `gorm:"column:total_amount;type:decimal(10,2);not null;default:0.00;comment:订单总金额"`
 	FreightAmount     decimal.Decimal `gorm:"column:freight_amount;type:decimal(10,2);not null;default:0.00;comment:运费金额"`
-	CouponID          uint64          `gorm:"column:coupon_id;type:bigint;unsigned;not null;default:0;comment:优惠券id"`
-	CouponAmount      decimal.Decimal `gorm:"column:coupon_amount;type:decimal(10,2);not null;default:0.00;comment:优惠券抵扣金额"`
-	UseIntegration    uint32          `gorm:"column:use_integration;type:int(10);unsigned;not null;default:0;comment:下单时使用的积分"`
-	IntegrationAmount decimal.Decimal `gorm:"column:integration_amount;type:decimal(10,2);not null;default:0.00;comment:积分抵扣金额"`
 	PromotionAmount   decimal.Decimal `gorm:"column:promotion_amount;type:decimal(10,2);not null;default:0.00;comment:促销优化金额（促销价、满减、阶梯价）"`
-	DiscountAmount    decimal.Decimal `gorm:"column:discount_amount;type:decimal(10,2);not null;default:0.00;comment:管理员后台调整订单使用的折扣金额"`
+	CouponAmount      decimal.Decimal `gorm:"column:coupon_amount;type:decimal(10,2);not null;default:0.00;comment:优惠券抵扣金额"`
+	IntegrationAmount decimal.Decimal `gorm:"column:integration_amount;type:decimal(10,2);not null;default:0.00;comment:积分抵扣金额"`
 	PayAmount         decimal.Decimal `gorm:"column:pay_amount;type:decimal(10,2);not null;default:0.00;comment:应付金额（实际支付金额）"`
+	DiscountAmount    decimal.Decimal `gorm:"column:discount_amount;type:decimal(10,2);not null;default:0.00;comment:管理员后台调整订单使用的折扣金额"`
 	// 发票信息
 	BillType          uint8  `gorm:"column:bill_type;type:tinyint(4);unsigned;not null;default:0;comment:发票类型：0->不开发票；1->电子发票；2->纸质发票"`
 	BillHeader        string `gorm:"column:bill_header;type:varchar(200);not null;default:'';comment:发票抬头"`

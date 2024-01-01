@@ -595,6 +595,64 @@ func (m *GenerateOrderRsp) validate(all bool) error {
 
 	var errors []error
 
+	if all {
+		switch v := interface{}(m.GetOrder()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, GenerateOrderRspValidationError{
+					field:  "Order",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, GenerateOrderRspValidationError{
+					field:  "Order",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetOrder()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return GenerateOrderRspValidationError{
+				field:  "Order",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if all {
+		switch v := interface{}(m.GetOrderItems()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, GenerateOrderRspValidationError{
+					field:  "OrderItems",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, GenerateOrderRspValidationError{
+					field:  "OrderItems",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetOrderItems()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return GenerateOrderRspValidationError{
+				field:  "OrderItems",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
 	if len(errors) > 0 {
 		return GenerateOrderRspMultiError(errors)
 	}
@@ -2649,3 +2707,210 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = GenerateConfirmOrderRsp_MemberReceiveAddressValidationError{}
+
+// Validate checks the field values on GenerateOrderRsp_Order with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *GenerateOrderRsp_Order) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on GenerateOrderRsp_Order with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// GenerateOrderRsp_OrderMultiError, or nil if none found.
+func (m *GenerateOrderRsp_Order) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *GenerateOrderRsp_Order) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Id
+
+	if len(errors) > 0 {
+		return GenerateOrderRsp_OrderMultiError(errors)
+	}
+
+	return nil
+}
+
+// GenerateOrderRsp_OrderMultiError is an error wrapping multiple validation
+// errors returned by GenerateOrderRsp_Order.ValidateAll() if the designated
+// constraints aren't met.
+type GenerateOrderRsp_OrderMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m GenerateOrderRsp_OrderMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m GenerateOrderRsp_OrderMultiError) AllErrors() []error { return m }
+
+// GenerateOrderRsp_OrderValidationError is the validation error returned by
+// GenerateOrderRsp_Order.Validate if the designated constraints aren't met.
+type GenerateOrderRsp_OrderValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e GenerateOrderRsp_OrderValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e GenerateOrderRsp_OrderValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e GenerateOrderRsp_OrderValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e GenerateOrderRsp_OrderValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e GenerateOrderRsp_OrderValidationError) ErrorName() string {
+	return "GenerateOrderRsp_OrderValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e GenerateOrderRsp_OrderValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sGenerateOrderRsp_Order.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = GenerateOrderRsp_OrderValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = GenerateOrderRsp_OrderValidationError{}
+
+// Validate checks the field values on GenerateOrderRsp_OrderItems with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *GenerateOrderRsp_OrderItems) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on GenerateOrderRsp_OrderItems with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// GenerateOrderRsp_OrderItemsMultiError, or nil if none found.
+func (m *GenerateOrderRsp_OrderItems) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *GenerateOrderRsp_OrderItems) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if len(errors) > 0 {
+		return GenerateOrderRsp_OrderItemsMultiError(errors)
+	}
+
+	return nil
+}
+
+// GenerateOrderRsp_OrderItemsMultiError is an error wrapping multiple
+// validation errors returned by GenerateOrderRsp_OrderItems.ValidateAll() if
+// the designated constraints aren't met.
+type GenerateOrderRsp_OrderItemsMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m GenerateOrderRsp_OrderItemsMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m GenerateOrderRsp_OrderItemsMultiError) AllErrors() []error { return m }
+
+// GenerateOrderRsp_OrderItemsValidationError is the validation error returned
+// by GenerateOrderRsp_OrderItems.Validate if the designated constraints
+// aren't met.
+type GenerateOrderRsp_OrderItemsValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e GenerateOrderRsp_OrderItemsValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e GenerateOrderRsp_OrderItemsValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e GenerateOrderRsp_OrderItemsValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e GenerateOrderRsp_OrderItemsValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e GenerateOrderRsp_OrderItemsValidationError) ErrorName() string {
+	return "GenerateOrderRsp_OrderItemsValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e GenerateOrderRsp_OrderItemsValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sGenerateOrderRsp_OrderItems.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = GenerateOrderRsp_OrderItemsValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = GenerateOrderRsp_OrderItemsValidationError{}

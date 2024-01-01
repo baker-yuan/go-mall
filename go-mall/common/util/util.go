@@ -26,6 +26,11 @@ func NewSliceUtils[T comparable]() slice.SliceUtils[T] {
 	return slice.SliceUtils[T]{}
 }
 
+// NewFieldExtractor 是 FieldExtractor 的构造函数，返回一个 FieldExtractor 的实例。
+func NewFieldExtractor[T any, K comparable]() slice.FieldExtractor[T, K] {
+	return slice.FieldExtractor[T, K]{}
+}
+
 // NewGroupUtils 是 GroupUtils 的构造函数，返回一个 GroupUtils 的实例。
 func NewGroupUtils[T any, K comparable]() group.GroupUtils[T, K] {
 	return group.GroupUtils[T, K]{}
