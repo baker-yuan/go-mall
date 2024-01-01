@@ -24,6 +24,9 @@ message CouponHistoryDetail {
     // 类型
     uint32 type = 10; // 优惠卷类型；0->全场赠券；1->会员赠券；2->购物赠券；3->注册赠券
     model.CouponUseType use_type = 11; // 使用类型：0->全场通用；1->指定分类；2->指定商品
+
+    // 使用限制
+    uint32 end_time = 18; // 结束使用时间
   }
   // 优惠券关联商品
   message CouponProductRelation {

@@ -2,7 +2,6 @@ package usecase
 
 import (
 	"context"
-	"fmt"
 	"strings"
 	"time"
 
@@ -70,7 +69,7 @@ func (c OrderUseCase) GenerateConfirmOrder(ctx context.Context, memberID uint64,
 		return nil, err
 	}
 
-	// 获取购物车信息
+	// 获取购物车信息(包括促销信息)
 	cartPromotionItems, err := c.cartItemUseCase.CartItemListPromotion(ctx, memberID, req.GetCartIds())
 	if err != nil {
 		return nil, err
@@ -91,14 +90,14 @@ func (c OrderUseCase) GenerateConfirmOrder(ctx context.Context, memberID uint64,
 	}
 	res.CouponHistoryDetails = assembler.CouponHistoryDetailToModel(couponHistoryDetails)
 
-	// 获取用户积分
-	memberIntegration := member.Integration
-	res.MemberIntegration = memberIntegration
-
 	// 获取积分使用规则
 	cfg, _ := c.jsonDynamicConfigRepo.GetByBizType(ctx, entity.IntegrationConsumeSetting)
 	integrationConsumeSetting, err := util.NewJSONUtils[entity.UmsIntegrationConsumeSetting]().Unmarshal(cfg)
 	res.IntegrationConsumeSetting = assembler.IntegrationConsumeSettingEntityToDetail(integrationConsumeSetting)
+
+	// 获取用户积分
+	memberIntegration := member.Integration
+	res.MemberIntegration = memberIntegration
 
 	// 计算总金额、活动优惠、应付金额
 	calcAmount, err := c.calcCartAmount(cartPromotionItems)
@@ -351,38 +350,30 @@ func (c OrderUseCase) DeleteOrder(context.Context, *pb.PortalDeleteOrderReq) (*p
 
 // calcCartAmount 计算购物车中商品的价格
 func (c OrderUseCase) calcCartAmount(cartItemListPromotions []*pb.CartPromotionItem) (*pb.GenerateConfirmOrderRsp_CalcAmount, error) {
-	decimalUtils := util.DecimalUtils
 	calcAmount := &pb.GenerateConfirmOrderRsp_CalcAmount{
 		FreightAmount: "0.00",
 	}
-
 	// 初始化总金额和促销金额
-	totalAmount := decimalUtils.NewBigDecimal("0.00")
-	promotionAmount := decimalUtils.NewBigDecimal("0.00")
+	totalAmount := decimal.Zero
+	promotionAmount := decimal.Zero
 
-	// 遍历购物车促销商品列表
 	for _, item := range cartItemListPromotions {
-		quantity := decimalUtils.NewBigDecimal(fmt.Sprintf("%d", item.Quantity))
-		// 计算商品总价
-		totalPrice := decimalUtils.NewBigDecimal(item.Price).Multiply(quantity)
+		quantity := decimal.NewFromInt32(int32(item.Quantity))
+		// 计算商品总价 价格*数量
+		price, _ := decimal.NewFromString(item.Price)
+		totalPrice := price.Mul(quantity)
 		totalAmount = totalAmount.Add(totalPrice)
 
-		// 计算促销金额
-		totalReduce := decimalUtils.NewBigDecimal(item.ReduceAmount).Multiply(quantity)
+		// 计算促销金额 单个商品促销活动减去的金额*数量
+		reduceAmount, _ := decimal.NewFromString(item.ReduceAmount)
+		totalReduce := reduceAmount.Mul(quantity)
 		promotionAmount = promotionAmount.Add(totalReduce)
 	}
 
 	// 设置计算结果
-	totalAmountStr, _ := totalAmount.ToString()
-	calcAmount.TotalAmount = totalAmountStr
-
-	promotionAmountStr, _ := promotionAmount.ToString()
-	calcAmount.PromotionAmount = promotionAmountStr
-
-	payAmount := totalAmount.Subtract(promotionAmount)
-	payAmountStr, _ := payAmount.ToString()
-	calcAmount.PayAmount = payAmountStr
-
+	calcAmount.TotalAmount = totalAmount.String()
+	calcAmount.PromotionAmount = promotionAmount.String()
+	calcAmount.PayAmount = totalAmount.Sub(promotionAmount).String()
 	return calcAmount, nil
 }
 

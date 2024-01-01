@@ -62,38 +62,35 @@ func (c PromotionUseCase) CalcCartPromotion(ctx context.Context, cartItems entit
 		// 促销类型：0->没有促销使用原价;1->使用促销价；2->使用会员价；3->使用阶梯价格；4->使用满减价格；5->限时购
 		promotionType := promotionProduct.PromotionType
 		if promotionType == pb.PromotionType_PROMOTION_TYPE_PROMOTIONAL_PRICE {
-			// 单品促销
+			// 单品促销（设置了单品促销价格）
 			for _, cartItem := range cartItemList {
 				cartPromotionItem, _ := util.NewJSONUtils[*portal_entity.CartPromotionItem]().CopyProperties(cartItem)
 				cartPromotionItem.PromotionMessage = "单品促销"
-				// 商品原价-促销价
 				skuStock := c.getOriginalPrice(promotionProduct, cartItem.ProductSkuID)
 				originalPrice := skuStock.Price
 				// 单品促销使用原价
 				cartPromotionItem.Price = originalPrice
-				reduceAmount := originalPrice.
-					Sub(skuStock.PromotionPrice)
-				cartPromotionItem.ReduceAmount = reduceAmount
+				// 商品原价-促销价
+				cartPromotionItem.ReduceAmount = originalPrice.Sub(skuStock.PromotionPrice)
 				cartPromotionItem.RealStock = skuStock.Stock - skuStock.LockStock
 				cartPromotionItem.Integration = promotionProduct.GiftPoint
 				cartPromotionItem.Growth = promotionProduct.GiftGrowth
 				cartPromotionItems = append(cartPromotionItems, cartPromotionItem)
 			}
 		} else if promotionType == pb.PromotionType_PROMOTION_TYPE_TIERED_PRICE {
-			// 打折优惠
+			// 打折优惠（购买同商品满足一定数量后，可以使用打折价格进行购买）
+			// 获取商品数量和优惠策略
 			count := cartItemList.GetCartItemCount()
 			ladder := c.getProductLadder(count, promotionProduct.ProductLadders)
 			if ladder != nil {
 				for _, cartItem := range cartItemList {
 					cartPromotionItem, _ := util.NewJSONUtils[*portal_entity.CartPromotionItem]().CopyProperties(cartItem)
-					message := c.getLadderPromotionMessage(ladder)
-					cartPromotionItem.PromotionMessage = message
-					// 商品原价-折扣*商品原价
+					cartPromotionItem.PromotionMessage = c.getLadderPromotionMessage(ladder)
 					skuStock := c.getOriginalPrice(promotionProduct, cartItem.ProductSkuID)
-					cartPromotionItem.Price = skuStock.Price
 					originalPrice := skuStock.Price
-					reduceAmount := skuStock.Price.Sub(ladder.Discount.Mul(originalPrice))
-					cartPromotionItem.ReduceAmount = reduceAmount
+					cartPromotionItem.Price = originalPrice
+					// 商品原价-折扣*商品原价
+					cartPromotionItem.ReduceAmount = originalPrice.Sub(ladder.Discount.Mul(originalPrice))
 					cartPromotionItem.RealStock = skuStock.Stock - skuStock.LockStock
 					cartPromotionItem.Integration = promotionProduct.GiftPoint
 					cartPromotionItem.Growth = promotionProduct.GiftGrowth
@@ -103,17 +100,18 @@ func (c PromotionUseCase) CalcCartPromotion(ctx context.Context, cartItems entit
 				cartPromotionItems = append(cartPromotionItems, c.handleNoReduce(cartItemList, promotionProduct)...)
 			}
 		} else if promotionType == pb.PromotionType_PROMOTION_TYPE_FULL_REDUCTION_PRICE {
-			// 满减
+			// 满减（购买同商品满足一定金额后，可以减免一定金额）
 			totalAmount := c.getCartItemAmount(cartItemList, promotionProducts)
-			fullReduction, _ := c.getProductFullReduction(totalAmount, promotionProduct.ProductFullReductions)
+			fullReduction := c.getProductFullReduction(totalAmount, promotionProduct.ProductFullReductions)
 			if fullReduction != nil {
 				for _, cartItem := range cartItemList {
 					cartPromotionItem, _ := util.NewJSONUtils[*portal_entity.CartPromotionItem]().CopyProperties(cartItem)
-					message := c.getFullReductionPromotionMessage(fullReduction)
-					cartPromotionItem.PromotionMessage = message
-					// (商品原价/总价)*满减金额
+					cartPromotionItem.PromotionMessage = c.getFullReductionPromotionMessage(fullReduction)
 					skuStock := c.getOriginalPrice(promotionProduct, cartItem.ProductSkuID)
-					cartPromotionItem.ReduceAmount = skuStock.Price.Div(totalAmount).Mul(fullReduction.ReducePrice)
+					originalPrice := skuStock.Price
+					cartPromotionItem.Price = originalPrice
+					// (商品原价/总价)*满减金额
+					cartPromotionItem.ReduceAmount = originalPrice.Div(totalAmount).Mul(fullReduction.ReducePrice)
 					cartPromotionItem.RealStock = skuStock.Stock - skuStock.LockStock
 					cartPromotionItem.Integration = promotionProduct.GiftPoint
 					cartPromotionItem.Growth = promotionProduct.GiftGrowth
@@ -151,7 +149,7 @@ func (c PromotionUseCase) handleNoReduce(cartItems entity.CartItems, promotionPr
 
 // getProductLadder 根据购买商品数量获取满足条件的打折优惠策略
 func (c PromotionUseCase) getProductLadder(count uint32, productLadders []*entity.ProductLadder) *entity.ProductLadder {
-	// 按数量从大到小排序（数量越多优惠越大，找到数量最多的那个配置）
+	// 按数量从大到小排序
 	sort.Slice(productLadders, func(i, j int) bool {
 		return productLadders[j].Count < productLadders[i].Count
 	})
@@ -253,24 +251,25 @@ func (c PromotionUseCase) getLadderPromotionMessage(ladder *entity.ProductLadder
 func (c PromotionUseCase) getCartItemAmount(cartItems entity.CartItems, promotionProducts portal_entity.PromotionProducts) decimal.Decimal {
 	amount := decimal.Zero
 	for _, cartItem := range cartItems {
-		// 计算出商品原价
+		// 获取出商品原价
 		promotionProduct := promotionProducts.GetByProductID(cartItem.ProductID)
 		if promotionProduct == nil {
-			continue // 如果找不到促销产品，跳过当前商品项
+			continue
 		}
 		skuStock := c.getOriginalPrice(promotionProduct, cartItem.ProductSkuID)
 		if skuStock == nil {
-			continue // 如果找不到原始价格，跳过当前商品项
+			continue
 		}
-		// 计算商品项总价
+		// 计算商品项总价 = 原价*购买数量
 		itemTotal := skuStock.Price.Mul(decimal.NewFromInt32(int32(cartItem.Quantity)))
-		// 累加到总金额中
+		// 累加到总金额
 		amount = amount.Add(itemTotal)
 	}
 	return amount
 }
 
-func (c PromotionUseCase) getProductFullReduction(totalAmount decimal.Decimal, productFullReductions []*entity.ProductFullReduction) (*entity.ProductFullReduction, error) {
+// 获取满足条件的满减规则
+func (c PromotionUseCase) getProductFullReduction(totalAmount decimal.Decimal, productFullReductions []*entity.ProductFullReduction) *entity.ProductFullReduction {
 	// 按条件从高到低排序
 	sort.Slice(productFullReductions, func(i, j int) bool {
 		return productFullReductions[i].FullPrice.Cmp(productFullReductions[j].FullPrice) > 0
@@ -278,10 +277,10 @@ func (c PromotionUseCase) getProductFullReduction(totalAmount decimal.Decimal, p
 	// 遍历排序后的列表，找到满足条件的满减优惠策略
 	for _, fullReduction := range productFullReductions {
 		if totalAmount.Cmp(fullReduction.FullPrice) >= 0 {
-			return fullReduction, nil
+			return fullReduction
 		}
 	}
-	return nil, nil
+	return nil
 }
 
 // getFullReductionPromotionMessage 获取满减促销消息

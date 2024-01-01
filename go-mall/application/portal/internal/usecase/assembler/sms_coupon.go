@@ -37,6 +37,7 @@ func CouponHistoryDetailToModel(couponHistoryDetails []*portal_entity.CouponHist
 			Code:    detail.Coupon.Code,
 			Type:    uint32(detail.Coupon.Type),
 			UseType: detail.Coupon.UseType,
+			EndTime: detail.Coupon.EndTime,
 		}
 		for _, relation := range detail.ProductRelations {
 			item.ProductRelations = append(item.ProductRelations, &pb.CouponHistoryDetail_CouponProductRelation{

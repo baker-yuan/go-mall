@@ -163,7 +163,7 @@ type (
 		CartItemAdd(ctx context.Context, memberID uint64, req *pb.CartItemAddReq) error
 		// CartItemList 获取当前会员的购物车列表
 		CartItemList(ctx context.Context, memberID uint64) ([]*pb.CartItem, error)
-		// CartItemListPromotion 获取当前会员的购物车列表，包括促销信息
+		// CartItemListPromotion 获取当前会员的购物车列表(包括促销信息)
 		CartItemListPromotion(ctx context.Context, memberID uint64, cartIDs []uint64) ([]*pb.CartPromotionItem, error)
 		// CartItemUpdateQuantity 修改购物车中指定商品的数量
 		CartItemUpdateQuantity(ctx context.Context, memberID uint64, req *pb.CartItemUpdateQuantityReq) error

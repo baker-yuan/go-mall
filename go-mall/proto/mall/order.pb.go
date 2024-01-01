@@ -29,7 +29,7 @@ type GenerateConfirmOrderReq struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	CartIds []uint64 `protobuf:"varint,1,rep,packed,name=cart_ids,json=cartIds,proto3" json:"cart_ids,omitempty"`
+	CartIds []uint64 `protobuf:"varint,1,rep,packed,name=cart_ids,json=cartIds,proto3" json:"cart_ids,omitempty"` // 购物车id集合
 }
 
 func (x *GenerateConfirmOrderReq) Reset() {

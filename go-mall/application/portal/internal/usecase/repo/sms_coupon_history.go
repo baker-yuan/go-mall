@@ -103,7 +103,8 @@ func (r CouponHistoryRepo) GetNoUseCouponHistory(ctx context.Context, memberID u
 	res := make([]*entity.CouponHistory, 0)
 	if err := r.GenericDao.DB.WithContext(ctx).
 		Where("member_id = ?", memberID).
-		Where("use_status = 0").Error; err != nil {
+		Where("use_status = 0").
+		Find(&res).Error; err != nil {
 		return nil, err
 	}
 	return res, nil
