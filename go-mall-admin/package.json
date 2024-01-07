@@ -36,6 +36,7 @@
   },
   "dependencies": {
     "@element-plus/icons-vue": "^2.1.0",
+    "@lljj/vue3-form-element": "^1.19.0",
     "@vueuse/core": "^10.4.1",
     "@wangeditor/editor": "^5.1.23",
     "@wangeditor/editor-for-vue": "^5.1.12",

@@ -16,15 +16,67 @@
 
       <!-- 表格操作 -->
       <template #operation="scope">
-        <el-button type="primary" link :icon="EditPen" @click="openDrawer('编辑', scope.row)">编辑</el-button>
-        <el-button type="primary" link :icon="Delete" @click="deleteJsonDynamicConfig(scope.row)">删除</el-button>
+        <el-row :gutter="10">
+          <el-col :span="24">
+            <el-button
+              style="display: block; margin-bottom: 10px"
+              type="primary"
+              link
+              :icon="EditPen"
+              @click="openEditJsonDialog(scope.row)"
+            >
+              编辑内容
+            </el-button>
+          </el-col>
+          <el-col :span="24">
+            <el-button
+              style="display: block; margin-bottom: 10px"
+              type="primary"
+              link
+              :icon="EditPen"
+              @click="openDrawer('编辑', scope.row)"
+              >编辑约束
+            </el-button>
+          </el-col>
+          <el-col :span="24">
+            <el-button
+              style="display: block; margin-bottom: 10px"
+              type="primary"
+              link
+              :icon="EditPen"
+              @click="openDrawer('编辑', scope.row)"
+              >编辑
+            </el-button>
+          </el-col>
+          <el-col :span="24">
+            <el-button
+              style="display: block; margin-bottom: 10px"
+              type="primary"
+              link
+              :icon="Delete"
+              @click="deleteJsonDynamicConfig(scope.row)"
+              >删除
+            </el-button>
+          </el-col>
+        </el-row>
       </template>
     </ProTable>
     <JsonDynamicConfigDrawer ref="drawerRef" />
+
+    <!-- 编辑json -->
+    <el-dialog v-model="showEditJsonContent">
+      <VueForm
+        @submit="handlerContentFormSubmit"
+        @cancel="handlerContentFormCancel"
+        v-model="contentFormData"
+        :schema="contentSchema"
+      ></VueForm>
+    </el-dialog>
   </div>
 </template>
 
 <script setup lang="ts" name="JsonDynamicConfigManage">
+import VueForm from "@lljj/vue3-form-element";
 import { ProTableInstance, ColumnProps } from "@/components/ProTable/interface";
 import ProTable from "@/components/ProTable/index.vue";
 import { JsonDynamicConfig } from "@/api/interface";
@@ -44,7 +96,6 @@ const proTable = ref<ProTableInstance>();
 
 // 表格配置项
 const columns = reactive<ColumnProps<JsonDynamicConfig.JsonDynamicConfigModel>[]>([
-  { type: "selection", fixed: "left", width: 70 },
   {
     prop: "bizType",
     label: "业务类型",
@@ -68,6 +119,35 @@ const columns = reactive<ColumnProps<JsonDynamicConfig.JsonDynamicConfigModel>[]
   },
   { prop: "operation", label: "操作", fixed: "right", width: 170 }
 ]);
+
+// 展示编辑json
+const showEditJsonContent = ref(false);
+const contentFormData = ref<any>({});
+const contentSchema = ref<any>({});
+
+const openEditJsonDialog = (row: Partial<JsonDynamicConfig.JsonDynamicConfigModel> = {}) => {
+  if (!row) {
+    return;
+  }
+  console.log(row.content, row.jsonSchema);
+  showEditJsonContent.value = true;
+  if (row.jsonSchema) {
+    contentSchema.value = JSON.parse(row.jsonSchema);
+    console.log(contentSchema.value);
+  }
+  if (row.content) {
+    contentFormData.value = JSON.parse(row.content);
+    console.log(contentFormData.value);
+  }
+};
+
+const handlerContentFormSubmit = () => {
+  showEditJsonContent.value = false;
+};
+
+const handlerContentFormCancel = () => {
+  showEditJsonContent.value = false;
+};
 
 // 如果表格需要初始化请求参数，直接定义传给 ProTable (之后每次请求都会自动带上该参数，此参数更改之后也会一直带上，改变此参数会自动刷新表格数据)
 const initParam = reactive({});

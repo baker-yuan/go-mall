@@ -3,6 +3,13 @@ export default {
   '/document/': getDocumentSidebar(),
   '/table/': getTableSidebar(),
   '/recommend/': getRecommendSidebar(),
+  '/code/': getCodeSidebar(),
+}
+
+function getCodeSidebar() {
+  return [
+
+  ]
 }
 
 // 推荐
