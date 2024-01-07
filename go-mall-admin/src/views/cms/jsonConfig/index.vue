@@ -34,7 +34,7 @@
               type="primary"
               link
               :icon="EditPen"
-              @click="openDrawer('编辑', scope.row)"
+              @click="openEditJsonSchemaDialog(scope.row)"
               >编辑约束
             </el-button>
           </el-col>
@@ -64,14 +64,31 @@
     <JsonDynamicConfigDrawer ref="drawerRef" />
 
     <!-- 编辑json -->
-    <el-dialog v-model="showEditJsonContent">
+    <el-drawer v-model="showEditJsonContent" :destroy-on-close="true" size="600px" title="编辑json">
       <VueForm
         @submit="handlerContentFormSubmit"
         @cancel="handlerContentFormCancel"
         v-model="contentFormData"
-        :schema="contentSchema"
+        :schema="contentSchemaData"
       ></VueForm>
-    </el-dialog>
+    </el-drawer>
+    <!-- 编辑json schema -->
+    <el-drawer
+      class-name="custom-drawer"
+      :style="{ padding: '0px' }"
+      v-model="showEditJsonSchema"
+      :destroy-on-close="true"
+      size="700px"
+      title="编辑 JSON Schema"
+    >
+      <div class="dialog-content">
+        <json-editor v-model="contentSchemaData"></json-editor>
+      </div>
+      <template #footer>
+        <el-button @click="showEditJsonSchema = false">取消</el-button>
+        <el-button type="primary" @click="saveJsonSchema">确认</el-button>
+      </template>
+    </el-drawer>
   </div>
 </template>
 
@@ -83,6 +100,7 @@ import { JsonDynamicConfig } from "@/api/interface";
 import { ref, reactive } from "vue";
 import { useHandleData } from "@/hooks/useHandleData";
 import JsonDynamicConfigDrawer from "@/views/cms/jsonConfig/detail.vue";
+import JsonEditor from "@/components/JsonEditor/index.vue";
 import { CirclePlus, Delete, EditPen } from "@element-plus/icons-vue";
 import {
   createJsonDynamicConfigApi,
@@ -100,16 +118,19 @@ const columns = reactive<ColumnProps<JsonDynamicConfig.JsonDynamicConfigModel>[]
     prop: "bizType",
     label: "业务类型",
     showOverflowTooltip: false,
-    search: { el: "input" }
+    search: { el: "input" },
+    width: 200
   },
   {
     prop: "bizDesc",
     label: "业务描述",
-    search: { el: "input" }
+    search: { el: "input" },
+    width: 200
   },
   {
     prop: "content",
     label: "内容",
+    showOverflowTooltip: false,
     search: { el: "input" }
   },
   {
@@ -120,33 +141,60 @@ const columns = reactive<ColumnProps<JsonDynamicConfig.JsonDynamicConfigModel>[]
   { prop: "operation", label: "操作", fixed: "right", width: 170 }
 ]);
 
+const rowData = ref<JsonDynamicConfig.JsonDynamicConfigModel | null>(null);
+
 // 展示编辑json
 const showEditJsonContent = ref(false);
 const contentFormData = ref<any>({});
-const contentSchema = ref<any>({});
+const contentSchemaData = ref<any>({});
 
-const openEditJsonDialog = (row: Partial<JsonDynamicConfig.JsonDynamicConfigModel> = {}) => {
-  if (!row) {
-    return;
-  }
-  console.log(row.content, row.jsonSchema);
-  showEditJsonContent.value = true;
+const fillData = (row: JsonDynamicConfig.JsonDynamicConfigModel) => {
+  rowData.value = row;
   if (row.jsonSchema) {
-    contentSchema.value = JSON.parse(row.jsonSchema);
-    console.log(contentSchema.value);
+    contentSchemaData.value = JSON.parse(row.jsonSchema);
   }
   if (row.content) {
     contentFormData.value = JSON.parse(row.content);
-    console.log(contentFormData.value);
   }
 };
 
+const openEditJsonDialog = (row: JsonDynamicConfig.JsonDynamicConfigModel) => {
+  rowData.value = row;
+  if (!row) {
+    return;
+  }
+  showEditJsonContent.value = true;
+  fillData(row);
+};
+
+// 提交配置内容
 const handlerContentFormSubmit = () => {
   showEditJsonContent.value = false;
+  let newParams: JsonDynamicConfig.JsonDynamicConfigModel = JSON.parse(JSON.stringify(rowData.value));
+  newParams.content = JSON.stringify(contentFormData.value);
+  updateJsonDynamicConfigApi(newParams);
 };
 
 const handlerContentFormCancel = () => {
   showEditJsonContent.value = false;
+};
+
+const showEditJsonSchema = ref(false);
+
+const openEditJsonSchemaDialog = (row: JsonDynamicConfig.JsonDynamicConfigModel) => {
+  rowData.value = row;
+  showEditJsonSchema.value = true;
+  fillData(row);
+};
+
+const saveJsonSchema = () => {
+  if (rowData.value == null) {
+    return;
+  }
+  let newParams: JsonDynamicConfig.JsonDynamicConfigModel = JSON.parse(JSON.stringify(rowData.value));
+  newParams.jsonSchema = JSON.stringify(contentSchemaData.value);
+  updateJsonDynamicConfigApi(newParams);
+  showEditJsonSchema.value = false;
 };
 
 // 如果表格需要初始化请求参数，直接定义传给 ProTable (之后每次请求都会自动带上该参数，此参数更改之后也会一直带上，改变此参数会自动刷新表格数据)
@@ -196,3 +244,9 @@ const openDrawer = (title: string, row: Partial<JsonDynamicConfig.JsonDynamicCon
   drawerRef.value?.acceptParams(params);
 };
 </script>
+
+<style scoped>
+.custom-drawer ::v-deep .el-drawer__body {
+  padding: 0 !important;
+}
+</style>
